@@ -14,14 +14,15 @@ import {RegisterComponent} from './register/register.component';
 import {ForgottenPasswordComponent} from './forgotten-password/forgotten-password.component';
 import {MyAccountComponent} from './my-account/my-account.component';
 import {SettingsComponent} from './settings/settings.component';
+import {LoginGuard} from './guards/login-guard.service';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'my-account', component: MyAccountComponent},
-  {path: 'settings', component: SettingsComponent}
+  {path: 'my-account', component: MyAccountComponent, canActivate: [LoginGuard]},
+  {path: 'settings', component: SettingsComponent, canActivate: [LoginGuard]}
 ];
 
 @NgModule({

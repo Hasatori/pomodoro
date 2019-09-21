@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {LoginService} from '../services/login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,7 +9,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 export class NavbarComponent implements OnInit {
   @Output() myEvent = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(private loginService: LoginService) {
+  }
 
   ngOnInit() {
   }
