@@ -11,13 +11,17 @@ import {LoginComponent} from './login/login.component';
 import {HomeComponent} from './home/home.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {RegisterComponent} from './register/register.component';
-import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
+import {ForgottenPasswordComponent} from './forgotten-password/forgotten-password.component';
+import {MyAccountComponent} from './my-account/my-account.component';
+import {SettingsComponent} from './settings/settings.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent}
+  {path: 'register', component: RegisterComponent},
+  {path: 'my-account', component: MyAccountComponent},
+  {path: 'settings', component: SettingsComponent}
 ];
 
 @NgModule({
@@ -27,7 +31,9 @@ const routes: Routes = [
     HomeComponent,
     NavbarComponent,
     RegisterComponent,
-    ForgottenPasswordComponent
+    ForgottenPasswordComponent,
+    MyAccountComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
