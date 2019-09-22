@@ -15,6 +15,7 @@ import {ForgottenPasswordComponent} from './components/forgotten-password/forgot
 import {MyAccountComponent} from './components/my-account/my-account.component';
 import {SettingsComponent} from './components/settings/settings.component';
 import {AuthGuard} from './guards/auth-guard.service';
+import {HttpClientModule} from '@angular/common/http';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -22,7 +23,8 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard]},
-  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]}
+  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({
@@ -34,7 +36,8 @@ const routes: Routes = [
     RegisterComponent,
     ForgottenPasswordComponent,
     MyAccountComponent,
-    SettingsComponent
+    SettingsComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ const routes: Routes = [
     MDBBootstrapModule.forRoot(),
     FormsModule,
     RouterModule.forRoot(routes),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
