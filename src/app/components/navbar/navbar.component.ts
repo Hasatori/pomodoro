@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {LoginService} from '../../services/login.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +9,7 @@ import {LoginService} from '../../services/login.service';
 export class NavbarComponent implements OnInit {
   @Output() myEvent = new EventEmitter<string>();
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: AuthService) {
   }
 
   ngOnInit() {
