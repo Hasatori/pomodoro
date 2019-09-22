@@ -7,13 +7,13 @@ import {AppComponent} from './app.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from './login/login.component';
-import {HomeComponent} from './home/home.component';
-import {NavbarComponent} from './navbar/navbar.component';
-import {RegisterComponent} from './register/register.component';
-import {ForgottenPasswordComponent} from './forgotten-password/forgotten-password.component';
-import {MyAccountComponent} from './my-account/my-account.component';
-import {SettingsComponent} from './settings/settings.component';
+import {LoginComponent} from './components/login/login.component';
+import {HomeComponent} from './components/home/home.component';
+import {NavbarComponent} from './components/navbar/navbar.component';
+import {RegisterComponent} from './components/register/register.component';
+import {ForgottenPasswordComponent} from './components/forgotten-password/forgotten-password.component';
+import {MyAccountComponent} from './components/my-account/my-account.component';
+import {SettingsComponent} from './components/settings/settings.component';
 import {LoginGuard} from './guards/login-guard.service';
 
 const routes: Routes = [
