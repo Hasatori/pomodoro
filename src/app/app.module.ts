@@ -15,7 +15,9 @@ import {ForgottenPasswordComponent} from './components/forgotten-password/forgot
 import {MyAccountComponent} from './components/my-account/my-account.component';
 import {SettingsComponent} from './components/settings/settings.component';
 import {AuthGuard} from './guards/auth-guard.service';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {JwtInterceptor} from './services/jwt-interceptor';
+import {ErrorInterceptor} from './services/error-interceptor';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -48,7 +50,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 

@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../services/auth.service';
+import {first} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {log} from 'util';
 
 @Component({
   selector: 'app-login',
@@ -8,8 +12,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   elegantForm: FormGroup;
+  logInError = false;
+  loggingInProgress = false;
 
-  constructor(public fb: FormBuilder) {
+  constructor(public fb: FormBuilder, private authenticationService: AuthService, private router: Router) {
     this.elegantForm = fb.group({
       elegantFormEmailEx: ['', [Validators.required, Validators.email]],
       elegantFormPasswordEx: ['', Validators.required],
@@ -20,6 +26,20 @@ export class LoginComponent implements OnInit {
   }
 
   signIn(username: string, password: string) {
+    this.loggingInProgress = true;
+    this.authenticationService.login(username, password).pipe(first())
+      .subscribe(
+        data => {
+          console.log(data);
+          this.loggingInProgress = false;
+          this.router.navigate(['/my-account']);
+        },
+        error => {
+          if (error.status === 401) {
+            this.logInError = true;
+          }
+          this.loggingInProgress = false;
+        });
   }
 
 }
