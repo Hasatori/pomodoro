@@ -5,40 +5,49 @@ import {User} from '../model/user/user';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import * as bcrypt from 'bcryptjs';
+import {error} from 'selenium-webdriver';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+  private accessToken: string;
 
-  constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
+  constructor(private http: HttpClient, private router: Router) {
+    this.accessToken = localStorage.getItem('accessToken');
+
   }
 
-  public get currentUserValue(): User {
-    return this.currentUserSubject.value;
+  public get currentAccessTokenValue(): string {
+    return this.accessToken;
   }
 
-  login(email: string, password: string) {
+  login(userName: string, password: string) {
     console.log('test');
-    return this.http.post<any>(`http://localhost:8080/users/logIn`, {username: email, password})
-      .pipe(map(user => {
-        // login successful if there's a jwt token in the response
-        if (user && user.token) {
+    return this.http.post<any>(`http://localhost:8080/authenticate`, {username: userName, password})
+      .pipe(map(accessToken => {
+        console.log(accessToken);
+        if (accessToken) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
+          localStorage.setItem('accessToken', accessToken.token);
+          this.accessToken = localStorage.getItem('accessToken');
         }
-        return user;
+        return accessToken;
       }));
   }
 
   logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    console.log('Logging out');
+    localStorage.removeItem('accessToken');
+    this.accessToken = '';
+    this.router.navigate(['/login']);
+  }
+
+  test() {
+    console.log('test init');
+    return this.http.post<any>(`http://localhost:8080/test`, '').pipe(map(test => {
+      console.log(test);
+    }));
   }
 }

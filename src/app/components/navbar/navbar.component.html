@@ -18,7 +18,7 @@
       </li>
     </ul>
     <!-- Links -->
-    <ul *ngIf="loginService.currentUserValue" class="navbar-nav ml-auto">
+    <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/settings']">
           <mdb-icon fas icon="cog"></mdb-icon>
@@ -39,7 +39,7 @@
       </li>
     </ul>
     <!-- Links -->
-    <ul *ngIf="!loginService.currentUserValue" class="navbar-nav ml-auto">
+    <ul *ngIf="!loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/register']">
           <mdb-icon fas icon="sign-in-alt"></mdb-icon>

@@ -5,6 +5,7 @@ export class User {
   id: number;
   firstName: string;
   secondName: string;
+  username: string;
   email: string;
   pomodoros?: Array<Pomodoro>;
   groups?: Array<Group>;

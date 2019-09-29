@@ -1,5 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseChartDirective} from 'angular-bootstrap-md';
+import {AuthService} from '../../services/auth.service';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-account',
@@ -9,6 +11,11 @@ import {BaseChartDirective} from 'angular-bootstrap-md';
 export class MyAccountComponent implements OnInit {
   public chartType: string = 'line';
   public dayToPast: number = 5;
+
+
+  public constructor(private authenticationService: AuthService) {
+
+  }
 
   public chartDatasets: Array<any> = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'My First dataset'},
@@ -42,6 +49,7 @@ export class MyAccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.chartLabels = this.getChartLabels();
+
   }
 
   private getChartLabels(): Array<string> {
@@ -65,5 +73,10 @@ export class MyAccountComponent implements OnInit {
     console.log(daysToPast);
     this.dayToPast = Number(daysToPast);
     this.ngOnInit();
+    this.authenticationService.test().pipe(first()).subscribe(
+      response => {
+        console.log(response);
+      }
+    );
   }
 }

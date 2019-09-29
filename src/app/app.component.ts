@@ -12,6 +12,6 @@ export class AppComponent {
   }
 
   logOut(): void {
-
+this.loginService.logout();
   }
 }

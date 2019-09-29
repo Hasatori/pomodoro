@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
 
   constructor(public fb: FormBuilder, private authenticationService: AuthService, private router: Router) {
     this.elegantForm = fb.group({
-      elegantFormEmailEx: ['', [Validators.required, Validators.email]],
+      elegantFormUsernameEx: ['', [Validators.required]],
       elegantFormPasswordEx: ['', Validators.required],
     });
   }
@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   signIn(username: string, password: string) {
+
     this.loggingInProgress = true;
     this.authenticationService.login(username, password).pipe(first())
       .subscribe(
@@ -35,11 +36,15 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/my-account']);
         },
         error => {
+
           if (error.status === 401) {
+            console.log(error);
             this.logInError = true;
           }
           this.loggingInProgress = false;
         });
+
+    
   }
 
 }
