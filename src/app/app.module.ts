@@ -18,6 +18,7 @@ import {AuthGuard} from './guards/auth-guard.service';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './services/jwt-interceptor';
 import {ErrorInterceptor} from './services/error-interceptor';
+import { FooterComponent } from './components/footer/footer.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -39,6 +40,7 @@ const routes: Routes = [
     ForgottenPasswordComponent,
     MyAccountComponent,
     SettingsComponent,
+    FooterComponent,
 
   ],
   imports: [
