@@ -4,7 +4,7 @@ import {Group} from '../group/group';
 export class User {
   id: number;
   firstName: string;
-  secondName: string;
+  lastName: string;
   username: string;
   email: string;
   pomodoros?: Array<Pomodoro>;

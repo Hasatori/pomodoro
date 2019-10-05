@@ -18,16 +18,21 @@ import {AuthGuard} from './guards/auth-guard.service';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './services/jwt-interceptor';
 import {ErrorInterceptor} from './services/error-interceptor';
-import { FooterComponent } from './components/footer/footer.component';
+import {FooterComponent} from './components/footer/footer.component';
+import {PersonalInformationComponent} from './components/my-account/personal-information/personal-information.component';
+import {PomodoroHistoryComponent} from './components/my-account/pomodoro-history/pomodoro-history.component';
+import {ChangePasswordComponent} from './components/my-account/change-password/change-password.component';
+import {myAccountRoutes} from './components/my-account/my-account.module';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
+   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard]},
+  {path: 'my-account', redirectTo: 'my-account/personal-information', canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
-  {path: '**', redirectTo: ''}
+  {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard], children: myAccountRoutes},
+
 ];
 
 @NgModule({
@@ -41,6 +46,9 @@ const routes: Routes = [
     MyAccountComponent,
     SettingsComponent,
     FooterComponent,
+    PersonalInformationComponent,
+    PomodoroHistoryComponent,
+    ChangePasswordComponent,
 
   ],
   imports: [

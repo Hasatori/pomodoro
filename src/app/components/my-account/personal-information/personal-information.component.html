@@ -1,0 +1,39 @@
+<div class="card personal-info-card">
+
+
+  <!-- Card content -->
+  <div class="card-body">
+    <!-- Default input -->
+    <label for="firstname">First name</label>
+    <input #firstname type="text" id="firstname" class="form-control" placeholder="enter yout first name"
+           value="{{user.firstName}}">
+    <br>
+    <!-- Default input -->
+    <label for="lastname">Last name</label>
+    <input #lastname type="text" id="lastname" class="form-control" placeholder="enter yout last name"
+           value="{{user.lastName}}">
+    <br>
+    <!-- Default input -->
+    <label for="username">Username</label>
+    <input #username type="text" id="username" class="form-control" placeholder="enter yout username"
+           value="{{user.username}}">
+    <br>
+    <!-- Default input -->
+    <label for="email">Email</label>
+    <input #email type="text" id="email" class="form-control" placeholder="enter yout email" value="{{user.email}}">
+
+    <br>
+    <div *ngIf="noValueChanged"
+         class="alert alert-danger"
+         role="alert">
+     No value was updated !
+    </div>
+    <div *ngIf="inProgress" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <button *ngIf="!inProgress" class="btn btn-primary" (click)="updateUser(firstname.value,lastname.value,username.value,email.value)">Update</button>
+  </div>
+</div>
+

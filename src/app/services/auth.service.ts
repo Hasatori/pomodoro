@@ -44,10 +44,5 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  test() {
-    console.log('test init');
-    return this.http.post<any>(`http://localhost:8080/test`, '').pipe(map(test => {
-      console.log(test);
-    }));
-  }
+
 }

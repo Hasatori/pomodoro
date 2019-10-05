@@ -1,0 +1,17 @@
+@import "../../app.component.scss";
+
+.my-account-side-nav{
+  max-width: 400px;
+  min-width: 400px;
+}
+.nav-link{
+  color:  $backgroundColor !important;
+opacity: 0.8;
+}
+.active,.nav-link:hover{
+  font-weight: bold;
+  opacity: 1;
+  color: white !important;
+  background-color: $backgroundColor !important;
+}
+

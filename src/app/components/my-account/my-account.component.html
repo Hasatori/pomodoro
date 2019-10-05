@@ -1,41 +1,31 @@
-<div class="container my-5">
+<div class="container-fluid my-5">
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-md-2">
+      <div class="container my-account-side-nav">
+        <div class="row">
+          <div class="col-8">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
-    </div>
-    <div class="col-sm-8 col-md-8">
-
-      <div style="display: block">
-        <canvas mdbChart
-                [chartType]="chartType"
-                [datasets]="chartDatasets"
-                [labels]="chartLabels"
-                [colors]="chartColors"
-                [options]="chartOptions"
-                [legend]="true"
-                (chartHover)="changeDays(daysSlider.value)"
-                (chartClick)="chartClicked($event)">
-        </canvas>
+              <a class="nav-link border " [routerLinkActive]="['active']" id="v-pills-home-tab" data-toggle="pill"
+                 [routerLink]="['./personal-information']" role="tab"
+                 aria-controls="v-pills-home" aria-selected="true">Personal information</a>
+              <a class="nav-link border" [routerLinkActive]="['active']" id="v-pills-profile-tab" data-toggle="pill"
+                 [routerLink]="['./pomodoro-history']" role="tab"
+                 aria-controls="v-pills-profile" aria-selected="false">Pomodoro history</a>
+              <a class="nav-link border" [routerLinkActive]="['active']" id="v-pills-messages-tab" data-toggle="pill"
+                 [routerLink]="['./change-password']" role="tab"
+                 aria-controls="v-pills-messages" aria-selected="false">Change password</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4">
-
+    <div class="col-md-1">
     </div>
-    <div class="col-sm-4">
-      <ul class="list-group">
-        <li class="list-group-item">    <span class="badge badge-default">{{daysSlider.value}} days</span></li>
-        <li class="list-group-item"> <input #daysSlider type="range" min="1" max="100" class="slider" id="myRange" value="{{dayToPast}}"
-                                            (change)="changeDays(daysSlider.value)"></li>
-      </ul>
-
-
+    <div class="col-md-6">
+      <router-outlet></router-outlet>
     </div>
-    <div class="col-sm-4">
-
+    <div class="col-md-3">
     </div>
   </div>
 </div>
-
