@@ -19,14 +19,23 @@ export class UserService {
     }));
   }
 
-  updateUser(user:User) :Observable<any>{
-    return this.http.post<any>(`http://localhost:8080/updateDetails`,user).pipe(map(user => {
+  updateUser(user: User): Observable<any> {
+    return this.http.post<any>(`http://localhost:8080/updateDetails`, user).pipe(map(user => {
       return user;
     }));
   }
 
- userPomodoros() :Observable<Array<Pomodoro>>{
-    return this.http.post<any>(`http://localhost:8080/userPomodoros`,'').pipe(map(pomodoros => {
+  changePassword(oldPasswword: string, newPassword: string) {
+    return this.http.post<any>(`http://localhost:8080/changePassword`, {
+      oldPassword: oldPasswword,
+      newPassword: newPassword
+    }).pipe(map(response => {
+      return response;
+    }));
+  }
+
+  userPomodoros(): Observable<Array<Pomodoro>> {
+    return this.http.post<any>(`http://localhost:8080/userPomodoros`, '').pipe(map(pomodoros => {
       return pomodoros;
     }));
   }
