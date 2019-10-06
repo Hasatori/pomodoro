@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-12 col-md-12">
+  <div class="col-sm-10 col-md-10">
 
     <div style="display: block">
       <canvas mdbChart
@@ -8,10 +8,21 @@
               [labels]="chartLabels"
               [colors]="chartColors"
               [options]="chartOptions"
-              [legend]="true"
+              [legend]="showLegend"
               (chartClick)="chartClicked($event)">
       </canvas>
     </div>
+  </div>
+  <div class="col-sm-2 col-md-2">
+    <label class="mdb-main-label">Graph type:</label>
+    <select #chartTypeSelect class="browser-default custom-select" (change)="changeChartType(chartTypeSelect.value)">
+      <option value="bar">Bar</option>
+      <option value="line">Line</option>
+      <option value="polarArea">Polar Area</option>
+      <option value="pie">Pie</option>
+      <option value="radar">Radar</option>
+      <option value="doughnut">Doughnut</option>
+    </select>
   </div>
 </div>
 
@@ -20,13 +31,14 @@
 
   </div>
   <div class="col-sm-4">
-    <ul class="list-group">
-      <li class="list-group-item"><span class="badge badge-default">{{daysSlider.value}} days</span></li>
-      <li class="list-group-item"><input #daysSlider type="range" min="1" max="50" class="slider" id="myRange"
-                                         value="{{dayToPast}}"
-                                         (change)="changeDays(daysSlider.value)"></li>
-    </ul>
-
+    <label class="mdb-main-label">Show pomodoros for last:</label>
+    <select #test class="browser-default custom-select" (change)="changeDays(test.value)">
+      <option value="1">Day</option>
+      <option value="7">Week</option>
+      <option value="31">Month</option>
+      <option value="365">Year</option>
+    </select>
 
   </div>
+
 </div>

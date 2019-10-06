@@ -11,11 +11,18 @@ import {Pomodoro} from '../../../model/pomodoro/pomodoro';
 })
 export class PomodoroHistoryComponent implements OnInit {
   public chartType: string = 'bar';
-  public dayToPast: number = 5;
+  public dayToPast: number = 1;
   private pomodoros: Array<Pomodoro>;
+  private showLegend = true;
 
   constructor(private userService: UserService) {
 
+    this.userService.userPomodoros().pipe(first()).subscribe(
+      pomodoros => {
+        this.pomodoros = pomodoros;
+        this.fillChart();
+      }
+    );
   }
 
   public chartDatasets: Array<any> = [
@@ -40,14 +47,14 @@ export class PomodoroHistoryComponent implements OnInit {
   public chartOptions: any = {
     responsive: true,
     // We use these empty structures as placeholders for dynamic theming.
-    scales: { xAxes: [{}], yAxes: [{}] },
+    scales: {xAxes: [{}], yAxes: [{}]},
     plugins: {
       datalabels: {
         anchor: 'end',
         align: 'end',
       }
     }
-  }
+  };
 
   public chartClicked(e: any): void {
   }
@@ -57,24 +64,23 @@ export class PomodoroHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.chartLabels = this.getChartLabels();
-    this.userService.userPomodoros().pipe(first()).subscribe(
-      pomodoros => {
-        this.pomodoros = pomodoros;
-        const finishedPomodoros = [];
-        const notFinishedPomodoros = [];
-        for (let chartLabel of this.chartLabels) {
+    this.fillChart();
+  }
 
-          finishedPomodoros.push(pomodoros.filter(pomodoro => pomodoro.date === chartLabel && pomodoro.interrupted === false).length);
-          notFinishedPomodoros.push(pomodoros.filter(pomodoro => pomodoro.date === chartLabel && pomodoro.interrupted !== false).length);
-        }
-        console.log(finishedPomodoros);
-        this.chartDatasets = [
-          {data: finishedPomodoros, label: 'Finished pomodoros'},
-          {data: notFinishedPomodoros, label: 'Interrputed pomodoros'}
-        ];
+  private fillChart() {
+    const finishedPomodoros = [];
+    const notFinishedPomodoros = [];
+    for (let chartLabel of this.chartLabels) {
 
-      }
-    );
+      finishedPomodoros.push(this.pomodoros.filter(pomodoro => pomodoro.date === chartLabel && pomodoro.interrupted === false).length);
+      notFinishedPomodoros.push(this.pomodoros.filter(pomodoro => pomodoro.date === chartLabel && pomodoro.interrupted !== false).length);
+    }
+    console.log(finishedPomodoros);
+    this.chartDatasets = [
+      {data: finishedPomodoros, label: 'Finished pomodoros'},
+      {data: notFinishedPomodoros, label: 'Interrputed pomodoros'}
+    ];
+
   }
 
   private getChartLabels(): Array<string> {
@@ -83,7 +89,7 @@ export class PomodoroHistoryComponent implements OnInit {
     let mm;
     let yyyy;
     let date;
-    for (let i = this.dayToPast; i >= 0; i--) {
+    for (let i = this.dayToPast; i > 0; i--) {
       date = new Date(Date.now() - 86400000 * i);
       dd = String(date.getDate()).padStart(2, '0');
       mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -95,9 +101,16 @@ export class PomodoroHistoryComponent implements OnInit {
   }
 
   changeDays(daysToPast: string): void {
-    console.log(daysToPast);
     this.dayToPast = Number(daysToPast);
     this.ngOnInit();
 
+  }
+
+  changeChartType(type: string) {
+    this.chartType = type;
+    this.showLegend = true;
+    if (type !== 'line' && type !== 'bar' && type !== 'radar') {
+      this.showLegend = false;
+    }
   }
 }
