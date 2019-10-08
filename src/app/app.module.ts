@@ -23,12 +23,14 @@ import {PersonalInformationComponent} from './components/my-account/personal-inf
 import {PomodoroHistoryComponent} from './components/my-account/pomodoro-history/pomodoro-history.component';
 import {ChangePasswordComponent} from './components/my-account/change-password/change-password.component';
 import {myAccountRoutes} from './components/my-account/my-account.module';
+import {PomodoroComponent} from './components/pomodoro/pomodoro.component';
 
 const routes: Routes = [
-   {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: '', redirectTo: 'pomodoro', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'pomodoro', component: PomodoroComponent, canActivate: [AuthGuard]},
   {path: 'my-account', redirectTo: 'my-account/personal-information', canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard], children: myAccountRoutes},
@@ -49,6 +51,8 @@ const routes: Routes = [
     PersonalInformationComponent,
     PomodoroHistoryComponent,
     ChangePasswordComponent,
+    PomodoroComponent,
+
 
   ],
   imports: [
