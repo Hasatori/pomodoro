@@ -1,9 +1,10 @@
 <div class="container my-5">
   <h1 id="head">{{phase}}</h1>
-  <ul>
-    <li><span id="minutes">25</span>Minutes</li>
-    <li><span id="seconds">00</span>Seconds</li>
-  </ul>
-  <button type="button" class="btn btn-primary btn-rounded  my-button">START</button>
-  <button type="button" class="btn btn-danger btn-rounded  my-button" disabled>STOP</button>
+  <div class="customTimer">
+    <countdown #cd1 [config]="{leftTime: 30,demand:true,format:'mm:ss',notify:0}" (event)="handleEvent($event)">
+    </countdown>
+  </div>
+
+  <button type="button" class="btn btn-primary btn-rounded  my-button"(click)="startPomodoro()">START</button>
+  <button type="button" class="btn btn-danger btn-rounded  my-button" (click)="stopPomodoro()">STOP</button>
 </div>

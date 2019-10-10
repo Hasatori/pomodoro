@@ -24,6 +24,9 @@ import {PomodoroHistoryComponent} from './components/my-account/pomodoro-history
 import {ChangePasswordComponent} from './components/my-account/change-password/change-password.component';
 import {myAccountRoutes} from './components/my-account/my-account.module';
 import {PomodoroComponent} from './components/pomodoro/pomodoro.component';
+import {CountdownModule} from 'ngx-countdown';
+import {InjectableRxStompConfig, RxStompService, rxStompServiceFactory, StompConfig, StompService} from '@stomp/ng2-stompjs';
+import {webSocketConfig} from './WebSocketConfig';
 
 const routes: Routes = [
   {path: '', redirectTo: 'pomodoro', pathMatch: 'full'},
@@ -62,13 +65,20 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CountdownModule,
+
+
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {
     provide: HTTP_INTERCEPTORS,
     useClass: ErrorInterceptor,
     multi: true
-  }],
+  }, RxStompService,
+    {
+      provide: StompConfig,
+      useValue: webSocketConfig
+    }],
   bootstrap: [AppComponent]
 })
 
