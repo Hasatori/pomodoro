@@ -1,10 +1,9 @@
 <div class="container my-5">
-  <h1 id="head">{{phase}}</h1>
+  <h1 id="head">{{pomodoroService.phase}}</h1>
   <div class="customTimer">
-    <countdown #cd1 [config]="{leftTime: 30,demand:true,format:'mm:ss',notify:0}" (event)="handleEvent($event)">
-    </countdown>
+{{pomodoroService.timeLeft}}
   </div>
 
-  <button type="button" class="btn btn-primary btn-rounded  my-button"(click)="startPomodoro()">START</button>
-  <button type="button" class="btn btn-danger btn-rounded  my-button" (click)="stopPomodoro()">STOP</button>
+  <button *ngIf="!pomodoroService.started" type="button" class="btn btn-primary btn-rounded  my-button"(click)="pomodoroService.startNewPomodoro()">START</button>
+  <button *ngIf="pomodoroService.started"type="button" class="btn btn-danger btn-rounded  my-button" (click)="pomodoroService.resetPomodoro()">RESET</button>
 </div>

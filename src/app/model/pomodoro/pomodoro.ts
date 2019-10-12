@@ -3,9 +3,8 @@ import {User} from '../user/user';
 
 export class Pomodoro {
   user: User;
-  date: Date;
-  workTimeRemaining: number;
-  breakTimeRemaining: number;
+  creationTimestamp: Date;
+  workTime: number;
+  breakTime: number;
   interrupted: boolean;
-  numberOfInterruptions: number;
 }

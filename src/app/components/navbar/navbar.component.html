@@ -9,16 +9,26 @@
 
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item "[routerLinkActive]="['active']">
+      <div *ngIf="this.router.url!=='/pomodoro' && pomodoroService.started">
+        <li *ngIf="pomodoroService.phase==='WORK'" class="nav-item btn btn-warning">
+          {{pomodoroService.phase}} - {{pomodoroService.timeLeft}}
+        </li>
+        <li *ngIf="pomodoroService.phase==='PAUSE'" class="nav-item btn btn-success">
+          {{pomodoroService.phase}} - {{pomodoroService.timeLeft}}
+        </li>
+      </div>
+      <li  class="nav-item "[routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/pomodoro']">Pomodoro<span
           class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect>Group</a>
       </li>
+
     </ul>
     <!-- Links -->
     <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
+
       <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/settings']">
           <mdb-icon fas icon="cog"></mdb-icon>

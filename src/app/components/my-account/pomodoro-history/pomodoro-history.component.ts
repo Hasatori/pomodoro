@@ -71,9 +71,8 @@ export class PomodoroHistoryComponent implements OnInit {
     const finishedPomodoros = [];
     const notFinishedPomodoros = [];
     for (let chartLabel of this.chartLabels) {
-
-      finishedPomodoros.push(this.pomodoros.filter(pomodoro => pomodoro.date === chartLabel && pomodoro.interrupted === false).length);
-      notFinishedPomodoros.push(this.pomodoros.filter(pomodoro => pomodoro.date === chartLabel && pomodoro.interrupted !== false).length);
+      finishedPomodoros.push(this.pomodoros.filter(pomodoro => pomodoro.creationTimestamp.toString().includes(chartLabel) && pomodoro.interrupted === false).length);
+      notFinishedPomodoros.push(this.pomodoros.filter(pomodoro => pomodoro.creationTimestamp.toString().includes(chartLabel)  && pomodoro.interrupted !== false).length);
     }
     console.log(finishedPomodoros);
     this.chartDatasets = [
@@ -89,7 +88,7 @@ export class PomodoroHistoryComponent implements OnInit {
     let mm;
     let yyyy;
     let date;
-    for (let i = this.dayToPast; i > 0; i--) {
+    for (let i = this.dayToPast-1; i >= 0; i--) {
       date = new Date(Date.now() - 86400000 * i);
       dd = String(date.getDate()).padStart(2, '0');
       mm = String(date.getMonth() + 1).padStart(2, '0');
