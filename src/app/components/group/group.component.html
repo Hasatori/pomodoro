@@ -1,0 +1,24 @@
+<div class="container-fluid my-5">
+  <div class="row">
+    <div class="col-md-2">
+      <div class="container my-account-side-nav">
+        <div class="row">
+          <div class="col-8">
+            <div *ngFor="let group of groups" class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+              <a class="nav-link border " [routerLinkActive]="['active']" id="v-pills-home-tab" data-toggle="pill"
+                 [routerLink]="['./'+group.name]" role="tab"
+                 aria-controls="v-pills-home" aria-selected="true">{{group.name}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-7">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+</div>

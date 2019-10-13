@@ -27,6 +27,9 @@ import {PomodoroComponent} from './components/pomodoro/pomodoro.component';
 import {CountdownModule} from 'ngx-countdown';
 import {InjectableRxStompConfig, RxStompService, rxStompServiceFactory, StompConfig, StompService} from '@stomp/ng2-stompjs';
 import {webSocketConfig} from './WebSocketConfig';
+import { GroupComponent } from './components/group/group.component';
+import { GroupDetailComponent } from './components/group/group-detail/group-detail.component';
+import {groupDetailRoutes} from './components/group/group.module';
 
 const routes: Routes = [
   {path: '', redirectTo: 'pomodoro', pathMatch: 'full'},
@@ -34,6 +37,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'pomodoro', component: PomodoroComponent, canActivate: [AuthGuard]},
+  {path: 'group', component: GroupComponent, canActivate: [AuthGuard],children:groupDetailRoutes},
   {path: 'my-account', redirectTo: 'my-account/personal-information', canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard], children: myAccountRoutes},
@@ -55,6 +59,8 @@ const routes: Routes = [
     PomodoroHistoryComponent,
     ChangePasswordComponent,
     PomodoroComponent,
+    GroupComponent,
+    GroupDetailComponent,
 
 
   ],
