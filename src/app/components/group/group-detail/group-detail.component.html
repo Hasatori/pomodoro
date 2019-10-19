@@ -1,1 +1,22 @@
-<p>{{groupName}}</p>
+<div class="container-fluid">
+<div  *ngFor="let row of rows"  class="row my-3">
+
+  <div *ngFor=" let pomodoro of row |keyvalue" class="col-lg-4 col-md-12">
+  <!--Card Primary-->
+  <div class="card text-center z-depth-2">
+    <div class= "cardBackground card-header">
+
+      <h5 class="text-uppercase font-weight-bold text-white "><strong>  {{pomodoro.key.username}}</strong></h5>
+
+    </div>
+    <div class="card-body" [ngClass]="pomodoro.value.phase==='NOT RUNNING'? 'btn-danger':pomodoro.value.phase==='WORK' ?'btn-warning' :'btn-success'">
+      <h3 class="text-uppercase font-weight-bold text-white mt-2 mb-3"><strong>  {{pomodoro.value.timeLeft}}</strong></h3>
+
+      <h5 class="text-uppercase font-weight-bold text-white mt-2 mb-3"><strong>   {{pomodoro.value.phase}}</strong></h5>
+
+
+    </div>
+  </div>
+  </div>
+</div>
+</div>

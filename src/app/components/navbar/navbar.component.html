@@ -5,16 +5,19 @@
   <mdb-navbar-brand><a class="navbar-brand" href="#">Navbar</a></mdb-navbar-brand>
 
   <!-- Collapsible content -->
-  <links>
+  <links >
 
     <!-- Links -->
-    <ul class="navbar-nav mr-auto">
-      <div *ngIf="this.router.url!=='/pomodoro' && pomodoroService.started">
-        <li *ngIf="pomodoroService.phase==='WORK'" class="nav-item btn btn-warning">
-          {{pomodoroService.phase}} - {{pomodoroService.timeLeft}}
+    <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav mr-auto">
+      <div *ngIf="this.router.url!=='/pomodoro' && pomodoroService.timer!=null && pomodoroService.timer.started">
+        <li *ngIf="pomodoroService.timer.phase==='WORK'" class="nav-item btn btn-warning">
+          {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
         </li>
-        <li *ngIf="pomodoroService.phase==='PAUSE'" class="nav-item btn btn-success">
-          {{pomodoroService.phase}} - {{pomodoroService.timeLeft}}
+        <li *ngIf="pomodoroService.timer.phase==='PAUSE'" class="nav-item btn btn-success">
+          {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
+        </li>
+        <li *ngIf="pomodoroService.timer.phase==='INTERRUPTED'" class="nav-item btn btn-error">
+          {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
         </li>
       </div>
       <li  class="nav-item "[routerLinkActive]="['active']">

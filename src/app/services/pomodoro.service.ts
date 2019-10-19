@@ -7,23 +7,21 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {webSocketConfig} from '../WebSocketConfig';
 import {RxStompService} from '@stomp/ng2-stompjs';
+import {Timer} from '../model/pomodoro/Timer';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PomodoroService implements OnInit {
 
-  public phase: string = 'WORK';
-  private minutes: string;
-  private seconds: string;
+
   private user: User;
   private pomodoro: Pomodoro;
-  private secondsLeft: number;
-  public timeLeft: string;
-  private interval;
-  public started: boolean = false;
+  public timer: Timer;
+
 
   constructor(private http: HttpClient, private userService: UserService, private webSocketService: RxStompService) {
+    this.timer = new Timer();
     this.userService.getUser().pipe(first()).subscribe(
       user => {
         this.user = user;
@@ -37,15 +35,16 @@ export class PomodoroService implements OnInit {
         this.webSocketService.activate();
         this.webSocketService.watch('/pomodoro/start/' + this.user.username).subscribe(response => {
           this.pomodoro = JSON.parse(response.body);
-          this.startPomodoro();
+          this.timer.start(this.pomodoro);
         });
         this.webSocketService.watch('/pomodoro/stop/' + this.user.username).subscribe(test => {
-          this.pauseTimer();
+          this.timer.pause();
         });
         this.getLastPomodoro().pipe(first()).subscribe(
           pomodoro => {
+            if (pomodoro!=null){
             this.pomodoro = pomodoro;
-            this.startPomodoro();
+            this.timer.start(pomodoro);}
           }, error1 => {
 
           }
@@ -63,27 +62,9 @@ export class PomodoroService implements OnInit {
 
   ngOnInit() {
 
+
   }
 
-
-  startPomodoro() {
-    this.pauseTimer();
-    // @ts-ignore
-    var difference = (new Date() - new Date(this.pomodoro.creationTimestamp)) / 1000;
-    if (this.pomodoro.interrupted) {
-      this.phase = 'WORK';
-      this.secondsLeft = 0;
-    } else if (difference > this.pomodoro.workTime) {
-      this.started = true;
-      this.secondsLeft = this.pomodoro.breakTime - (difference - this.pomodoro.workTime);
-      this.phase = 'PAUSE';
-    } else {
-      this.started = true;
-      this.phase = 'WORK';
-      this.secondsLeft = this.pomodoro.workTime - difference;
-    }
-    this.startTimer();
-  }
 
   startNewPomodoro() {
     this.webSocketService.publish({destination: '/app/start/' + this.user.username,});
@@ -93,34 +74,5 @@ export class PomodoroService implements OnInit {
     this.webSocketService.publish({destination: '/app/stop/' + this.user.username, body: JSON.stringify(this.pomodoro)},);
   }
 
-  startTimer() {
-    let minutes;
-    let seconds;
-    this.interval = setInterval(() => {
-      if (this.secondsLeft > 0) {
-        // @ts-ignore
-        var difference = (new Date() - new Date(this.pomodoro.creationTimestamp)) / 1000;
-        if (difference > this.pomodoro.workTime && this.phase !== 'PAUSE') {
-          this.secondsLeft = this.pomodoro.breakTime;
-          this.phase = 'PAUSE';
-        }
-        this.secondsLeft--;
-        minutes = Math.floor(this.secondsLeft / 60) % 60;
-        seconds = Math.floor(this.secondsLeft - minutes * 60);
-        if (minutes < 10) {
-          minutes = '0' + minutes;
-        }
-        if (seconds < 10) {
-          seconds = '0' + seconds;
-        }
-        this.timeLeft = minutes + ':' + seconds;
-      }
-    }, 1000);
-  }
 
-  pauseTimer() {
-    this.started = false;
-    this.timeLeft = '00:00';
-    clearInterval(this.interval);
-  }
 }

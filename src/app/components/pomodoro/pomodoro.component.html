@@ -1,9 +1,13 @@
 <div class="container my-5">
-  <h1 id="head">{{pomodoroService.phase}}</h1>
+  <h1 id="head">{{pomodoroService.timer.phase}}</h1>
   <div class="customTimer">
-{{pomodoroService.timeLeft}}
+    {{pomodoroService.timer.timeLeft}}
   </div>
 
-  <button *ngIf="!pomodoroService.started" type="button" class="btn btn-primary btn-rounded  my-button"(click)="pomodoroService.startNewPomodoro()">START</button>
-  <button *ngIf="pomodoroService.started"type="button" class="btn btn-danger btn-rounded  my-button" (click)="pomodoroService.resetPomodoro()">RESET</button>
+  <button *ngIf="!pomodoroService.timer.started" type="button" class="btn btn-primary btn-rounded  my-button"
+          (click)="pomodoroService.startNewPomodoro()">START
+  </button>
+  <button *ngIf="pomodoroService.timer.started" type="button" class="btn btn-danger btn-rounded  my-button"
+          (click)="pomodoroService.resetPomodoro()">RESET
+  </button>
 </div>
