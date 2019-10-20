@@ -32,4 +32,13 @@ export class GroupService {
       return pomodoro;
     }));
   }
+
+  createGroup(name: string, isPublic: boolean): Observable<any> {
+    return this.http.post<any>(`http://localhost:8080/group/create`, {
+      name: name,
+      isPublic: isPublic
+    }).pipe(map(response => {
+      return response;
+    }));
+  }
 }
