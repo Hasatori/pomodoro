@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {AuthService} from './services/auth.service';
+import {PomodoroService} from './services/pomodoro.service';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,16 @@ import {AuthService} from './services/auth.service';
 })
 export class AppComponent {
 
-  constructor(private loginService: AuthService ) {
+  constructor(private loginService: AuthService,private pomodoroService:PomodoroService) {
   }
-
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+   this.pomodoroService.resetPomodoro();
+    }
   logOut(): void {
 this.loginService.logout();
+  }
+  ngOnDestroy(){
+
   }
 }

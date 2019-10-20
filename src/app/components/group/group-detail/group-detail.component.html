@@ -1,5 +1,26 @@
 <div class="container-fluid">
-<div  *ngFor="let row of rows"  class="row my-3">
+  <div   class="container filter-container border">
+    <h4>Filter</h4>
+    <div class="pretty p-default">
+      <input #selectWork type="checkbox" checked="true" id='WORK' (change)="select(selectWork)"/>
+      <div class="state  p-primary">
+        <label>Work</label>
+      </div>
+    </div>
+    <div class="pretty p-default">
+      <input #selectPause type="checkbox" checked="true" id='PAUSE' (change)="select(selectPause)"/>
+      <div class="state  p-primary">
+        <label>Pause</label>
+      </div>
+    </div>
+    <div class="pretty p-default">
+      <input #selectNotRunning type="checkbox" checked="true"  id='NOT RUNNING' (change)="select(selectNotRunning)"/>
+      <div class="state  p-primary">
+        <label>Not running</label>
+      </div>
+    </div>
+  </div>
+<div  *ngFor="let row of filteredRows"  class="row my-3">
 
   <div *ngFor=" let pomodoro of row |keyvalue" class="col-lg-4 col-md-12">
   <!--Card Primary-->

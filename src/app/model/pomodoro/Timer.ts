@@ -1,4 +1,7 @@
 import {Pomodoro} from './pomodoro';
+import {Observable, Observer} from 'rxjs';
+import {OnPhaseChanged} from './OnPhaseChanged';
+import {Optional} from '@angular/core';
 
 export class Timer {
 
@@ -9,30 +12,29 @@ export class Timer {
   public interval;
   public timeLeft: string="00:00";
   public started: boolean = false;
+public onPhaseChanged:OnPhaseChanged;
 
-  
-  constructor() {
+  constructor( onPhaseChanged?:OnPhaseChanged) {
+    this.onPhaseChanged=onPhaseChanged;
   }
-
   start(pomodoro:Pomodoro) {
     this.pause();
     // @ts-ignore
     var difference = (new Date() - new Date(pomodoro.creationTimestamp)) / 1000;
     if (pomodoro.interrupted) {
-      this.phase = 'NOT RUNNING';
+      this.setPhase('NOT RUNNING')
       this.secondsLeft = 0;
     } else if (difference > pomodoro.workTime) {
       this.started = true;
       this.secondsLeft = pomodoro.breakTime - (difference - pomodoro.workTime);
-      this.phase = 'PAUSE';
+      this.setPhase('PAUSE')
     } else {
       this.started = true;
-      this.phase = 'WORK';
+      this.setPhase('WORK')
       this.secondsLeft = pomodoro.workTime - difference;
     }
     let minutes;
     let seconds;
-    console.log("started");
     this.interval = setInterval(() => {
       if (this.secondsLeft > 0) {
         // @ts-ignore
@@ -40,7 +42,7 @@ export class Timer {
         var difference = (new Date() - new Date(pomodoro.creationTimestamp)) / 1000;
         if (difference > pomodoro.workTime && this.phase !== 'PAUSE') {
           this.secondsLeft = pomodoro.breakTime;
-          this.phase = 'PAUSE';
+          this.setPhase('PAUSE')
         }
         this.secondsLeft--;
         minutes = Math.floor(this.secondsLeft / 60) % 60;
@@ -60,11 +62,17 @@ export class Timer {
 
     }, 1000);
   }
-
+private setPhase(newPhase:string){
+    console.log("setting phase ")
+    this.phase=newPhase;
+    if (this.onPhaseChanged!=null){
+      this.onPhaseChanged.phaseChanged();
+    }
+}
   pause() {
     this.started = false;
     this.timeLeft = '00:00';
-    this.phase='NOT RUNNING';
+    this.setPhase('NOT RUNNING')
     clearInterval(this.interval);
   }
 }

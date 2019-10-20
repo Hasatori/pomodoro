@@ -9,6 +9,7 @@
                  [routerLink]="['./'+group.name]" role="tab"
                  aria-controls="v-pills-home" aria-selected="true">{{group.name}}</a>
             </div>
+            <button class="nav-link border  btn-success" ><i class="fas fa-plus-circle"> create</i></button>
           </div>
         </div>
       </div>
@@ -16,8 +17,9 @@
     <div class="col-md-1">
     </div>
     <div class="col-md-7">
+      <div class="tab-content" id="v-pills-tabContent">
       <router-outlet></router-outlet>
-    </div>
+    </div>  </div>
     <div class="col-md-2">
     </div>
   </div>

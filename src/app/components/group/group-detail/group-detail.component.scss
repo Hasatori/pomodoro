@@ -1,5 +1,9 @@
 @import "../../../app.component";
 
+@import '~pretty-checkbox/src/pretty-checkbox.scss';
 .cardBackground{
   background-color: $backgroundColor;
+}
+.filter-container{
+  padding: 5px;
 }
