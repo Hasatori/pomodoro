@@ -11,7 +11,7 @@ import {Group} from '../../model/group/group';
 export class GroupComponent implements OnInit {
 
   private groups: Array<Group>;
-@Outpu
+
   constructor(private groupService: GroupService) {
     this.groupService.getGroups().pipe(first()).subscribe(groups => {
       console.log(groups);
