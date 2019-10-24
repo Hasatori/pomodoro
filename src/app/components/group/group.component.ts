@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {GroupService} from '../../services/group.service';
 import {first} from 'rxjs/operators';
-import {Group} from '../../model/group/group';
+import {Group} from '../../redux/group/group';
 
 @Component({
   selector: 'app-group',

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {first} from 'rxjs/operators';
 import {AuthService} from '../../../services/auth.service';
 import {UserService} from '../../../services/user.service';
-import {Pomodoro} from '../../../model/pomodoro/pomodoro';
+import {Pomodoro} from '../../../redux/pomodoro/pomodoro';
 
 @Component({
   selector: 'pomodoro-history',

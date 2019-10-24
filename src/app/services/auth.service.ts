@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {logger} from 'codelyzer/util/logger';
 import {BehaviorSubject, from, Observable} from 'rxjs';
-import {User} from '../model/user/user';
+import {User} from '../redux/user/user';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import * as bcrypt from 'bcryptjs';

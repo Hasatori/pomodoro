@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Group} from '../model/group/group';
+import {Group} from '../redux/group/group';
 import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {User} from '../model/user/user';
-import {Pomodoro} from '../model/pomodoro/pomodoro';
+import {User} from '../redux/user/user';
+import {Pomodoro} from '../redux/pomodoro/pomodoro';
 
 @Injectable({
   providedIn: 'root'

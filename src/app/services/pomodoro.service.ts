@@ -1,13 +1,13 @@
 import {Injectable, OnInit} from '@angular/core';
 import {UserService} from './user.service';
-import {User} from '../model/user/user';
-import {Pomodoro} from '../model/pomodoro/pomodoro';
+import {User} from '../redux/user/user';
+import {Pomodoro} from '../redux/pomodoro/pomodoro';
 import {first, map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {webSocketConfig} from '../WebSocketConfig';
 import {RxStompService} from '@stomp/ng2-stompjs';
-import {Timer} from '../model/pomodoro/Timer';
+import {Timer} from '../redux/pomodoro/Timer';
 
 @Injectable({
   providedIn: 'root'

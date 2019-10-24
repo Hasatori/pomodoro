@@ -1,19 +1,20 @@
 import {Component, ElementRef, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Group} from '../../../model/group/group';
+import {Group} from '../../../redux/group/group';
 import {GroupService} from '../../../services/group.service';
 import {first, map} from 'rxjs/operators';
-import {User} from '../../../model/user/user';
+import {User} from '../../../redux/user/user';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {webSocketConfig} from '../../../WebSocketConfig';
-import {Timer} from '../../../model/pomodoro/Timer';
+import {Timer} from '../../../redux/pomodoro/Timer';
 import {concat, Observable, pipe} from 'rxjs';
-import {Pomodoro} from '../../../model/pomodoro/pomodoro';
+import {Pomodoro} from '../../../redux/pomodoro/pomodoro';
 import {HttpClient} from '@angular/common/http';
 import {pipeFromArray} from 'rxjs/internal/util/pipe';
 import {debounceTime, distinctUntilChanged, switchMapTo, takeUntil} from 'rxjs/operators';
 import {observe} from 'rxjs-observe';
-import {OnPhaseChanged} from '../../../model/pomodoro/OnPhaseChanged';
+import {OnPhaseChanged} from '../../../redux/pomodoro/OnPhaseChanged';
+import {Map} from 'd3-collection';
 
 @Component({
   selector: 'app-group-detail',
@@ -30,6 +31,8 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
   private pauseSelected: boolean = true;
   private notRunningSelected: boolean = true;
   private onPhaseChangedMonitor: OnPhaseChanged;
+  private searchInProgress: boolean=false;
+  private searchDelayMilliseconds: number = 500;
 
   constructor(private route: ActivatedRoute, private groupService: GroupService, private webSocketService: RxStompService, private http: HttpClient) {
     this.route.paramMap.subscribe(groupName => {
@@ -56,7 +59,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
                 timer.start(pomodoro);
               }
               if (i == users.length) {
-          this.updateFilter();
+                this.updateFilter();
               }
             }, error1 => {
               console.log(error1);
@@ -130,5 +133,24 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
 
   phaseChanged() {
     this.updateFilter();
+  }
+
+  public addUser() {
+
+  }
+
+  public removeUser() {
+
+  }
+
+  public searchUsers(search: string) {
+    if (!this.searchInProgress) {
+      this.searchInProgress = true;
+      console.log(search);
+      setTimeout(() => {
+        this.searchInProgress = false;
+      }, this.searchDelayMilliseconds);
+
+    }
   }
 }

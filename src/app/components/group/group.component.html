@@ -1,26 +1,27 @@
 <div class="container-fluid my-5">
   <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-4 col-lg-3 col-xl-3">
       <div class="container my-account-side-nav">
         <div class="row">
-          <div class="col-8">
+          <div class="col-8 border side-nav-container">
+            <h5 class="h5-responsive "><strong>Groups</strong></h5>
             <div *ngFor="let group of groups" class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
               <a class="nav-link border " [routerLinkActive]="['active']" id="v-pills-home-tab" data-toggle="pill"
                  [routerLink]="['./'+group.name]" role="tab"
                  aria-controls="v-pills-home" aria-selected="true">{{group.name}}</a>
             </div>
+            <br>
             <a class="nav-link border  btn-success text-white" [routerLink]="['./create/group']" ><i class="fas fa-plus-circle" > create</i></a>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-1">
-    </div>
-    <div class="col-md-7">
+
+    <div class="col-sm-10 col-md-6 col-lg-8 col-xl-7">
       <div class="tab-content" id="v-pills-tabContent">
       <router-outlet></router-outlet>
     </div>  </div>
-    <div class="col-md-2">
+    <div class="col-lg-1 col-md-2 col-xl-3">
     </div>
   </div>
 </div>
