@@ -1,19 +1,19 @@
 import {Component, ElementRef, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Group} from '../../../redux/group/group';
+import {Group} from '../../../model/group';
 import {GroupService} from '../../../services/group.service';
 import {first, map} from 'rxjs/operators';
-import {User} from '../../../redux/user/user';
+import {User} from '../../../model/user';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {webSocketConfig} from '../../../WebSocketConfig';
-import {Timer} from '../../../redux/pomodoro/Timer';
+import {Timer} from '../../../model/Timer';
 import {concat, Observable, pipe} from 'rxjs';
-import {Pomodoro} from '../../../redux/pomodoro/pomodoro';
+import {Pomodoro} from '../../../model/pomodoro';
 import {HttpClient} from '@angular/common/http';
 import {pipeFromArray} from 'rxjs/internal/util/pipe';
 import {debounceTime, distinctUntilChanged, switchMapTo, takeUntil} from 'rxjs/operators';
 import {observe} from 'rxjs-observe';
-import {OnPhaseChanged} from '../../../redux/pomodoro/OnPhaseChanged';
+import {OnPhaseChanged} from '../../../model/OnPhaseChanged';
 import {Map} from 'd3-collection';
 
 @Component({

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../services/user.service';
-import {User} from '../../../redux/user/user';
+import {User} from '../../../model/user';
 import {first} from 'rxjs/operators';
 import {nocollapseHack} from '@angular/compiler-cli/src/transformers/nocollapse_hack';
 

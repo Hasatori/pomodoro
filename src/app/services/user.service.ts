@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {User} from '../redux/user/user';
+import {User} from '../model/user';
 import {Observable} from 'rxjs';
-import {Pomodoro} from '../redux/pomodoro/pomodoro';
+import {Pomodoro} from '../model/pomodoro';
 
 @Injectable({
   providedIn: 'root'
