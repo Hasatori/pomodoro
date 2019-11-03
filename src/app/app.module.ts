@@ -31,6 +31,7 @@ import {GroupComponent} from './components/group/group.component';
 import {GroupDetailComponent} from './components/group/group-detail/group-detail.component';
 import {groupDetailRoutes} from './components/group/group.module';
 import {CreateGroupComponent} from './components/group/create-group/create-group.component';
+import {AuthService} from './services/auth.service';
 
 const routes: Routes = [
   {path: '', redirectTo: 'pomodoro', pathMatch: 'full'},
@@ -85,7 +86,8 @@ const routes: Routes = [
     {
       provide: StompConfig,
       useValue: webSocketConfig
-    }],
+    },
+  AuthService],
   bootstrap: [AppComponent]
 })
 

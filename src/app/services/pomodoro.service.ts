@@ -8,11 +8,12 @@ import {Observable} from 'rxjs';
 import {webSocketConfig} from '../WebSocketConfig';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {Timer} from '../model/Timer';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PomodoroService implements OnInit {
+export class PomodoroService  {
 
 
   private user: User;
@@ -21,6 +22,17 @@ export class PomodoroService implements OnInit {
 
 
   constructor(private http: HttpClient, private userService: UserService, private webSocketService: RxStompService) {
+this.initSocket();
+  }
+
+
+  public getLastPomodoro(): Observable<Pomodoro> {
+    return this.http.post<any>(`http://localhost:8080/pomodoro/update`, '').pipe(map(pomodoro => {
+      return pomodoro;
+    }));
+  }
+
+  initSocket() {
     this.timer = new Timer();
     this.userService.getUser().pipe(first()).subscribe(
       user => {
@@ -42,26 +54,15 @@ export class PomodoroService implements OnInit {
         });
         this.getLastPomodoro().pipe(first()).subscribe(
           pomodoro => {
-            if (pomodoro!=null){
-            this.pomodoro = pomodoro;
-            this.timer.start(pomodoro);}
+            if (pomodoro!=null && !pomodoro.interrupted){
+              this.pomodoro = pomodoro;
+              this.timer.start(pomodoro);}
           }, error1 => {
 
           }
         );
       }
     );
-  }
-
-
-  public getLastPomodoro(): Observable<Pomodoro> {
-    return this.http.post<any>(`http://localhost:8080/pomodoro/update`, '').pipe(map(pomodoro => {
-      return pomodoro;
-    }));
-  }
-
-  ngOnInit() {
-
 
   }
 

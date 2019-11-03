@@ -14,7 +14,7 @@ import {pipeFromArray} from 'rxjs/internal/util/pipe';
 import {debounceTime, distinctUntilChanged, switchMapTo, takeUntil} from 'rxjs/operators';
 import {observe} from 'rxjs-observe';
 import {OnPhaseChanged} from '../../../model/OnPhaseChanged';
-import {Map} from 'd3-collection';
+
 
 @Component({
   selector: 'app-group-detail',

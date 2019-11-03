@@ -7,16 +7,19 @@ import {map} from 'rxjs/operators';
 import * as bcrypt from 'bcryptjs';
 import {error} from 'selenium-webdriver';
 import {Router} from '@angular/router';
+import {tree} from 'd3-hierarchy';
+import {PomodoroService} from './pomodoro.service';
+import {SERVER_URL} from '../ServerConfig';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService{
+  private ACCESS_TOKEN_KEY: string = 'accessToken';
   private accessToken: string;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.accessToken = localStorage.getItem('accessToken');
-
+    this.accessToken = localStorage.getItem(this.ACCESS_TOKEN_KEY);
   }
 
   public get currentAccessTokenValue(): string {
@@ -25,13 +28,13 @@ export class AuthService {
 
   login(userName: string, password: string) {
     console.log('test');
-    return this.http.post<any>(`http://localhost:8080/authenticate`, {username: userName, password})
+    return this.http.post<any>(`${SERVER_URL}/authenticate`, {username: userName, password})
       .pipe(map(accessToken => {
         console.log(accessToken);
         if (accessToken) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('accessToken', accessToken.token);
-          this.accessToken = localStorage.getItem('accessToken');
+          localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken.token);
+          this.accessToken = localStorage.getItem(this.ACCESS_TOKEN_KEY);
         }
         return accessToken;
       }));
@@ -39,10 +42,14 @@ export class AuthService {
 
   logout() {
     console.log('Logging out');
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
     this.accessToken = '';
-    this.router.navigate(['/login']);
+    this.router.navigate(['login']);
   }
 
-
+  isLoggedIn() {
+    if (localStorage.getItem(this.ACCESS_TOKEN_KEY) !== null) {
+      return true;
+    }
+  }
 }

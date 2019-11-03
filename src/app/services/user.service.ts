@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../model/user';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Pomodoro} from '../model/pomodoro';
 
 @Injectable({
@@ -10,18 +10,28 @@ import {Pomodoro} from '../model/pomodoro';
 })
 export class UserService {
 
+  private USER_KEY: string = 'currentUser';
+  private POMODOROS_KEY:string='pomodoros';
+
   constructor(private http: HttpClient) {
   }
 
   getUser(): Observable<User> {
+    let user: User = JSON.parse(window.sessionStorage.getItem(this.USER_KEY));
+    if (user != null) {
+      return of(user);
+    }else {
     return this.http.post<any>(`http://localhost:8080/userDetails`, '').pipe(map(user => {
+       window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
       return user;
     }));
   }
+  }
 
-  updateUser(user: User): Observable<any> {
-    return this.http.post<any>(`http://localhost:8080/updateDetails`, user).pipe(map(user => {
-      return user;
+  updateUser(updatedUser: User): Observable<any> {
+    return this.http.post<any>(`http://localhost:8080/updateDetails`,updatedUser).pipe(map(response => {
+      window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(updatedUser));
+      return response;
     }));
   }
 
@@ -35,8 +45,14 @@ export class UserService {
   }
 
   userPomodoros(): Observable<Array<Pomodoro>> {
+    let pomodoros: Array<Pomodoro> = JSON.parse(window.sessionStorage.getItem(this.POMODOROS_KEY));
+    if (pomodoros != null) {
+      return of(pomodoros);
+    }else {
     return this.http.post<any>(`http://localhost:8080/userPomodoros`, '').pipe(map(pomodoros => {
+      window.sessionStorage.setItem(this.POMODOROS_KEY, JSON.stringify(pomodoros));
       return pomodoros;
     }));
+    }
   }
 }
