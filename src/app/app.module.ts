@@ -87,7 +87,7 @@ const routes: Routes = [
       provide: StompConfig,
       useValue: webSocketConfig
     },
-  AuthService],
+  AuthService,],
   bootstrap: [AppComponent]
 })
 

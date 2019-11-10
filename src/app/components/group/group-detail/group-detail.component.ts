@@ -14,6 +14,8 @@ import {pipeFromArray} from 'rxjs/internal/util/pipe';
 import {debounceTime, distinctUntilChanged, switchMapTo, takeUntil} from 'rxjs/operators';
 import {observe} from 'rxjs-observe';
 import {OnPhaseChanged} from '../../../model/OnPhaseChanged';
+import {PomodoroService} from '../../../services/pomodoro.service';
+import {UserService} from '../../../services/user.service';
 
 
 @Component({
@@ -31,44 +33,44 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
   private pauseSelected: boolean = true;
   private notRunningSelected: boolean = true;
   private onPhaseChangedMonitor: OnPhaseChanged;
-  private searchInProgress: boolean=false;
+  private searchInProgress: boolean = false;
   private searchDelayMilliseconds: number = 500;
+  private user: User;
 
-  constructor(private route: ActivatedRoute, private groupService: GroupService, private webSocketService: RxStompService, private http: HttpClient) {
+  constructor(private route: ActivatedRoute, private groupService: GroupService, private webSocketService: RxStompService, private http: HttpClient, private pomodoroService: PomodoroService,private userService:UserService) {
     this.route.paramMap.subscribe(groupName => {
-      this.allRows = new Map<User, Timer>();
-      this.filteredRows = [];
-      this.groupName = groupName.get('name');
-      this.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
-        let row = new Map<User, Timer>();
-        for (let i = 0; i < users.length; i++) {
-          let user = users[i];
-          this.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
-            pomodoro => {
-              let timer = new Timer(this);
-              this.webSocketService.watch('/pomodoro/start/' + user.username).subscribe(response => {
-                let pomodoro = JSON.parse(response.body);
-                timer.start(pomodoro);
-              });
-              this.webSocketService.watch('/pomodoro/stop/' + user.username).subscribe(response => {
-                timer.pause();
-              });
-              row.set(user, timer);
-              this.allRows.set(user, timer);
-              if (pomodoro != null) {
-                timer.start(pomodoro);
+      userService.getUser().subscribe((user)=>{
+        this.user=user;
+        this.allRows = new Map<User, Timer>();
+        this.filteredRows = [];
+        this.groupName = groupName.get('name');
+        this.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
+          let row = new Map<User, Timer>();
+          users=users.filter(user=>user.username!==this.user.username);
+          for (let i = 0; i < users.length; i++) {
+            let user = users[i];
+            this.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
+              pomodoro => {
+                let timer = new Timer(this);
+                pomodoroService.watchStartingPomodoroForUser(user, timer);
+                pomodoroService.watchStopingPomodoroForUser(user, timer);
+                row.set(user, timer);
+                this.allRows.set(user, timer);
+                if (pomodoro != null) {
+                  timer.start(pomodoro);
+                }
+                if (i == users.length) {
+                  this.updateFilter();
+                }
+              }, error1 => {
+                console.log(error1);
               }
-              if (i == users.length) {
-                this.updateFilter();
-              }
-            }, error1 => {
-              console.log(error1);
-            }
-          );
-        }
+            );
+          }
 
-      }, error => {
-      });
+        }, error => {
+        });
+      })
     });
 
   }

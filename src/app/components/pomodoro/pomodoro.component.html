@@ -5,9 +5,8 @@
   </div>
 
   <button *ngIf="!pomodoroService.timer.started" type="button" class="btn btn-primary btn-rounded  my-button"
-          (click)="pomodoroService.startNewPomodoro()">START
-  </button>
+          (click)="pomodoroService.startPomodoroForCurrentUser()">START</button>
   <button *ngIf="pomodoroService.timer.started" type="button" class="btn btn-danger btn-rounded  my-button"
-          (click)="pomodoroService.resetPomodoro()">RESET
-  </button>
+          (click)="pomodoroService.resetPomodoroForCurrentUser()">RESET</button>
+
 </div>

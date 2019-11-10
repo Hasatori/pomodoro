@@ -9,11 +9,12 @@ import {webSocketConfig} from '../WebSocketConfig';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {Timer} from '../model/Timer';
 import {AuthService} from './auth.service';
+import {SERVER_URL} from '../ServerConfig';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PomodoroService  {
+export class PomodoroService {
 
 
   private user: User;
@@ -22,17 +23,6 @@ export class PomodoroService  {
 
 
   constructor(private http: HttpClient, private userService: UserService, private webSocketService: RxStompService) {
-this.initSocket();
-  }
-
-
-  public getLastPomodoro(): Observable<Pomodoro> {
-    return this.http.post<any>(`http://localhost:8080/pomodoro/update`, '').pipe(map(pomodoro => {
-      return pomodoro;
-    }));
-  }
-
-  initSocket() {
     this.timer = new Timer();
     this.userService.getUser().pipe(first()).subscribe(
       user => {
@@ -45,35 +35,57 @@ this.initSocket();
         const config = {...webSocketConfig, connectHeaders: headers};
         this.webSocketService.configure(config);
         this.webSocketService.activate();
-        this.webSocketService.watch('/pomodoro/start/' + this.user.username).subscribe(response => {
-          this.pomodoro = JSON.parse(response.body);
-          this.timer.start(this.pomodoro);
-        });
-        this.webSocketService.watch('/pomodoro/stop/' + this.user.username).subscribe(test => {
-          this.timer.pause();
-        });
+        this.watchStartingPomodoroForUser(user, this.timer);
+        this.watchStopingPomodoroForUser(user, this.timer);
         this.getLastPomodoro().pipe(first()).subscribe(
           pomodoro => {
-            if (pomodoro!=null && !pomodoro.interrupted){
-              this.pomodoro = pomodoro;
-              this.timer.start(pomodoro);}
+            this.pomodoro = pomodoro;
+            if (pomodoro != null && !pomodoro.interrupted) {
+              this.timer.start(pomodoro);
+            }
           }, error1 => {
 
           }
         );
       }
     );
-
   }
 
 
-  startNewPomodoro() {
+  public getLastPomodoro(): Observable<Pomodoro> {
+    return this.http.post<any>(SERVER_URL + `/pomodoro/update`, '').pipe(map(pomodoro => {
+      return pomodoro;
+    }));
+  }
+
+
+  watchStartingPomodoroForUser(user: User, timer: Timer) {
+    this.webSocketService.watch('/pomodoro/start/' + user.username).subscribe(response => {
+      let pomodoro = JSON.parse(response.body);
+      timer.start(pomodoro);
+    });
+  }
+
+  watchStopingPomodoroForUser(user: User, timer: Timer) {
+    this.webSocketService.watch('/pomodoro/stop/' + user.username).subscribe(test => {
+      timer.pause();
+    });
+  }
+
+  startPomodoroForUser(user: User) {
+    this.webSocketService.publish({destination: '/app/start/' + user.username,});
+  }
+
+  resetPomodoroForUser(user: User, pomodoro: Pomodoro) {
+    this.webSocketService.publish({destination: '/app/stop/' + user.username, body: JSON.stringify(pomodoro)},);
+  }
+
+  startPomodoroForCurrentUser() {
     this.webSocketService.publish({destination: '/app/start/' + this.user.username,});
   }
 
-  resetPomodoro() {
+  resetPomodoroForCurrentUser() {
+    console.log(this.pomodoro);
     this.webSocketService.publish({destination: '/app/stop/' + this.user.username, body: JSON.stringify(this.pomodoro)},);
   }
-
-
 }

@@ -19,7 +19,7 @@ export class AuthService{
   private accessToken: string;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.accessToken = localStorage.getItem(this.ACCESS_TOKEN_KEY);
+    this.accessToken = sessionStorage.getItem(this.ACCESS_TOKEN_KEY);
   }
 
   public get currentAccessTokenValue(): string {
@@ -33,8 +33,8 @@ export class AuthService{
         console.log(accessToken);
         if (accessToken) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken.token);
-          this.accessToken = localStorage.getItem(this.ACCESS_TOKEN_KEY);
+          sessionStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken.token);
+          this.accessToken = sessionStorage.getItem(this.ACCESS_TOKEN_KEY);
         }
         return accessToken;
       }));
@@ -42,13 +42,13 @@ export class AuthService{
 
   logout() {
     console.log('Logging out');
-    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+    sessionStorage.removeItem(this.ACCESS_TOKEN_KEY);
     this.accessToken = '';
     this.router.navigate(['login']);
   }
 
   isLoggedIn() {
-    if (localStorage.getItem(this.ACCESS_TOKEN_KEY) !== null) {
+    if (sessionStorage.getItem(this.ACCESS_TOKEN_KEY) !== null) {
       return true;
     }
   }
