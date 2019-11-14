@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import {AuthService} from './services/auth.service';
 import {PomodoroService} from './services/pomodoro.service';
 
@@ -9,16 +9,22 @@ import {PomodoroService} from './services/pomodoro.service';
 })
 export class AppComponent {
 
-  constructor(private loginService: AuthService,private pomodoroService:PomodoroService) {
+  constructor(private loginService: AuthService, private pomodoroService: PomodoroService) {
+
   }
+
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
-   this.pomodoroService.resetPomodoroForCurrentUser();
+    if (this.pomodoroService.timer.isRunning()){
+      $event.returnValue =true;
     }
-  logOut(): void {
-this.loginService.logout();
   }
-  ngOnDestroy(){
+
+  logOut(): void {
+    this.loginService.logout();
+  }
+
+  ngOnDestroy() {
 
   }
 }

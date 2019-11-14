@@ -23,7 +23,7 @@ export class PomodoroService {
 
 
   constructor(private http: HttpClient, private userService: UserService, private webSocketService: RxStompService) {
-    this.timer = new Timer();
+    this.timer = new Timer(true);
     this.userService.getUser().pipe(first()).subscribe(
       user => {
         this.user = user;
@@ -41,7 +41,10 @@ export class PomodoroService {
           pomodoro => {
             this.pomodoro = pomodoro;
             if (pomodoro != null && !pomodoro.interrupted) {
-              this.timer.start(pomodoro);
+              var difference = (new Date() - new Date(pomodoro.creationTimestamp)) / 1000;
+              if(difference < (pomodoro.workTime + pomodoro.breakTime)){
+                this.resetPomodoroForCurrentUser();
+              }
             }
           }, error1 => {
 

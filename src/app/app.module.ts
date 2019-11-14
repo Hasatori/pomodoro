@@ -33,6 +33,7 @@ import {groupDetailRoutes} from './components/group/group.module';
 import {CreateGroupComponent} from './components/group/create-group/create-group.component';
 import {AuthService} from './services/auth.service';
 
+
 const routes: Routes = [
   {path: '', redirectTo: 'pomodoro', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
@@ -74,7 +75,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
     HttpClientModule,
-    CountdownModule,
+    CountdownModule
 
 
   ],

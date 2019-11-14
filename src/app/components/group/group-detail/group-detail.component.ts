@@ -49,9 +49,10 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
           users=users.filter(user=>user.username!==this.user.username);
           for (let i = 0; i < users.length; i++) {
             let user = users[i];
+            console.log(user);
             this.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
               pomodoro => {
-                let timer = new Timer(this);
+                let timer = new Timer(false,this);
                 pomodoroService.watchStartingPomodoroForUser(user, timer);
                 pomodoroService.watchStopingPomodoroForUser(user, timer);
                 row.set(user, timer);
@@ -59,7 +60,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
                 if (pomodoro != null) {
                   timer.start(pomodoro);
                 }
-                if (i == users.length) {
+                if (i == users.length-1) {
                   this.updateFilter();
                 }
               }, error1 => {
