@@ -89,7 +89,6 @@ export class Timer {
             }
           }
         }
-
       };
       this.audio.play();
     }
@@ -98,10 +97,10 @@ export class Timer {
       this.onPhaseChanged.phaseChanged();
     }
   }
-
   pause() {
     this.started = false;
     this.timeLeft = '00:00';
+    this.secondsLeft=0;
     this.setPhase('NOT RUNNING');
     clearInterval(this.interval);
   }

@@ -32,6 +32,7 @@ import {GroupDetailComponent} from './components/group/group-detail/group-detail
 import {groupDetailRoutes} from './components/group/group.module';
 import {CreateGroupComponent} from './components/group/create-group/create-group.component';
 import {AuthService} from './services/auth.service';
+import { PomodoroIsRunningComponent } from './components/modals/pomodoro-is-running/pomodoro-is-running.component';
 
 
 const routes: Routes = [
@@ -64,7 +65,8 @@ const routes: Routes = [
     PomodoroComponent,
     GroupComponent,
     GroupDetailComponent,
-    CreateGroupComponent
+    CreateGroupComponent,
+    PomodoroIsRunningComponent
 
   ],
   imports: [

@@ -1,1 +1,71 @@
-<p>settings works!</p>
+<div class="container my-5">
+<div class="card custom-card">
+
+  <!-- Card content -->
+  <div class="card-body">
+    <br>
+    <label for="workTime">Work time in minutes</label>
+    <div class="list-group list-group-horizontal">
+      <li  class="list-group-item border-0"><select class="browser-default custom-select" id="workTime">
+        <option *ngFor="let number of [5,10,15,20,25,30,35,40,45,50,55,60]"  value="{{number}}" >{{number}}</option>
+      </select></li>
+    </div>
+    <br>
+    <label for="pauseTime">Pause time in minutes</label>
+    <div class="list-group list-group-horizontal">
+      <li class="list-group-item border-0"><select class="browser-default custom-select" id="pauseTime">
+        <option *ngFor="let number of [5,10,15,20,25,30,35,40,45,50,55,60]"  value="{{number}}" >{{number}}</option>
+      </select></li>
+    </div>
+    <br>
+    <label for="phaseChangeSound">Sound on phase changed </label><audio #phaseChangeSoundAudio src="../../../assets/sounds/{{phaseChangeSoundSelect.value}}" type="audio/ogg" ></audio>
+    <div class="list-group list-group-horizontal">
+      <li class="list-group-item border-0"><select #phaseChangeSoundSelect class="browser-default custom-select" id="phaseChangeSound">
+        <option value="None">None</option>
+        <option value="Noise-cancelling-sound.mp3">Noise cancelling sound</option>
+        <option value="Simple-alert-bells-tone.mp3">Simple alert bells tone</option>
+      </select></li>
+      <li class="list-group-item border-0"> <button *ngIf='!phaseChangedSoundPlaying' type="button" class="btn btn-primary btn-sm" (click)="phaseChangeSoundAudio.play();phaseChangedSoundPlaying=true;" ><i class="fas fa-play"></i></button>
+        <button *ngIf='phaseChangedSoundPlaying' type="button" class="btn btn-primary btn-sm" (click)="phaseChangeSoundAudio.pause();phaseChangedSoundPlaying=false;" ><i class="fas fa-stop"></i></button>
+      </li>
+
+    </div>
+    <br>
+    <label for="pauseSound">Sound playing during pause </label><audio #pauseSoundAudio src="../../../assets/sounds/{{pauseSoundAudioSelect.value}}" type="audio/ogg" ></audio>
+    <div class="list-group list-group-horizontal">
+      <li class="list-group-item border-0"><select #pauseSoundAudioSelect class="browser-default custom-select" id="pauseSound">
+        <option value="None">None</option>
+        <option value="Noise-cancelling-sound.mp3">Noise cancelling sound</option>
+        <option value="Simple-alert-bells-tone.mp3">Simple alert bells tone</option>
+      </select></li>
+      <li class="list-group-item border-0"> <button *ngIf='!pauseSoundPlaying' type="button" class="btn btn-primary btn-sm" (click)="pauseSoundAudio.play();pauseSoundPlaying=true;" ><i class="fas fa-play"></i></button>
+        <button *ngIf='pauseSoundPlaying' type="button" class="btn btn-primary btn-sm" (click)="pauseSoundAudio.pause();pauseSoundPlaying=false;" ><i class="fas fa-stop"></i></button>
+      </li>
+    </div>
+    <br>
+    <label for="workSound">Sound playing during work </label><audio #workSoundAudio src="../../../assets/sounds/{{workSoundAudioSelect.value}}" type="audio/ogg" ></audio>
+    <div class="list-group list-group-horizontal">
+      <li class="list-group-item border-0"><select  #workSoundAudioSelect class="browser-default custom-select" id="workSound">
+        <option value="None">None</option>
+        <option value="Noise-cancelling-sound.mp3">Noise cancelling sound</option>
+        <option value="Simple-alert-bells-tone.mp3">Simple alert bells tone</option>
+      </select></li>
+      <li class="list-group-item border-0"> <button *ngIf='!workSoundPlaying' type="button" class="btn btn-primary btn-sm" (click)="workSoundAudio.play();workSoundPlaying=true;" ><i class="fas fa-play"></i></button>
+        <button *ngIf='workSoundPlaying' type="button" class="btn btn-primary btn-sm" (click)="workSoundAudio.pause();workSoundPlaying=false;" ><i class="fas fa-stop"></i></button>
+      </li> </div>
+    <br>
+
+    <div *ngIf="noValueChanged"
+         class="alert alert-danger"
+         role="alert">
+      No value was updated !
+    </div>
+    <div *ngIf="inProgress" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <button *ngIf="!inProgress" class="btn btn-primary" (click)="updateSettings(playSoundSelect.checked)">Save settings</button>
+  </div>
+</div>
+</div>

@@ -10,6 +10,7 @@ import {RxStompService} from '@stomp/ng2-stompjs';
 import {Timer} from '../model/Timer';
 import {AuthService} from './auth.service';
 import {SERVER_URL} from '../ServerConfig';
+import {Group} from '../model/group';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +21,12 @@ export class PomodoroService {
   private user: User;
   private pomodoro: Pomodoro;
   public timer: Timer;
-
+  public  PLAY_SOUND_KEY: string = 'playSound';
+  private playSound: boolean;
 
   constructor(private http: HttpClient, private userService: UserService, private webSocketService: RxStompService) {
-    this.timer = new Timer(true);
+ this.setSettings();
+    this.timer = new Timer(this.playSound);
     this.userService.getUser().pipe(first()).subscribe(
       user => {
         this.user = user;
@@ -41,9 +44,10 @@ export class PomodoroService {
           pomodoro => {
             this.pomodoro = pomodoro;
             if (pomodoro != null && !pomodoro.interrupted) {
-              var difference = (new Date() - new Date(pomodoro.creationTimestamp)) / 1000;
-              if(difference < (pomodoro.workTime + pomodoro.breakTime)){
+             var difference = (new Date() - new Date(pomodoro.creationTimestamp)) / 1000;
+              if (difference < (pomodoro.workTime + pomodoro.breakTime)) {
                 this.resetPomodoroForCurrentUser();
+                this.timer.pause();
               }
             }
           }, error1 => {
@@ -91,4 +95,10 @@ export class PomodoroService {
     console.log(this.pomodoro);
     this.webSocketService.publish({destination: '/app/stop/' + this.user.username, body: JSON.stringify(this.pomodoro)},);
   }
+  private setSettings(){
+    this.playSound = JSON.parse(window.localStorage.getItem(this.PLAY_SOUND_KEY));
+    if (this.playSound == null) {
+      this.playSound = false;
+    }
+}
 }

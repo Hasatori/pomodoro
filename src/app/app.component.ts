@@ -9,16 +9,10 @@ import {PomodoroService} from './services/pomodoro.service';
 })
 export class AppComponent {
 
-  constructor(private loginService: AuthService, private pomodoroService: PomodoroService) {
+  constructor(private loginService: AuthService) {
 
   }
 
-  @HostListener('window:beforeunload', ['$event'])
-  unloadNotification($event: any) {
-    if (this.pomodoroService.timer.isRunning()){
-      $event.returnValue =true;
-    }
-  }
 
   logOut(): void {
     this.loginService.logout();
