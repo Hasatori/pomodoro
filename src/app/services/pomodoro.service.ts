@@ -44,7 +44,7 @@ export class PomodoroService {
           pomodoro => {
             this.pomodoro = pomodoro;
             if (pomodoro != null && !pomodoro.interrupted) {
-             var difference = (new Date() - new Date(pomodoro.creationTimestamp)) / 1000;
+              const difference = (new Date() - new Date(pomodoro.creationTimestamp)) / 1000;
               if (difference < (pomodoro.workTime + pomodoro.breakTime)) {
                 this.resetPomodoroForCurrentUser();
                 this.timer.pause();

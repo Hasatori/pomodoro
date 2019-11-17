@@ -10,7 +10,7 @@ export class SettingsComponent implements OnInit {
  private phaseChangedSoundPlaying:boolean=false;
   private pauseSoundPlaying:boolean=false;
   private workSoundPlaying:boolean=false;
-  
+
   constructor(private pomodoroService: PomodoroService) {
     this.playSound = JSON.parse(window.localStorage.getItem(pomodoroService.PLAY_SOUND_KEY));
     if (this.playSound == null) {

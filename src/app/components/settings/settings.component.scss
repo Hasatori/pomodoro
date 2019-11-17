@@ -1,1 +1,5 @@
 @import "../../app.component.scss";
+
+.custom-card li{
+  background-color: $customCardBackgroundColor;
+}

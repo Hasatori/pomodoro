@@ -1,9 +1,19 @@
 $backgroundColor:rgb(63, 114, 155);
+$customCardBackgroundColor: 	rgb(248,248,248,0.3);
+
+
 .mainContent{
 min-height:80vh !important;
 }
 
 .custom-card{
+  border-color: rgb(20,20,20,0.2);
+  background-color:$customCardBackgroundColor;
   max-width: 500px;
   margin: auto;
 }
+
+.btn-primary{
+  background-color: $backgroundColor ;
+}
+

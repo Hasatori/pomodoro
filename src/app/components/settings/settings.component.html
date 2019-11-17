@@ -1,19 +1,19 @@
 <div class="container my-5">
-<div class="card custom-card">
+<div class="card shadow custom-card">
 
   <!-- Card content -->
   <div class="card-body">
     <br>
     <label for="workTime">Work time in minutes</label>
     <div class="list-group list-group-horizontal">
-      <li  class="list-group-item border-0"><select class="browser-default custom-select" id="workTime">
+      <li  class="list-group-item border-0"><select #workTimeSelect class="browser-default custom-select" id="workTime">
         <option *ngFor="let number of [5,10,15,20,25,30,35,40,45,50,55,60]"  value="{{number}}" >{{number}}</option>
       </select></li>
     </div>
     <br>
     <label for="pauseTime">Pause time in minutes</label>
     <div class="list-group list-group-horizontal">
-      <li class="list-group-item border-0"><select class="browser-default custom-select" id="pauseTime">
+      <li class="list-group-item border-0"><select #pauseTimeSelect class="browser-default custom-select" id="pauseTime">
         <option *ngFor="let number of [5,10,15,20,25,30,35,40,45,50,55,60]"  value="{{number}}" >{{number}}</option>
       </select></li>
     </div>
@@ -54,18 +54,12 @@
         <button *ngIf='workSoundPlaying' type="button" class="btn btn-primary btn-sm" (click)="workSoundAudio.pause();workSoundPlaying=false;" ><i class="fas fa-stop"></i></button>
       </li> </div>
     <br>
-
-    <div *ngIf="noValueChanged"
-         class="alert alert-danger"
-         role="alert">
-      No value was updated !
-    </div>
     <div *ngIf="inProgress" class="d-flex justify-content-center">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <button *ngIf="!inProgress" class="btn btn-primary" (click)="updateSettings(playSoundSelect.checked)">Save settings</button>
+    <button *ngIf="!inProgress" class="btn btn-primary" (click)="updateSettings()">Save settings</button>
   </div>
 </div>
 </div>

@@ -1,4 +1,9 @@
 <div class="container my-5">
+  <div class="card shadow custom-card">
+
+    <!-- Card content -->
+    <div class="card-body">
+
   <h1 id="head">{{pomodoroService.timer.phase}}</h1>
   <div class="customTimer">
     {{pomodoroService.timer.timeLeft}}
@@ -8,4 +13,6 @@
           (click)="pomodoroService.startPomodoroForCurrentUser()">START</button>
   <button *ngIf="pomodoroService.timer.started" type="button" class="btn btn-danger btn-rounded  my-button"
           (click)="pomodoroService.resetPomodoroForCurrentUser()">RESET</button>
+</div>
+  </div>
 </div>
