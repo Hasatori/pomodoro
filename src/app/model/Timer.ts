@@ -4,6 +4,7 @@ import {OnPhaseChanged} from './OnPhaseChanged';
 import {Optional} from '@angular/core';
 import {useAnimation} from '@angular/animations';
 import {Settings} from './settings';
+import {NGXLogger} from 'ngx-logger';
 
 export class Timer {
 
@@ -19,10 +20,11 @@ export class Timer {
   private SOUNDS_PATH: string = '../assets/sounds/';
   private settings: Settings;
 
-  constructor(settings?: Settings, onPhaseChanged?: OnPhaseChanged) {
+  constructor(private log?:NGXLogger,settings?: Settings, onPhaseChanged?: OnPhaseChanged) {
     this.settings = settings;
     this.onPhaseChanged = onPhaseChanged;
     this.audio = document.createElement('audio');
+    this.log.debug(`Initializing timer with settings ${JSON.stringify(settings)}`);
   }
 
   start(pomodoro: Pomodoro) {
@@ -72,6 +74,7 @@ export class Timer {
   }
 
   private setPhase(newPhase: string) {
+    this.log.debug(`Setting phase from ${this.phase} to ${newPhase}`);
     this.phase = newPhase;
     if (this.settings!=null) {
       this.audio.setAttribute('src', this.SOUNDS_PATH+this.settings.phaseChangedSound);

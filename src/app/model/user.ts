@@ -12,4 +12,6 @@ export class User {
   pomodoros?: Array<Pomodoro>;
   groups?: Array<Group>;
   token?: string;
+
+
 }

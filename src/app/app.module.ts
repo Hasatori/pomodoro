@@ -33,6 +33,7 @@ import {groupDetailRoutes} from './components/group/group.module';
 import {CreateGroupComponent} from './components/group/create-group/create-group.component';
 import {AuthService} from './services/auth.service';
 import { PomodoroIsRunningComponent } from './components/modals/pomodoro-is-running/pomodoro-is-running.component';
+import {LoggerModule, NGXLogger, NgxLoggerLevel} from 'ngx-logger';
 
 
 const routes: Routes = [
@@ -77,8 +78,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
     HttpClientModule,
-    CountdownModule
-
+    CountdownModule,
+    LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG}),
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {
@@ -90,7 +91,7 @@ const routes: Routes = [
       provide: StompConfig,
       useValue: webSocketConfig
     },
-  AuthService,],
+  AuthService],
   bootstrap: [AppComponent]
 })
 

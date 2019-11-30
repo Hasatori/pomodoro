@@ -1,6 +1,5 @@
-import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from './services/auth.service';
-import {PomodoroService} from './services/pomodoro.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +9,6 @@ import {PomodoroService} from './services/pomodoro.service';
 export class AppComponent {
 
   constructor(private loginService: AuthService) {
-
   }
 
 
@@ -18,7 +16,4 @@ export class AppComponent {
     this.loginService.logout();
   }
 
-  ngOnDestroy() {
-
-  }
 }

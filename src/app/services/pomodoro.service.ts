@@ -11,6 +11,7 @@ import {Timer} from '../model/Timer';
 import {AuthService} from './auth.service';
 import {SERVER_URL} from '../ServerConfig';
 import {Group} from '../model/group';
+import {NGXLogger} from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class PomodoroService {
   public PLAY_SOUND_KEY: string = 'playSound';
   private playSound: boolean;
 
-  constructor(private http: HttpClient, private userService: UserService, private authService: AuthService, private webSocketService: RxStompService) {
+  constructor(private http: HttpClient, private userService: UserService, private authService: AuthService, private webSocketService: RxStompService,private log:NGXLogger) {
   this.initSocket()
 
   }
@@ -32,7 +33,8 @@ public initSocket(){
   this.userService.getUser().pipe(first()).subscribe(
     user => {
       this.user = user;
-      this.timer = new Timer(this.user.settings);
+      this.timer = new Timer(this.log,this.user.settings);
+      this.log.debug(`Initializing socket for user { ${JSON.stringify(user)} }`);
       // create an empty headers object
       const headers = {};
       // make that CSRF token look like a real header
@@ -43,21 +45,6 @@ public initSocket(){
       this.webSocketService.activate();
       this.watchStartingPomodoroForCurrentUser();
       this.watchStopingPomodoroForCurrentUser();
-      this.getLastPomodoro().pipe(first()).subscribe(
-        pomodoro => {
-          this.pomodoro = pomodoro;
-          if (pomodoro != null && !pomodoro.interrupted) {
-            let difference: number;
-            difference = (new Date().getTime() - new Date(pomodoro.creationTimestamp).getTime()) / 1000;
-            if (difference < (pomodoro.workTime + pomodoro.breakTime)) {
-              this.resetPomodoroForCurrentUser();
-              this.timer.pause();
-            }
-          }
-        }, error1 => {
-
-        }
-      );
     }
   );
 }
@@ -85,9 +72,10 @@ public initSocket(){
   private watchStartingPomodoroForCurrentUser() {
     this.userService.getUser().subscribe(user => {
       this.user = user;
-      this.timer = new Timer(user.settings);
+      this.timer = new Timer(this.log,user.settings);
       this.webSocketService.watch('/pomodoro/start/' + user.username).subscribe(response => {
         let pomodoro = JSON.parse(response.body);
+        this.pomodoro=pomodoro;
         this.timer.start(pomodoro);
       });
     });
@@ -96,7 +84,7 @@ public initSocket(){
   private watchStopingPomodoroForCurrentUser() {
     this.userService.getUser().subscribe(user => {
       this.user = user;
-      this.timer = new Timer(user.settings);
+      this.timer = new Timer(this.log,user.settings);
       this.webSocketService.watch('/pomodoro/stop/' + user.username).subscribe(test => {
         this.timer.pause();
       });
