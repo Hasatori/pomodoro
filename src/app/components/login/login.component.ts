@@ -4,6 +4,7 @@ import {AuthService} from '../../services/auth.service';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {log} from 'util';
+import {PomodoroService} from '../../services/pomodoro.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   elegantFormPasswordEx: AbstractControl;
   elegantFormUsernameEx: AbstractControl;
 
-  constructor(public fb: FormBuilder, private authenticationService: AuthService, private router: Router) {
+  constructor(public fb: FormBuilder, private authenticationService: AuthService, private router: Router,private pomodoroService:PomodoroService) {
     this.elegantForm = fb.group({
       'elegantFormUsernameEx': ['', [Validators.required]],
       'elegantFormPasswordEx': ['', Validators.required],
@@ -39,6 +40,7 @@ export class LoginComponent implements OnInit {
           data => {
             console.log(data);
             this.loggingInProgress = false;
+            this.pomodoroService.initSocket();
             this.router.navigate(['/my-account']);
           },
           error => {

@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {User} from '../model/user';
 import {Observable, of} from 'rxjs';
 import {Pomodoro} from '../model/pomodoro';
+import {Settings} from '../model/settings';
 
 @Injectable({
   providedIn: 'root'
@@ -27,14 +28,22 @@ export class UserService {
     }));
   }
   }
-
   updateUser(updatedUser: User): Observable<any> {
     return this.http.post<any>(`http://localhost:8080/updateDetails`,updatedUser).pipe(map(response => {
       window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(updatedUser));
       return response;
     }));
   }
+  updateSettings(updatedSettings: Settings): Observable<any> {
+    return this.http.post<any>(`http://localhost:8080/updateSettings`,updatedSettings).pipe(map(response => {
+   this.getUser().subscribe(user=>{
+        user.settings=updatedSettings;
+        window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      });
 
+      return response;
+    }));
+  }
   changePassword(oldPasswword: string, newPassword: string) {
     return this.http.post<any>(`http://localhost:8080/changePassword`, {
       oldPassword: oldPasswword,

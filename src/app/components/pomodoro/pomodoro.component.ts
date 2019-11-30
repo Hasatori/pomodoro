@@ -15,8 +15,7 @@ import {PomodoroService} from '../../services/pomodoro.service';
 export class PomodoroComponent {
 
 
-  constructor( private pomodoroService: PomodoroService) {
-
+  constructor(private pomodoroService: PomodoroService) {
   }
 
 

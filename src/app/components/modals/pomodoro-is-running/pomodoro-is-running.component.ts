@@ -13,9 +13,9 @@ export class PomodoroIsRunningComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
-    if (this.pomodoroService.timer.isRunning()){
-      $event.preventDefault();
-    }
+    // if (this.pomodoroService.timer.isRunning()){
+    //   $event.preventDefault();
+    // }
 
   }
 

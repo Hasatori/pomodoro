@@ -42,7 +42,7 @@ export class AuthService{
 
   logout() {
     console.log('Logging out');
-    sessionStorage.removeItem(this.ACCESS_TOKEN_KEY);
+    sessionStorage.clear();
     this.accessToken = '';
     this.router.navigate(['login']);
   }

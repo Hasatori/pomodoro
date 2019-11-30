@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div   class="container filter-container border">
+  <div   class="container filter-container border shadow">
     <h4>Filter</h4>
     <div class="pretty p-default">
       <input #selectWork type="checkbox" checked="true" id='WORK' (change)="select(selectWork)"/>
@@ -32,7 +32,7 @@
 
   <div *ngFor=" let pomodoro of row |keyvalue" class="col-lg-4 col-md-12">
   <!--Card Primary-->
-  <div class="card text-center z-depth-2">
+  <div class="card text-center z-depth-2 shadow">
     <div class= "cardBackground card-header">
 
       <h5 class="text-uppercase font-weight-bold text-white "><strong>  {{pomodoro.key.username}}</strong></h5>

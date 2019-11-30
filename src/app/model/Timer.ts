@@ -3,29 +3,26 @@ import {Observable, Observer} from 'rxjs';
 import {OnPhaseChanged} from './OnPhaseChanged';
 import {Optional} from '@angular/core';
 import {useAnimation} from '@angular/animations';
+import {Settings} from './settings';
 
 export class Timer {
 
   public phase: string = 'NOT RUNNING';
   public minutes: string;
   public seconds: string;
-  public secondsLeft: number=0;
+  public secondsLeft: number = 0;
   public interval;
   public timeLeft: string = '00:00';
   public started: boolean = false;
   public audio: HTMLAudioElement;
   public onPhaseChanged: OnPhaseChanged;
   private SOUNDS_PATH: string = '../assets/sounds/';
-  private CHANGE_SOUND: string = this.SOUNDS_PATH + 'Simple-alert-bells-tone.mp3';
-  private PAUSE_BACKGROUND_SOUND: string = this.SOUNDS_PATH + 'Noise-cancelling-sound.mp3';
-  private useAudio: boolean;
+  private settings: Settings;
 
-  constructor(useAudio:boolean,onPhaseChanged?: OnPhaseChanged) {
-    this.useAudio=useAudio;
+  constructor(settings?: Settings, onPhaseChanged?: OnPhaseChanged) {
+    this.settings = settings;
     this.onPhaseChanged = onPhaseChanged;
     this.audio = document.createElement('audio');
-    this.audio.setAttribute('src', '../assets/sounds/Simple-alert-bells-tone.mp3');
-    this.audio.setAttribute('type', 'audio/ogg');
   }
 
   start(pomodoro: Pomodoro) {
@@ -76,18 +73,27 @@ export class Timer {
 
   private setPhase(newPhase: string) {
     this.phase = newPhase;
-    if (this.useAudio) {
-      this.audio.setAttribute('src', this.CHANGE_SOUND);
+    if (this.settings!=null) {
+      this.audio.setAttribute('src', this.SOUNDS_PATH+this.settings.phaseChangedSound);
       this.audio.pause();
       this.audio.onended = () => {
         if (newPhase === 'PAUSE') {
-          this.audio.setAttribute('src', this.PAUSE_BACKGROUND_SOUND);
+          this.audio.setAttribute('src', this.SOUNDS_PATH+this.settings.pauseSound);
           this.audio.play();
           this.audio.onended = () => {
             if (this.phase === 'PAUSE') {
               this.audio.play();
             }
-          }
+          };
+        }
+        if (newPhase === 'WORK') {
+          this.audio.setAttribute('src', this.SOUNDS_PATH+this.settings.workSound);
+          this.audio.play();
+          this.audio.onended = () => {
+            if (this.phase === 'WORK') {
+              this.audio.play();
+            }
+          };
         }
       };
       this.audio.play();
@@ -97,14 +103,16 @@ export class Timer {
       this.onPhaseChanged.phaseChanged();
     }
   }
+
   pause() {
     this.started = false;
     this.timeLeft = '00:00';
-    this.secondsLeft=0;
+    this.secondsLeft = 0;
     this.setPhase('NOT RUNNING');
     clearInterval(this.interval);
   }
-  isRunning():boolean{
- return this.secondsLeft !== 0;
+
+  isRunning(): boolean {
+    return this.secondsLeft !== 0;
   }
 }

@@ -52,7 +52,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
             console.log(user);
             this.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
               pomodoro => {
-                let timer = new Timer(false,this);
+                let timer = new Timer(null,this);
                 pomodoroService.watchStartingPomodoroForUser(user, timer);
                 pomodoroService.watchStopingPomodoroForUser(user, timer);
                 row.set(user, timer);

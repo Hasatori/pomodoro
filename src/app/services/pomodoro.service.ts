@@ -20,44 +20,47 @@ export class PomodoroService {
 
   private user: User;
   private pomodoro: Pomodoro;
-  public timer: Timer;
-  public  PLAY_SOUND_KEY: string = 'playSound';
+  private timer: Timer;
+  public PLAY_SOUND_KEY: string = 'playSound';
   private playSound: boolean;
 
-  constructor(private http: HttpClient, private userService: UserService, private webSocketService: RxStompService) {
- this.setSettings();
-    this.timer = new Timer(this.playSound);
-    this.userService.getUser().pipe(first()).subscribe(
-      user => {
-        this.user = user;
-        // create an empty headers object
-        const headers = {};
-        // make that CSRF token look like a real header
-        headers['Authorization'] = localStorage.getItem('accessToken');
-        // put the CSRF header into the connectHeaders on the config
-        const config = {...webSocketConfig, connectHeaders: headers};
-        this.webSocketService.configure(config);
-        this.webSocketService.activate();
-        this.watchStartingPomodoroForUser(user, this.timer);
-        this.watchStopingPomodoroForUser(user, this.timer);
-        this.getLastPomodoro().pipe(first()).subscribe(
-          pomodoro => {
-            this.pomodoro = pomodoro;
-            if (pomodoro != null && !pomodoro.interrupted) {
-              const difference = (new Date() - new Date(pomodoro.creationTimestamp)) / 1000;
-              if (difference < (pomodoro.workTime + pomodoro.breakTime)) {
-                this.resetPomodoroForCurrentUser();
-                this.timer.pause();
-              }
-            }
-          }, error1 => {
+  constructor(private http: HttpClient, private userService: UserService, private authService: AuthService, private webSocketService: RxStompService) {
+  this.initSocket()
 
-          }
-        );
-      }
-    );
   }
+public initSocket(){
+  this.userService.getUser().pipe(first()).subscribe(
+    user => {
+      this.user = user;
+      this.timer = new Timer(this.user.settings);
+      // create an empty headers object
+      const headers = {};
+      // make that CSRF token look like a real header
+      headers['Authorization'] = this.authService.currentAccessTokenValue;
+      // put the CSRF header into the connectHeaders on the config
+      const config = {...webSocketConfig, connectHeaders: headers};
+      this.webSocketService.configure(config);
+      this.webSocketService.activate();
+      this.watchStartingPomodoroForCurrentUser();
+      this.watchStopingPomodoroForCurrentUser();
+      this.getLastPomodoro().pipe(first()).subscribe(
+        pomodoro => {
+          this.pomodoro = pomodoro;
+          if (pomodoro != null && !pomodoro.interrupted) {
+            let difference: number;
+            difference = (new Date().getTime() - new Date(pomodoro.creationTimestamp).getTime()) / 1000;
+            if (difference < (pomodoro.workTime + pomodoro.breakTime)) {
+              this.resetPomodoroForCurrentUser();
+              this.timer.pause();
+            }
+          }
+        }, error1 => {
 
+        }
+      );
+    }
+  );
+}
 
   public getLastPomodoro(): Observable<Pomodoro> {
     return this.http.post<any>(SERVER_URL + `/pomodoro/update`, '').pipe(map(pomodoro => {
@@ -79,6 +82,27 @@ export class PomodoroService {
     });
   }
 
+  private watchStartingPomodoroForCurrentUser() {
+    this.userService.getUser().subscribe(user => {
+      this.user = user;
+      this.timer = new Timer(user.settings);
+      this.webSocketService.watch('/pomodoro/start/' + user.username).subscribe(response => {
+        let pomodoro = JSON.parse(response.body);
+        this.timer.start(pomodoro);
+      });
+    });
+  }
+
+  private watchStopingPomodoroForCurrentUser() {
+    this.userService.getUser().subscribe(user => {
+      this.user = user;
+      this.timer = new Timer(user.settings);
+      this.webSocketService.watch('/pomodoro/stop/' + user.username).subscribe(test => {
+        this.timer.pause();
+      });
+    });
+  }
+
   startPomodoroForUser(user: User) {
     this.webSocketService.publish({destination: '/app/start/' + user.username,});
   }
@@ -92,13 +116,6 @@ export class PomodoroService {
   }
 
   resetPomodoroForCurrentUser() {
-    console.log(this.pomodoro);
     this.webSocketService.publish({destination: '/app/stop/' + this.user.username, body: JSON.stringify(this.pomodoro)},);
   }
-  private setSettings(){
-    this.playSound = JSON.parse(window.localStorage.getItem(this.PLAY_SOUND_KEY));
-    if (this.playSound == null) {
-      this.playSound = false;
-    }
-}
 }
