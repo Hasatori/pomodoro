@@ -21,7 +21,7 @@ export class PomodoroService {
 
   private user: User;
   private pomodoro: Pomodoro;
-  private timer: Timer;
+ public timer: Timer;
   public PLAY_SOUND_KEY: string = 'playSound';
   private playSound: boolean;
 
