@@ -16,6 +16,7 @@ import {observe} from 'rxjs-observe';
 import {OnPhaseChanged} from '../../../model/OnPhaseChanged';
 import {PomodoroService} from '../../../services/pomodoro.service';
 import {UserService} from '../../../services/user.service';
+import {NGXLogger} from 'ngx-logger';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
   private searchDelayMilliseconds: number = 500;
   private user: User;
 
-  constructor(private route: ActivatedRoute, private groupService: GroupService, private webSocketService: RxStompService, private http: HttpClient, private pomodoroService: PomodoroService,private userService:UserService) {
+  constructor(private route: ActivatedRoute, private groupService: GroupService, private webSocketService: RxStompService, private http: HttpClient, private pomodoroService: PomodoroService,private userService:UserService,private log:NGXLogger) {
     this.route.paramMap.subscribe(groupName => {
       userService.getUser().subscribe((user)=>{
         this.user=user;
@@ -52,7 +53,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
             console.log(user);
             this.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
               pomodoro => {
-                let timer = new Timer();
+                let timer = new Timer(log);
                 pomodoroService.watchStartingPomodoroForUser(user, timer);
                 pomodoroService.watchStopingPomodoroForUser(user, timer);
                 row.set(user, timer);

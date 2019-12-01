@@ -21,7 +21,7 @@ export class PomodoroService {
 
   private user: User;
   private pomodoro: Pomodoro;
- public timer: Timer;
+  public timer: Timer;
   public PLAY_SOUND_KEY: string = 'playSound';
   private playSound: boolean;
 
@@ -90,6 +90,7 @@ public initSocket(){
       });
     });
   }
+
 
   startPomodoroForUser(user: User) {
     this.webSocketService.publish({destination: '/app/start/' + user.username,});

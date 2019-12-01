@@ -20,7 +20,7 @@ export class Timer {
   private SOUNDS_PATH: string = '../assets/sounds/';
   private settings: Settings;
 
-  constructor(private log?:NGXLogger,settings?: Settings, onPhaseChanged?: OnPhaseChanged) {
+  constructor(private log:NGXLogger,settings?: Settings, onPhaseChanged?: OnPhaseChanged) {
     this.settings = settings;
     this.onPhaseChanged = onPhaseChanged;
     this.audio = document.createElement('audio');
