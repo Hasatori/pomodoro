@@ -56,6 +56,14 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
+    <div *ngIf="success" class="alert alert-success" role="alert">
+   Settings updated
+    </div>
+    <div *ngIf="noValueWasChanged"
+         class="alert alert-danger"
+         role="alert">
+     No value was changed !
+    </div>
     <button *ngIf="!inProgress" class="btn btn-primary" (click)="updateSettings(pauseTimeSelect.value,workTimeSelect.value,phaseChangeSoundSelect.value,workSoundAudioSelect.value,pauseSoundAudioSelect.value)">Save settings</button>
   </div>
 </div>

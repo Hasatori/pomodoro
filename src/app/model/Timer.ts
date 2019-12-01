@@ -108,10 +108,12 @@ export class Timer {
   }
 
   pause() {
+
     this.started = false;
     this.timeLeft = '00:00';
     this.secondsLeft = 0;
     this.setPhase('NOT RUNNING');
+    this.audio.pause();
     clearInterval(this.interval);
   }
 
