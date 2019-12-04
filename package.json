@@ -24,6 +24,7 @@
     "angular-bootstrap-md": "8.3.0",
     "angular-flip-clock": "^0.4.0",
     "angular-flipclock": "^1.0.0",
+    "angularx-social-login": "^2.2.1",
     "bcryptjs": "^2.4.3",
     "chart.js": "^2.5.0",
     "d3": "^5.12.0",

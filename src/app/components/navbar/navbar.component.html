@@ -29,6 +29,27 @@
       </li>
 
     </ul>
+    <ul class="navbar-nav mr-auto">
+      <div *ngIf="this.router.url!=='/pomodoro' && pomodoroService.timer!=null && pomodoroService.timer.started">
+        <li *ngIf="pomodoroService.timer.phase==='WORK'" class="nav-item btn btn-warning">
+          {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
+        </li>
+        <li *ngIf="pomodoroService.timer.phase==='PAUSE'" class="nav-item btn btn-success">
+          {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
+        </li>
+        <li *ngIf="pomodoroService.timer.phase==='INTERRUPTED'" class="nav-item btn btn-error">
+          {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
+        </li>
+      </div>
+      <li  class="nav-item "[routerLinkActive]="['active']">
+        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/home']">Home<span
+          class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/free-trial']">Free trial</a>
+      </li>
+
+    </ul>
     <!-- Links -->
     <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
 

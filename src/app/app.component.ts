@@ -11,6 +11,9 @@ import {PomodoroService} from './services/pomodoro.service';
 export class AppComponent {
 
   constructor(private loginService: AuthService,private pomodoroService:PomodoroService) {
+    if (loginService.isLoggedIn()){
+      pomodoroService.initSocket();
+    }
   }
 
   @HostListener('window:beforeunload', ['$event'])

@@ -23,8 +23,6 @@ private pomodoro:Pomodoro;
   private playSound: boolean;
 public timer:Timer;
   constructor(private http: HttpClient, private userService: UserService, private authService: AuthService, private webSocketService: RxStompService, private log: NGXLogger) {
-    this.initSocket();
-
   }
 
   public initSocket() {

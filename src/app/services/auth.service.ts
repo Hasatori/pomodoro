@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 import {tree} from 'd3-hierarchy';
 import {PomodoroService} from './pomodoro.service';
 import {SERVER_URL} from '../ServerConfig';
-
+import {AuthService as FacebookAuth, FacebookLoginProvider} from 'angularx-social-login';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +18,7 @@ export class AuthService{
   private ACCESS_TOKEN_KEY: string = 'accessToken';
   private accessToken: string;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router,private facebookAuth:FacebookAuth) {
     this.accessToken = sessionStorage.getItem(this.ACCESS_TOKEN_KEY);
   }
 
@@ -46,10 +46,16 @@ export class AuthService{
     this.accessToken = '';
     this.router.navigate(['login']);
   }
-
   isLoggedIn() {
     if (sessionStorage.getItem(this.ACCESS_TOKEN_KEY) !== null) {
       return true;
     }
+  }
+
+  loginWithFB(){
+    this.facebookAuth.signIn(FacebookLoginProvider.PROVIDER_ID);
+  }
+  logOutWithFB(): void {
+    this.facebookAuth.signOut();
   }
 }

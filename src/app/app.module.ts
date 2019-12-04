@@ -34,11 +34,15 @@ import {CreateGroupComponent} from './components/group/create-group/create-group
 import {AuthService} from './services/auth.service';
 import { PomodoroIsRunningComponent } from './components/modals/pomodoro-is-running/pomodoro-is-running.component';
 import {LoggerModule, NGXLogger, NgxLoggerLevel} from 'ngx-logger';
+import {FreeTrialComponent} from './components/freeTrial/free-trial.component';
+import {AuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
+import {provideConfig} from './ServerConfig';
 
 
 const routes: Routes = [
-  {path: '', redirectTo: 'pomodoro', pathMatch: 'full'},
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
+  {path: 'free-trial', component: FreeTrialComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'pomodoro', component: PomodoroComponent, canActivate: [AuthGuard]},
@@ -67,7 +71,8 @@ const routes: Routes = [
     GroupComponent,
     GroupDetailComponent,
     CreateGroupComponent,
-    PomodoroIsRunningComponent
+    PomodoroIsRunningComponent,
+    FreeTrialComponent
 
   ],
   imports: [
@@ -80,6 +85,7 @@ const routes: Routes = [
     HttpClientModule,
     CountdownModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG}),
+    SocialLoginModule
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {
@@ -91,7 +97,11 @@ const routes: Routes = [
       provide: StompConfig,
       useValue: webSocketConfig
     },
-  AuthService],
+  AuthService,
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
+    }],
   bootstrap: [AppComponent]
 })
 
