@@ -1,16 +1,16 @@
-import {AfterViewInit, Component, HostListener, OnInit, ViewChild} from '@angular/core';
-import {PomodoroService} from '../../../services/pomodoro.service';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {Modal} from '../modal';
 
 @Component({
-  selector: 'app-pomodoro-is-running',
-  templateUrl: './pomodoro-is-running.component.html',
-  styleUrls: ['./pomodoro-is-running.component.scss']
+  selector: 'app-want-more-functionality',
+  templateUrl: './want-more-functionality.component.html',
+  styleUrls: ['./want-more-functionality.component.scss']
 })
-export class PomodoroIsRunningComponent extends Modal implements AfterViewInit {
+export class WantMoreFunctionalityComponent extends Modal implements AfterViewInit {
   // @ts-ignore
   @ViewChild('frame') input: ModalDirective;
+
   private WAIT: number = 600000;// 10 Minutes
   constructor() {
     super();
@@ -19,9 +19,9 @@ export class PomodoroIsRunningComponent extends Modal implements AfterViewInit {
   ngAfterViewInit(): void {
     this.input.show();
     this.input.onHide.subscribe(() => {
+      this.input.config.backdrop = true;
       this.waitAndShowAgain(this.WAIT, this.input);
     });
   }
-
 
 }

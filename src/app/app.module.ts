@@ -34,9 +34,10 @@ import {CreateGroupComponent} from './components/group/create-group/create-group
 import {AuthService} from './services/auth.service';
 import { PomodoroIsRunningComponent } from './components/modals/pomodoro-is-running/pomodoro-is-running.component';
 import {LoggerModule, NGXLogger, NgxLoggerLevel} from 'ngx-logger';
-import {FreeTrialComponent} from './components/freeTrial/free-trial.component';
+import {FreeTrialComponent} from './components/free-trial/free-trial.component';
 import {AuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {provideConfig} from './ServerConfig';
+import { WantMoreFunctionalityComponent } from './components/modals/want-more-functionality/want-more-functionality.component';
 
 
 const routes: Routes = [
@@ -45,6 +46,7 @@ const routes: Routes = [
   {path: 'free-trial', component: FreeTrialComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'forgotten-password', component:ForgottenPasswordComponent},
   {path: 'pomodoro', component: PomodoroComponent, canActivate: [AuthGuard]},
   {path: 'group', component: GroupComponent, canActivate: [AuthGuard], children: groupDetailRoutes},
   {path: 'my-account', redirectTo: 'my-account/personal-information', canActivate: [AuthGuard]},
@@ -72,7 +74,8 @@ const routes: Routes = [
     GroupDetailComponent,
     CreateGroupComponent,
     PomodoroIsRunningComponent,
-    FreeTrialComponent
+    FreeTrialComponent,
+    WantMoreFunctionalityComponent
 
   ],
   imports: [

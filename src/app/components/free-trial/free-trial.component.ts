@@ -6,6 +6,10 @@ import {Message} from '@angular/compiler/src/i18n/i18n_ast';
 import {webSocketConfig} from '../../WebSocketConfig';
 import {User} from '../../model/user';
 import {PomodoroService} from '../../services/pomodoro.service';
+import {Timer} from '../../model/Timer';
+import {NGXLogger} from 'ngx-logger';
+import {thresholdScott} from 'd3-array';
+import {FreeTrialService} from '../../services/free-trial.service';
 
 @Component({
   selector: 'app-pomodoro',
@@ -14,9 +18,7 @@ import {PomodoroService} from '../../services/pomodoro.service';
 })
 export class FreeTrialComponent {
 
-
-  constructor() {
+  constructor(private freeTrialService:FreeTrialService) {
   }
-
 
 }

@@ -1,0 +1,43 @@
+
+<div mdbModal (input)="frame" #frame class="modal fade bottom" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true" [config]="{backdrop: false}">
+  <div class="modal-dialog modal-notify modal-info modal-side modal-bottom-right" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header warning">
+        <p class="heading lead">Want more functionality?</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <ul class="list-group customList">
+          <li class="item">Manage phase duration</li>
+          <li class="item">Set custom music or sounds</li>
+          <li class="item">Watch statistics of executed pomodoros</li>
+          <li class="item">Group up with your friends and use pomodoro</li>
+        </ul>
+
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <ul class="list-inline customList">
+          <li class="list-inline-item">
+            <a type="button" mdbBtn [routerLink]="['/register']" type="button" class="btn btn-success btn-rounded">Sign up
+            </a>
+          </li>
+          <li class="list-inline-item">or</li>
+          <li class="list-inline-item">
+            <a type="button" mdbBtn [routerLink]="['/login']" type="button" class="btn btn-success btn-rounded">Login
+            </a></li>
+        </ul>
+    </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>

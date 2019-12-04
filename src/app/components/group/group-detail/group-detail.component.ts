@@ -61,7 +61,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
                 if (pomodoro != null) {
                   timer.start(pomodoro);
                 }
-                if (i == users.length-1) {
+                if (this.allRows.size === users.length) {
                   this.updateFilter();
                 }
               }, error1 => {
@@ -69,12 +69,10 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
               }
             );
           }
-
         }, error => {
         });
       })
     });
-
   }
 
   ngOnInit() {

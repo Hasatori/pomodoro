@@ -1,0 +1,22 @@
+<div class="container my-5">
+  <div class="card shadow custom-card">
+
+    <!-- Card content -->
+    <div class="card-body">
+
+      <h1 id="head">{{freeTrialService.timer.phase}}</h1>
+      <div class="customTimer">
+        {{freeTrialService.timer.timeLeft}}
+      </div>
+
+      <button *ngIf="!freeTrialService.timer.started" type="button" class="btn btn-primary btn-rounded  my-button"
+              (click)="freeTrialService.startPomodoro()">START
+      </button>
+      <button *ngIf="freeTrialService.timer.started" type="button" class="btn btn-danger btn-rounded  my-button"
+              (click)="freeTrialService.timer.pause()">RESET
+      </button>
+    </div>
+  </div>
+<app-want-more-functionality></app-want-more-functionality>
+
+</div>
