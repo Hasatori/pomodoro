@@ -10,7 +10,7 @@
     <!-- Links -->
     <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav mr-auto">
       <div *ngIf="this.router.url!=='/pomodoro' && pomodoroService.timer!=null && pomodoroService.timer.started">
-        <li *ngIf="pomodoroService.timer.phase==='WORK'" class="nav-item btn btn-warning">
+        <li *ngIf="pomodoroService.timer.phase==='WORK'" class="btn btn-warning">
           {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
         </li>
         <li *ngIf="pomodoroService.timer.phase==='PAUSE'" class="nav-item btn btn-success">
