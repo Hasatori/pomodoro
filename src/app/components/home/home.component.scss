@@ -1,0 +1,22 @@
+@import "../../app.component.scss";
+.customRow{
+
+  margin-top: 10vh;
+}
+.customContainer{
+  background-color:$customCardBackgroundColor;
+  padding:30px;
+}
+
+
+@media only screen and (max-width: 1200px) {
+  .sideImage{
+    display: none !important;
+  }
+}
+.customBlockquote{
+  border-left: 3px solid $backgroundColor !important
+}
+.customBlockquote .h2{
+  color: $backgroundColor !important;
+}
