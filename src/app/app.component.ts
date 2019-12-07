@@ -18,9 +18,13 @@ export class AppComponent {
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
+   if(this.pomodoroService.startedLocally){
      this.pomodoroService.resetPomodoroForCurrentUser();
+   }
+
   }
   logOut(): void {
+    this.pomodoroService.resetPomodoroForCurrentUser();
     this.loginService.logout();
   }
 

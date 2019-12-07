@@ -30,9 +30,11 @@ export class Timer {
   start(pomodoro: Pomodoro) {
     this.pause();
     // @ts-ignore
-    var difference = (new Date() - new Date(pomodoro.creationTimestamp)) / 1000;
-    if (pomodoro.interrupted) {
-      this.setPhase('NOT RUNNING');
+    let difference = (new Date().getTime() - new Date(pomodoro.creationTimestamp).getTime()) / 1000;
+    let sum=pomodoro.breakTime+pomodoro.workTime;
+  this.log.debug(`Pomodoro was interrupted ${pomodoro.interrupted} and sum is ${sum} and difference is ${difference}`);
+    if (pomodoro.interrupted || difference>sum) {
+    this.pause();
       this.secondsLeft = 0;
     } else if (difference > pomodoro.workTime) {
       this.started = true;
@@ -108,7 +110,6 @@ export class Timer {
   }
 
   pause() {
-
     this.started = false;
     this.timeLeft = '00:00';
     this.secondsLeft = 0;

@@ -12,16 +12,19 @@ import {AuthService} from './auth.service';
 import {SERVER_URL} from '../ServerConfig';
 import {Group} from '../model/group';
 import {NGXLogger} from 'ngx-logger';
+import {tree} from 'd3-hierarchy';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PomodoroService {
 
-private pomodoro:Pomodoro;
+  private pomodoro: Pomodoro;
   public PLAY_SOUND_KEY: string = 'playSound';
   private playSound: boolean;
-public timer:Timer;
+  public timer: Timer;
+  public startedLocally: boolean = false;
+
   constructor(private http: HttpClient, private userService: UserService, private authService: AuthService, private webSocketService: RxStompService, private log: NGXLogger) {
   }
 
@@ -39,6 +42,11 @@ public timer:Timer;
         this.webSocketService.activate();
         this.watchStartingPomodoroForCurrentUser();
         this.watchStopingPomodoroForCurrentUser();
+        this.getLastPomodoro().pipe(first()).subscribe(pomodoro => {
+            this.pomodoro = pomodoro;
+            this.timer.start(this.pomodoro);
+          }
+        );
       }
     );
   }
@@ -51,6 +59,7 @@ public timer:Timer;
 
 
   watchStartingPomodoroForUser(user: User, timer: Timer) {
+
     this.webSocketService.watch('/pomodoro/start/' + user.username).subscribe(response => {
       let pomodoro = JSON.parse(response.body);
       timer.start(pomodoro);
@@ -64,6 +73,7 @@ public timer:Timer;
   }
 
   private watchStartingPomodoroForCurrentUser() {
+
     this.userService.getUser().subscribe(user => {
       this.timer = new Timer(this.log, user.settings);
       this.webSocketService.watch('/pomodoro/start/' + user.username).subscribe(response => {
@@ -91,6 +101,7 @@ public timer:Timer;
   }
 
   startPomodoroForCurrentUser() {
+    this.startedLocally=true;
     this.userService.getUser().subscribe(user => {
       this.timer = new Timer(this.log, user.settings);
       this.webSocketService.publish({destination: '/app/start/' + user.username,});
@@ -98,6 +109,7 @@ public timer:Timer;
   }
 
   resetPomodoroForCurrentUser() {
+    this.startedLocally=false;
     this.userService.getUser().subscribe(user => {
       this.webSocketService.publish({destination: '/app/stop/' + user.username, body: JSON.stringify(this.pomodoro)},);
     });
