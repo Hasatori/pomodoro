@@ -38,6 +38,7 @@ import {FreeTrialComponent} from './components/free-trial/free-trial.component';
 import {AuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {provideConfig} from './ServerConfig';
 import { WantMoreFunctionalityComponent } from './components/modals/want-more-functionality/want-more-functionality.component';
+import { SuccessComponent } from './components/modals/success/success.component';
 
 
 const routes: Routes = [
@@ -75,7 +76,8 @@ const routes: Routes = [
     CreateGroupComponent,
     PomodoroIsRunningComponent,
     FreeTrialComponent,
-    WantMoreFunctionalityComponent
+    WantMoreFunctionalityComponent,
+    SuccessComponent
 
   ],
   imports: [

@@ -8,6 +8,7 @@ export class User {
   lastName: string;
   username: string;
   email: string;
+  password:string;
   settings:Settings;
   pomodoros?: Array<Pomodoro>;
   groups?: Array<Group>;

@@ -1,70 +1,120 @@
 <!-- Default form register -->
 <div class="custom-card shadow my-5">
-<form class="text-center border border-light p-5">
+  <form class="text-center border border-light p-5"
+        [formGroup]="elegantForm"
+        (ngSubmit)="signUp(firstName.value,secondName.value,elegantFormUsername.value,elegantFormPassword.value,elegantFormPasswordConfirm.value,elegantFormEmail.value)"
+  >
 
-  <p class="h4 mb-4">Sign up</p>
 
-  <div class="form-row mb-4">
-    <div class="col">
-      <!-- First name -->
-      <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
+    <p class="h4 mb-4">Sign up</p>
+
+
+    <div class="form-row mb-4">
+      <div class="col">
+        <!-- First name -->
+        <input type="text" #firstName id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
+      </div>
+      <div class="col">
+        <!-- Last name -->
+        <input type="text" #secondName id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">
+      </div>
     </div>
-    <div class="col">
-      <!-- Last name -->
-      <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">
+
+    <div class="form-row mb-4">
+      <input type="text" id="elegantFormUsername"
+             formControlName="elegantFormUsername"
+             [className]="((submitted||elegantFormUsername.touched)&&elegantFormUsername.hasError('required'))||nameError!=null? 'form-control is-invalid':'form-control'"
+             placeholder="Username"/>
+      <div class="invalid-feedback">
+        <p *ngIf="nameError!=null;else defaultUsernameError">
+          {{nameError}}
+        </p>
+        <ng-template #defaultUsernameError>
+          Username must be filled
+        </ng-template>
+      </div>
     </div>
-  </div>
-  <!-- E-mail -->
-  <input type="username" id="defaultRegisterFormUsername" class="form-control mb-4" placeholder="Username">
-
-  <!-- E-mail -->
-  <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail">
-
-  <!-- Password -->
-  <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
-  <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
-    At least 8 characters and 1 digit
-  </small>
-
-  <!-- Phone number -->
-  <input type="text" id="defaultRegisterPhonePassword" class="form-control" placeholder="Phone number" aria-describedby="defaultRegisterFormPhoneHelpBlock">
-  <small id="defaultRegisterFormPhoneHelpBlock" class="form-text text-muted mb-4">
-    Optional - for two-step authentication
-  </small>
-
-  <!-- Newsletter -->
-  <div class="row">
-    <div class="col-md-6 mx-auto d-flex justify-content-center">
-      <mdb-checkbox [default]="true">Subscribe to our newsletter</mdb-checkbox>
+    <div class="form-row mb-4">
+      <input type="email" id="elegantFormEmail"
+             formControlName="elegantFormEmail"
+             [className]="((elegantFormEmail.touched||submitted)&&(elegantFormEmail.hasError('required')||elegantFormEmail.hasError('pattern')))||emailError!=null? 'form-control is-invalid':'form-control'"
+             placeholder="E-mail">
+      <div class="invalid-feedback">
+        <p *ngIf="emailError!=null;else defaultEmailError">
+          {{emailError}}
+        </p>
+        <ng-template #defaultEmailError>
+          <p *ngIf="elegantFormEmail.hasError('required')">
+          Email must be filled</p>
+          <p *ngIf="elegantFormEmail.hasError('pattern')">
+          Invalid email format</p>
+        </ng-template>
+      </div>
     </div>
-  </div>
 
-  <!-- Sign up button -->
-  <button mdbBtn color="info" block="true" class="my-4" type="submit">Sign in</button>
+    <div class="form-row mb-4">
+      <input type="password"
+             formControlName="elegantFormPassword"
+             [className]="((elegantFormPassword.touched||submitted)&&elegantFormPassword.hasError('required'))||passwordError!=null? 'form-control is-invalid':'form-control'"
+             placeholder="Password"
+      >
+      <div class="invalid-feedback">
+        <p *ngIf="passwordError!=null;else defaultPasswordError">
+          {{passwordError}}
+        </p>
+        <ng-template #defaultPasswordError>
+          Password must be filled
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-row mb-4">
+      <input type="password"
+             formControlName="elegantFormPasswordConfirm"
+             [className]="(submitted||elegantFormPasswordConfirm.touched)&&elegantFormPasswordConfirm.value!==elegantFormPassword.value? 'form-control is-invalid':'form-control'"
+             placeholder="Confirm password"
+      >
+      <div class="invalid-feedback">
+        Passwords must match
+      </div>
+    </div>
 
-  <!-- Social register -->
-  <p>or sign up with:</p>
+    <div class="text-center mb-3">
+      <div *ngIf="inProgress" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <button *ngIf="!inProgress"  type="submit" mdbBtn gradient="blue" block="true" rounded="true"
 
-  <a type="button" class="light-blue-text mx-2">
-    <mdb-icon fab icon="facebook"></mdb-icon>
-  </a>
-  <a type="button" class="light-blue-text mx-2">
-    <mdb-icon fab icon="twitter"></mdb-icon>
-  </a>
-  <a type="button" class="light-blue-text mx-2">
-    <mdb-icon fab icon="linkedin"></mdb-icon>
-  </a>
-  <a type="button" class="light-blue-text mx-2">
-    <mdb-icon fab icon="github"></mdb-icon>
-  </a>
+              class="z-depth-1a waves-light"
+              mdbWavesEffect>Sign up
+      </button>
+    </div>
+    <!-- Social register -->
+    <p>or sign up with:</p>
 
-  <hr>
+    <a type="button" class="light-blue-text mx-2">
+      <mdb-icon fab icon="facebook"></mdb-icon>
+    </a>
+    <a type="button" class="light-blue-text mx-2">
+      <mdb-icon fab icon="twitter"></mdb-icon>
+    </a>
+    <a type="button" class="light-blue-text mx-2">
+      <mdb-icon fab icon="linkedin"></mdb-icon>
+    </a>
+    <a type="button" class="light-blue-text mx-2">
+      <mdb-icon fab icon="github"></mdb-icon>
+    </a>
 
-  <!-- Terms of service -->
-  <p>By clicking
-    <em>Sign up</em> you agree to our
-    <a href="" target="_blank">terms of service</a></p>
+    <hr>
 
-</form>
-<!-- Default form register -->
+    <!-- Terms of service -->
+    <p>By clicking
+      <em>Sign up</em> you agree to our
+      <a href="" target="_blank">terms of service</a></p>
+
+  </form>
+  <!-- Default form register -->
+
 </div>
+<app-success #successComponent (successComponent)="successComponent"></app-success>
