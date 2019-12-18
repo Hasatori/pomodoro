@@ -1,0 +1,9 @@
+@import "../../app.component.scss";
+
+.active{
+  background-color:white;
+
+}
+.active  a{
+  color: $backgroundColor !important;
+}
