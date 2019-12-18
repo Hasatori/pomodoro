@@ -62,20 +62,8 @@
           <p class="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-2"> or Sign in with:</p>
 
           <div class="row my-3 d-flex justify-content-center">
-            <!--Facebook-->
-            <button type="button" mdbBtn color="white" rounded="true" class="mr-md-3 z-depth-1a waves-light"
-                    mdbWavesEffect (click)="loginWithFB()">
-              <mdb-icon fab icon="facebook" class="blue-text text-center"></mdb-icon>
-            </button>
-            <!--Twitter-->
-            <button type="button" mdbBtn color="white" rounded="true" class="mr-md-3 z-depth-1a waves-light"
-                    mdbWavesEffect>
-              <mdb-icon fab icon="twitter" class="blue-text"></mdb-icon>
-            </button>
-            <!--Google +-->
-            <button type="button" mdbBtn color="white" rounded="true" class="z-depth-1a waves-light" mdbWavesEffect>
-              <mdb-icon fab fab icon="google-plus" class="blue-text"></mdb-icon>
-            </button>
+            <a (click)="loginWithFB()"><i class="fab fa-facebook round-social-icon facebook-icon"></i></a>
+            <a ><i class="fab fa-github round-social-icon github-icon"></i></a>
 
           </div>
         </mdb-card-body>

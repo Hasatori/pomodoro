@@ -14,3 +14,20 @@
   -webkit-box-shadow: 0 5px 11px 0 rgba(85, 182, 255, 0.28), 0 4px 15px 0 rgba(36, 133, 255, 0.15);
   box-shadow: 0 5px 11px 0 rgba(85, 182, 255, 0.28), 0 4px 15px 0 rgba(36, 133, 255, 0.15);
 }
+
+.round-social-icon{
+  padding: 10px;
+  font-size: 30px;
+  text-shadow:  3px 3px 5px rgba(0, 0, 0, 0.3);
+  opacity:0.8;
+}
+.round-social-icon:hover{
+  opacity: 1;
+}
+.facebook-icon{
+  color: #4267B2 !important;
+}
+.github-icon{
+  color: #333333 !important;
+}
+
