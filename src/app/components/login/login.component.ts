@@ -5,6 +5,7 @@ import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {log} from 'util';
 import {PomodoroService} from '../../services/pomodoro.service';
+import {AuthService as FacebookAuth, FacebookLoginProvider} from 'angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   elegantFormPasswordEx: AbstractControl;
   elegantFormUsernameEx: AbstractControl;
 
-  constructor(public fb: FormBuilder, private authenticationService: AuthService, private router: Router,private pomodoroService:PomodoroService) {
+  constructor(public fb: FormBuilder, private authenticationService: AuthService, private router: Router, private pomodoroService: PomodoroService, private facebookAuth: FacebookAuth) {
     this.elegantForm = fb.group({
       'elegantFormUsernameEx': ['', [Validators.required]],
       'elegantFormPasswordEx': ['', Validators.required],
@@ -38,20 +39,41 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(username, password).pipe(first())
         .subscribe(
           data => {
-            console.log(data);
-            this.loggingInProgress = false;
-            this.pomodoroService.initSocket();
-            this.router.navigate(['/my-account']);
+            this.loginSuccessful(data);
           },
           error => {
-
-            if (error.status === 401) {
-              console.log(error);
-              this.logInError = true;
-            }
-            this.loggingInProgress = false;
+            this.loginUnsuccessful(error);
           });
     }
   }
 
+  loginWithFB() {
+    this.loggingInProgress = true;
+    this.facebookAuth.signIn(FacebookLoginProvider.PROVIDER_ID);
+    this.facebookAuth.authState.subscribe((facebookResponse) => {
+      this.authenticationService.loginWithFB(facebookResponse).pipe(first())
+        .subscribe(
+          data => {
+            this.loginSuccessful(data);
+          },
+          error => {
+            this.loginUnsuccessful(error);
+          });
+    });
+  }
+
+  private loginSuccessful(data: any) {
+    console.log(data);
+    this.loggingInProgress = false;
+    this.pomodoroService.initSocket();
+    this.router.navigate(['/my-account']);
+  }
+
+  private loginUnsuccessful(error: any) {
+    if (error.status === 401) {
+      console.log(error);
+      this.logInError = true;
+    }
+    this.loggingInProgress = false;
+  }
 }
