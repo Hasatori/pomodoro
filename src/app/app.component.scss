@@ -17,3 +17,19 @@ min-height:80vh !important;
   background-color: $backgroundColor ;
 }
 
+
+.round-social-icon{
+  padding: 10px;
+  font-size: 30px;
+  opacity: 0.9;
+}
+.round-social-icon:hover{
+  opacity: 1;
+  text-shadow:  1px 4px 5px rgba(0, 0, 0, 0.3);
+}
+.facebook-icon{
+  color: #4267B2 !important;
+}
+.github-icon{
+  color: #333333 !important;
+}
