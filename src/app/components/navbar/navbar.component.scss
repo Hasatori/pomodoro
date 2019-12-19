@@ -1,9 +1,14 @@
 @import "../../app.component.scss";
 
-.active{
+.active,.nav-item:hover {
   background-color:white;
-
+  -webkit-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.2);
+  box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.2);
 }
-.active  a{
+.active a{
+  font-weight: bold;
+}
+.active  a,.nav-item:hover a{
   color: $backgroundColor !important;
 }

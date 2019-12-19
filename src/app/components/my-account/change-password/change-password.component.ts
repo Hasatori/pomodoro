@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {first} from 'rxjs/operators';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'change-password',
@@ -8,13 +9,27 @@ import {first} from 'rxjs/operators';
   styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements OnInit {
-  incorrectPassword: boolean = false;
-  passwordsDoesNotMatch: boolean = false;
-  noValueWasChanged: boolean = false;
-  inProgress: boolean = false;
-  success: boolean = false;
+  elegantForm: FormGroup;
+  elegantFormOldPassword: AbstractControl;
+  elegantFormNewPassword: AbstractControl;
+  elegantFormNewPasswordConfirm: AbstractControl;
 
-  constructor(private userService: UserService) {
+  oldPasswordError: string = null;
+  newPasswordError: string = null;
+  newPasswordConfirmError: string = null;
+  success: string = null;
+  submitted: boolean = false;
+  inProgress: boolean = false;
+
+  constructor(private userService: UserService, public fb: FormBuilder) {
+    this.elegantForm = fb.group({
+      'elegantFormOldPassword': ['', Validators.required],
+      'elegantFormNewPassword': ['', Validators.required],
+      'elegantFormNewPasswordConfirm': [''],
+    });
+    this.elegantFormOldPassword = this.elegantForm.controls['elegantFormOldPassword'];
+    this.elegantFormNewPassword = this.elegantForm.controls['elegantFormNewPassword'];
+    this.elegantFormNewPasswordConfirm = this.elegantForm.controls['elegantFormNewPasswordConfirm'];
   }
 
   ngOnInit() {
@@ -22,31 +37,32 @@ export class ChangePasswordComponent implements OnInit {
 
 
   public changePassword(oldPassword: string, newPassword: string, confirmNewPassword: string) {
-    this.inProgress = true;
-    this.passwordsDoesNotMatch = false;
-    this.incorrectPassword = false;
-    this.noValueWasChanged = false;
-    this.success = false;
-
-    if (newPassword !== confirmNewPassword) {
-      this.passwordsDoesNotMatch = true;
-      this.inProgress = false;
-    } else if (oldPassword === newPassword) {
-      this.noValueWasChanged = true;
-      this.inProgress = false;
-    } else {
+    this.reset();
+    this.submitted = true;
+    if (newPassword === confirmNewPassword && oldPassword !== newPassword) {
+      this.inProgress = true;
       this.userService.changePassword(oldPassword, newPassword).pipe(first()).subscribe(
         response => {
+          this.success = response.success;
           this.inProgress = false;
-          this.success = true;
-        }, error1 => {
-          if (error1.status == 400) {
-            this.incorrectPassword = true;
-          }
+        }, errorResponse => {
+          console.log(errorResponse);
+          this.oldPasswordError = errorResponse.error.oldPassword;
+          this.newPasswordError = errorResponse.error.newPassword;
+          this.newPasswordConfirmError =errorResponse.error.newPasswordConfirm;
           this.inProgress = false;
+          console.log(this.newPasswordConfirmError);
         }
       );
     }
   }
 
+  private reset() {
+    this.oldPasswordError = null;
+    this.newPasswordError = null;
+    this.newPasswordConfirmError = null;
+    this.success = null;
+    this.submitted = false;
+    this.inProgress = false;
+  }
 }

@@ -1,1 +1,7 @@
 @import "../../app.component.scss";
+.custom-button{
+  opacity: 0.9;
+}
+.custom-button:hover{
+   opacity: 1;
+ }

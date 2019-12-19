@@ -14,13 +14,14 @@
                 (ngSubmit)="signIn(usernameInput.value,passwordInput.value)"
           >
             <div class="md-form">
-              <input #usernameInput type="text" id="elegantFormUsernameEx" class="form-control"
+              <input #usernameInput type="text" id="elegantFormUsernameEx"
+                  [className]="((elegantFormUsernameEx.touched||submitted)&&elegantFormUsernameEx.hasError('required'))? 'form-control is-invalid':'form-control'"
                      formControlName="elegantFormUsernameEx"
                      mdbInput>
               <label for="elegantFormUsernameEx">Enter your username</label>
               <div *ngIf="elegantFormUsernameEx.touched&&elegantFormUsernameEx.hasError('required')"
-                   class="alert alert-danger"
-                   role="alert">
+                   class="invalid-feedback"
+              >
                 Username must be filled!
               </div>
             </div>
@@ -28,11 +29,12 @@
             <div class="md-form pb-3">
               <input #passwordInput type="password" id="elegantFormPasswordEx" formControlName="elegantFormPasswordEx"
                      [formControl]="elegantFormPasswordEx"
-                     class="form-control" mdbInput>
+                     [className]="((elegantFormPasswordEx.touched||submitted)&&elegantFormPasswordEx.hasError('required'))? 'form-control is-invalid':'form-control'"
+
+                     mdbInput>
               <label for="elegantFormPasswordEx">Enter your password</label>
               <div *ngIf="elegantFormPasswordEx.touched&&elegantFormPasswordEx.hasError('required')"
-                   class="alert alert-danger"
-                   role="alert">
+                   class="invalid-feedback">
                 Password must be filled!
               </div>
               <p class="font-small blue-text d-flex justify-content-end">Forgot
@@ -53,7 +55,7 @@
               </div>
               <button *ngIf="!loggingInProgress" type="submit" mdbBtn gradient="blue" block="true" rounded="true"
 
-                      class="z-depth-1a waves-light"
+                      class="z-depth-1a waves-light custom-button"
                       mdbWavesEffect>Sign in
               </button>
             </div>
