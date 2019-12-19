@@ -55,35 +55,25 @@
     <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
 
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/settings']">
-          <mdb-icon fas icon="cog"></mdb-icon>
-          Settings</a>
-      </li>
+        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/my-account']"> <mdb-icon fas icon="user"></mdb-icon>My account</a>
 
-      <!-- Dropdown -->
-      <li class="nav-item dropdown" dropdown [routerLinkActive]="['active']">
-        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
-          <mdb-icon fas icon="user"></mdb-icon>
-          Profile<span class="caret"></span></a>
-        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
-          <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="['/my-account']">My account</a>
-          <a class="dropdown-item waves-light" mdbWavesEffect (click)="callParent()">Log out</a>
-          <mdb-icon fas icon="sign-out-alt"></mdb-icon>
-          Register
-        </div>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link waves-light" mdbWavesEffect (click)="callParent()"> <mdb-icon fas icon="sign-out-alt"></mdb-icon> Log out</a>
+
       </li>
     </ul>
     <!-- Links -->
     <ul *ngIf="!loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/register']">
-          <mdb-icon fas icon="sign-in-alt"></mdb-icon>
-          Sign up</a>
-      </li>
-      <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/login']">
           <mdb-icon fas icon="sign-in-alt"></mdb-icon>
           Login</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/register']">
+          <mdb-icon fas icon="sign-in-alt"></mdb-icon>
+          Sign up</a>
       </li>
     </ul>
     <!-- Links -->

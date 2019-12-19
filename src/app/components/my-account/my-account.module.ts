@@ -3,8 +3,10 @@ import {PersonalInformationComponent} from './personal-information/personal-info
 import {PomodoroHistoryComponent} from './pomodoro-history/pomodoro-history.component';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {AuthGuard} from '../../guards/auth-guard.service';
+import {SettingsComponent} from './settings/settings.component';
 
 export const myAccountRoutes: Routes = [
   {path: 'personal-information', component: PersonalInformationComponent, canActivate: [AuthGuard]},
   {path: 'pomodoro-history', component: PomodoroHistoryComponent, canActivate: [AuthGuard]},
-  {path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard]},];
+  {path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard]},
+  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},];

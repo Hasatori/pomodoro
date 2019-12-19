@@ -13,7 +13,7 @@ import {NavbarComponent} from './components/navbar/navbar.component';
 import {RegisterComponent} from './components/register/register.component';
 import {ForgottenPasswordComponent} from './components/forgotten-password/forgotten-password.component';
 import {MyAccountComponent} from './components/my-account/my-account.component';
-import {SettingsComponent} from './components/settings/settings.component';
+import {SettingsComponent} from './components/my-account/settings/settings.component';
 import {AuthGuard} from './guards/auth-guard.service';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './services/jwt-interceptor';

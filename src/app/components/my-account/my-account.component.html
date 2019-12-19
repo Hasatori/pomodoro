@@ -6,15 +6,18 @@
           <div class="col-8">
             <div class="nav flex-column nav-pills shadow" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
-              <a class="nav-link border " [routerLinkActive]="['active']" id="v-pills-home-tab" data-toggle="pill"
+              <a class="nav-link border " [routerLinkActive]="['active']" data-toggle="pill"
                  [routerLink]="['./personal-information']" role="tab"
                  aria-controls="v-pills-home" aria-selected="true">Personal information</a>
-              <a class="nav-link border" [routerLinkActive]="['active']" id="v-pills-profile-tab" data-toggle="pill"
-                 [routerLink]="['./pomodoro-history']" role="tab"
-                 aria-controls="v-pills-profile" aria-selected="false">Pomodoro history</a>
-              <a class="nav-link border" [routerLinkActive]="['active']" id="v-pills-messages-tab" data-toggle="pill"
+              <a class="nav-link border" [routerLinkActive]="['active']" data-toggle="pill"
                  [routerLink]="['./change-password']" role="tab"
                  aria-controls="v-pills-messages" aria-selected="false">Change password</a>
+              <a class="nav-link border" [routerLinkActive]="['active']" data-toggle="pill"
+                 [routerLink]="['./pomodoro-history']" role="tab"
+                 aria-controls="v-pills-profile" aria-selected="false">Pomodoro history</a>
+              <a class="nav-link border" [routerLinkActive]="['active']" data-toggle="pill"
+                 [routerLink]="['./settings']" role="tab"
+                 aria-controls="v-pills-profile" aria-selected="false">Settings</a>
             </div>
           </div>
         </div>

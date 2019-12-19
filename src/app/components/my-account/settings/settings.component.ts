@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {PomodoroService} from '../../services/pomodoro.service';
-import {UserService} from '../../services/user.service';
-import {Settings} from '../../model/settings';
+import {PomodoroService} from '../../../services/pomodoro.service';
+import {UserService} from '../../../services/user.service';
+import {Settings} from '../../../model/settings';
 import {first} from 'rxjs/operators';
 
 @Component({
