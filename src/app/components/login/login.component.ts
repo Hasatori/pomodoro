@@ -27,19 +27,10 @@ export class LoginComponent implements OnInit {
     this.elegantFormPasswordEx = this.elegantForm.controls['elegantFormPasswordEx'];
     this.elegantFormUsernameEx = this.elegantForm.controls['elegantFormUsernameEx'];
 
-    this.facebookAuth.authState.subscribe((facebookResponse) => {
-      this.authenticationService.loginWithFB(facebookResponse).pipe(first())
-        .subscribe(
-          data => {
-            this.loginSuccessful(data);
-          },
-          error => {
-            this.loginUnsuccessful(error);
-          });
-    });
   }
 
   ngOnInit() {
+
   }
 
   signIn(username: string, password: string) {
@@ -60,8 +51,18 @@ export class LoginComponent implements OnInit {
 
   loginWithFB() {
     this.loggingInProgress = true;
-    this.facebookAuth.signIn(FacebookLoginProvider.PROVIDER_ID);
-
+    this.facebookAuth.signIn(FacebookLoginProvider.PROVIDER_ID).then(() => {
+      this.facebookAuth.authState.subscribe((facebookResponse) => {
+        this.authenticationService.loginWithFB(facebookResponse).pipe(first())
+          .subscribe(
+            data => {
+              this.loginSuccessful(data);
+            },
+            error => {
+              this.loginUnsuccessful(error);
+            });
+      });
+    });
   }
 
   private loginSuccessful(data: any) {
