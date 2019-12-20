@@ -5,6 +5,7 @@ import {first} from 'rxjs/operators';
 import {nocollapseHack} from '@angular/compiler-cli/src/transformers/nocollapse_hack';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SuccessComponent} from '../../modals/success/success.component';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'personal-information',
@@ -24,7 +25,7 @@ export class PersonalInformationComponent implements OnInit {
   // @ts-ignore
   @ViewChild('successComponent') successComponent: SuccessComponent;
 
-  constructor(private userService: UserService, public fb: FormBuilder) {
+  constructor(private userService: UserService, public fb: FormBuilder,private authService:AuthService) {
     this.elegantForm = fb.group({
       'elegantFormUsername': ['', [Validators.required]],
       'elegantFormEmail': ['', [Validators.required, Validators.pattern(/[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm)]],
@@ -69,6 +70,7 @@ export class PersonalInformationComponent implements OnInit {
           this.reset();
           this.success = response.success;
           this.user = updatedUser;
+          this.authService.updateToken(response.newToken);
         }
         , error1 => {
           this.reset();
