@@ -1,5 +1,24 @@
+@import "../../app.component.scss";
+
 .side-nav-container{
   padding: 15px;
 }
 .side-nav-container h5
 {margin-bottom: 10px}
+
+
+.active,.nav-link:hover {
+  background-color:$backgroundColor !important;
+  -webkit-box-shadow: 4px 4px 3px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 4px 4px 3px 0px rgba(0,0,0,0.2);
+  box-shadow: 4px 4px 3px 0px rgba(0,0,0,0.2);
+}
+.nav-link{
+  color: $backgroundColor;
+}
+.active{
+  font-weight: bold;
+}
+.active,.nav-link:hover{
+  color: white !important;
+}
