@@ -59,4 +59,8 @@ export class AuthService {
     }
     return response;
   }
+  public updateToken(newToken:string){
+    sessionStorage.setItem(this.ACCESS_TOKEN_KEY, newToken);
+    this.accessToken = sessionStorage.getItem(this.ACCESS_TOKEN_KEY);
+  }
 }
