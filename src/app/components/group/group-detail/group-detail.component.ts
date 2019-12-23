@@ -17,6 +17,8 @@ import {OnPhaseChanged} from '../../../model/OnPhaseChanged';
 import {PomodoroService} from '../../../services/pomodoro.service';
 import {UserService} from '../../../services/user.service';
 import {NGXLogger} from 'ngx-logger';
+import {ModalDirective} from 'angular-bootstrap-md';
+import {$} from 'protractor';
 
 
 @Component({
@@ -25,7 +27,7 @@ import {NGXLogger} from 'ngx-logger';
   styleUrls: ['./group-detail.component.scss']
 })
 export class GroupDetailComponent implements OnInit, OnPhaseChanged {
-
+  private group: Group;
   private groupName: string;
   private allRows: Map<User, Timer>;
   private filteredRows: Array<Map<User, Timer>>;
@@ -37,25 +39,42 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
   private searchInProgress: boolean = false;
   private searchDelayMilliseconds: number = 500;
   private user: User;
+  dataset;
+  success: string;
+  userError: string;
+  groupError: string;
+  isOwner: boolean = false;
 
-  constructor(private route: ActivatedRoute, private groupService: GroupService, private webSocketService: RxStompService, private http: HttpClient, private pomodoroService: PomodoroService,private userService:UserService,private log:NGXLogger) {
+  constructor(private route: ActivatedRoute, private groupService: GroupService, private webSocketService: RxStompService, private http: HttpClient, private pomodoroService: PomodoroService, private userService: UserService, private log: NGXLogger) {
     this.route.paramMap.subscribe(groupName => {
-      userService.getUser().subscribe((user)=>{
-        this.user=user;
+      this.reset();
+      this.groupName = groupName.get('name');
+      this.fetchMembers();
+    });
+  }
+
+  private fetchMembers() {
+    this.groupService.getGroups().subscribe((groups) => {
+      this.group = groups.find((group) => group.name === this.groupName);
+
+      console.log(this.group);
+      this.userService.getUser().subscribe((user) => {
+        this.user = user;
+        this.isOwner=this.group.owner.username===this.user.username;
         this.allRows = new Map<User, Timer>();
         this.filteredRows = [];
-        this.groupName = groupName.get('name');
+
         this.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
           let row = new Map<User, Timer>();
-          users=users.filter(user=>user.username!==this.user.username);
+          users = users.filter(user => user.username !== this.user.username);
           for (let i = 0; i < users.length; i++) {
             let user = users[i];
             console.log(user);
             this.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
               pomodoro => {
-                let timer = new Timer(log,null,this);
-                pomodoroService.watchStartingPomodoroForUser(user, timer);
-                pomodoroService.watchStopingPomodoroForUser(user, timer);
+                let timer = new Timer(this.log, null, this);
+                this.pomodoroService.watchStartingPomodoroForUser(user, timer);
+                this.pomodoroService.watchStopingPomodoroForUser(user, timer);
                 row.set(user, timer);
                 this.allRows.set(user, timer);
                 if (pomodoro != null) {
@@ -71,7 +90,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
           }
         }, error => {
         });
-      })
+      });
     });
   }
 
@@ -137,13 +156,6 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
     this.updateFilter();
   }
 
-  public addUser() {
-
-  }
-
-  public removeUser() {
-
-  }
 
   public searchUsers(search: string) {
     if (!this.searchInProgress) {
@@ -154,5 +166,47 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
       }, this.searchDelayMilliseconds);
 
     }
+  }
+
+  public addUser(username: string) {
+    this.reset();
+    let check = false;
+    this.allRows.forEach((value, key) => {
+      if (key.username === username) {
+        this.groupError = 'User already is part of the group';
+        check = true;
+      }
+    });
+    if (!check) {
+      this.groupService.addUser(username, this.group.name).subscribe((response) => {
+
+        this.groupService.emptyCache(this.group.name);
+        this.fetchMembers();
+        this.success = response.success;
+      }, error1 => {
+        this.userError = error1.error.username;
+        this.groupError = error1.error.group;
+      });
+    }
+  }
+
+  public removeUser(user: User) {
+    this.reset();
+    this.groupService.removeUser(user.username, this.group.name).subscribe((response) => {
+
+      this.groupService.emptyCache(this.group.name);
+      this.fetchMembers();
+      this.success = response.success;
+    }, error1 => {
+      this.userError = error1.error.username;
+      this.groupError = error1.error.group;
+
+    });
+  }
+
+  private reset() {
+    this.success = null;
+    this.userError = null;
+    this.groupError = null;
   }
 }

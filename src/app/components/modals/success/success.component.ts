@@ -25,6 +25,7 @@ export class SuccessComponent extends Modal {
 
   }
   onHide():Observable<any>{
-    return   this.successModal.onHide;
+    return this.successModal.onHide;
+
   }
 }

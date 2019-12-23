@@ -68,7 +68,7 @@ export class PersonalInformationComponent implements OnInit {
       this.userService.updateUser(updatedUser).pipe(first()).subscribe(
         response => {
           this.reset();
-          this.success = response.success;
+          this.success = response.addUserSuccess;
           this.user = updatedUser;
           this.authService.updateToken(response.newToken);
         }

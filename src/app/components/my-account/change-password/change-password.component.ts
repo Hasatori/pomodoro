@@ -43,7 +43,7 @@ export class ChangePasswordComponent implements OnInit {
       this.inProgress = true;
       this.userService.changePassword(oldPassword, newPassword).pipe(first()).subscribe(
         response => {
-          this.success = response.success;
+          this.success = response.addUserSuccess;
           this.inProgress = false;
         }, errorResponse => {
           console.log(errorResponse);
