@@ -1,8 +1,24 @@
-<app-navbar (myEvent)="logOut()"></app-navbar>
-<div class="mainContent">
+<nb-layout>
 
+  <nb-layout-header fixed>
+  <!-- Insert header here -->
+  </nb-layout-header>
 
-  <router-outlet></router-outlet>
+  <nb-layout-column>
 
-</div>
-  <app-footer></app-footer>
+    <app-navbar (myEvent)="logOut()"></app-navbar>
+    <div class="mainContent">
+    
+    
+      <router-outlet></router-outlet>
+    
+    </div>
+      <app-footer></app-footer>
+    
+  </nb-layout-column>
+
+  <nb-layout-footer fixed>
+  <!-- Insert footer here -->
+  </nb-layout-footer>
+
+</nb-layout>
