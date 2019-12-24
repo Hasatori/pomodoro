@@ -2,8 +2,14 @@
 
 @import '~pretty-checkbox/src/pretty-checkbox.scss';
 .cardBackground{
-  background-color: $backgroundColor;
+ // background-color: $backgroundColor;
 }
 .filter-container{
   padding: 20px;
+}
+.profile-photo{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
