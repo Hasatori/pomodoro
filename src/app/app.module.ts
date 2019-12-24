@@ -39,8 +39,6 @@ import {AuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {provideConfig} from './ServerConfig';
 import { WantMoreFunctionalityComponent } from './components/modals/want-more-functionality/want-more-functionality.component';
 import { SuccessComponent } from './components/modals/success/success.component';
-import { NbThemeModule, NbLayoutModule } from '@nebular/theme';
-import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 
 const routes: Routes = [
@@ -93,9 +91,7 @@ const routes: Routes = [
     CountdownModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG}),
     SocialLoginModule,
-    NbThemeModule.forRoot({ name: 'default' }),
-    NbLayoutModule,
-    NbEvaIconsModule,
+
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {
