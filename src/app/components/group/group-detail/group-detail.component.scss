@@ -13,3 +13,10 @@
   margin-right: auto;
   width: 50%;
 }
+.my-card{
+  opacity: 0.9;
+}
+.my-card:hover{
+  opacity: 1;
+  cursor: pointer;
+}
