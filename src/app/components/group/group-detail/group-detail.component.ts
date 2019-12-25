@@ -39,13 +39,15 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
   private searchInProgress: boolean = false;
   private searchDelayMilliseconds: number = 500;
   private user: User;
+
+  allUsers: Array<User>;
   dataset;
   success: string;
   userError: string;
   groupError: string;
   isOwner: boolean = false;
 
-  constructor(private route: ActivatedRoute, private groupService: GroupService, private webSocketService: RxStompService, private http: HttpClient, private pomodoroService: PomodoroService, private userService: UserService, private log: NGXLogger) {
+  constructor(private route: ActivatedRoute, private groupService: GroupService, private http: HttpClient, private pomodoroService: PomodoroService, private userService: UserService, private log: NGXLogger) {
     this.route.paramMap.subscribe(groupName => {
       this.reset();
       this.groupName = groupName.get('name');
@@ -60,11 +62,12 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
       console.log(this.group);
       this.userService.getUser().subscribe((user) => {
         this.user = user;
-        this.isOwner=this.group.owner.username===this.user.username;
+        this.isOwner = this.group.owner.username === this.user.username;
         this.allRows = new Map<User, Timer>();
         this.filteredRows = [];
 
         this.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
+          this.allUsers = users;
           let row = new Map<User, Timer>();
           users = users.filter(user => user.username !== this.user.username);
           for (let i = 0; i < users.length; i++) {

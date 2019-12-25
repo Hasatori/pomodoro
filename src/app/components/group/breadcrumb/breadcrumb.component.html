@@ -1,0 +1,13 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb blue-grey lighten-4">
+    <li class="breadcrumb-item" [ngClass]="breadcrumb==null?'breadcrumb-item active':'breadcrumb-item'">
+      <div *ngIf="breadcrumb!=null" >
+      <a class="black-text" href="#" *ngIf="breadcrumb!=null" [routerLink]="['./']">Groups</a> <i
+        class="fas fa-angle-double-right mx-2" aria-hidden="true"></i></div>
+    <div *ngIf="breadcrumb==null">Groups  <i
+      class="fas fa-angle-double-right mx-2" aria-hidden="true"></i></div>
+
+    </li>
+    <li class="breadcrumb-item active" *ngIf="breadcrumb!=null">{{this.breadcrumb}}</li>
+  </ol>
+</nav>

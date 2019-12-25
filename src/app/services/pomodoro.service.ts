@@ -13,6 +13,7 @@ import {SERVER_URL} from '../ServerConfig';
 import {Group} from '../model/group';
 import {NGXLogger} from 'ngx-logger';
 import {tree} from 'd3-hierarchy';
+import {WebSocketProxyService} from './web-socket-proxy.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,30 +26,16 @@ export class PomodoroService {
   public timer: Timer;
   public startedLocally: boolean = false;
 
-  constructor(private http: HttpClient, private userService: UserService, private authService: AuthService, private webSocketService: RxStompService, private log: NGXLogger) {
+  constructor(private http: HttpClient, private userService: UserService, private authService: AuthService, private webSocketProxyService: WebSocketProxyService, private log: NGXLogger) {
   }
 
-  public initSocket() {
-    this.userService.getUser().pipe(first()).subscribe(
-      user => {
-        this.log.debug(`Initializing socket for user { ${JSON.stringify(user)} }`);
-        // create an empty headers object
-        const headers = {};
-        // make that CSRF token look like a real header
-        headers['Authorization'] = this.authService.currentAccessTokenValue;
-        // put the CSRF header into the connectHeaders on the config
-        const config = {...webSocketConfig, connectHeaders: headers};
-        this.webSocketService.configure(config);
-        this.webSocketService.activate();
-        this.watchStartingPomodoroForCurrentUser();
-        this.watchStopingPomodoroForCurrentUser();
-        this.getLastPomodoro().pipe(first()).subscribe(pomodoro => {
-            this.pomodoro = pomodoro;
-            this.timer.start(this.pomodoro);
-          }
-        );
-      }
-    );
+  public init() {
+    this.watchStartingPomodoroForCurrentUser();
+    this.watchStopingPomodoroForCurrentUser();
+    this.getLastPomodoro().pipe(first()).subscribe(pomodoro => {
+      this.pomodoro = pomodoro;
+      this.timer.start(this.pomodoro);
+    });
   }
 
   public getLastPomodoro(): Observable<Pomodoro> {
@@ -60,23 +47,22 @@ export class PomodoroService {
 
   watchStartingPomodoroForUser(user: User, timer: Timer) {
 
-    this.webSocketService.watch('/pomodoro/start/' + user.username).subscribe(response => {
+    this.webSocketProxyService.watch('/pomodoro/start/' + user.username).subscribe(response => {
       let pomodoro = JSON.parse(response.body);
       timer.start(pomodoro);
     });
   }
 
   watchStopingPomodoroForUser(user: User, timer: Timer) {
-    this.webSocketService.watch('/pomodoro/stop/' + user.username).subscribe(test => {
+    this.webSocketProxyService.watch('/pomodoro/stop/' + user.username).subscribe(test => {
       timer.pause();
     });
   }
 
   private watchStartingPomodoroForCurrentUser() {
-
     this.userService.getUser().subscribe(user => {
       this.timer = new Timer(this.log, user.settings);
-      this.webSocketService.watch('/pomodoro/start/' + user.username).subscribe(response => {
+      this.webSocketProxyService.watch('/pomodoro/start/' + user.username).subscribe(response => {
         this.pomodoro = JSON.parse(response.body);
         this.timer.start(this.pomodoro);
       });
@@ -85,7 +71,7 @@ export class PomodoroService {
 
   private watchStopingPomodoroForCurrentUser() {
     this.userService.getUser().subscribe(user => {
-      this.webSocketService.watch('/pomodoro/stop/' + user.username).subscribe(test => {
+      this.webSocketProxyService.watch('/pomodoro/stop/' + user.username).subscribe(test => {
         this.timer.pause();
       });
     });
@@ -93,25 +79,25 @@ export class PomodoroService {
 
 
   startPomodoroForUser(user: User) {
-    this.webSocketService.publish({destination: '/app/start/' + user.username,});
+    this.webSocketProxyService.publish( '/app/start/' + user.username);
   }
 
   resetPomodoroForUser(user: User, pomodoro: Pomodoro) {
-    this.webSocketService.publish({destination: '/app/stop/' + user.username, body: JSON.stringify(pomodoro)},);
+    this.webSocketProxyService.publish('/app/stop/' + user.username,  JSON.stringify(pomodoro));
   }
 
   startPomodoroForCurrentUser() {
     this.startedLocally=true;
     this.userService.getUser().subscribe(user => {
       this.timer = new Timer(this.log, user.settings);
-      this.webSocketService.publish({destination: '/app/start/' + user.username,});
+      this.webSocketProxyService.publish( '/app/start/' + user.username);
     });
   }
 
   resetPomodoroForCurrentUser() {
     this.startedLocally=false;
     this.userService.getUser().subscribe(user => {
-      this.webSocketService.publish({destination: '/app/stop/' + user.username, body: JSON.stringify(this.pomodoro)},);
+      this.webSocketProxyService.publish( '/app/stop/' + user.username, JSON.stringify(this.pomodoro));
     });
   }
 }

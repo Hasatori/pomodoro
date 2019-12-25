@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <h2 class="h2-responsive text-center my-2 "><strong>Chat</strong></h2>
+  <div class="chat-message  border">
+
+    <ul class="list-unstyled chat-1 scrollbar-light-blue">
+      <li class="rounded mb-4 d-flex mb-4" *ngFor="let message of messages"
+          [ngClass]="this.user.username==message.author?'rounded mb-4 d-flex mb-4':'rounded mb-4 d-flex mb-4 d-flex justify-content-end'">
+        <div  [ngClass]="this.user.username==message.author?'message chat-body white p-3 ml-2 border':'message chat-body white z-depth-0 p-3 ml-2 other-member-message'">
+          <div class="header">
+            <strong class="primary-font">{{message.author}}  </strong>
+            <small class="pull-right text-muted"><i class="far fa-clock"></i> {{getMessageTimestampRelevance(message.timestamp)}}</small>
+          </div>
+          <hr class="w-100">
+          <p class="mb-0">
+            {{message.value}}
+          </p>
+
+        </div>
+      </li>
+
+    </ul>
+    <div class="white">
+      <div class="form-group basic-textarea">
+        <textarea #message class="form-control pl-2 my-0" id="exampleFormControlTextarea2" rows="3"
+                  placeholder="Type your message here..."></textarea>
+      </div>
+    </div>
+    <button type="button" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right" (click)="sendMessage(message.value)">Send</button>
+
+  </div>
+</div>

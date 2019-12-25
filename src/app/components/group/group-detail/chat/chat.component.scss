@@ -1,0 +1,25 @@
+@import "../group-detail.component";
+
+.chat-1 {
+  position: relative;
+  overflow-y: scroll;
+
+  word-wrap: break-word;
+  max-height: 500px;
+  padding: 5px;
+}
+
+.message {
+  max-width: 80%;
+  min-width: 80%;
+}
+
+.other-member-message {
+  float: right !important;
+  background-color: beige !important;
+
+}
+
+.chat-message {
+  padding: 15px;
+}

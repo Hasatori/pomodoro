@@ -1,99 +1,102 @@
-<div class="row">
+ <h1 class="h1-responsive text-center my-3"><strong>{{this.groupName}}</strong></h1>
+    <div class="container-fluid my-5">
 
-
-<div class="col-sm-12 col-md-8">
-  <h1 class="h1-responsive text-center"><strong>{{this.groupName}}</strong> </h1>
-<div class="container-fluid my-5">
-  <div class="container filter-container border shadow">
-    <h4>Filter</h4>
-    <div class="pretty p-default">
-      <input #selectWork type="checkbox" checked="true" id='WORK' (change)="select(selectWork)"/>
-      <div class="state  p-primary">
-        <label>Work</label>
-      </div>
-    </div>
-    <div class="pretty p-default">
-      <input #selectPause type="checkbox" checked="true" id='PAUSE' (change)="select(selectPause)"/>
-      <div class="state  p-primary">
-        <label>Pause</label>
-      </div>
-    </div>
-    <div class="pretty p-default">
-      <input #selectNotRunning type="checkbox" checked="true" id='NOT RUNNING' (change)="select(selectNotRunning)"/>
-      <div class="state  p-primary">
-        <label>Not running</label>
-      </div>
-    </div>
-    <br>
-    <div *ngIf="isOwner" class="input-group md-form form-sm form-1 pl-0 col-xl-6">
-      <div class="input-group-prepend">
+      <div class="container-fluid filter-container border shadow">
+        <h4>Filter</h4>
+        <div class="pretty p-default">
+          <input #selectWork type="checkbox" checked="true" id='WORK' (change)="select(selectWork)"/>
+          <div class="state  p-primary">
+            <label>Work</label>
+          </div>
+        </div>
+        <div class="pretty p-default">
+          <input #selectPause type="checkbox" checked="true" id='PAUSE' (change)="select(selectPause)"/>
+          <div class="state  p-primary">
+            <label>Pause</label>
+          </div>
+        </div>
+        <div class="pretty p-default">
+          <input #selectNotRunning type="checkbox" checked="true" id='NOT RUNNING' (change)="select(selectNotRunning)"/>
+          <div class="state p-primary">
+            <label>Not running</label>
+          </div>
+        </div>
+        <br>
+        <div *ngIf="isOwner" class="input-group md-form form-sm form-1 pl-0 col-xl-6">
+          <div class="input-group-prepend">
         <span class="input-group-text primary-color-dark lighten-3" id="basic-text1"><i class="fas fa-search text-white"
                                                                                         aria-hidden="true"></i></span>
-      </div>
-      <input id="searchBox" #searchBox class="form-control my-0 py-1" type="text" placeholder="find user ..."
-             aria-label="Search" (keyup)="searchUsers(searchBox.value)"
-             value=""
+          </div>
+          <input id="searchBox" #searchBox class="form-control my-0 py-1" type="text" placeholder="find user ..."
+                 aria-label="Search" (keyup)="searchUsers(searchBox.value)"
+                 value=""
 
-      >
-      <button gradient="blue" block="true" rounded="true"
-              (click)="addUser(searchBox.value.trim())"
-              class="btn btn-primary"
-      >Add user
-      </button>
-    </div>
+          >
+          <button gradient="blue" block="true" rounded="true"
+                  (click)="addUser(searchBox.value.trim())"
+                  class="btn btn-primary"
+          >Add user
+          </button>
+        </div>
 
-    <div class="col-xl-6">
-      <div *ngIf="success!=null" class="alert alert-success" role="alert">
-        {{success}}
-      </div>
-      <div *ngIf="userError!=null" class="alert alert-danger" role="alert">
-        {{userError}}
-      </div>
-      <div *ngIf="groupError!=null" class="alert alert-danger" role="alert">
-        {{groupError}}
-      </div>
-    </div>
-    <ul *ngFor="let data of dataset">
-      <li>{{data}}</li>
-    </ul>
-  </div>
-  <div *ngFor="let row of filteredRows" class="row my-3">
+        <div class="col-xl-6">
+          <div *ngIf="success!=null" class="alert alert-success" role="alert">
+            {{success}}
+          </div>
+          <div *ngIf="userError!=null" class="alert alert-danger" role="alert">
+            {{userError}}
+          </div>
+          <div *ngIf="groupError!=null" class="alert alert-danger" role="alert">
+            {{groupError}}
+          </div>
+        </div>
+        <ul *ngFor="let data of dataset">
+          <li>{{data}}</li>
+        </ul>
+        <div class="row">
+          <div class="col-6">
+            <div *ngFor="let row of filteredRows" class="row my-3">
 
-    <div *ngFor=" let pomodoro of row |keyvalue" class="col-lg-4 col-md-12">
-      <!--Card Primary-->
-      <div class="card text-center z-depth-2 shadow my-4 my-card">
-        <div class="cardBackground card-header">
-          <div class="d-flex justify-content-end">
-            <button *ngIf="isOwner" type="button" class="close " data-dismiss="modal" aria-label="Close"
-                    (click)="removeUser(pomodoro.key)">
-              <span aria-hidden="true"><span class="font-small">delete</span> x</span>
+              <div *ngFor=" let pomodoro of row |keyvalue" class="col-lg-4 col-md-12">
+                <!--Card Primary-->
+                <div class="card text-center shadow my-4 my-card">
+                  <div class="cardBackground card-header">
+                    <div class="d-flex justify-content-end">
+                      <button *ngIf="isOwner" type="button" class="close " data-dismiss="modal" aria-label="Close"
+                              (click)="removeUser(pomodoro.key)">
+                        <span aria-hidden="true"><span class="font-small">delete</span> x</span>
 
-            </button>
+                      </button>
+
+                    </div>
+                    <div class="d-flex justify-content-center">
+                      <p class="heading lead">{{pomodoro.key.username}}</p>
+                    </div>
+
+
+                    <img src="../../../../assets/images/user.svg" class="rounded profile-photo">
+                  </div>
+                  <div class="card-body"
+                       [ngClass]="pomodoro.value.phase==='NOT RUNNING'? 'btn-danger':pomodoro.value.phase==='WORK' ?'btn-warning' :'btn-addUserSuccess'">
+                    <h6 class="text-uppercase font-weight-bold text-white mt-2 mb-3 h5-responsive">
+                      <strong>  {{pomodoro.value.timeLeft}}</strong></h6>
+
+                    <h6 class="text-uppercase font-weight-bold text-white  h8-responsive">
+                      <strong>   {{pomodoro.value.phase}}</strong>
+                    </h6>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </div>
-          <div class="d-flex justify-content-center">
-            <p class="heading lead">{{pomodoro.key.username}}</p>
+          <div class="col-6">
+            <app-chat [users]="this.allUsers" [group]="this.groupName"></app-chat>
           </div>
-
-
-          <img src="../../../../assets/images/user.svg" class="rounded profile-photo">
         </div>
-        <div class="card-body"
-             [ngClass]="pomodoro.value.phase==='NOT RUNNING'? 'btn-danger':pomodoro.value.phase==='WORK' ?'btn-warning' :'btn-addUserSuccess'">
-          <h3 class="text-uppercase font-weight-bold text-white mt-2 mb-3">
-            <strong>  {{pomodoro.value.timeLeft}}</strong></h3>
 
-          <h5 class="text-uppercase font-weight-bold text-white mt-2 mb-3"><strong>   {{pomodoro.value.phase}}</strong>
-          </h5>
-
-
-        </div>
       </div>
-    </div>
-  </div>
-</div>
-</div>
-<div class="col-md-4">
 
-</div>
-</div>
+    </div>

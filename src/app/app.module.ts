@@ -4,7 +4,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppComponent} from './app.component';
 
-import {MDBBootstrapModule} from 'angular-bootstrap-md';
+import {MDBBootstrapModule, MdbBtnDirective} from 'angular-bootstrap-md';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from './components/login/login.component';
@@ -39,6 +39,10 @@ import {AuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {provideConfig} from './ServerConfig';
 import { WantMoreFunctionalityComponent } from './components/modals/want-more-functionality/want-more-functionality.component';
 import { SuccessComponent } from './components/modals/success/success.component';
+import {ChatComponent} from './components/group/group-detail/chat/chat.component';
+import {MDBBootstrapModulesPro, MDBSpinningPreloader} from 'ng-uikit-pro-standard';
+import {OverviewComponent} from './components/group/overview/overview.component';
+import {BreadcrumbComponent} from './components/group/breadcrumb/breadcrumb.component';
 
 
 const routes: Routes = [
@@ -77,13 +81,15 @@ const routes: Routes = [
     PomodoroIsRunningComponent,
     FreeTrialComponent,
     WantMoreFunctionalityComponent,
-    SuccessComponent
+    SuccessComponent,
+    ChatComponent,
+    OverviewComponent,
+    BreadcrumbComponent
 
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MDBBootstrapModule.forRoot(),
     FormsModule,
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
@@ -91,13 +97,15 @@ const routes: Routes = [
     CountdownModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG}),
     SocialLoginModule,
+    MDBBootstrapModulesPro.forRoot(),
+
 
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {
     provide: HTTP_INTERCEPTORS,
     useClass: ErrorInterceptor,
-    multi: true
+    multi: true,
   }, RxStompService,
     {
       provide: StompConfig,
@@ -107,7 +115,8 @@ const routes: Routes = [
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig
-    }],
+    },
+    MDBSpinningPreloader,],
   bootstrap: [AppComponent]
 })
 

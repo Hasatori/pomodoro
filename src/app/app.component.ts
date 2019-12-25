@@ -2,6 +2,7 @@ import {Component, HostListener} from '@angular/core';
 import {AuthService} from './services/auth.service';
 import {Pomodoro} from './model/pomodoro';
 import {PomodoroService} from './services/pomodoro.service';
+import {WebSocketProxyService} from './services/web-socket-proxy.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,10 @@ import {PomodoroService} from './services/pomodoro.service';
 })
 export class AppComponent {
 
-  constructor(private loginService: AuthService,private pomodoroService:PomodoroService) {
+  constructor(private webSocketInitService:WebSocketProxyService, private loginService: AuthService, private pomodoroService:PomodoroService) {
     if (loginService.isLoggedIn()){
-      pomodoroService.initSocket();
+      webSocketInitService.initSocket();
+      pomodoroService.init();
     }
   }
 

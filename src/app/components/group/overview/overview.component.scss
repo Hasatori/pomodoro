@@ -1,0 +1,9 @@
+@import "../group.component.scss";
+.my-card{
+  opacity: 0.8;
+
+}
+.my-card:hover{
+  opacity: 1;
+  cursor: pointer;
+}

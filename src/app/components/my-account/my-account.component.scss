@@ -1,30 +1,36 @@
 @import "../../app.component.scss";
 
-.my-account-side-nav{
+.my-account-side-nav {
   max-width: 400px;
   min-width: 400px;
 }
-.nav-link{
-  color:  $backgroundColor !important;
-opacity: 0.8;
+
+.nav-link {
+  color: $backgroundColor !important;
+  opacity: 0.8;
 }
-.active,.nav-link:hover{
+
+.active, .nav-link:hover {
   font-weight: bold;
   opacity: 1;
   color: white !important;
   background-color: $backgroundColor !important;
 }
-.header{
-  color:$basicTextColor;
+
+.header {
+  color: $basicTextColor;
 }
-.active,.nav-link:hover {
-  -webkit-box-shadow: 4px 4px 3px 0px rgba(0,0,0,0.2);
-  -moz-box-shadow: 4px 4px 3px 0px rgba(0,0,0,0.2);
-  box-shadow: 4px 4px 3px 0px rgba(0,0,0,0.2);
+
+.active, .nav-link:hover {
+  -webkit-box-shadow: 4px 4px 3px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 4px 4px 3px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 3px 0px rgba(0, 0, 0, 0.2);
 }
-.active a{
+
+.active a {
   font-weight: bold;
 }
-.active  a,.nav-link:hover a{
+
+.active a, .nav-link:hover a {
   color: $backgroundColor !important;
 }

@@ -1,5 +1,8 @@
 @import "../../app.component.scss";
 
+.breadcrumb{
+  background-color: transparent!important;
+}
 .side-nav-container{
   padding: 15px;
 }
@@ -7,18 +10,27 @@
 {margin-bottom: 10px}
 
 
-.active,.nav-link:hover {
-  background-color:$backgroundColor !important;
-  -webkit-box-shadow: 4px 4px 3px 0px rgba(0,0,0,0.2);
-  -moz-box-shadow: 4px 4px 3px 0px rgba(0,0,0,0.2);
-  box-shadow: 4px 4px 3px 0px rgba(0,0,0,0.2);
-}
 .nav-link{
   color: $backgroundColor;
 }
-.active{
-  font-weight: bold;
+
+.active::before,.breadcrumb-item::before {
+  content: none;
+
 }
-.active,.nav-link:hover{
-  color: white !important;
+.active,.breadcrumb-item a{
+  font-weight: bold;
+  color:$basicTextColor;
+}
+.breadcrumb-item a{
+  text-decoration: underline;
+color:$backgroundColor !important;
+  opacity:0.9
+}
+.breadcrumb-item a:hover{
+  color:$backgroundColor !important;
+  opacity:1
+}
+.my-container{
+  margin: auto;
 }

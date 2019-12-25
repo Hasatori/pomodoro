@@ -1,0 +1,41 @@
+<h1 class="h1-responsive text-center">Your Groups</h1>
+
+<div class="row my-5">
+  <div class="col-lg-4 col-md-6" *ngFor="let group of groups">
+
+
+    <!--Card-->
+    <div class="card card-cascade my-card z-depth-1 my-3" [routerLink]="['./overview/'+group.name]">
+
+      <!--Card image-->
+      <div class="view view-cascade">
+
+      </div>
+      <!--/.Card image-->
+
+      <!--Card content-->
+      <div class="card-body card-body-cascade text-center">
+        <!--Title-->
+        <h4 class="card-title"><strong>{{group.name}}</strong></h4>
+        <h5>Web developer</h5>
+
+        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, ex,
+          recusandae. Facere modi
+          sunt, quod quibusdam.
+        </p>
+
+        <!--Facebook-->
+        <a type="button" class="btn-floating btn-small btn-fb"><i class="fab fa-facebook-f"></i></a>
+        <!--Twitter-->
+        <a type="button" class="btn-floating btn-small btn-tw"><i class="fab fa-twitter"></i></a>
+        <!--Google +-->
+        <a type="button" class="btn-floating btn-small btn-dribbble"><i class="fab fa-dribbble"></i></a>
+
+      </div>
+      <!--/.Card content-->
+
+    </div>
+    <!--/.Card-->
+
+</div>
+</div>
