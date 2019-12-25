@@ -11,12 +11,14 @@
 
 .message {
   max-width: 80%;
-  min-width: 80%;
+  min-width: 50%;
+  float: right !important;
+  background-color: beige !important;
 }
 
 .other-member-message {
   float: right !important;
-  background-color: beige !important;
+  background-color:$customCardBackgroundColor !important;
 
 }
 

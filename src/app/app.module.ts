@@ -42,7 +42,6 @@ import { SuccessComponent } from './components/modals/success/success.component'
 import {ChatComponent} from './components/group/group-detail/chat/chat.component';
 import {MDBBootstrapModulesPro, MDBSpinningPreloader} from 'ng-uikit-pro-standard';
 import {OverviewComponent} from './components/group/overview/overview.component';
-import {BreadcrumbComponent} from './components/group/breadcrumb/breadcrumb.component';
 
 
 const routes: Routes = [
@@ -83,8 +82,7 @@ const routes: Routes = [
     WantMoreFunctionalityComponent,
     SuccessComponent,
     ChatComponent,
-    OverviewComponent,
-    BreadcrumbComponent
+    OverviewComponent
 
   ],
   imports: [

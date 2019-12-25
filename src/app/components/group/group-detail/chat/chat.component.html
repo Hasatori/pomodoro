@@ -2,12 +2,17 @@
   <h2 class="h2-responsive text-center my-2 "><strong>Chat</strong></h2>
   <div class="chat-message  border">
 
-    <ul class="list-unstyled chat-1 scrollbar-light-blue">
-      <li class="rounded mb-4 d-flex mb-4" *ngFor="let message of messages"
-          [ngClass]="this.user.username==message.author?'rounded mb-4 d-flex mb-4':'rounded mb-4 d-flex mb-4 d-flex justify-content-end'">
-        <div  [ngClass]="this.user.username==message.author?'message chat-body white p-3 ml-2 border':'message chat-body white z-depth-0 p-3 ml-2 other-member-message'">
+    <ul id="scrollable-window" class="list-unstyled chat-1 scrollbar-light-blue" (scroll)="scrolled()">
+      <li class="text-center" *ngIf="fetchingOlder">
+
+        <div class="spinner-border " role="status">
+        </div>
+      </li>
+      <li #messages class="my-4 d-flex my-4" *ngFor="let message of messages"
+          [ngClass]="this.user.username===message.author.username?'rounded mb-4 d-flex mb-4':'rounded mb-4 d-flex mb-4 d-flex justify-content-end'">
+        <div  [ngClass]="this.user.username===message.author.username?'message chat-body white z-depth-1 p-3 ml-2 border':'message chat-body white z-depth-1 p-3 ml-2 other-member-message'">
           <div class="header">
-            <strong class="primary-font">{{message.author}}  </strong>
+            <strong class="primary-font">{{message.author.username}}  </strong>
             <small class="pull-right text-muted"><i class="far fa-clock"></i> {{getMessageTimestampRelevance(message.timestamp)}}</small>
           </div>
           <hr class="w-100">

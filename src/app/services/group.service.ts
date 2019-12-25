@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {User} from '../model/user';
 import {Pomodoro} from '../model/pomodoro';
 import {SERVER_URL} from '../ServerConfig';
+import {GroupMessage} from '../model/group-message';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,13 @@ export class GroupService {
     }));
 
   }
+  public getLastNumberOfGroupMessages(groupName:string, start:number,stop:number): Observable<Array<GroupMessage>> {
+    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-chat-messages`, {groupName:groupName,start:start,stop:stop}).pipe(map(response => {
+      console.log(response);
+      return response;
+    }));
 
+  }
   createGroup(name: string, isPublic: boolean): Observable<any> {
     return this.http.post<any>(`${SERVER_URL}/group/create`, {
       name: name,
