@@ -29,11 +29,11 @@ export class ChatComponent implements OnInit, AfterViewInit {
   @ViewChildren('messages') messagesContainer: QueryList<any>;
   private audio: HTMLAudioElement;
   private SOUNDS_PATH: string = '../../../../assets/sounds/';
-  private messageCameSoundName:string='deduction.mp3';
+  private messageCameSoundName: string = 'deduction.mp3';
 
   constructor(private webSocketProxyService: WebSocketProxyService, private userService: UserService, private groupService: GroupService) {
     this.audio = document.createElement('audio');
-    this.audio.setAttribute('src', this.SOUNDS_PATH+this.messageCameSoundName);
+    this.audio.setAttribute('src', this.SOUNDS_PATH + this.messageCameSoundName);
 
   }
 
@@ -43,12 +43,15 @@ export class ChatComponent implements OnInit, AfterViewInit {
       this.user = user;
 
     });
-    this.groupService.getUsersForGroup(this.groupName).subscribe((users)=>{})
+    this.groupService.getUsersForGroup(this.groupName).subscribe((users) => {
+    });
     this.webSocketProxyService.watch('/group/' + this.groupName + '/chat').subscribe(response => {
-      let message = JSON.parse(response.body);
+      let message: GroupMessage = JSON.parse(response.body);
       console.log(message);
       this.messages.push(message);
-      this.audio.play();
+      if (message.author.username !== this.user.username) {
+        this.audio.play();
+      }
 
     });
     this.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
