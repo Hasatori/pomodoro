@@ -7,29 +7,21 @@
     <!--Card-->
     <div class="card card-cascade my-card z-depth-1 my-3" [routerLink]="['./overview/'+group.name]">
 
-      <!--Card image-->
-      <div class="view view-cascade">
 
-      </div>
       <!--/.Card image-->
 
       <!--Card content-->
       <div class="card-body card-body-cascade text-center">
+
         <!--Title-->
         <h4 class="card-title"><strong>{{group.name}}</strong></h4>
-        <h5>Web developer</h5>
 
-        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, ex,
-          recusandae. Facere modi
-          sunt, quod quibusdam.
+        <p class="card-text">
+          <small class="text-right">unread messages <span
+            class="badge badge-danger ml-2 text-right">{{groupService.groupUnreadMessages.get(group.name)}}</span>
+          </small>
+
         </p>
-
-        <!--Facebook-->
-        <a type="button" class="btn-floating btn-small btn-fb"><i class="fab fa-facebook-f"></i></a>
-        <!--Twitter-->
-        <a type="button" class="btn-floating btn-small btn-tw"><i class="fab fa-twitter"></i></a>
-        <!--Google +-->
-        <a type="button" class="btn-floating btn-small btn-dribbble"><i class="fab fa-dribbble"></i></a>
 
       </div>
       <!--/.Card content-->
@@ -37,5 +29,5 @@
     </div>
     <!--/.Card-->
 
-</div>
+  </div>
 </div>

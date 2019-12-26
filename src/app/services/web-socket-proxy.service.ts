@@ -6,6 +6,8 @@ import {UserService} from './user.service';
 import {NGXLogger, NgxLoggerLevel} from 'ngx-logger';
 import {AuthService} from './auth.service';
 import {Observable} from 'rxjs';
+import {PomodoroService} from './pomodoro.service';
+import {GroupService} from './group.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +29,7 @@ export class WebSocketProxyService {
         const config = {...webSocketConfig, headers: headers, connectHeaders: headers};
         this.webSocketService.configure(config);
         this.webSocketService.activate();
+
       }
     );
   }

@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
     console.log(data);
     this.loggingInProgress = false;
     this.webSocketInitService.initSocket();
-    this.pomodoroService.init();
+
 
     this.router.navigate(['/my-account']);
   }

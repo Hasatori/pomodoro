@@ -3,6 +3,7 @@ import {AuthService} from './services/auth.service';
 import {Pomodoro} from './model/pomodoro';
 import {PomodoroService} from './services/pomodoro.service';
 import {WebSocketProxyService} from './services/web-socket-proxy.service';
+import {GroupService} from './services/group.service';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,11 @@ import {WebSocketProxyService} from './services/web-socket-proxy.service';
 })
 export class AppComponent {
 
-  constructor(private webSocketInitService:WebSocketProxyService, private loginService: AuthService, private pomodoroService:PomodoroService) {
+  constructor(private webSocketInitService:WebSocketProxyService, private loginService: AuthService, private pomodoroService:PomodoroService,private groupService:GroupService) {
     if (loginService.isLoggedIn()){
       webSocketInitService.initSocket();
       pomodoroService.init();
+      groupService.startListeningForChats();
     }
   }
 

@@ -5,7 +5,7 @@
   <mdb-navbar-brand><a class="navbar-brand" href="#">Pomapp</a></mdb-navbar-brand>
 
   <!-- Collapsible content -->
-  <links >
+  <links>
 
     <!-- Links -->
     <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav mr-auto">
@@ -20,18 +20,21 @@
           {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
         </li>
       </div>
-      <li  class="nav-item "[routerLinkActive]="['active']">
+      <li class="nav-item " [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/pomodoro']">Pomodoro<span
           class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/group']">Group</a>
+        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/group']">Group
+          <small *ngIf="groupService.allUnreadMessages!==0" class="align-right"><span
+            class="badge badge-danger ml-2 text-right">{{groupService.allUnreadMessages}}</span></small>
+        </a>
       </li>
 
     </ul>
     <ul *ngIf="!loginService.currentAccessTokenValue" class="navbar-nav mr-auto">
 
-      <li  class="nav-item "[routerLinkActive]="['active']">
+      <li class="nav-item " [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/home']">Home<span
           class="sr-only">(current)</span></a>
       </li>
@@ -55,11 +58,15 @@
     <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
 
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/my-account']"> <mdb-icon fas icon="user"></mdb-icon>My account</a>
+        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/my-account']">
+          <mdb-icon fas icon="user"></mdb-icon>
+          My account</a>
 
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link waves-light" mdbWavesEffect (click)="callParent()"> <mdb-icon fas icon="sign-out-alt"></mdb-icon> Log out</a>
+        <a class="nav-link waves-light" mdbWavesEffect (click)="callParent()">
+          <mdb-icon fas icon="sign-out-alt"></mdb-icon>
+          Log out</a>
 
       </li>
     </ul>

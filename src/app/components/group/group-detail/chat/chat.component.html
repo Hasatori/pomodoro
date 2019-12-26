@@ -26,7 +26,7 @@
     </ul>
     <div class="white">
       <div class="form-group basic-textarea">
-        <textarea #message class="form-control pl-2 my-0" id="exampleFormControlTextarea2" rows="3"
+        <textarea (focus)="markAllAsReadAndProcessResponse()" #message class="form-control pl-2 my-0" id="exampleFormControlTextarea2" rows="3"
                   placeholder="Type your message here..."></textarea>
       </div>
     </div>

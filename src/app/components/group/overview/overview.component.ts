@@ -11,11 +11,20 @@ import {Group} from '../../../model/group';
 })
 export class OverviewComponent implements OnInit {
   private groups: Array<Group>;
+  private unreadMessages: Map<Group, number> = new Map<Group, number>();
 
   constructor(private groupService: GroupService) {
     this.groupService.getGroups().pipe(first()).subscribe(groups => {
-      console.log(groups);
       this.groups = groups;
+      /*for (let group of groups) {
+        this.unreadMessages.set(group, 0);
+        this.groupService.getAllUnreadMessages(group.name).subscribe(unreadMessages => {
+          this.unreadMessages.set(group, this.unreadMessages.get(group) + unreadMessages.length);
+        });
+        groupService.getNewGroupMessage(group.name).subscribe((newMessages) => {
+          this.unreadMessages.set(group, this.unreadMessages.get(group) + 1);
+        });
+      }*/
     });
 
   }

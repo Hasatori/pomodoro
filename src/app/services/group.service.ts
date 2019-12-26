@@ -7,6 +7,8 @@ import {User} from '../model/user';
 import {Pomodoro} from '../model/pomodoro';
 import {SERVER_URL} from '../ServerConfig';
 import {GroupMessage} from '../model/group-message';
+import {WebSocketProxyService} from './web-socket-proxy.service';
+import {UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +18,63 @@ export class GroupService {
   private GROUPS_KEY: string = 'userGroups';
   private GROUP_USERS_KEY: string = 'groupUsers';
   private USER_POMODORO_KEY: string = 'userPomodoro';
+  private audio: HTMLAudioElement;
+  private SOUNDS_PATH: string = '../assets/sounds/';
+  private messageCameSoundName: string = 'deduction.mp3';
+  private user: User;
+  public allUnreadMessages: number = 0;
+  public groupUnreadMessages: Map<string, number> = new Map<string, number>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
   }
 
+  startListeningForChats() {
+    this.audio = document.createElement('audio');
+    this.audio.setAttribute('src', this.SOUNDS_PATH + this.messageCameSoundName);
+    this.userService.getUser().subscribe((user) => {
+      this.user = user;
+
+    });
+    this.getGroups().subscribe((groups) => {
+      for (let group of groups) {
+        this.groupUnreadMessages.set(group.name, 0);
+        this.getAllUnreadMessagesForGroup(group.name).subscribe(messages => {
+          let numberToSet = messages.length;
+          if (isNaN(numberToSet)) {
+            numberToSet = 0;
+          }
+          this.groupUnreadMessages.set(group.name, numberToSet);
+          this.allUnreadMessages += numberToSet;
+        });
+        this.getNewGroupMessage(group.name).subscribe(message => {
+          if (message.author.username !== this.user.username) {
+            this.audio.play();
+          }
+          this.allUnreadMessages++;
+          this.groupUnreadMessages.set(group.name, this.groupUnreadMessages.get(group.name) + 1);
+        });
+      }
+
+    });
+
+  }
+
+
+  private getAllUnreadMessagesForGroup(groupName: string): Observable<Array<GroupMessage>> {
+    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-unread-messages`, {
+      groupName: groupName,
+    }).pipe(map(response => {
+      return response;
+    }));
+  }
+
+  markAllFromGroupAsRead(groupName: string): Observable<any> {
+    this.allUnreadMessages -= this.groupUnreadMessages.get(groupName);
+    this.groupUnreadMessages.set(groupName, 0);
+    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/mark-all-as-read`, {}).pipe(map(response => {
+      return response;
+    }));
+  }
 
   public getGroups(): Observable<Array<Group>> {
     let groups: Array<Group> = JSON.parse(window.sessionStorage.getItem(this.GROUPS_KEY));
@@ -51,13 +106,19 @@ export class GroupService {
     }));
 
   }
-  public getLastNumberOfGroupMessages(groupName:string, start:number,stop:number): Observable<Array<GroupMessage>> {
-    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-chat-messages`, {groupName:groupName,start:start,stop:stop}).pipe(map(response => {
+
+  public getLastNumberOfGroupMessages(groupName: string, start: number, stop: number): Observable<Array<GroupMessage>> {
+    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-chat-messages`, {
+      groupName: groupName,
+      start: start,
+      stop: stop
+    }).pipe(map(response => {
       console.log(response);
       return response;
     }));
 
   }
+
   createGroup(name: string, isPublic: boolean): Observable<any> {
     return this.http.post<any>(`${SERVER_URL}/group/create`, {
       name: name,
@@ -80,6 +141,12 @@ export class GroupService {
       username: username, groupName: groupName
     }).pipe(map(response => {
       return response;
+    }));
+  }
+
+  getNewGroupMessage(groupName: string): Observable<GroupMessage> {
+    return this.webSocketProxyService.watch('/group/' + groupName + '/chat').pipe(map(newMessage => {
+      return JSON.parse(newMessage.body);
     }));
   }
 

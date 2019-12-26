@@ -27,32 +27,23 @@ export class ChatComponent implements OnInit, AfterViewInit {
   private limit = 10;
   private end = this.threshold + this.limit;
   @ViewChildren('messages') messagesContainer: QueryList<any>;
-  private audio: HTMLAudioElement;
-  private SOUNDS_PATH: string = '../../../../assets/sounds/';
-  private messageCameSoundName: string = 'deduction.mp3';
+
 
   constructor(private webSocketProxyService: WebSocketProxyService, private userService: UserService, private groupService: GroupService) {
-    this.audio = document.createElement('audio');
-    this.audio.setAttribute('src', this.SOUNDS_PATH + this.messageCameSoundName);
 
   }
 
   ngOnInit() {
-
+    this.markAllAsReadAndProcessResponse();
     this.userService.getUser().subscribe((user) => {
       this.user = user;
 
     });
     this.groupService.getUsersForGroup(this.groupName).subscribe((users) => {
     });
-    this.webSocketProxyService.watch('/group/' + this.groupName + '/chat').subscribe(response => {
-      let message: GroupMessage = JSON.parse(response.body);
-      console.log(message);
-      this.messages.push(message);
-      if (message.author.username !== this.user.username) {
-        this.audio.play();
-      }
-
+    this.groupService.getNewGroupMessage(this.groupName).subscribe((newMessage) => {
+      console.log(newMessage);
+      this.messages.push(newMessage);
     });
     this.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
       this.messages = response.sort(function(a, b) {
@@ -67,11 +58,15 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.webSocketProxyService.publish('/app/group/' + this.groupName + '/chat', messageValue);
   }
 
+  markAllAsReadAndProcessResponse() {
+    this.groupService.markAllFromGroupAsRead(this.groupName).subscribe((response) => {
+      console.log(response);
+    });
+  }
 
   getMessageTimestampRelevance(messageTimestamp: Date): string {
     let currentDate = new Date();
     let DateDiff = require('date-diff');
-    console.log(messageTimestamp);
     let diff = new DateDiff(currentDate, new Date(messageTimestamp));
     let result = this.getResult(diff.seconds(), 'second');
     if (diff.seconds() < 5) {
