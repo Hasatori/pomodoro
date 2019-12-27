@@ -1,7 +1,56 @@
-<h1 class="h1-responsive text-center">Your Groups</h1>
 
-<div class="row my-5">
-  <div class="col-lg-4 col-md-6" *ngFor="let group of groups">
+<div class="row ">
+<h1 class="col-12 h1-responsive text-center">Group managed by you</h1>
+</div>
+<div class="row">
+  <div class="col-11"></div>
+  <div class="col-1">
+    <a class="btn-floating btn-success btn-sm" [routerLink]="['./create']"><i class="fas fa-plus"></i></a>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col-lg-4 col-md-6" *ngFor="let group of ownedGroups">
+
+
+
+    <!--Card-->
+    <div class="card card-cascade my-card z-depth-1 my-3 gradient-card" [routerLink]="['./overview/'+group.name]">
+
+
+      <!--/.Card image-->
+
+      <!--Card content-->
+      <div class="card-body card-body-cascade text-center mask blue-gradient-rgba">
+
+        <!--Title-->
+        <h4 class="card-title"><strong>{{group.name}}</strong></h4>
+
+        <p class="card-text" *ngIf="groupService.groupUnreadMessages.get(group.name)>0">
+          <small class="text-right">unread messages <span
+            class="badge badge-danger ml-2 text-right">{{groupService.groupUnreadMessages.get(group.name)}}</span>
+          </small>
+
+        </p>
+
+      </div>
+      <!--/.Card content-->
+
+    </div>
+    <!--/.Card-->
+
+  </div>
+</div>
+
+
+<div class="row mt-5">
+  <h1 class="col-12 h1-responsive text-center">Groups you are member of</h1>
+</div>
+<div class="row">
+
+  <div class="col-lg-4 col-md-6" *ngFor="let group of participatingGroups">
 
 
     <!--Card-->
@@ -15,8 +64,10 @@
 
         <!--Title-->
         <h4 class="card-title"><strong>{{group.name}}</strong></h4>
-
-        <p class="card-text">
+        <p class="card-text" >
+         Owned by: {{group.owner.username}}
+        </p>
+        <p class="card-text" *ngIf="groupService.groupUnreadMessages.get(group.name)>0">
           <small class="text-right">unread messages <span
             class="badge badge-danger ml-2 text-right">{{groupService.groupUnreadMessages.get(group.name)}}</span>
           </small>

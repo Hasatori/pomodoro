@@ -3,6 +3,8 @@ import {first} from 'rxjs/operators';
 import {GroupService} from '../../../services/group.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Group} from '../../../model/group';
+import {UserService} from '../../../services/user.service';
+import {User} from '../../../model/user';
 
 @Component({
   selector: 'overview',
@@ -10,21 +12,24 @@ import {Group} from '../../../model/group';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  private groups: Array<Group>;
+  private ownedGroups: Array<Group> = [];
+  private participatingGroups: Array<Group> = [];
   private unreadMessages: Map<Group, number> = new Map<Group, number>();
+  private user: User;
 
-  constructor(private groupService: GroupService) {
+  constructor(private groupService: GroupService, private userService: UserService) {
     this.groupService.getGroups().pipe(first()).subscribe(groups => {
-      this.groups = groups;
-      /*for (let group of groups) {
-        this.unreadMessages.set(group, 0);
-        this.groupService.getAllUnreadMessages(group.name).subscribe(unreadMessages => {
-          this.unreadMessages.set(group, this.unreadMessages.get(group) + unreadMessages.length);
-        });
-        groupService.getNewGroupMessage(group.name).subscribe((newMessages) => {
-          this.unreadMessages.set(group, this.unreadMessages.get(group) + 1);
-        });
-      }*/
+      this.userService.getUser().subscribe(user => {
+        this.user = user;
+        for (let group of groups) {
+          if (group.owner.username === this.user.username) {
+            this.ownedGroups.push(group);
+          } else {
+            this.participatingGroups.push(group);
+          }
+        }
+      });
+
     });
 
   }

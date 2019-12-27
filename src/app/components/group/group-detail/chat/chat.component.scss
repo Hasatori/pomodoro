@@ -12,16 +12,18 @@
 .message {
   max-width: 80%;
   min-width: 50%;
-  float: right !important;
   background-color: beige !important;
 }
 
 .other-member-message {
-  float: right !important;
   background-color:$customCardBackgroundColor !important;
 
 }
 
 .chat-message {
   padding: 15px;
+}
+.seen{
+
+  display: block !important;
 }

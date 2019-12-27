@@ -7,6 +7,7 @@ import {log} from 'util';
 import {PomodoroService} from '../../services/pomodoro.service';
 import {AuthService as FacebookAuth, FacebookLoginProvider} from 'angularx-social-login';
 import {WebSocketProxyService} from '../../services/web-socket-proxy.service';
+import {WebSocketManagerService} from '../../services/web-socket-manager.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   elegantFormPasswordEx: AbstractControl;
   elegantFormUsernameEx: AbstractControl;
 
-  constructor(public fb: FormBuilder, private authenticationService: AuthService, private router: Router, private pomodoroService: PomodoroService, private webSocketInitService:WebSocketProxyService, private facebookAuth: FacebookAuth) {
+  constructor(public fb: FormBuilder, private authenticationService: AuthService, private router: Router, private pomodoroService: PomodoroService, private webSocketManager:WebSocketManagerService, private facebookAuth: FacebookAuth) {
     this.elegantForm = fb.group({
       'elegantFormUsernameEx': ['', [Validators.required]],
       'elegantFormPasswordEx': ['', Validators.required],
@@ -69,7 +70,7 @@ export class LoginComponent implements OnInit {
   private loginSuccessful(data: any) {
     console.log(data);
     this.loggingInProgress = false;
-    this.webSocketInitService.initSocket();
+    this.webSocketManager.initAllSockets();
 
 
     this.router.navigate(['/my-account']);

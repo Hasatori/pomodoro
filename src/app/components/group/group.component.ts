@@ -11,5 +11,7 @@ import {ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Router} from '@angular/ro
 })
 export class GroupComponent {
 
-
+constructor(private router:Router){
+console.log(router.url);
+}
 }

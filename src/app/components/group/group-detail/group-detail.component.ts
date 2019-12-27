@@ -30,7 +30,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
   private group: Group;
   private groupName: string;
   private allRows: Map<User, Timer>;
-  private filteredRows: Array<Map<User, Timer>>;
+  private filteredRows: Map<User, Timer>;
   private columnCount: number = 3;
   private workSelected: boolean = true;
   private pauseSelected: boolean = true;
@@ -39,6 +39,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
   private searchInProgress: boolean = false;
   private searchDelayMilliseconds: number = 500;
   private user: User;
+  private invitedUsers: Array<User> = [];
 
   allUsers: Array<User>;
   dataset;
@@ -64,7 +65,7 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
         this.user = user;
         this.isOwner = this.group.owner.username === this.user.username;
         this.allRows = new Map<User, Timer>();
-        this.filteredRows = [];
+        this.filteredRows = new Map<User, Timer>();
 
         this.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
           this.allUsers = users;
@@ -78,7 +79,6 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
                 let timer = new Timer(this.log, null, this);
                 this.pomodoroService.watchStartingPomodoroForUser(user, timer);
                 this.pomodoroService.watchStopingPomodoroForUser(user, timer);
-                row.set(user, timer);
                 this.allRows.set(user, timer);
                 if (pomodoro != null) {
                   timer.start(pomodoro);
@@ -122,28 +122,17 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
 
   private updateFilter() {
 
-    this.filteredRows = [];
-    let valuesToAdd = new Map<User, Timer>();
+    this.filteredRows = new Map<User, Timer>();
     if (this.workSelected === true) {
-      this.addValues(valuesToAdd, 'WORK');
+      this.addValues(this.filteredRows, 'WORK');
     }
     if (this.pauseSelected === true) {
-      this.addValues(valuesToAdd, 'PAUSE');
+      this.addValues(this.filteredRows, 'PAUSE');
     }
     if (this.notRunningSelected === true) {
-      this.addValues(valuesToAdd, 'NOT RUNNING');
+      this.addValues(this.filteredRows, 'NOT RUNNING');
     }
-    let count = 0;
-    let row = new Map<User, Timer>();
-    valuesToAdd.forEach((value, key) => {
-      count++;
-      row.set(key, value);
-      if (row.size % this.columnCount === 0 || count == valuesToAdd.size) {
-        this.filteredRows.push(row);
-        row = new Map<User, Timer>();
-      }
 
-    });
   }
 
   private addValues(valuesToAdd: Map<User, Timer>, phase: string) {
@@ -171,12 +160,12 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
     }
   }
 
-  public addUser(username: string) {
+  public inviteUser(username: string) {
     this.reset();
     let check = false;
     this.allRows.forEach((value, key) => {
       if (key.username === username) {
-        this.groupError = 'User already is part of the group';
+        this.groupError = 'User has already been invited to the group';
         check = true;
       }
     });
@@ -186,6 +175,9 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
         this.groupService.emptyCache(this.group.name);
         this.fetchMembers();
         this.success = response.success;
+        let newUser = new User();
+        newUser.username = username;
+        this.invitedUsers.push(newUser);
       }, error1 => {
         this.userError = error1.error.username;
         this.groupError = error1.error.group;

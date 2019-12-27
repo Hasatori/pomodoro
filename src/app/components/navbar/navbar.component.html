@@ -25,7 +25,7 @@
           class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/group']">Group
+        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/group']">Groups
           <small *ngIf="groupService.allUnreadMessages!==0" class="align-right"><span
             class="badge badge-danger ml-2 text-right">{{groupService.allUnreadMessages}}</span></small>
         </a>
@@ -56,7 +56,15 @@
     </ul>
     <!-- Links -->
     <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
-
+      <li class="nav-item">
+        <a class="nav-link waves-light" mdbWavesEffect>
+          <mdb-icon fas icon="user"></mdb-icon>
+          Invitations
+          <small *ngIf="groupService.numberOfNotAcceptedGroupInvitations!==0" class="align-right"><span
+            class="badge badge-danger ml-2 text-right">{{groupService.numberOfNotAcceptedGroupInvitations}}</span>
+          </small>
+        </a>
+      </li>
       <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/my-account']">
           <mdb-icon fas icon="user"></mdb-icon>

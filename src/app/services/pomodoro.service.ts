@@ -26,7 +26,7 @@ export class PomodoroService {
   public timer: Timer;
   public startedLocally: boolean = false;
 
-  constructor(private http: HttpClient, private userService: UserService, private authService: AuthService, private webSocketProxyService: WebSocketProxyService, private log: NGXLogger) {
+  constructor(private webSocketProxyService:WebSocketProxyService,private http: HttpClient, private userService: UserService, private authService: AuthService, private log: NGXLogger) {
   }
 
   public init() {
@@ -35,6 +35,7 @@ export class PomodoroService {
     this.getLastPomodoro().pipe(first()).subscribe(pomodoro => {
       this.pomodoro = pomodoro;
       this.timer.start(this.pomodoro);
+      console.log("test2");
     });
   }
 

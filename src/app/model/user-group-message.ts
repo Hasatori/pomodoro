@@ -3,5 +3,6 @@ import {GroupMessage} from './group-message';
 
 export class UserGroupMessage {
   user: User;
-  read: boolean;
+
+  readTimestamp: Date;
 }

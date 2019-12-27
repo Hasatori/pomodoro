@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostListener, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {User} from '../../../../model/user';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {AuthService} from '../../../../services/auth.service';
@@ -7,13 +7,14 @@ import {WebSocketProxyService} from '../../../../services/web-socket-proxy.servi
 import {ActivatedRoute} from '@angular/router';
 import {GroupService} from '../../../../services/group.service';
 import {GroupMessage} from '../../../../model/group-message';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit, AfterViewInit {
+export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input('users') users: Array<User>;
   @Input('group') groupName: string;
@@ -27,7 +28,13 @@ export class ChatComponent implements OnInit, AfterViewInit {
   private limit = 10;
   private end = this.threshold + this.limit;
   @ViewChildren('messages') messagesContainer: QueryList<any>;
+  seenBy: string = '';
+  lastMessage: GroupMessage;
+  private  options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
+  private markAllAsReadSubscription: Subscription;
+  private newGroupMessageSubscription: Subscription;
+  private lastNumberOfGroupMessagesSubscription: Subscription;
 
   constructor(private webSocketProxyService: WebSocketProxyService, private userService: UserService, private groupService: GroupService) {
 
@@ -41,11 +48,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
     });
     this.groupService.getUsersForGroup(this.groupName).subscribe((users) => {
     });
-    this.groupService.getNewGroupMessage(this.groupName).subscribe((newMessage) => {
-      console.log(newMessage);
+    this.newGroupMessageSubscription = this.groupService.getNewGroupMessage(this.groupName).subscribe((newMessage) => {
+      this.seenBy = '';
       this.messages.push(newMessage);
+      this.markAllAsReadAndProcessResponse();
     });
-    this.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
+    this.lastNumberOfGroupMessagesSubscription = this.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
       this.messages = response.sort(function(a, b) {
         return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       });
@@ -54,13 +62,29 @@ export class ChatComponent implements OnInit, AfterViewInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.markAllAsReadSubscription.unsubscribe();
+    this.newGroupMessageSubscription.unsubscribe();
+    this.lastNumberOfGroupMessagesSubscription.unsubscribe();
+  }
+
   sendMessage(messageValue: string) {
     this.webSocketProxyService.publish('/app/group/' + this.groupName + '/chat', messageValue);
+
   }
 
   markAllAsReadAndProcessResponse() {
-    this.groupService.markAllFromGroupAsRead(this.groupName).subscribe((response) => {
-      console.log(response);
+    this.markAllAsReadSubscription = this.groupService.markAllFromGroupAsRead(this.groupName).subscribe((lastMessage) => {
+      this.lastMessage = lastMessage;
+      let filteredRelatedMessages = lastMessage.relatedGroupMessages
+        .filter(message => message.readTimestamp !== null && message.user.username !== this.user.username && message.user.username !== lastMessage.author.username);
+      let lastRelatedMessageTimestamp = filteredRelatedMessages.sort(function(a, b) {
+        return new Date(a.readTimestamp).getTime() - new Date(b.readTimestamp).getTime();
+      })[0];
+      if (filteredRelatedMessages.length > 0) {
+        this.seenBy = `${filteredRelatedMessages.map(message => message.user.username)
+          .join(', ')} on ${new Date(lastRelatedMessageTimestamp.readTimestamp).toLocaleDateString("en-US", this.options)}`;
+      }
     });
   }
 
@@ -102,6 +126,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.messagesContainer.changes.subscribe(t => {
       if (!this.fetchingOlder && !this.olderFetched) {
         this.scrollableWindow.scrollTop = this.scrollableWindow.scrollHeight + 500;
+
       }
       if (this.olderFetched) {
         this.olderFetched = false;
@@ -135,4 +160,6 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
     }
   }
+
+
 }

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h2 class="h2-responsive text-center my-2 "><strong>Chat</strong></h2>
+  <h3 class="h3-responsive text-center mb-4"><strong>Group chat</strong></h3>
   <div class="chat-message  border">
 
     <ul id="scrollable-window" class="list-unstyled chat-1 scrollbar-light-blue" (scroll)="scrolled()">
@@ -8,12 +8,14 @@
         <div class="spinner-border " role="status">
         </div>
       </li>
-      <li #messages class="my-4 d-flex my-4" *ngFor="let message of messages"
-          [ngClass]="this.user.username===message.author.username?'rounded mb-4 d-flex mb-4':'rounded mb-4 d-flex mb-4 d-flex justify-content-end'">
-        <div  [ngClass]="this.user.username===message.author.username?'message chat-body white z-depth-1 p-3 ml-2 border':'message chat-body white z-depth-1 p-3 ml-2 other-member-message'">
+      <li #messages *ngFor="let message of messages;last as isLast"
+          [ngClass]="this.user.username===message.author.username?'rounded d-flex mt-4 mb-2':'rounded mt-4 mb-2 d-flex justify-content-end'">
+        <div
+          [ngClass]="this.user.username===message.author.username?'message chat-body white z-depth-1 p-3 ml-2 border':'message chat-body white z-depth-1 p-3 ml-2 other-member-message'">
           <div class="header">
             <strong class="primary-font">{{message.author.username}}  </strong>
-            <small class="pull-right text-muted"><i class="far fa-clock"></i> {{getMessageTimestampRelevance(message.timestamp)}}</small>
+            <small class="pull-right text-muted"><i
+              class="far fa-clock"></i> {{getMessageTimestampRelevance(message.timestamp)}}</small>
           </div>
           <hr class="w-100">
           <p class="mb-0">
@@ -21,16 +23,23 @@
           </p>
 
         </div>
-      </li>
 
+      </li>
+      <p   *ngIf="seenBy!==''"
+         [ngClass]="this.user.username===lastMessage.author.username?'ml-2 rounded':'mr-2 rounded text-right'">
+        <small ><i class="fas fa-check"></i> Seen by {{this.seenBy}}</small>
+      </p>
     </ul>
     <div class="white">
       <div class="form-group basic-textarea">
-        <textarea (focus)="markAllAsReadAndProcessResponse()" #message class="form-control pl-2 my-0" id="exampleFormControlTextarea2" rows="3"
+        <textarea (focus)="markAllAsReadAndProcessResponse()" #message class="form-control pl-2 my-0"
+                  id="exampleFormControlTextarea2" rows="3"
                   placeholder="Type your message here..."></textarea>
       </div>
     </div>
-    <button type="button" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right" (click)="sendMessage(message.value)">Send</button>
+    <button type="button" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right"
+            (click)="sendMessage(message.value);message.value=''">Send
+    </button>
 
   </div>
 </div>

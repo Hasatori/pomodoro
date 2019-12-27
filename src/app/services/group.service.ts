@@ -9,6 +9,7 @@ import {SERVER_URL} from '../ServerConfig';
 import {GroupMessage} from '../model/group-message';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {UserService} from './user.service';
+import {GroupInvatation} from '../model/group-invatation';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class GroupService {
   private user: User;
   public allUnreadMessages: number = 0;
   public groupUnreadMessages: Map<string, number> = new Map<string, number>();
+  public numberOfNotAcceptedGroupInvitations: number = 0;
 
   constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
   }
@@ -49,14 +51,15 @@ export class GroupService {
         this.getNewGroupMessage(group.name).subscribe(message => {
           if (message.author.username !== this.user.username) {
             this.audio.play();
+            this.allUnreadMessages++;
+            this.groupUnreadMessages.set(group.name, this.groupUnreadMessages.get(group.name) + 1);
           }
-          this.allUnreadMessages++;
-          this.groupUnreadMessages.set(group.name, this.groupUnreadMessages.get(group.name) + 1);
         });
       }
-
     });
-
+    this.getNotAcceptedGroupInvitations().subscribe(groupInvitations => {
+      this.numberOfNotAcceptedGroupInvitations = groupInvitations.length;
+    });
   }
 
 
@@ -68,7 +71,7 @@ export class GroupService {
     }));
   }
 
-  markAllFromGroupAsRead(groupName: string): Observable<any> {
+  markAllFromGroupAsRead(groupName: string): Observable<GroupMessage> {
     this.allUnreadMessages -= this.groupUnreadMessages.get(groupName);
     this.groupUnreadMessages.set(groupName, 0);
     return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/mark-all-as-read`, {}).pipe(map(response => {
@@ -160,4 +163,10 @@ export class GroupService {
   }
 
 
+  private getNotAcceptedGroupInvitations(): Observable<Array<GroupInvatation>> {
+    return this.http.post<any>(`${SERVER_URL}/not-accepted-group-invitations`, {}).pipe(map(response => {
+      return response;
+    }));
+
+  }
 }
