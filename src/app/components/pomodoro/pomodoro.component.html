@@ -4,15 +4,15 @@
     <!-- Card content -->
     <div class="card-body">
 
-  <h1 id="head">{{pomodoroService.timer.phase}}</h1>
+  <h1 id="head">{{userServiceProvider.pomodoroService.timer.phase}}</h1>
   <div class="customTimer">
-    {{pomodoroService.timer.timeLeft}}
+    {{userServiceProvider.pomodoroService.timer.timeLeft}}
   </div>
 
-  <button *ngIf="!pomodoroService.timer.started" type="button" class="btn btn-primary btn-rounded  my-button"
-          (click)="pomodoroService.startPomodoroForCurrentUser()">START</button>
-  <button *ngIf="pomodoroService.timer.started" type="button" class="btn btn-danger btn-rounded  my-button"
-          (click)="pomodoroService.resetPomodoroForCurrentUser()">RESET</button>
+  <button *ngIf="!userServiceProvider.pomodoroService.timer.started" type="button" class="btn btn-primary btn-rounded  my-button"
+          (click)="userServiceProvider.pomodoroService.startPomodoroForCurrentUser()">START</button>
+  <button *ngIf="userServiceProvider.pomodoroService.timer.started" type="button" class="btn btn-danger btn-rounded  my-button"
+          (click)="userServiceProvider.pomodoroService.resetPomodoroForCurrentUser()">RESET</button>
 </div>
   </div>
   <app-pomodoro-is-running></app-pomodoro-is-running>
