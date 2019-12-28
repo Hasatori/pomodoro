@@ -28,9 +28,9 @@
         <!--Title-->
         <h4 class="card-title"><strong>{{group.name}}</strong></h4>
 
-        <p class="card-text" *ngIf="groupService.groupUnreadMessages.get(group.name)>0">
+        <p class="card-text" *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)>0">
           <small class="text-right">unread messages <span
-            class="badge badge-danger ml-2 text-right">{{groupService.groupUnreadMessages.get(group.name)}}</span>
+            class="badge badge-danger ml-2 text-right">{{ userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
           </small>
 
         </p>
@@ -67,9 +67,9 @@
         <p class="card-text" >
          Owned by: {{group.owner.username}}
         </p>
-        <p class="card-text" *ngIf="groupService.groupUnreadMessages.get(group.name)>0">
+        <p class="card-text" *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)>0">
           <small class="text-right">unread messages <span
-            class="badge badge-danger ml-2 text-right">{{groupService.groupUnreadMessages.get(group.name)}}</span>
+            class="badge badge-danger ml-2 text-right">{{ userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
           </small>
 
         </p>

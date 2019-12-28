@@ -1,13 +1,8 @@
 import {AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {User} from '../../../../model/user';
-import {RxStompService} from '@stomp/ng2-stompjs';
-import {AuthService} from '../../../../services/auth.service';
-import {UserService} from '../../../../services/user.service';
-import {WebSocketProxyService} from '../../../../services/web-socket-proxy.service';
-import {ActivatedRoute} from '@angular/router';
-import {GroupService} from '../../../../services/group.service';
 import {GroupMessage} from '../../../../model/group-message';
 import {Subscription} from 'rxjs';
+import {UserServiceProvider} from '../../../../services/user-service-provider';
 
 @Component({
   selector: 'app-chat',
@@ -37,24 +32,24 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private lastNumberOfGroupMessagesSubscription: Subscription;
 
 
-  constructor(private webSocketProxyService: WebSocketProxyService, private userService: UserService, private groupService: GroupService) {
+  constructor(private userServiceProvider: UserServiceProvider) {
 
   }
 
   ngOnInit() {
     this.markAllAsReadAndProcessResponse();
-    this.userService.getUser().subscribe((user) => {
+    this.userServiceProvider.userService.getUser().subscribe((user) => {
       this.user = user;
 
     });
-    this.groupService.getUsersForGroup(this.groupName).subscribe((users) => {
+    this.userServiceProvider.groupService.getUsersForGroup(this.groupName).subscribe((users) => {
     });
-    this.newGroupMessageSubscription = this.groupService.getNewGroupMessage(this.groupName).subscribe((newMessage) => {
+    this.newGroupMessageSubscription = this.userServiceProvider.groupService.getNewGroupMessage(this.groupName).subscribe((newMessage) => {
       this.seenBy = '';
       this.messages.push(newMessage);
       this.markAllAsReadAndProcessResponse();
     });
-    this.lastNumberOfGroupMessagesSubscription = this.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
+    this.lastNumberOfGroupMessagesSubscription = this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
       this.messages = response.sort(function(a, b) {
         return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       });
@@ -72,12 +67,12 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   sendMessage(messageValue: string) {
-    this.webSocketProxyService.publish('/app/group/' + this.groupName + '/chat', messageValue);
+    this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.groupName + '/chat', messageValue);
 
   }
 
   markAllAsReadAndProcessResponse() {
-    this.markAllAsReadSubscription = this.groupService.markAllFromGroupAsRead(this.groupName).subscribe((lastMessage) => {
+    this.markAllAsReadSubscription = this.userServiceProvider.groupService.markAllFromGroupAsRead(this.groupName).subscribe((lastMessage) => {
       this.lastMessage = lastMessage;
       let filteredRelatedMessages = lastMessage.relatedGroupMessages
         .filter(message => message.readTimestamp !== null && message.user.username !== this.user.username && message.user.username !== lastMessage.author.username);
@@ -143,7 +138,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.scrollableWindow.scrollTop == 0 && !this.stopFetchingOlder) {
       this.fetchingOlder = true;
       setTimeout(() => {
-        this.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
+        this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
           if (response.length > 0) {
             this.messages = this.messages.concat(response);
             this.messages.sort(function(a, b) {

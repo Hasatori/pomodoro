@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {first} from 'rxjs/operators';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UserServiceProvider} from '../../../services/user-service-provider';
 
 @Component({
   selector: 'change-password',
@@ -21,7 +22,7 @@ export class ChangePasswordComponent implements OnInit {
   submitted: boolean = false;
   inProgress: boolean = false;
 
-  constructor(private userService: UserService, public fb: FormBuilder) {
+  constructor(private userServiceProvider: UserServiceProvider, public fb: FormBuilder) {
     this.elegantForm = fb.group({
       'elegantFormOldPassword': ['', Validators.required],
       'elegantFormNewPassword': ['', Validators.required],
@@ -41,7 +42,7 @@ export class ChangePasswordComponent implements OnInit {
     this.submitted = true;
     if (newPassword === confirmNewPassword && oldPassword !== newPassword) {
       this.inProgress = true;
-      this.userService.changePassword(oldPassword, newPassword).pipe(first()).subscribe(
+      this.userServiceProvider.userService.changePassword(oldPassword, newPassword).pipe(first()).subscribe(
         response => {
           this.success = response.addUserSuccess;
           this.inProgress = false;
@@ -49,7 +50,7 @@ export class ChangePasswordComponent implements OnInit {
           console.log(errorResponse);
           this.oldPasswordError = errorResponse.error.oldPassword;
           this.newPasswordError = errorResponse.error.newPassword;
-          this.newPasswordConfirmError =errorResponse.error.newPasswordConfirm;
+          this.newPasswordConfirmError = errorResponse.error.newPasswordConfirm;
           this.inProgress = false;
           console.log(this.newPasswordConfirmError);
         }

@@ -3,6 +3,7 @@ import {first} from 'rxjs/operators';
 import {AuthService} from '../../../services/auth.service';
 import {UserService} from '../../../services/user.service';
 import {Pomodoro} from '../../../model/pomodoro';
+import {UserServiceProvider} from '../../../services/user-service-provider';
 
 @Component({
   selector: 'pomodoro-history',
@@ -15,9 +16,9 @@ export class PomodoroHistoryComponent implements OnInit {
   private pomodoros: Array<Pomodoro>;
   private showLegend = true;
 
-  constructor(private userService: UserService) {
+  constructor(private userServiceProvider: UserServiceProvider) {
 
-    this.userService.userPomodoros().pipe(first()).subscribe(
+    this.userServiceProvider.userService.userPomodoros().pipe(first()).subscribe(
       pomodoros => {
         this.pomodoros = pomodoros;
         this.fillChart();

@@ -1,13 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../services/auth.service';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {log} from 'util';
-import {PomodoroService} from '../../services/pomodoro.service';
 import {AuthService as FacebookAuth, FacebookLoginProvider} from 'angularx-social-login';
-import {WebSocketProxyService} from '../../services/web-socket-proxy.service';
-import {WebSocketManagerService} from '../../services/web-socket-manager.service';
+import {UserServiceProvider} from '../../services/user-service-provider';
 
 @Component({
   selector: 'app-login',
@@ -20,8 +16,9 @@ export class LoginComponent implements OnInit {
   loggingInProgress = false;
   elegantFormPasswordEx: AbstractControl;
   elegantFormUsernameEx: AbstractControl;
+  submitted: boolean = false;
 
-  constructor(public fb: FormBuilder, private authenticationService: AuthService, private router: Router, private pomodoroService: PomodoroService, private webSocketManager:WebSocketManagerService, private facebookAuth: FacebookAuth) {
+  constructor(public fb: FormBuilder, private router: Router, private facebookAuth: FacebookAuth, private userServiceProvider: UserServiceProvider) {
     this.elegantForm = fb.group({
       'elegantFormUsernameEx': ['', [Validators.required]],
       'elegantFormPasswordEx': ['', Validators.required],
@@ -36,11 +33,12 @@ export class LoginComponent implements OnInit {
   }
 
   signIn(username: string, password: string) {
+    this.submitted=true;
     this.elegantFormPasswordEx.markAsTouched();
     this.elegantFormUsernameEx.markAsTouched();
     if (this.elegantForm.valid) {
       this.loggingInProgress = true;
-      this.authenticationService.login(username, password).pipe(first())
+      this.userServiceProvider.authService.login(username, password).pipe(first())
         .subscribe(
           data => {
             this.loginSuccessful(data);
@@ -55,7 +53,7 @@ export class LoginComponent implements OnInit {
     this.loggingInProgress = true;
     this.facebookAuth.signIn(FacebookLoginProvider.PROVIDER_ID).then(() => {
       this.facebookAuth.authState.subscribe((facebookResponse) => {
-        this.authenticationService.loginWithFB(facebookResponse).pipe(first())
+        this.userServiceProvider.authService.loginWithFB(facebookResponse).pipe(first())
           .subscribe(
             data => {
               this.loginSuccessful(data);
@@ -70,7 +68,7 @@ export class LoginComponent implements OnInit {
   private loginSuccessful(data: any) {
     console.log(data);
     this.loggingInProgress = false;
-    this.webSocketManager.initAllSockets();
+    this.userServiceProvider.webSocketManagerService.initAllSockets();
 
 
     this.router.navigate(['/my-account']);

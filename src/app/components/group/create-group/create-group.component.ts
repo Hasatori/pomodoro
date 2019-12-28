@@ -3,6 +3,7 @@ import {PomodoroService} from '../../../services/pomodoro.service';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {GroupService} from '../../../services/group.service';
+import {UserServiceProvider} from '../../../services/user-service-provider';
 
 @Component({
   selector: 'app-create-group',
@@ -14,7 +15,8 @@ export class CreateGroupComponent implements OnInit {
   inProgress: boolean;
   nameNotFilled: boolean = false;
   success: boolean = false;
-  constructor(private groupService: GroupService, private router: Router) {
+
+  constructor(private userServiceProvider: UserServiceProvider, private router: Router) {
   }
 
   ngOnInit() {
@@ -25,9 +27,9 @@ export class CreateGroupComponent implements OnInit {
     if (name.trim() === '') {
       this.nameNotFilled = true;
     } else {
-      this.groupService.createGroup(name, isPublic).pipe(first()).subscribe(
+      this.userServiceProvider.groupService.createGroup(name, isPublic).pipe(first()).subscribe(
         response => {
-          this.router.navigate(['group/'+name])
+          this.router.navigate(['group/' + name])
             .then(() => {
               window.location.reload();
             });

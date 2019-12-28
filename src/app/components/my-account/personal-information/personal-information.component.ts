@@ -6,6 +6,7 @@ import {nocollapseHack} from '@angular/compiler-cli/src/transformers/nocollapse_
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SuccessComponent} from '../../modals/success/success.component';
 import {AuthService} from '../../../services/auth.service';
+import {UserServiceProvider} from '../../../services/user-service-provider';
 
 @Component({
   selector: 'personal-information',
@@ -25,14 +26,14 @@ export class PersonalInformationComponent implements OnInit {
   // @ts-ignore
   @ViewChild('successComponent') successComponent: SuccessComponent;
 
-  constructor(private userService: UserService, public fb: FormBuilder,private authService:AuthService) {
+  constructor(public fb: FormBuilder, private userServiceProvider: UserServiceProvider) {
     this.elegantForm = fb.group({
       'elegantFormUsername': ['', [Validators.required]],
       'elegantFormEmail': ['', [Validators.required, Validators.pattern(/[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm)]],
     });
     this.elegantFormUsername = this.elegantForm.controls['elegantFormUsername'];
     this.elegantFormEmail = this.elegantForm.controls['elegantFormEmail'];
-    userService.getUser().pipe(first()).subscribe(
+    userServiceProvider.userService.getUser().pipe(first()).subscribe(
       user => {
         this.user = user;
         this.elegantFormEmail.setValue(this.user.email);
@@ -65,12 +66,12 @@ export class PersonalInformationComponent implements OnInit {
       updatedUser.username = username;
       updatedUser.email = email;
       console.log(updatedUser.firstName);
-      this.userService.updateUser(updatedUser).pipe(first()).subscribe(
+      this.userServiceProvider.userService.updateUser(updatedUser).pipe(first()).subscribe(
         response => {
           this.reset();
           this.success = response.addUserSuccess;
           this.user = updatedUser;
-          this.authService.updateToken(response.newToken);
+          this.userServiceProvider.authService.updateToken(response.newToken);
         }
         , error1 => {
           this.reset();

@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Group} from '../../../model/group';
 import {UserService} from '../../../services/user.service';
 import {User} from '../../../model/user';
+import {UserServiceProvider} from '../../../services/user-service-provider';
 
 @Component({
   selector: 'overview',
@@ -17,9 +18,9 @@ export class OverviewComponent implements OnInit {
   private unreadMessages: Map<Group, number> = new Map<Group, number>();
   private user: User;
 
-  constructor(private groupService: GroupService, private userService: UserService) {
-    this.groupService.getGroups().pipe(first()).subscribe(groups => {
-      this.userService.getUser().subscribe(user => {
+  constructor(private userServiceProvider: UserServiceProvider) {
+    userServiceProvider.groupService.getGroups().pipe(first()).subscribe(groups => {
+      userServiceProvider.userService.getUser().subscribe(user => {
         this.user = user;
         for (let group of groups) {
           if (group.owner.username === this.user.username) {
@@ -29,7 +30,7 @@ export class OverviewComponent implements OnInit {
           }
         }
       });
-      groupService.getNewGroup().subscribe(newGroup => {
+      userServiceProvider.groupService.getNewGroup().subscribe(newGroup => {
         if (newGroup.owner.username === this.user.username) {
           this.ownedGroups.push(newGroup);
         } else {

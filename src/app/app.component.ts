@@ -7,6 +7,7 @@ import {GroupService} from './services/group.service';
 import {WebSocketManagerService} from './services/web-socket-manager.service';
 import {ToastService} from 'ng-uikit-pro-standard';
 import {ConnectionService} from 'ng-connection-service';
+import {UserServiceProvider} from './services/user-service-provider';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,9 @@ import {ConnectionService} from 'ng-connection-service';
 })
 export class AppComponent {
 
-  constructor(private connectionService: ConnectionService, private toastrService: ToastService, private webSocketManager: WebSocketManagerService, private webSocketInitService: WebSocketProxyService, private loginService: AuthService, private pomodoroService: PomodoroService) {
-    if (loginService.isLoggedIn()) {
-      webSocketManager.initAllSockets();
+  constructor(private connectionService: ConnectionService, private toastrService: ToastService,private userServiceProvider:UserServiceProvider) {
+    if (userServiceProvider.authService.isLoggedIn()) {
+      userServiceProvider.webSocketManagerService.initAllSockets();
     }
     const options = {opacity: 0.8};
     this.connectionService.monitor().subscribe(isConnected => {
@@ -32,15 +33,15 @@ export class AppComponent {
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
-    if (this.pomodoroService.startedLocally) {
-      this.pomodoroService.resetPomodoroForCurrentUser();
+    if (this.userServiceProvider.pomodoroService.startedLocally) {
+      this.userServiceProvider.pomodoroService.resetPomodoroForCurrentUser();
     }
 
   }
 
   logOut(): void {
-    this.pomodoroService.resetPomodoroForCurrentUser();
-    this.loginService.logout();
+    this.userServiceProvider.pomodoroService.resetPomodoroForCurrentUser();
+    this.userServiceProvider.authService.logout();
   }
 
 }

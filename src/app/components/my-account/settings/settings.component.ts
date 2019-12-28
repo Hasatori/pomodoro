@@ -3,6 +3,7 @@ import {PomodoroService} from '../../../services/pomodoro.service';
 import {UserService} from '../../../services/user.service';
 import {Settings} from '../../../model/settings';
 import {first} from 'rxjs/operators';
+import {UserServiceProvider} from '../../../services/user-service-provider';
 
 @Component({
   selector: 'app-settings',
@@ -24,9 +25,9 @@ export class SettingsComponent {
   private inProgress: boolean = false;
   private success: boolean = false;
 
-  constructor(private userService: UserService,private pomodoroService:PomodoroService) {
+  constructor(private userServiceProvider: UserServiceProvider) {
 
-    userService.getUser().subscribe((user) => {
+    userServiceProvider.userService.getUser().subscribe((user) => {
       this.currentSettings = user.settings;
     });
   }
@@ -51,11 +52,11 @@ export class SettingsComponent {
     updatedSettings.pauseSound = soundOnPause;
     if (JSON.stringify(this.currentSettings) !== JSON.stringify(updatedSettings)) {
       this.inProgress = true;
-      this.userService.updateSettings(updatedSettings).pipe(first()).subscribe(result => {
+      this.userServiceProvider.userService.updateSettings(updatedSettings).pipe(first()).subscribe(result => {
         this.currentSettings = updatedSettings;
         this.success = true;
         this.inProgress = false;
-        this.pomodoroService.resetPomodoroForCurrentUser();
+        this.userServiceProvider.pomodoroService.resetPomodoroForCurrentUser();
       }, error1 => {
         if (error1.status == 400) {
           this.inProgress = false;

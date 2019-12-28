@@ -19,6 +19,7 @@ import {UserService} from '../../../services/user.service';
 import {NGXLogger} from 'ngx-logger';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {$} from 'protractor';
+import {UserServiceProvider} from '../../../services/user-service-provider';
 
 
 @Component({
@@ -49,23 +50,23 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged, OnDestroy {
   isOwner: boolean = false;
   private getNewGroupMemberSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute, private groupService: GroupService, private http: HttpClient, private pomodoroService: PomodoroService, private userService: UserService, private log: NGXLogger) {
+  constructor(private route: ActivatedRoute, private http: HttpClient,private log: NGXLogger,private userServiceProvider: UserServiceProvider) {
     this.route.paramMap.subscribe(groupName => {
       this.reset();
       this.groupName = groupName.get('name');
       this.fetchMembers();
     });
-    this.getNewGroupMemberSubscription = this.groupService.getNewGroupMember(this.groupName).subscribe(user => {
+    this.getNewGroupMemberSubscription = this.userServiceProvider.groupService.getNewGroupMember(this.groupName).subscribe(user => {
       this.allUsers.push(user);
       let timer = new Timer(this.log, null, this);
-      this.pomodoroService.watchStartingPomodoroForUser(user, timer);
-      this.pomodoroService.watchStopingPomodoroForUser(user, timer);
+      this.userServiceProvider.pomodoroService.watchStartingPomodoroForUser(user, timer);
+      this.userServiceProvider.pomodoroService.watchStopingPomodoroForUser(user, timer);
       this.allRows.set(user, timer);
-      this.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
+      this.userServiceProvider.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
         pomodoro => {
           let timer = new Timer(this.log, null, this);
-          this.pomodoroService.watchStartingPomodoroForUser(user, timer);
-          this.pomodoroService.watchStopingPomodoroForUser(user, timer);
+          this.userServiceProvider.pomodoroService.watchStartingPomodoroForUser(user, timer);
+          this.userServiceProvider.pomodoroService.watchStopingPomodoroForUser(user, timer);
           this.allRows.set(user, timer);
           if (pomodoro != null) {
             timer.start(pomodoro);
@@ -79,27 +80,27 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged, OnDestroy {
   }
 
   private fetchMembers() {
-    this.groupService.getGroups().subscribe((groups) => {
+    this.userServiceProvider.groupService.getGroups().subscribe((groups) => {
       this.group = groups.find((group) => group.name === this.groupName);
 
       console.log(this.group);
-      this.userService.getUser().subscribe((user) => {
+      this.userServiceProvider.userService.getUser().subscribe((user) => {
         this.user = user;
         this.isOwner = this.group.owner.username === this.user.username;
         this.allRows = new Map<User, Timer>();
         this.filteredRows = new Map<User, Timer>();
 
-        this.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
+        this.userServiceProvider.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
           this.allUsers = users;
           users = users.filter(user => user.username !== this.user.username);
           for (let i = 0; i < users.length; i++) {
             let user = users[i];
             console.log(user);
-            this.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
+            this.userServiceProvider.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
               pomodoro => {
                 let timer = new Timer(this.log, null, this);
-                this.pomodoroService.watchStartingPomodoroForUser(user, timer);
-                this.pomodoroService.watchStopingPomodoroForUser(user, timer);
+                this.userServiceProvider.pomodoroService.watchStartingPomodoroForUser(user, timer);
+                this.userServiceProvider.pomodoroService.watchStopingPomodoroForUser(user, timer);
                 this.allRows.set(user, timer);
                 if (pomodoro != null) {
                   timer.start(pomodoro);
@@ -191,10 +192,10 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged, OnDestroy {
       }
     });
     if (!check) {
-      this.groupService.addUser(username, this.group.name);
-      /*      this.groupService.addUser(username, this.group.name).subscribe((response) => {
+      this.userServiceProvider.groupService.addUser(username, this.group.name);
+      /*      this.userServiceProvider.groupService.addUser(username, this.group.name).subscribe((response) => {
 
-              this.groupService.emptyCache(this.group.name);
+              this.userServiceProvider.groupService.emptyCache(this.group.name);
               this.fetchMembers();
               this.success = response.success;
               let newUser = new User();
@@ -209,9 +210,9 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged, OnDestroy {
 
   public removeUser(user: User) {
     this.reset();
-    this.groupService.removeUser(user.username, this.group.name).subscribe((response) => {
+    this.userServiceProvider.groupService.removeUser(user.username, this.group.name).subscribe((response) => {
 
-      this.groupService.emptyCache(this.group.name);
+      this.userServiceProvider.groupService.emptyCache(this.group.name);
       this.fetchMembers();
       this.success = response.success;
     }, error1 => {
