@@ -1,9 +1,51 @@
 @import "../group.component.scss";
-.my-card{
-  opacity: 0.8;
+
+.section-header{
+color: $secondaryTextColor;
+}
+.card-up,.btn-action,.card-footer{
+  background-color: $navigationBarColor;
+}
+
+.card-footer ul li,.btn-action i{
+  color: $basicTextColor !important;
+  text-align: left;
+}
+.btn-action i{
+  text-align: center;
+}
+.unread-messages{
+  position:absolute;
+  right: 0%;
+  background-color:  $navigationBarColor;
+  padding: 3px;
+  color: $basicTextColor;
+  font-size: 1.1em;
+}
+.mdb-scrollspy-ex .nav-item {
+  width: 100%;
 
 }
-.my-card:hover{
-  opacity: 1;
-  cursor: pointer;
+
+.section{
+  min-height: 70vh!important;
+}
+.mdb-scrollspy-ex a {
+
+  font-weight: 400;
+  line-height: 1.1rem;
+  padding: 0 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  color: black;
+  text-decoration: none !important;
+}
+
+.mdb-scrollspy-ex-example {
+  height: 200px;
+}
+.active{
+  font-weight: bold !important;
+  border-left: 1px solid $secondaryTextColor !important;
+
 }

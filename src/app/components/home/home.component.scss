@@ -15,8 +15,8 @@
   }
 }
 .customBlockquote{
-  border-left: 3px solid $backgroundColor !important
+  border-left: 3px solid $navigationBarColor !important
 }
 .customBlockquote .h2{
-  color: $backgroundColor !important;
+  color: $navigationBarColor !important;
 }

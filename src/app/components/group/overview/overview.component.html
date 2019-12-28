@@ -1,84 +1,193 @@
-
-<div class="row ">
-<h1 class="col-12 h1-responsive text-center">Group managed by you</h1>
-</div>
-<div class="row">
-  <div class="col-11"></div>
-  <div class="col-1">
-    <a mdbBtn floating="true" gradient="blue" mdbWavesEffect [routerLink]="['./create']"><i class="fas fa-plus"></i></a>
+<!--Grid row-->
+<div class="row ml-2 mr-3">
+  <div class="col-sm-2 d-none d-md-block">
+    <div class="mdb-scrollspy-ex" mdbSticky >
+    <ul mdbScrollSpy="scrollspy4" class="nav d-flex flex-column p-3">
+      <li class="nav-item py-2"><a mdbScrollSpyLink="section1" class="nav-link"  [routerLink]="['/group/#section1']">Your groups</a></li>
+      <li class="nav-item py-2"><a mdbScrollSpyLink="section2" class="nav-link" [routerLink]="['/group/#section2']" >Groups you are member of</a></li>
+      <li class="nav-item py-2"><a mdbScrollSpyLink="section3" class="nav-link" [routerLink]="['/group/#section3']" >Groups were invited in</a></li>
+    </ul>
   </div>
+  </div>
+<div class="col-sm-10">
 
+
+<!--</div>
+<div class="row">
+<div class="col-11"></div>
+<div class="col-1">
+  <a mdbBtn floating="true" gradient="blue" mdbWavesEffect [routerLink]="['./create']"><i class="fas fa-plus"></i></a>
 </div>
 
-<div class="row">
+</div>-->
 
-  <div class="col-lg-4 col-md-6" *ngFor="let group of ownedGroups">
+<div class="container-fluid my-5 section"  id="section1"  mdbScrollSpyWindow="scrollspy4">
+  <div class="section-header" >
+    <h2 class="h2-responsive text-left font-weight-bold">Your groups</h2>
+<!--
+  <div class="col-lg-2 col-md-4" *ngFor="let group of ownedGroups">
+-->
+  <div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4 mt-5" *ngFor="let group of ownedGroups">
+      <!--Card-->
+      <!--Card-->
+      <mdb-card>
+
+        <!--Card image-->
+        <div class="view overlay waves-light" mdbWavesEffect>
+          <mdb-card-img src="{{group.layoutImagePath}}"></mdb-card-img>
+          <a>
+            <div class="mask "></div>
+          </a>
+
+        </div>
+        <!--/.Card image-->
+
+        <!--Button-->
+
+        <a mdbBtn floating="true" class="btn-action ml-auto mr-4 " [routerLink]="['./overview/'+group.name]" mdbWavesEffect>
+
+          <i class="fas fa-angle-right"></i>
+
+        </a>
+        <small class="unread-messages float-right" *ngIf="userServiceProvider.groupService.groupUnreadMessages.get(group.name)>0"  ><mdb-icon far icon="comments" class="pr-1 "></mdb-icon>    <span class=" badge badge-danger ml-2">{{userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
+        </small>
+        <!--Card content-->
+        <mdb-card-body>
+
+          <!--Title-->
+          <mdb-card-title>
+            <h4 class="mt-2">
+              {{group.name}}
+
+            </h4>
+
+          </mdb-card-title>
+
+          <hr>
+
+          <p class="font-small grey-dark-text mb-0">
+            This group contains <strong>8</strong> and so far <strong>1000</strong> pomodoros were done, and <strong>1500</strong> messages was sent
+          </p>
+
+        </mdb-card-body>
+        <!--/.Card content-->
+        <!-- Card footer -->
+        <mdb-card-footer class="card-footer text-center">
+          <ul class="list-group list-group-horizontal">
+            <li class="list-inline-item">
+              <mdb-icon far icon="clock" class="pr-1"></mdb-icon>05/10/2015</li>
+          </ul>
+        </mdb-card-footer>
+        <!-- Card footer -->
+      </mdb-card>
+      <!--/.Card-->
 
 
+  </div>
+</div>
+</div>
+</div>
+  <hr class="w-100">
+
+<div class="container-fluid my-5 section"  id="section2"  mdbScrollSpyWindow="scrollspy4">
+  <div class="section-header"  >
+    <h2 class="h2-responsive text-left font-weight-bold">Groups you are member of</h2>
+  </div>
+  <div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-4 mt-5" *ngFor="let group of participatingGroups">
 
     <!--Card-->
-    <div class="card card-cascade my-card z-depth-1 my-3 gradient-card" [routerLink]="['./overview/'+group.name]">
+    <mdb-card>
 
-
-      <!--/.Card image-->
-
-      <!--Card content-->
-      <div class="card-body card-body-cascade text-center mask blue-gradient-rgba">
-
-        <!--Title-->
-        <h4 class="card-title"><strong>{{group.name}}</strong></h4>
-
-        <p class="card-text" *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)>0">
-          <small class="text-right">unread messages <span
-            class="badge badge-danger ml-2 text-right">{{ userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
-          </small>
-
-        </p>
+      <!--Card image-->
+      <div class="view overlay waves-light" mdbWavesEffect>
+        <mdb-card-img src="{{group.layoutImagePath}}"></mdb-card-img>
+        <a>
+          <div class="mask "></div>
+        </a>
 
       </div>
-      <!--/.Card content-->
+      <!--/.Card image-->
 
-    </div>
+      <!--Button-->
+
+      <a mdbBtn floating="true" class="btn-action ml-auto mr-4 " mdbWavesEffect>
+
+        <i class="fas fa-angle-right"></i>
+
+      </a>
+      <small class="unread-messages float-right"><mdb-icon far icon="comments" class="pr-1 "></mdb-icon>    <span class=" badge badge-danger ml-2">4</span>
+      </small>
+      <!--Card content-->
+      <mdb-card-body>
+
+        <!--Title-->
+        <mdb-card-title>
+          <h4 class="mt-2">
+            {{group.name}}
+
+          </h4>
+
+        </mdb-card-title>
+
+        <hr>
+        <p class="font-small grey-dark-text mb-0">
+          Owned by {{group.owner.username}}
+
+        </p>
+      </mdb-card-body>
+      <!--/.Card content-->
+      <!-- Card footer -->
+      <mdb-card-footer class="card-footer text-center">
+        <ul class="list-group list-group-horizontal">
+          <li class="list-inline-item">
+            <mdb-icon far icon="clock" class="pr-1"></mdb-icon>05/10/2015</li>
+        </ul>
+      </mdb-card-footer>
+      <!-- Card footer -->
+    </mdb-card>
     <!--/.Card-->
 
   </div>
-</div>
+</div></div>
+  <hr class="w-100">
+  <div class="container-fluid my-5 section"  id="section3"  mdbScrollSpyWindow="scrollspy4">
+    <div class="section-header" >
+      <h2 class="h2-responsive text-left font-weight-bold">Invitations</h2>
+      <!--
+        <div class="col-lg-2 col-md-4" *ngFor="let group of ownedGroups">
+      -->
+      <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-5" *ngFor="let group of ownedGroups">
 
-
-<div class="row mt-5">
-  <h1 class="col-12 h1-responsive text-center">Groups you are member of</h1>
-</div>
-<div class="row">
-
-  <div class="col-lg-4 col-md-6" *ngFor="let group of participatingGroups">
-
-
-    <!--Card-->
-    <div class="card card-cascade my-card z-depth-1 my-3" [routerLink]="['./overview/'+group.name]">
-
-
-      <!--/.Card image-->
-
-      <!--Card content-->
-      <div class="card-body card-body-cascade text-center">
-
-        <!--Title-->
-        <h4 class="card-title"><strong>{{group.name}}</strong></h4>
-        <p class="card-text" >
-         Owned by: {{group.owner.username}}
-        </p>
-        <p class="card-text" *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)>0">
-          <small class="text-right">unread messages <span
-            class="badge badge-danger ml-2 text-right">{{ userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
-          </small>
-
-        </p>
+    <mdb-card class="testimonial-card">
+      <!--Bacground color-->
+      <div class="card-up text-white">
 
       </div>
-      <!--/.Card content-->
 
-    </div>
-    <!--/.Card-->
+      <!--Avatar-->
+      <div class="avatar mx-auto">
 
+        <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg" class="rounded-circle">
+      </div>
+
+      <mdb-card-body>
+        <!--Name-->
+        <mdb-card-title>
+          <h4>Anna Doe</h4>
+        </mdb-card-title>
+        <hr>
+
+        <!--Quotation-->
+        <p>
+          <mdb-icon fas icon="quote-left"></mdb-icon> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos,
+          adipisci</p>
+      </mdb-card-body>
+    </mdb-card>
   </div>
+</div>
+</div>
+</div>
 </div>

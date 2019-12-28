@@ -1,20 +1,24 @@
-$backgroundColor:rgb(63, 114, 155);
-$customCardBackgroundColor: 	rgb(248,248,248,0.3);
-$basicTextColor: rgb(51,51,51);
-
+$navigationBarColor:#2E314C;
+$customCardBackgroundColor:#f7f7f7;
+$basicTextColor: #DCBA89;
+$secondaryTextColor:#333333;
+$backgroundColor:#F8F8F8;
 .mainContent{
 min-height:80vh !important;
+  background-color:$backgroundColor!important;
+
 }
 
 .custom-card{
   border-color: rgb(20,20,20,0.2);
-  background-color:$customCardBackgroundColor;
+  background-color:$backgroundColor;
+  color: $secondaryTextColor;
   max-width: 500px;
   margin: auto;
 }
 
 .btn-primary{
-  background-color: $backgroundColor ;
+  background-color: $navigationBarColor !important;
 }
 
 

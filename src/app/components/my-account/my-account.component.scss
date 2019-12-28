@@ -6,7 +6,7 @@
 }
 
 .nav-link {
-  color: $backgroundColor !important;
+  color: $navigationBarColor !important;
   opacity: 0.8;
 }
 
@@ -14,7 +14,7 @@
   font-weight: bold;
   opacity: 1;
   color: white !important;
-  background-color: $backgroundColor !important;
+  background-color: $navigationBarColor !important;
 }
 
 .header {
@@ -32,5 +32,5 @@
 }
 
 .active a, .nav-link:hover a {
-  color: $backgroundColor !important;
+  color: $navigationBarColor !important;
 }

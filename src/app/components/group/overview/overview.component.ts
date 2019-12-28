@@ -23,6 +23,7 @@ export class OverviewComponent implements OnInit {
       userServiceProvider.userService.getUser().subscribe(user => {
         this.user = user;
         for (let group of groups) {
+          group.layoutImagePath=this.getLayoutImagePath();
           if (group.owner.username === this.user.username) {
             this.ownedGroups.push(group);
           } else {
@@ -43,5 +44,7 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit() {
   }
-
+getLayoutImagePath():string{
+    return `../../../../assets/group/layouts/teamwork-${Math.floor(Math.random() * 5) + 1  }.jpg`
+}
 }

@@ -32,25 +32,46 @@ import {GroupDetailComponent} from './components/group/group-detail/group-detail
 import {groupDetailRoutes} from './components/group/group.module';
 import {CreateGroupComponent} from './components/group/create-group/create-group.component';
 import {AuthService} from './services/auth.service';
-import { PomodoroIsRunningComponent } from './components/modals/pomodoro-is-running/pomodoro-is-running.component';
+import {PomodoroIsRunningComponent} from './components/modals/pomodoro-is-running/pomodoro-is-running.component';
 import {LoggerModule, NGXLogger, NgxLoggerLevel} from 'ngx-logger';
 import {FreeTrialComponent} from './components/free-trial/free-trial.component';
 import {AuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {provideConfig} from './ServerConfig';
-import { WantMoreFunctionalityComponent } from './components/modals/want-more-functionality/want-more-functionality.component';
-import { SuccessComponent } from './components/modals/success/success.component';
+import {WantMoreFunctionalityComponent} from './components/modals/want-more-functionality/want-more-functionality.component';
+import {SuccessComponent} from './components/modals/success/success.component';
 import {ChatComponent} from './components/group/group-detail/chat/chat.component';
-import {MDBBootstrapModulesPro, MDBSpinningPreloader, ToastModule} from 'ng-uikit-pro-standard';
+import {
+  AccordionModule,
+  AnimatedCardsModule,
+  AutoCompleterModule,
+  AutoFormatModule,
+  CharCounterModule,
+  ChartSimpleModule, ChipsModule,
+  DatepickerModule,
+  FileInputModule,
+  LightBoxModule, MDBBootstrapModulePro,
+  MDBBootstrapModulesPro,
+  MDBSpinningPreloader,
+  PreloadersModule,
+  RangeModule,
+  SelectModule,
+  SidenavModule,
+  SmoothscrollModule,
+  StepperModule,
+  StickyContentModule,
+  TabsModule, TimePickerModule,
+  ToastModule
+} from 'ng-uikit-pro-standard';
 import {OverviewComponent} from './components/group/overview/overview.component';
-
-
+// MDB Angular Pro
+import {ScrollSpyModule,ButtonsModule, WavesModule, CardsModule} from 'ng-uikit-pro-standard';
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'free-trial', component: FreeTrialComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'forgotten-password', component:ForgottenPasswordComponent},
+  {path: 'forgotten-password', component: ForgottenPasswordComponent},
   {path: 'pomodoro', component: PomodoroComponent, canActivate: [AuthGuard]},
   {path: 'group', component: GroupComponent, canActivate: [AuthGuard], children: groupDetailRoutes},
   {path: 'my-account', redirectTo: 'my-account/personal-information', canActivate: [AuthGuard]},
@@ -93,10 +114,33 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     CountdownModule,
-    LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG}),
+    LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     SocialLoginModule,
     MDBBootstrapModulesPro.forRoot(),
     ToastModule.forRoot(),
+    ButtonsModule,
+    WavesModule,
+    CardsModule,
+    AccordionModule,
+    ToastModule.forRoot(),
+    AutoCompleterModule,
+    AutoFormatModule,
+    AnimatedCardsModule.forRoot(),
+    CardsModule.forRoot(),
+    DatepickerModule,
+    ChartSimpleModule,
+    FileInputModule,
+    CharCounterModule.forRoot(),
+    LightBoxModule,
+    SelectModule,
+    PreloadersModule,
+    RangeModule,
+    ScrollSpyModule,
+    SidenavModule,
+    SmoothscrollModule.forRoot(),
+    TabsModule.forRoot(),
+    ChipsModule,
+    TimePickerModule,
 
 
 
@@ -110,7 +154,7 @@ const routes: Routes = [
       provide: StompConfig,
       useValue: webSocketConfig
     },
-  AuthService,
+    AuthService,
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig
