@@ -40,7 +40,7 @@ import {provideConfig} from './ServerConfig';
 import { WantMoreFunctionalityComponent } from './components/modals/want-more-functionality/want-more-functionality.component';
 import { SuccessComponent } from './components/modals/success/success.component';
 import {ChatComponent} from './components/group/group-detail/chat/chat.component';
-import {MDBBootstrapModulesPro, MDBSpinningPreloader} from 'ng-uikit-pro-standard';
+import {MDBBootstrapModulesPro, MDBSpinningPreloader, ToastModule} from 'ng-uikit-pro-standard';
 import {OverviewComponent} from './components/group/overview/overview.component';
 
 
@@ -96,6 +96,7 @@ const routes: Routes = [
     LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG}),
     SocialLoginModule,
     MDBBootstrapModulesPro.forRoot(),
+    ToastModule.forRoot(),
 
 
 

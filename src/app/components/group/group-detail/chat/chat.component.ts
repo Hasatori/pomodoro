@@ -30,11 +30,12 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren('messages') messagesContainer: QueryList<any>;
   seenBy: string = '';
   lastMessage: GroupMessage;
-  private  options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  private options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
   private markAllAsReadSubscription: Subscription;
   private newGroupMessageSubscription: Subscription;
   private lastNumberOfGroupMessagesSubscription: Subscription;
+
 
   constructor(private webSocketProxyService: WebSocketProxyService, private userService: UserService, private groupService: GroupService) {
 
@@ -60,12 +61,14 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.threshold += this.limit;
       this.end += this.limit;
     });
+
   }
 
   ngOnDestroy(): void {
     this.markAllAsReadSubscription.unsubscribe();
     this.newGroupMessageSubscription.unsubscribe();
     this.lastNumberOfGroupMessagesSubscription.unsubscribe();
+
   }
 
   sendMessage(messageValue: string) {
@@ -83,7 +86,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       })[0];
       if (filteredRelatedMessages.length > 0) {
         this.seenBy = `${filteredRelatedMessages.map(message => message.user.username)
-          .join(', ')} on ${new Date(lastRelatedMessageTimestamp.readTimestamp).toLocaleDateString("en-US", this.options)}`;
+          .join(', ')} on ${new Date(lastRelatedMessageTimestamp.readTimestamp).toLocaleDateString('en-US', this.options)}`;
       }
     });
   }

@@ -133,10 +133,13 @@ export class GroupService {
   }
 
 
-  addUser(username: string, groupName: string): Observable<any> {
-    return this.http.post<any>(`${SERVER_URL}/group/addUser`, {username: username, groupName: groupName}).pipe(map(response => {
-      return response;
-    }));
+  addUser(username: string, groupName: string) {
+    let groupRequest={
+      username:username,
+      groupName:groupName
+    }
+    this.webSocketProxyService.publish('/app/group/' + groupName+'/group-members',  JSON.stringify(groupRequest));
+
   }
 
   removeUser(username: string, groupName: string): Observable<any> {
@@ -150,6 +153,28 @@ export class GroupService {
   getNewGroupMessage(groupName: string): Observable<GroupMessage> {
     return this.webSocketProxyService.watch('/group/' + groupName + '/chat').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
+    }));
+  }
+
+  getNewGroupMember(groupName: string): Observable<User> {
+    return this.webSocketProxyService.watch('/group/' + groupName + '/group-members').pipe(map(newMemberJson => {
+
+      let newMember = JSON.parse(newMemberJson.body);
+      let groupUsers: Array<User> = JSON.parse(window.sessionStorage.getItem(this.createParameterizedKey(this.GROUP_USERS_KEY, groupName)));
+      groupUsers.push(newMember);
+      sessionStorage.setItem(this.createParameterizedKey(this.GROUP_USERS_KEY, groupName), JSON.stringify(groupUsers));
+console.log(newMember);
+      return newMember;
+    }));
+  }
+
+  getNewGroup(): Observable<Group> {
+    return this.webSocketProxyService.watch('/group/' + this.user.username + '/new-group').pipe(map(newGroupJson => {
+      let newGroup = JSON.parse(newGroupJson.body);
+      let groups: Array<Group> = JSON.parse(window.sessionStorage.getItem(this.GROUPS_KEY));
+      groups.push(newGroup);
+      sessionStorage.setItem(this.GROUPS_KEY, JSON.stringify(groups));
+      return newGroup;
     }));
   }
 

@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Group} from '../../../model/group';
 import {GroupService} from '../../../services/group.service';
@@ -7,7 +7,7 @@ import {User} from '../../../model/user';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {webSocketConfig} from '../../../WebSocketConfig';
 import {Timer} from '../../../model/Timer';
-import {concat, Observable, pipe} from 'rxjs';
+import {concat, Observable, pipe, Subscription} from 'rxjs';
 import {Pomodoro} from '../../../model/pomodoro';
 import {HttpClient} from '@angular/common/http';
 import {pipeFromArray} from 'rxjs/internal/util/pipe';
@@ -26,7 +26,7 @@ import {$} from 'protractor';
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss']
 })
-export class GroupDetailComponent implements OnInit, OnPhaseChanged {
+export class GroupDetailComponent implements OnInit, OnPhaseChanged, OnDestroy {
   private group: Group;
   private groupName: string;
   private allRows: Map<User, Timer>;
@@ -47,12 +47,34 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
   userError: string;
   groupError: string;
   isOwner: boolean = false;
+  private getNewGroupMemberSubscription: Subscription;
 
   constructor(private route: ActivatedRoute, private groupService: GroupService, private http: HttpClient, private pomodoroService: PomodoroService, private userService: UserService, private log: NGXLogger) {
     this.route.paramMap.subscribe(groupName => {
       this.reset();
       this.groupName = groupName.get('name');
       this.fetchMembers();
+    });
+    this.getNewGroupMemberSubscription = this.groupService.getNewGroupMember(this.groupName).subscribe(user => {
+      this.allUsers.push(user);
+      let timer = new Timer(this.log, null, this);
+      this.pomodoroService.watchStartingPomodoroForUser(user, timer);
+      this.pomodoroService.watchStopingPomodoroForUser(user, timer);
+      this.allRows.set(user, timer);
+      this.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
+        pomodoro => {
+          let timer = new Timer(this.log, null, this);
+          this.pomodoroService.watchStartingPomodoroForUser(user, timer);
+          this.pomodoroService.watchStopingPomodoroForUser(user, timer);
+          this.allRows.set(user, timer);
+          if (pomodoro != null) {
+            timer.start(pomodoro);
+          }
+          this.updateFilter();
+        }, error1 => {
+          console.log(error1);
+        }
+      );
     });
   }
 
@@ -69,7 +91,6 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
 
         this.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
           this.allUsers = users;
-          let row = new Map<User, Timer>();
           users = users.filter(user => user.username !== this.user.username);
           for (let i = 0; i < users.length; i++) {
             let user = users[i];
@@ -170,18 +191,19 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
       }
     });
     if (!check) {
-      this.groupService.addUser(username, this.group.name).subscribe((response) => {
+      this.groupService.addUser(username, this.group.name);
+      /*      this.groupService.addUser(username, this.group.name).subscribe((response) => {
 
-        this.groupService.emptyCache(this.group.name);
-        this.fetchMembers();
-        this.success = response.success;
-        let newUser = new User();
-        newUser.username = username;
-        this.invitedUsers.push(newUser);
-      }, error1 => {
-        this.userError = error1.error.username;
-        this.groupError = error1.error.group;
-      });
+              this.groupService.emptyCache(this.group.name);
+              this.fetchMembers();
+              this.success = response.success;
+              let newUser = new User();
+              newUser.username = username;
+              this.invitedUsers.push(newUser);
+            }, error1 => {
+              this.userError = error1.error.username;
+              this.groupError = error1.error.group;
+            });*/
     }
   }
 
@@ -203,5 +225,9 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged {
     this.success = null;
     this.userError = null;
     this.groupError = null;
+  }
+
+  ngOnDestroy(): void {
+    this.getNewGroupMemberSubscription.unsubscribe();
   }
 }

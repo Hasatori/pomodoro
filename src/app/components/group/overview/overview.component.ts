@@ -29,7 +29,13 @@ export class OverviewComponent implements OnInit {
           }
         }
       });
-
+      groupService.getNewGroup().subscribe(newGroup => {
+        if (newGroup.owner.username === this.user.username) {
+          this.ownedGroups.push(newGroup);
+        } else {
+          this.participatingGroups.push(newGroup);
+        }
+      });
     });
 
   }

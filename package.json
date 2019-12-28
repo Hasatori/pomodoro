@@ -37,6 +37,7 @@
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
     "mdbootstrap": "^4.11.0",
+    "ng-connection-service": "^1.0.4",
     "ng-uikit-pro-standard": "git+https://oauth2:mnzs4Vd13Vx5Xrm9DPtY@git.mdbootstrap.com/mdb/angular/ng-uikit-pro-standard.git",
     "ngx-countdown": "^8.0.1",
     "ngx-logger": "^4.0.7",
