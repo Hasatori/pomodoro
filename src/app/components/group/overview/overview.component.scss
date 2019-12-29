@@ -1,35 +1,47 @@
 @import "../group.component.scss";
 
-.section-header{
-color: $secondaryTextColor;
+.section-header {
+  color: $secondaryTextColor;
 }
-.card-up,.btn-action,.card-footer{
+
+.card-up, .btn-action, .card-footer {
   background-color: $navigationBarColor;
 }
 
-.card-footer ul li,.btn-action i{
+.card-footer ul li, .btn-action i {
   color: $basicTextColor !important;
   text-align: left;
 }
-.btn-action i{
+
+.btn-action i {
   text-align: center;
+  font-size: 1.5em;
+
 }
-.unread-messages{
-  position:absolute;
+
+.btn-action {
+  height: 50px;
+  width: 50px;
+
+}
+
+.unread-messages {
+  position: absolute;
   right: 0%;
-  background-color:  $navigationBarColor;
+  background-color: $navigationBarColor;
   padding: 3px;
   color: $basicTextColor;
   font-size: 1.1em;
 }
+
 .mdb-scrollspy-ex .nav-item {
   width: 100%;
-
 }
 
-.section{
-  min-height: 70vh!important;
+.section {
+  min-height: 70vh !important;
 }
+
 .mdb-scrollspy-ex a {
 
   font-weight: 400;
@@ -44,8 +56,63 @@ color: $secondaryTextColor;
 .mdb-scrollspy-ex-example {
   height: 200px;
 }
-.active{
+
+.active {
   font-weight: bold !important;
   border-left: 1px solid $secondaryTextColor !important;
+
+}
+.floating-part{
+  padding: 0!important;
+}
+@media (min-width: 1189px) {
+  .collapsed-part {
+    overflow: visible !important;
+    position: sticky ;
+    top: 0;
+  }
+  .ham-but {
+    display: none;
+  }
+
+
+}
+
+@media (max-width: 1195px) {
+  .collapsed-part {
+    background-color: $navigationBarColor;
+    width: 100%;
+    border-radius: 5px;
+    -webkit-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
+    top: 0;
+    position: absolute;
+
+  }
+  .active {
+    border: 0 solid transparent !important;
+
+  }
+  .ham-but {
+    float: right;
+    color: $basicTextColor !important;
+    opacity: 0.9;
+    z-index: 4;
+  }
+  .ham-but:hover {
+    opacity: 1;
+  }
+  .collapsed-part * {
+    color: $basicTextColor !important;
+    overflow: no-content;
+  }
+  .floating-part {
+    position: sticky !important;
+    top: 0;
+
+    border-right: 0px solid transparent !important;
+    z-index: 3;
+  }
 
 }

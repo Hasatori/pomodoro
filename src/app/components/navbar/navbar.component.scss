@@ -1,5 +1,4 @@
 @import "../../app.component.scss";
-
 .active,.nav-item:hover {
   background-color:$basicTextColor;
   -webkit-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.2);
@@ -8,14 +7,26 @@
 }
 .active a{
   font-weight: bold;
+
 }
-.active  a,.nav-item:hover a{
+.active .nav-link,.nav-item:hover a{
   color: $navigationBarColor !important;
 }
-.my-navbar{
+.navbar{
   background-color: $navigationBarColor !important;
 
 }
-.my-navbar *{
+.my-navbar a,.navbar-toggler-icon {
   color: $basicTextColor!important;
+
+}
+::ng-deep .my-navbar nav
+{
+  background-color: $navigationBarColor;
+
+}
+
+::ng-deep .navbar.navbar-dark .navbar-toggler-icon {
+  background-image:
+    url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(220,186,137)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
 }

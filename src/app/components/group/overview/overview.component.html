@@ -1,15 +1,25 @@
 <!--Grid row-->
-<div class="row ml-2 mr-3">
-  <div class="col-sm-2 d-none d-md-block">
-    <div class="mdb-scrollspy-ex" mdbSticky >
-    <ul mdbScrollSpy="scrollspy4" class="nav d-flex flex-column p-3">
-      <li class="nav-item py-2"><a mdbScrollSpyLink="section1" class="nav-link"  [routerLink]="['/group/#section1']">Your groups</a></li>
-      <li class="nav-item py-2"><a mdbScrollSpyLink="section2" class="nav-link" [routerLink]="['/group/#section2']" >Groups you are member of</a></li>
-      <li class="nav-item py-2"><a mdbScrollSpyLink="section3" class="nav-link" [routerLink]="['/group/#section3']" >Groups were invited in</a></li>
-    </ul>
+<h1 class="h1-responsive text-center font-weight-bold">Groups</h1>
+<hr>
+<div class="row mr-0">
+  <div  class="floating-part col-lg-12 col-xl-2 border-right">
+
+    <button  mdbBtn color="primary" class="waves-light ham-but" type="button" (click)="test.toggle()" mdbWavesEffect>
+      <mdb-icon fas icon="bars"></mdb-icon>
+    </button>
+
+    <div class="collapsed-part" mdbCollapse #test="bs-collapse" >
+      <div class="mdb-scrollspy-ex"   >
+        <ul mdbScrollSpy="scrollspy4" class="nav d-flex flex-column p-3">
+          <li class="nav-item py-2"><a mdbScrollSpyLink="section1" class="nav-link"  [routerLink]="['/group/#section1']">Your groups  <span class=" badge badge-danger ml-2">2</span></a></li>
+          <li class="nav-item py-2"><a mdbScrollSpyLink="section2" class="nav-link" [routerLink]="['/group/#section2']" >Groups you are member of  <span class=" badge badge-danger ml-2">2</span></a></li>
+          <li class="nav-item py-2"><a mdbScrollSpyLink="section3" class="nav-link" [routerLink]="['/group/#section3']" >Groups were invited in  <span class=" badge badge-danger ml-2">2</span></a></li>
+        </ul>
+      </div>
+    </div>
   </div>
-  </div>
-<div class="col-sm-10">
+
+<div class="col-lg-12 col-xl-10">
 
 
 <!--</div>
@@ -28,7 +38,7 @@
   <div class="col-lg-2 col-md-4" *ngFor="let group of ownedGroups">
 -->
   <div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-4 mt-5" *ngFor="let group of ownedGroups">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-5" *ngFor="let group of ownedGroups">
       <!--Card-->
       <!--Card-->
       <mdb-card>
@@ -50,7 +60,7 @@
           <i class="fas fa-angle-right"></i>
 
         </a>
-        <small class="unread-messages float-right" *ngIf="userServiceProvider.groupService.groupUnreadMessages.get(group.name)>0"  ><mdb-icon far icon="comments" class="pr-1 "></mdb-icon>    <span class=" badge badge-danger ml-2">{{userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
+        <small class="unread-messages float-right " *ngIf="userServiceProvider.groupService.groupUnreadMessages.get(group.name)>0"  ><mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>    <span class=" badge badge-danger ml-2 animated wobble">{{userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
         </small>
         <!--Card content-->
         <mdb-card-body>
@@ -117,7 +127,7 @@
         <i class="fas fa-angle-right"></i>
 
       </a>
-      <small class="unread-messages float-right"><mdb-icon far icon="comments" class="pr-1 "></mdb-icon>    <span class=" badge badge-danger ml-2">4</span>
+      <small class="unread-messages float-right "><mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>    <span class=" badge badge-danger ml-2 animated wobble">4</span>
       </small>
       <!--Card content-->
       <mdb-card-body>
@@ -176,17 +186,17 @@
       <mdb-card-body>
         <!--Name-->
         <mdb-card-title>
-          <h4>Anna Doe</h4>
+          <h4>{{group.owner.username}}</h4>
         </mdb-card-title>
         <hr>
 
         <!--Quotation-->
         <p>
-          <mdb-icon fas icon="quote-left"></mdb-icon> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos,
-          adipisci</p>
+          Has invited you to group <strong>{{group.name}}</strong></p>
       </mdb-card-body>
     </mdb-card>
   </div>
+</div>
 </div>
 </div>
 </div>
