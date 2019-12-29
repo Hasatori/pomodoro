@@ -11,9 +11,15 @@
 
 
 
-.custom-button{
-  opacity: 0.9;
-}
+
 .custom-button:hover{
   opacity: 1;
 }
+
+.login-form-header{
+ color: $navigationBarColor !important;
+}
+.active{
+  color: $navigationBarColor !important;
+}
+

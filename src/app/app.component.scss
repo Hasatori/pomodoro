@@ -1,4 +1,5 @@
 $navigationBarColor:#2E314C;
+$navigationBarColorTransparent:#818393;
 $customCardBackgroundColor:#f7f7f7;
 $basicTextColor: #DCBA89;
 $secondaryTextColor:#333333;
@@ -36,5 +37,34 @@ min-height:80vh !important;
 }
 .github-icon{
   color: #333333 !important;
+}
+
+.custom-button{
+  opacity: 0.9;
+  background-color: $navigationBarColor !important;
+  color: $basicTextColor;
+}
+.custom-link{
+  color: $navigationBarColor;
+  font-weight: bold;
+  text-decoration: underline;
+  opacity: 0.9;
+}
+.custom-link:hover{
+
+  opacity: 1;
+}
+.form-control:focus{
+  border-color: $navigationBarColorTransparent;
+  box-shadow: 0 0 0 0.2rem $navigationBarColorTransparent;
+}
+.md-form input:focus:not([readonly]){
+  border-bottom:1px solid $navigationBarColor !important;
+  box-shadow: 0 1px 0 0 $navigationBarColor;
+
+}
+.md-form .form-control.is-invalid{
+  border-color: #f44336;
+  box-shadow: 0 1px 0 0 #f44336;
 }
 
