@@ -8,6 +8,7 @@ import {GroupService} from '../../services/group.service';
 import {Group} from '../../model/group';
 import {UserService} from '../../services/user.service';
 import {User} from '../../model/user';
+import {UserServiceProvider} from '../../services/user-service-provider';
 
 @Component({
   selector: 'app-navbar',
@@ -18,15 +19,15 @@ export class NavbarComponent implements OnInit {
   @Output() myEvent = new EventEmitter<string>();
   private user: User;
 
-  constructor(private groupService: GroupService, private loginService: AuthService, private userService: UserService, private pomodoroService: PomodoroService, private router: Router, private freeTrialService: FreeTrialService) {
-    userService.getUser().subscribe(user => {
+  constructor(private userServiceProvider: UserServiceProvider, private router: Router, private freeTrialService: FreeTrialService) {
+    userServiceProvider.userService.getUser().subscribe(user => {
       this.user = user;
     });
 
   }
 
   ngOnInit() {
-    this.groupService.getGroups().pipe(first()).subscribe(groups => {
+    this.userServiceProvider.groupService.getGroups().pipe(first()).subscribe(groups => {
 
     });
   }

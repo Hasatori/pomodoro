@@ -1,6 +1,7 @@
 <!--Navbar-->
 
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark" class="my-navbar" [containerInside]="false" [iconBackground]="['custom-hamburger-class']">
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark" class="my-navbar" [containerInside]="false"
+            [iconBackground]="['custom-hamburger-class']">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand><a class="navbar-brand" href="#">Pomapp</a></mdb-navbar-brand>
@@ -9,16 +10,24 @@
   <links>
 
     <!-- Links -->
-    <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav mr-auto">
-      <div *ngIf="this.router.url!=='/pomodoro' && pomodoroService.timer!=null && pomodoroService.timer.started">
-        <li *ngIf="pomodoroService.timer.phase==='WORK'" class="btn btn-warning">
-          {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
+    <ul *ngIf="    userServiceProvider. authService.currentAccessTokenValue" class="navbar-nav mr-auto">
+      <div *ngIf="this.router.url!=='/pomodoro' &&     userServiceProvider.pomodoroService.
+                    timer!=null &&     userServiceProvider.pomodoroService.
+                    timer.started">
+        <li *ngIf="    userServiceProvider.pomodoroService.
+                timer.phase==='WORK'" class="btn btn-warning">
+          {{    userServiceProvider.pomodoroService.timer.phase}}
+          - {{    userServiceProvider.pomodoroService.timer.timeLeft}}
         </li>
-        <li *ngIf="pomodoroService.timer.phase==='PAUSE'" class="nav-item btn btn-success">
-          {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
+        <li *ngIf="    userServiceProvider.pomodoroService.
+                timer.phase==='PAUSE'" class="nav-item btn btn-success">
+          {{    userServiceProvider.pomodoroService.timer.phase}}
+          - {{    userServiceProvider.pomodoroService.timer.timeLeft}}
         </li>
-        <li *ngIf="pomodoroService.timer.phase==='INTERRUPTED'" class="nav-item btn btn-error">
-          {{pomodoroService.timer.phase}} - {{pomodoroService.timer.timeLeft}}
+        <li *ngIf="    userServiceProvider.pomodoroService.
+                timer.phase==='INTERRUPTED'" class="nav-item btn btn-error">
+          {{    userServiceProvider.pomodoroService.timer.phase}}
+          - {{    userServiceProvider.pomodoroService.timer.timeLeft}}
         </li>
       </div>
       <li class="nav-item " [routerLinkActive]="['active']">
@@ -27,13 +36,25 @@
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/group']">Groups
-          <small *ngIf="groupService.allUnreadMessages!==0" class="align-right"><span
-            class="badge badge-danger ml-2 text-right">{{groupService.allUnreadMessages}}</span></small>
+          <small *ngIf="    userServiceProvider.groupService.
+allUnreadMessages!==0" class="align-right ml-2">
+            <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
+            <span
+              class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.allUnreadMessages}}</span>
+          </small>
+          <small *ngIf="    userServiceProvider.groupService.
+numberOfNotAcceptedGroupInvitations!==0" class="align-right">
+            <mdb-icon fas icon="bell"></mdb-icon>
+            <span
+              class="badge badge-danger ml-2 text-right">{{    userServiceProvider.groupService.numberOfNotAcceptedGroupInvitations}}</span>
+          </small>
         </a>
       </li>
 
     </ul>
-    <ul *ngIf="!loginService.currentAccessTokenValue" class="navbar-nav mr-auto">
+    <ul *ngIf="!    userServiceProvider. authService.
+
+currentAccessTokenValue" class="navbar-nav mr-auto">
 
       <li class="nav-item " [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/home']">Home<span
@@ -56,16 +77,9 @@
 
     </ul>
     <!-- Links -->
-    <ul *ngIf="loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link waves-light" mdbWavesEffect>
-          <mdb-icon fas icon="user"></mdb-icon>
-          Invitations
-          <small *ngIf="groupService.numberOfNotAcceptedGroupInvitations!==0" class="align-right"><span
-            class="badge badge-danger ml-2 text-right">{{groupService.numberOfNotAcceptedGroupInvitations}}</span>
-          </small>
-        </a>
-      </li>
+    <ul *ngIf="    userServiceProvider. authService.
+
+currentAccessTokenValue" class="navbar-nav ml-auto">
       <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/my-account']">
           <mdb-icon fas icon="user"></mdb-icon>
@@ -80,7 +94,9 @@
       </li>
     </ul>
     <!-- Links -->
-    <ul *ngIf="!loginService.currentAccessTokenValue" class="navbar-nav ml-auto">
+    <ul *ngIf="!    userServiceProvider. authService.
+
+currentAccessTokenValue" class="navbar-nav ml-auto">
       <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/login']">
           <mdb-icon fas icon="sign-in-alt"></mdb-icon>
