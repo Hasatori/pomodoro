@@ -1,11 +1,29 @@
 @import "../group.component.scss";
+.rotate-card{
+  font-weight: bold;
+}
+.back-side{
+  background-color: $navigationBarColor !important;
+  color: $basicTextColor;
 
+}
+.back-side .header{
+  border-bottom:1px solid $basicTextColor !important;
+}
+.back-side .rotate-back{
+  border-top:1px solid $basicTextColor !important;
+}
+.rotate-card:hover{
+  cursor:pointer;
+text-decoration: underline;
+}
 .section-header {
   color: $secondaryTextColor;
 }
 
 .card-up, .btn-action, .card-footer {
   background-color: $navigationBarColor;
+  height: 30% !important;
 }
 
 .card-footer ul li, .btn-action i {
@@ -34,9 +52,6 @@
   font-size: 1.1em;
 }
 
-.mdb-scrollspy-ex .nav-item {
-  width: 100%;
-}
 
 .section {
   min-height: 70vh !important;
@@ -59,16 +74,27 @@
 
 .active {
   font-weight: bold !important;
-  border-left: 1px solid $secondaryTextColor !important;
+  border-right: 1px solid $secondaryTextColor !important;
 
 }
-.floating-part{
-  padding: 0!important;
+
+.floating-part {
+  padding: 0 !important;
+}
+
+.card-btn {
+  background-color: $navigationBarColor;
+  color: $basicTextColor !important;
+  text-decoration: none !important;
+}
+
+.card-btn:hover {
+  color: $basicTextColor !important;
 }
 @media (min-width: 1189px) {
   .collapsed-part {
     overflow: visible !important;
-    position: sticky ;
+    position: sticky;
     top: 0;
   }
   .ham-but {
@@ -80,9 +106,10 @@
 
 @media (max-width: 1195px) {
   .collapsed-part {
-    background-color: $navigationBarColor;
+
     width: 100%;
     border-radius: 5px;
+    background-color: $navigationBarColor;
     -webkit-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
     box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
@@ -113,6 +140,10 @@
 
     border-right: 0px solid transparent !important;
     z-index: 3;
+  }
+  .mdb-scrollspy-ex .nav-item {
+    border-bottom: 1px solid $basicTextColor;
+
   }
 
 }

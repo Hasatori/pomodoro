@@ -25,7 +25,10 @@ export class GroupService {
   private user: User;
   public allUnreadMessages: number = 0;
   public groupUnreadMessages: Map<string, number> = new Map<string, number>();
+  public ownedGroupsUnreadMessages: number = 0;
+  public notOwnedGroupsUnreadMessages: number = 0;
   public numberOfNotAcceptedGroupInvitations: number = 0;
+  public invitations: Array<GroupInvatation> = [];
 
   constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
   }
@@ -47,17 +50,30 @@ export class GroupService {
           }
           this.groupUnreadMessages.set(group.name, numberToSet);
           this.allUnreadMessages += numberToSet;
+          if (group.owner.username === this.user.username) {
+            this.ownedGroupsUnreadMessages += numberToSet;
+          } else {
+            this.notOwnedGroupsUnreadMessages += numberToSet;
+          }
+
         });
         this.getNewGroupMessage(group.name).subscribe(message => {
           if (message.author.username !== this.user.username) {
             this.audio.play();
             this.allUnreadMessages++;
             this.groupUnreadMessages.set(group.name, this.groupUnreadMessages.get(group.name) + 1);
+            if (group.owner.username === this.user.username) {
+              this.ownedGroupsUnreadMessages++;
+            } else {
+              this.notOwnedGroupsUnreadMessages++;
+            }
+
           }
         });
       }
     });
     this.getNotAcceptedGroupInvitations().subscribe(groupInvitations => {
+      this.invitations = groupInvitations;
       this.numberOfNotAcceptedGroupInvitations = groupInvitations.length;
     });
   }
@@ -134,11 +150,11 @@ export class GroupService {
 
 
   addUser(username: string, groupName: string) {
-    let groupRequest={
-      username:username,
-      groupName:groupName
-    }
-    this.webSocketProxyService.publish('/app/group/' + groupName+'/group-members',  JSON.stringify(groupRequest));
+    let groupRequest = {
+      username: username,
+      groupName: groupName
+    };
+    this.webSocketProxyService.publish('/app/group/' + groupName + '/group-members', JSON.stringify(groupRequest));
 
   }
 
@@ -163,7 +179,7 @@ export class GroupService {
       let groupUsers: Array<User> = JSON.parse(window.sessionStorage.getItem(this.createParameterizedKey(this.GROUP_USERS_KEY, groupName)));
       groupUsers.push(newMember);
       sessionStorage.setItem(this.createParameterizedKey(this.GROUP_USERS_KEY, groupName), JSON.stringify(groupUsers));
-console.log(newMember);
+      console.log(newMember);
       return newMember;
     }));
   }

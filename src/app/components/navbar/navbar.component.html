@@ -36,14 +36,12 @@
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/group']">Groups
-          <small *ngIf="    userServiceProvider.groupService.
-allUnreadMessages!==0" class="align-right ml-2">
+          <small *ngIf="    userServiceProvider.groupService.allUnreadMessages!==0" class="align-right ml-2">
             <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
             <span
               class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.allUnreadMessages}}</span>
           </small>
-          <small *ngIf="    userServiceProvider.groupService.
-numberOfNotAcceptedGroupInvitations!==0" class="align-right">
+          <small *ngIf="    userServiceProvider.groupService.numberOfNotAcceptedGroupInvitations!==0" class="align-right">
             <mdb-icon fas icon="bell"></mdb-icon>
             <span
               class="badge badge-danger ml-2 text-right">{{    userServiceProvider.groupService.numberOfNotAcceptedGroupInvitations}}</span>
