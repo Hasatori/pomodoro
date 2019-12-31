@@ -74,7 +74,7 @@ const routes: Routes = [
   {path: 'forgotten-password', component: ForgottenPasswordComponent},
   {path: 'pomodoro', component: PomodoroComponent, canActivate: [AuthGuard]},
   {path: 'group', component: GroupComponent, canActivate: [AuthGuard], children: groupDetailRoutes},
-  {path: 'my-account', redirectTo: 'my-account/personal-information', canActivate: [AuthGuard]},
+  {path: 'my-account',component:MyAccountComponent, canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard], children: myAccountRoutes},
 

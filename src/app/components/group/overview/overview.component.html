@@ -11,7 +11,7 @@
     <div class="collapsed-part" mdbCollapse #test="bs-collapse">
       <div class="mdb-scrollspy-ex">
         <ul mdbScrollSpy="scrollspy4" class="nav d-flex flex-column p-3">
-          <li class="nav-item py-2"><a mdbScrollSpyLink="section1" class="nav-link" [routerLink]="['/group/#section1']">Your
+          <li class="nav-item py-2"><a mdbScrollSpyLink="your-groups" class="nav-link" [routerLink]="['/group#your-groups']">Your
             groups
             <small *ngIf="    userServiceProvider.groupService.ownedGroupsUnreadMessages!==0" class="align-right ml-2">
               <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
@@ -19,7 +19,7 @@
                 class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.ownedGroupsUnreadMessages}}</span>
             </small>
           </a></li>
-          <li class="nav-item py-2"><a mdbScrollSpyLink="section2" class="nav-link" [routerLink]="['/group/#section2']">Groups
+          <li class="nav-item py-2"><a mdbScrollSpyLink="groups-your-are-member-of" class="nav-link" [routerLink]="['/group#groups-your-are-member-of']">Groups
             you are member of
             <small *ngIf="    userServiceProvider.groupService.notOwnedGroupsUnreadMessages!==0"
                    class="align-right ml-2">
@@ -28,7 +28,7 @@
                 class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.notOwnedGroupsUnreadMessages}}</span>
             </small>
           </a></li>
-          <li class="nav-item py-2"><a mdbScrollSpyLink="section3" class="nav-link" [routerLink]="['/group/#section3']">Groups
+          <li class="nav-item py-2"><a mdbScrollSpyLink="invitations" class="nav-link" [routerLink]="['/group#invitations']">Groups
             were invited in
             <small *ngIf="    userServiceProvider.groupService.numberOfNotAcceptedGroupInvitations!==0"
                    class="align-right ml-2">
@@ -43,28 +43,19 @@
   </div>
 
   <div class="col-lg-12 col-xl-10">
+    <div class="container-fluid my-5 section" id="your-groups" mdbScrollSpyWindow="scrollspy4">
+      <div class="section-header row mr-0">
+        <h2 class="h2-responsive text-left font-weight-bold col-sm-9 col-md-10">Your groups</h2>
+        <div class="col-sm-2 col-md-1">
+          <button mdbBtn type="button" class="custom-button" color="success" rounded="true"  [routerLink]="['/group/create']" mdbWavesEffect><mdb-icon fas icon="plus"></mdb-icon></button>
+        </div>
 
-
-    <!--</div>
-    <div class="row">
-    <div class="col-11"></div>
-    <div class="col-1">
-      <a mdbBtn floating="true" gradient="blue" mdbWavesEffect [routerLink]="['./create']"><i class="fas fa-plus"></i></a>
-    </div>
-
-    </div>-->
-
-    <div class="container-fluid my-5 section" id="section1" mdbScrollSpyWindow="scrollspy4">
-      <div class="section-header">
-        <h2 class="h2-responsive text-left font-weight-bold">Your groups</h2>
-        <!--
-          <div class="col-lg-2 col-md-4" *ngFor="let group of ownedGroups">
-        -->
+        </div>
         <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-5" *ngFor="let group of ownedGroups">
             <!--Card-->
             <!--Card-->
-            <mdb-card>
+            <mdb-card >
 
               <!--Card image-->
               <div class="view overlay waves-light" mdbWavesEffect>
@@ -127,16 +118,38 @@
 
           </div>
         </div>
+
+        <nav class="mt-5">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" aria-label="Previous" mdbWavesEffect>
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <li class="page-item active"><a class="page-link" mdbWavesEffect>1</a></li>
+            <li class="page-item"><a class="page-link" mdbWavesEffect>2</a></li>
+            <li class="page-item"><a class="page-link" mdbWavesEffect>3</a></li>
+            <li class="page-item"><a class="page-link" mdbWavesEffect>4</a></li>
+            <li class="page-item"><a class="page-link" mdbWavesEffect>5</a></li>
+            <li class="page-item">
+              <a class="page-link" aria-label="Next" mdbWavesEffect>
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
-    </div>
+
     <hr class="w-100">
 
-    <div class="container-fluid my-5 section" id="section2" mdbScrollSpyWindow="scrollspy4">
+    <div class="container-fluid my-5 section" id="groups-your-are-member-of" mdbScrollSpyWindow="scrollspy4">
       <div class="section-header">
         <h2 class="h2-responsive text-left font-weight-bold">Groups you are member of</h2>
-      </div>
+     </div>
       <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-4 mt-5" *ngFor="let group of participatingGroups">
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-5" *ngFor="let group of participatingGroups">
 
           <!--Card-->
           <mdb-card>
@@ -200,9 +213,30 @@
 
         </div>
       </div>
+      <nav class="mt-5">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" aria-label="Previous" mdbWavesEffect>
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <li class="page-item active"><a class="page-link" mdbWavesEffect>1</a></li>
+          <li class="page-item"><a class="page-link" mdbWavesEffect>2</a></li>
+          <li class="page-item"><a class="page-link" mdbWavesEffect>3</a></li>
+          <li class="page-item"><a class="page-link" mdbWavesEffect>4</a></li>
+          <li class="page-item"><a class="page-link" mdbWavesEffect>5</a></li>
+          <li class="page-item">
+            <a class="page-link" aria-label="Next" mdbWavesEffect>
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
     <hr class="w-100">
-    <div class="container-fluid section" id="section3" mdbScrollSpyWindow="scrollspy4">
+    <div class="container-fluid section" id="invitations" mdbScrollSpyWindow="scrollspy4">
       <div class="section-header">
         <h2 class="h2-responsive text-left font-weight-bold">Invitations</h2>
         <!--
@@ -266,6 +300,27 @@
             </mdb-flipping-card>
           </div>
         </div>
+        <nav class="mt-5">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" aria-label="Previous" mdbWavesEffect>
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <li class="page-item active"><a class="page-link" mdbWavesEffect>1</a></li>
+            <li class="page-item"><a class="page-link" mdbWavesEffect>2</a></li>
+            <li class="page-item"><a class="page-link" mdbWavesEffect>3</a></li>
+            <li class="page-item"><a class="page-link" mdbWavesEffect>4</a></li>
+            <li class="page-item"><a class="page-link" mdbWavesEffect>5</a></li>
+            <li class="page-item">
+              <a class="page-link" aria-label="Next" mdbWavesEffect>
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>

@@ -10,27 +10,6 @@
   opacity: 0.8;
 }
 
-.active, .nav-link:hover {
-  font-weight: bold;
-  opacity: 1;
-  color: white !important;
-  background-color: $navigationBarColor !important;
-}
-
 .header {
   color: $navigationBarColor;
-}
-
-.active, .nav-link:hover {
-  -webkit-box-shadow: 4px 4px 3px 0px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 4px 4px 3px 0px rgba(0, 0, 0, 0.2);
-  box-shadow: 4px 4px 3px 0px rgba(0, 0, 0, 0.2);
-}
-
-.active a {
-  font-weight: bold;
-}
-
-.active a, .nav-link:hover a {
-  color: $navigationBarColor !important;
 }

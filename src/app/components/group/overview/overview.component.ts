@@ -25,13 +25,20 @@ export class OverviewComponent implements OnInit {
     userServiceProvider.groupService.getGroups().pipe(first()).subscribe(groups => {
       userServiceProvider.userService.getUser().subscribe(user => {
         this.user = user;
+        let count = 1;
         for (let group of groups) {
-          group.layoutImagePath = this.getLayoutImagePath();
+          if (count < 5) {
+            group.layoutImagePath = this.getLayoutImagePath(count);
+          } else {
+            group.layoutImagePath = this.getLayoutImagePath(Math.floor(Math.random() * 5) + 1);
+          }
+
           if (group.owner.username === this.user.username) {
             this.ownedGroups.push(group);
           } else {
             this.participatingGroups.push(group);
           }
+          count++;
         }
       });
       userServiceProvider.groupService.getNewGroup().subscribe(newGroup => {
@@ -42,13 +49,12 @@ export class OverviewComponent implements OnInit {
         }
       });
     });
-
   }
 
   ngOnInit() {
   }
 
-  getLayoutImagePath(): string {
-    return `../../../../assets/group/layouts/teamwork-${Math.floor(Math.random() * 5) + 1}.jpg`;
+  getLayoutImagePath(number: number): string {
+    return `../../../../assets/group/layouts/teamwork-${number}.jpg`;
   }
 }

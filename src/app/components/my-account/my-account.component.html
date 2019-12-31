@@ -1,34 +1,68 @@
-<div class="container-fluid py-5">
-  <div class="row">
-    <div class="col-md-2">
-      <div class="container my-account-side-nav">
-        <div class="row">
-          <div class="col-8">
-            <div class="nav flex-column nav-pills shadow" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+<!--Grid row-->
+<h1 class="h1-responsive text-center font-weight-bold border-bottom pb-4">Your account</h1>
 
-              <a class="nav-link border " [routerLinkActive]="['active']" data-toggle="pill"
-                 [routerLink]="['./personal-information']" role="tab"
-                 aria-controls="v-pills-home" aria-selected="true">Personal information</a>
-              <a class="nav-link border" [routerLinkActive]="['active']" data-toggle="pill"
-                 [routerLink]="['./change-password']" role="tab"
-                 aria-controls="v-pills-messages" aria-selected="false">Change password</a>
-              <a class="nav-link border" [routerLinkActive]="['active']" data-toggle="pill"
-                 [routerLink]="['./pomodoro-history']" role="tab"
-                 aria-controls="v-pills-profile" aria-selected="false">Pomodoro history</a>
-              <a class="nav-link border" [routerLinkActive]="['active']" data-toggle="pill"
-                 [routerLink]="['./settings']" role="tab"
-                 aria-controls="v-pills-profile" aria-selected="false">Settings</a>
+<div class="row mr-0 pb-5">
+  <div class="floating-part col-lg-12 col-xl-2 border-right">
+
+    <button mdbBtn color="primary" class="waves-light ham-but" type="button" (click)="test.toggle()" mdbWavesEffect>
+      <mdb-icon fas icon="bars"></mdb-icon>
+    </button>
+
+    <div class="collapsed-part" mdbCollapse #test="bs-collapse">
+      <div class="mdb-scrollspy-ex">
+        <ul mdbScrollSpy="scrollspy4" class="nav d-flex flex-column p-3">
+          <li class="nav-item py-2"><a mdbScrollSpyLink="personalInformation" class="nav-link"
+                                       [routerLink]="['/my-account#personalInformation']">
+            <mdb-icon fas icon="info mr-3"></mdb-icon>
+            Personal information
+          </a></li>
+          <li class="nav-item py-2"><a mdbScrollSpyLink="settings" class="nav-link"
+                                       [routerLink]="['/my-account#settings']">
+            <mdb-icon fas icon="cog mr-3"></mdb-icon>
+            Settings
+          </a></li>
+          <li class="nav-item py-2"><a mdbScrollSpyLink="changePassword" class="nav-link"
+                                       [routerLink]="['/my-account#changePassword']">
+            <mdb-icon fas icon="key mr-3"></mdb-icon>
+            Change password
+          </a></li>
+
+          <li class="nav-item py-2"><a mdbScrollSpyLink="pomodoroHistory" class="nav-link"
+                                       [routerLink]="['/my-account#pomodoroHistory']">
+            <mdb-icon far icon="clock mr-3"></mdb-icon>
+            Pomodoro history
+          </a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-12 col-xl-10">
+    <div class="container-fluid ">
+      <div class="row section">
+        <div class="col-lg-12 col-xl-6 border-right">
+          <div class="row">
+            <div class="col-12 my-5" id="personalInformation" mdbScrollSpyWindow="scrollspy4">
+              <personal-information></personal-information>
+            </div>
+            <div class="col-12 my-5" id="changePassword" mdbScrollSpyWindow="scrollspy4">
+              <change-password></change-password>
             </div>
           </div>
         </div>
+        <div class="col-lg-12 col-xl-6 border-left my-5" id="settings" mdbScrollSpyWindow="scrollspy4">
+          <app-settings></app-settings>
+        </div>
       </div>
     </div>
-    <div class="col-md-1">
-    </div>
-    <div class="col-md-7">
-      <router-outlet></router-outlet>
-    </div>
-    <div class="col-md-2">
+
+    <hr class="w-100">
+    <div class="container-fluid ">
+      <div class="row section">
+        <div class="col-12 my-5" id="pomodoroHistory" mdbScrollSpyWindow="scrollspy4">
+          <pomodoro-history></pomodoro-history>
+        </div>
+      </div>
     </div>
   </div>
 </div>
