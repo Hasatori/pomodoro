@@ -12,7 +12,7 @@ $backgroundColor: #F8F8F8;
 
 .custom-card {
   border-color: rgb(20, 20, 20, 0.2);
-  background-color: $backgroundColor;
+  background-color: white;
   color: $secondaryTextColor;
   max-width: 500px;
   margin: auto;
@@ -174,4 +174,10 @@ $backgroundColor: #F8F8F8;
     border-bottom: 1px solid $basicTextColor;
 
   }}
+.pomodoro-img{
+  opacity: 0.8;
+}
+.rgba-teal-strong{
+  background-color:transparent;
 
+}

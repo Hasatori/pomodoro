@@ -69,10 +69,38 @@
                   </a>
                 </div>
                 <div class="chat-footer text">
-                  <p
-                    [ngClass]="row.value.phase==='NOT RUNNING'? 'badge badge-danger':row.value.phase==='WORK' ?'badge badge-warning' :'badge badge-success'"
-                  >{{row.value.phase}}</p>
-                  <p class="last-message text-muted text-center">{{row.value.timeLeft}}</p>
+                  <mdb-badge
+                    *ngIf="row.value.phase==='NOT RUNNING'"
+                    danger="true" class="pomodoro-tag">Not running</mdb-badge>
+                  <mdb-badge
+                    *ngIf="row.value.phase==='PAUSE'"
+                    success="true" class="pomodoro-tag" >Pause</mdb-badge>
+                  <mdb-badge
+                    *ngIf="row.value.phase==='WORK'"
+                    warning="true" class="pomodoro-tag">Work</mdb-badge>
+
+
+
+                  <div class="view">
+                    <img  src="../../../../../../assets/pomodoro/pomodoro.svg" class="pomodoro-img">
+
+                    <div class="mask flex-center waves-effect waves-light rgba-teal-strong">
+                      <p
+                        *ngIf="row.value.phase==='NOT RUNNING'"
+                        class="customTimer text-danger"
+                      >  {{row.value.timeLeft}}</p>
+                      <p
+                        *ngIf="row.value.phase==='PAUSE'"
+                        class="customTimer text-success"
+                      >  {{row.value.timeLeft}}</p>
+                      <p
+                        *ngIf="row.value.phase==='WORK'"
+                        class="customTimer text-warning"
+                      >  {{row.value.timeLeft}}</p>
+                    </div>
+
+                  </div>
+             
                 </div>
               </div>
               <hr class="w-100 border-1">

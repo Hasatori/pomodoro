@@ -1,19 +1,39 @@
+<p class="h1-responsive text-center mb-4 header">Pomodoro</p>
 <div class="container">
-  <div class="card shadow custom-card">
+  <mdb-badge
+    *ngIf="userServiceProvider.pomodoroService.timer.phase==='NOT RUNNING'"
+    danger="true" class="pomodoro-tag">Not running</mdb-badge>
+  <mdb-badge
+    *ngIf="userServiceProvider.pomodoroService.timer.phase==='PAUSE'"
+    success="true" class="pomodoro-tag" >Pause</mdb-badge>
+  <mdb-badge
+    *ngIf="userServiceProvider.pomodoroService.timer.phase==='WORK'"
+    warning="true" class="pomodoro-tag">Work</mdb-badge>
+  
 
-    <!-- Card content -->
-    <div class="card-body">
 
-  <h1 id="head">{{userServiceProvider.pomodoroService.timer.phase}}</h1>
-  <div class="customTimer">
-    {{userServiceProvider.pomodoroService.timer.timeLeft}}
-  </div>
+    <div class="view">
+      <img  src="../../../assets/pomodoro/pomodoro.svg" class="pomodoro-img">
 
-  <button *ngIf="!userServiceProvider.pomodoroService.timer.started" type="button" class="btn btn-primary btn-rounded  my-button"
-          (click)="userServiceProvider.pomodoroService.startPomodoroForCurrentUser()">START</button>
-  <button *ngIf="userServiceProvider.pomodoroService.timer.started" type="button" class="btn btn-danger btn-rounded  my-button"
-          (click)="userServiceProvider.pomodoroService.resetPomodoroForCurrentUser()">RESET</button>
-</div>
-  </div>
-  <app-pomodoro-is-running></app-pomodoro-is-running>
+        <div class="mask flex-center waves-effect waves-light rgba-teal-strong">
+          <p
+            *ngIf="userServiceProvider.pomodoroService.timer.phase==='NOT RUNNING'"
+            class="customTimer text-danger"
+          >  {{userServiceProvider.pomodoroService.timer.timeLeft}}</p>
+          <p
+            *ngIf="userServiceProvider.pomodoroService.timer.phase==='PAUSE'"
+            class="customTimer text-success"
+          >  {{userServiceProvider.pomodoroService.timer.timeLeft}}</p>
+          <p
+            *ngIf="userServiceProvider.pomodoroService.timer.phase==='WORK'"
+            class="customTimer text-warning"
+          >  {{userServiceProvider.pomodoroService.timer.timeLeft}}</p>
+        </div>
+
+    </div>
+    <button *ngIf="!userServiceProvider.pomodoroService.timer.started" type="button" class="btn btn-primary btn-rounded  my-button"
+            (click)="userServiceProvider.pomodoroService.startPomodoroForCurrentUser()">START</button>
+    <button *ngIf="userServiceProvider.pomodoroService.timer.started" type="button" class="btn  btn-primary btn-rounded  my-button"
+            (click)="userServiceProvider.pomodoroService.resetPomodoroForCurrentUser()">RESET</button>
+
 </div>
