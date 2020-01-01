@@ -40,6 +40,7 @@ import {provideConfig} from './ServerConfig';
 import {WantMoreFunctionalityComponent} from './components/modals/want-more-functionality/want-more-functionality.component';
 import {SuccessComponent} from './components/modals/success/success.component';
 import {ChatComponent} from './components/group/group-detail/chat/chat.component';
+
 import {
   AccordionModule,
   AnimatedCardsModule,
@@ -57,14 +58,13 @@ import {
   SelectModule,
   SidenavModule,
   SmoothscrollModule,
-  StepperModule,
-  StickyContentModule,
   TabsModule, TimePickerModule,
   ToastModule
 } from 'ng-uikit-pro-standard';
 import {OverviewComponent} from './components/group/overview/overview.component';
 // MDB Angular Pro
 import {ScrollSpyModule,ButtonsModule, WavesModule, CardsModule} from 'ng-uikit-pro-standard';
+import { BackToTopComponent } from './components/back-to-top/back-to-top.component';
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
@@ -103,7 +103,8 @@ const routes: Routes = [
     WantMoreFunctionalityComponent,
     SuccessComponent,
     ChatComponent,
-    OverviewComponent
+    OverviewComponent,
+    BackToTopComponent
 
   ],
   imports: [

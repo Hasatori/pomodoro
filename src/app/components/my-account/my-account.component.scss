@@ -13,3 +13,23 @@
 .header {
   color: $navigationBarColor;
 }
+
+@media (min-width: 1189px) {
+  .right-border-section {
+    border-right: 1px solid $lightBorderColor;
+  }
+  .left-border-section {
+    border-left: 1px solid $lightBorderColor;
+  }
+}
+
+@media (max-width: 1195px) {
+  .subsection-border {
+    padding-top: 15px;
+    border-top: 1px solid $lightBorderColor;
+  }
+  .subsection {
+
+    min-height: 100vh;
+  }
+}

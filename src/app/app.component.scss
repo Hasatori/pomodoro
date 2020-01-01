@@ -4,6 +4,7 @@ $customCardBackgroundColor: #f7f7f7;
 $basicTextColor: #DCBA89;
 $secondaryTextColor: #333333;
 $backgroundColor: #F8F8F8;
+$lightBorderColor: #dee2e6;
 .mainContent {
   min-height: 80vh !important;
   background-color: $backgroundColor !important;
@@ -41,13 +42,13 @@ $backgroundColor: #F8F8F8;
   color: #333333 !important;
 }
 
-.custom-button,.pagination .active .page-link{
+.custom-button, .pagination .active .page-link {
   opacity: 0.9;
   background-color: $navigationBarColor !important;
   color: $basicTextColor !important;
 }
 
-.custom-button:hover,.pagination .page-item:hover .page-link {
+.custom-button:hover, .pagination .page-item:hover .page-link {
   opacity: 1;
   background-color: $navigationBarColor !important;
   color: $basicTextColor !important;
@@ -120,6 +121,7 @@ $backgroundColor: #F8F8F8;
 .card-btn:hover {
   color: $basicTextColor !important;
 }
+
 @media (min-width: 1189px) {
   .collapsed-part {
     overflow: visible !important;
@@ -173,11 +175,14 @@ $backgroundColor: #F8F8F8;
   .mdb-scrollspy-ex .nav-item {
     border-bottom: 1px solid $basicTextColor;
 
-  }}
-.pomodoro-img{
+  }
+}
+
+.pomodoro-img {
   opacity: 0.8;
 }
-.rgba-teal-strong{
-  background-color:transparent;
+
+.rgba-teal-strong {
+  background-color: transparent;
 
 }
