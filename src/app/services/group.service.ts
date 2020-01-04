@@ -138,8 +138,18 @@ export class GroupService {
 
   }
 
-  public reactToGroupMessage(group:Group,message:GroupMessage,reaction:string){
+  public reactToGroupMessage(groupName: string, groupMessage: GroupMessage, reaction: string) {
+    let groupMessageReaction = {
+      groupMessageId: groupMessage.id,
+      reaction: reaction
+    };
+    this.webSocketProxyService.publish('/app/group/' + groupName + '/chat/reaction', JSON.stringify(groupMessageReaction));
+  }
 
+  public getReactedGroupMessage(groupName: string): Observable<GroupMessage> {
+    return this.webSocketProxyService.watch('/group/' + groupName + '/chat/reaction').pipe(map(newMessage => {
+      return JSON.parse(newMessage.body);
+    }));
   }
 
   createGroup(name: string, isPublic: boolean): Observable<any> {

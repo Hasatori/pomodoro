@@ -57,7 +57,7 @@ import {
   RangeModule,
   SelectModule,
   SidenavModule,
-  SmoothscrollModule,
+  SmoothscrollModule, TableModule,
   TabsModule, TimePickerModule,
   ToastModule
 } from 'ng-uikit-pro-standard';
@@ -65,6 +65,7 @@ import {OverviewComponent} from './components/group/overview/overview.component'
 // MDB Angular Pro
 import {ScrollSpyModule,ButtonsModule, WavesModule, CardsModule} from 'ng-uikit-pro-standard';
 import { BackToTopComponent } from './components/back-to-top/back-to-top.component';
+import { SortPipe } from './pipes/sort.pipe';
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
@@ -104,7 +105,8 @@ const routes: Routes = [
     SuccessComponent,
     ChatComponent,
     OverviewComponent,
-    BackToTopComponent
+    BackToTopComponent,
+    SortPipe
 
   ],
   imports: [
@@ -142,6 +144,7 @@ const routes: Routes = [
     TabsModule.forRoot(),
     ChipsModule,
     TimePickerModule,
+    TableModule
 
 
 

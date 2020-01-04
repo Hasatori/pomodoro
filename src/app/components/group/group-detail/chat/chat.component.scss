@@ -1,11 +1,43 @@
 @import "../group-detail.component";
 
-.chat-room {
+.chat-room,.minimalize {
   right: 1%;
   bottom: 1%;
   width: 25rem !important;
   height: 30rem !important;
   position: fixed !important;
+}
+.maximalize{
+  font-size: 1rem;
+  position: fixed!important;
+ bottom: 1% !important;
+  right: 1%;
+background-color: $navigationBarColor;
+  color: $basicTextColor;
+
+
+}
+.hidden{
+  display: none !important;
+}
+.minimalize{
+  position: fixed;
+  width: initial !important;
+  height: initial !important;
+  bottom:29rem;
+  right: 2%;
+font-size: 0.8rem;
+  color: $basicTextColor;
+  z-index: 1000;
+
+}
+.minimalize {
+
+  opacity: 0.8;
+}
+.minimalize:hover,.maximalize:hover{
+  opacity: 1;
+  cursor: pointer;
 }
 
 .my-message-text {
@@ -44,19 +76,23 @@
 .other-member-message-text {
   background-color: $backgroundColor;
   color: $secondaryTextColor !important;
+
 }
 
 
 .chat-message {
   padding: 15px;
 }
-.message-reaction,.edit-message{
-opacity: 0;
+
+.message-reaction, .edit-message {
+  opacity: 0;
 }
-.message-reaction:hover{
+
+.message-reaction:hover {
   cursor: pointer;
   opacity: 1 !important;
 }
+
 .seen {
 
   display: block !important;
@@ -76,9 +112,10 @@ opacity: 0;
   border-right: 1px solid $navigationBarColor;
   overflow-y: scroll;
   height: 80% !important;
-  scrollbar-color: transparent transparent  !important;
+  scrollbar-color: transparent transparent !important;
 
 }
+
 .chat-room:hover .my-custom-scrollbar {
   scrollbar-color: $basicTextColor $navigationBarColor !important;
   border-right: 0px solid $navigationBarColor;
@@ -95,9 +132,11 @@ opacity: 0;
 
 
 }
-.message-time,.message-reaction{
+
+.message-time, .message-reaction {
   font-size: 0.9em;
 }
+
 textarea::-webkit-input-placeholder {
   color: $basicTextColor;
 }
@@ -117,35 +156,55 @@ textarea:-ms-input-placeholder {
 textarea::placeholder {
   color: $basicTextColor;
 }
-.reaction-emoji{
-  opacity: 0.8 ;
+
+.reaction-emoji {
+  opacity: 0.8;
 }
-.reaction-emoji-selected{
+
+.reaction-emoji-selected {
   opacity: 1;
   background-color: $backgroundColor;
   border-radius: 10px;
 
 }
-.remove-reaction{
+.reactions-message:hover .reactions-count{
+  font-weight: bold;
+}
+
+.remove-reaction {
   color: $secondaryTextColor;
   font-weight: bold;
   opacity: 0.8;
   position: absolute;
   font-size: 1.1rem;
-top:-15%
+  top: -15%
 }
-.remove-reaction:hover{
+
+.remove-reaction:hover {
   cursor: pointer;
   opacity: 1;
 
 }
-.reaction-emoji:hover,.edit-message:hover{
+
+.reaction-emoji:hover,.reactions-message:hover, .edit-message:hover {
   opacity: 1 !important;
   cursor: pointer;
 }
+
 .stop-scrolling {
   overflow: hidden !important;
 }
-.messages-container:hover  .message-reaction,.messages-container:hover  .edit-message{
-opacity: 0.8;
+
+.messages-container:hover .message-reaction, .messages-container:hover .edit-message {
+  opacity: 0.8;
+}
+
+.changelog{
+z-index: 100 !important;
+  max-height: 150px !important;
+  width: 255px!important;
+  overflow-y: scroll !important;
+}
+.changelog-item{
+  width: 85px!important;
 }

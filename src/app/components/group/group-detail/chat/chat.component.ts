@@ -30,12 +30,11 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   lastMessage: GroupMessage;
   private oldMessageTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   private recentMessageTimeOptions = {hour: 'numeric'};
-  private markAllAsReadSubscription: Subscription;
-  private newGroupMessageSubscription: Subscription;
-  private lastNumberOfGroupMessagesSubscription: Subscription;
+
   private typing: boolean = false;
   private showReactions: boolean = false;
 
+  chatHidden: boolean = false;
   reactionsNames: Array<string> =
     [
       'happy',
@@ -46,6 +45,12 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       'confused',
       'kiss'
     ];
+
+
+  private markAllAsReadSubscription: Subscription;
+  private newGroupMessageSubscription: Subscription;
+  private lastNumberOfGroupMessagesSubscription: Subscription;
+  private groupMessageReactionSubscription: Subscription;
 
   constructor(private userServiceProvider: UserServiceProvider) {
 
@@ -64,8 +69,25 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setReactionsForMessage(newMessage);
       this.messages.push(newMessage);
       this.processMessagesFromBack(this.messages);
-      this.markAllAsReadAndProcessResponse();
-
+      if (!this.chatHidden){
+        this.markAllAsReadAndProcessResponse();
+      }
+    });
+    this.groupMessageReactionSubscription = this.userServiceProvider.groupService.getReactedGroupMessage(this.groupName).subscribe((reactedMessage) => {
+      console.log(reactedMessage);
+      let foundMessage = this.messages.find(message => {
+        return message.id === reactedMessage.id;
+      });
+      if (!isUndefined(foundMessage)) {
+        this.setReactionsForMessage(reactedMessage);
+        foundMessage.reactions = reactedMessage.reactions;
+        let reaction = foundMessage.reactions.find(r => {
+          return r.users.some(user => {
+            return user.username === this.user.username;
+          });
+        });
+        foundMessage.currentUserReaction = isUndefined(reaction) ? null : reaction.name;
+      }
     });
     this.lastNumberOfGroupMessagesSubscription = this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
       this.messages = response.sort(function(a, b) {
@@ -260,29 +282,22 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   react(message: GroupMessage, reactionName: string) {
-    this.removeReaction(message);
-    let reaction = message.reactions.find(r => {
-      return r.name == reactionName;
-    });
-    if (isUndefined(reaction)) {
-      reaction = this.createReaction(reactionName);
-      message.reactions.push(reaction);
-    }
-    reaction.users.push(this.user);
-    message.currentUserReaction = reactionName;
+    this.userServiceProvider.groupService.reactToGroupMessage(this.groupName, message, reactionName);
   }
 
   removeReaction(message: GroupMessage) {
-    let reaction = message.reactions.find(r => {
-      return r.users.some(user => {
-        return user.username === this.user.username;
-      });
-    });
-    if (!isUndefined(reaction)) {
-      reaction.users = reaction.users.filter(user => {
-        return user.username !== this.user.username;
-      });
-      message.currentUserReaction = null;
+    this.userServiceProvider.groupService.reactToGroupMessage(this.groupName, message, null);
+  }
+
+  hideOrShowChat() {
+    let chat = document.getElementById('chat');
+    if (this.chatHidden) {
+      chat.className = chat.className.replace('hidden', '');
+      this.chatHidden = false;
+    } else {
+      chat.className = chat.className + ' hidden';
+      this.chatHidden = true;
     }
+
   }
 }
