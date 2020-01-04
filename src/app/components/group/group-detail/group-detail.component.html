@@ -1,10 +1,10 @@
 <h1 class="h1-responsive text-center my-3"><strong>{{this.groupName}}</strong></h1>
-<div class="container-fluid my-5">
+<div class="container-fluid pt-5 pb-5 pl-2 pr-2">
 
-  <div class="container-fluid container border shadow">
+  <div class="container-fluid  ">
 
     <div class="row">
-      <div class="col-sm-12 col-md-6 col-lg-5 col-xl-4">
+      <div class="col-sm-12 col-md-10">
         <h3 class="h3-responsive text-center mb-4"><strong>Members</strong></h3>
         <h4 class="h4-responsive"><strong>Filter</strong></h4>
         <div class="pretty p-default">
@@ -57,77 +57,61 @@
         <ul *ngFor="let data of dataset">
           <li>{{data}}</li>
         </ul>
-        <div class="white z-depth-1 px-3 pt-3 pb-0 mt-3">
-          <ul class="list-unstyled friend-list  ">
-            <li class="custom-list-item lighten-3" *ngFor="let row of filteredRows|keyvalue">
+        <div class="pb-0 mt-3">
+          <div class="row">
+            <div class="col-sm-4 col-md-3" *ngFor="let row of filteredRows|keyvalue">
+              <mdb-card class="mb-3">
+                <mdb-card-header class="member-card-header">
+         <div class="h5-responsive text-center ">
+                  {{row.key.username}}
+         </div>
 
-              <div class="d-flex justify-content-between">
-                <img src="../../../../assets/images/user.svg" class="rounded profile-photo">
-                <div class="text-small align-middle">
-                  <a href="#">
-                    <strong>{{row.key.username}}</strong>
-                  </a>
-                </div>
-                <div class="chat-footer text">
+                </mdb-card-header>
+                <mdb-card-body>
                   <mdb-badge
                     *ngIf="row.value.phase==='NOT RUNNING'"
-                    danger="true" class="pomodoro-tag">Not running</mdb-badge>
+                    danger="true" class="pomodoro-tag">Not running
+                  </mdb-badge>
                   <mdb-badge
                     *ngIf="row.value.phase==='PAUSE'"
-                    success="true" class="pomodoro-tag" >Pause</mdb-badge>
+                    success="true" class="pomodoro-tag">Pause
+                  </mdb-badge>
                   <mdb-badge
                     *ngIf="row.value.phase==='WORK'"
-                    warning="true" class="pomodoro-tag">Work</mdb-badge>
+                    warning="true" class="pomodoro-tag">Work
+                  </mdb-badge>
+                <div class="view">
+                  <img src="../../../assets/pomodoro/pomodoro.svg" class="pomodoro-img">
 
-
-
-                  <div class="view">
-                    <img  src="../../../../../../assets/pomodoro/pomodoro.svg" class="pomodoro-img">
-
-                    <div class="mask flex-center waves-effect waves-light rgba-teal-strong">
-                      <p
-                        *ngIf="row.value.phase==='NOT RUNNING'"
-                        class="customTimer text-danger"
-                      >  {{row.value.timeLeft}}</p>
-                      <p
-                        *ngIf="row.value.phase==='PAUSE'"
-                        class="customTimer text-success"
-                      >  {{row.value.timeLeft}}</p>
-                      <p
-                        *ngIf="row.value.phase==='WORK'"
-                        class="customTimer text-warning"
-                      >  {{row.value.timeLeft}}</p>
-                    </div>
-
+                  <div class="mask flex-center waves-effect waves-light rgba-teal-strong">
+                    <p
+                      *ngIf="row.value.phase==='NOT RUNNING'"
+                      class="customTimer text-danger"
+                    >  {{row.value.timeLeft}}</p>
+                    <p
+                      *ngIf="row.value.phase==='PAUSE'"
+                      class="customTimer text-success"
+                    >  {{row.value.timeLeft}}</p>
+                    <p
+                      *ngIf="row.value.phase==='WORK'"
+                      class="customTimer text-warning"
+                    >  {{row.value.timeLeft}}</p>
                   </div>
-             
-                </div>
-              </div>
-              <hr class="w-100 border-1">
-            </li>
-            <li class=" lighten-3 " *ngFor="let user of invitedUsers">
-              <a href="#" class="d-flex justify-content-between">
-                <div class="text-small align-middle">
 
-                  <strong class="text-center">{{user.username}} </strong>
-                  <p class="last-message text-muted text-center">has been invited </p>
                 </div>
-                <div class="chat-footer text">
-                  <p class="last-message text-muted text-center">Invitation status </p>
-                  <p class="badge badge-warning">Not accepted</p>
-                </div>
-              </a>
-              <hr class="w-100 border-1">
-            </li>
-            <li class="lighten-3 p-2" *ngIf="filteredRows.size==0 && invitedUsers.length==0">
-              <strong>No records</strong>
-            </li>
-          </ul>
+                </mdb-card-body>
+              </mdb-card>
+
+
+            </div>
+
+
+          </div>
         </div>
 
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-7 col-xl-8">
+      <div class="col-2 col-lg-2">
         <app-chat [users]="this.allUsers" [group]="this.groupName"></app-chat>
       </div>
     </div>

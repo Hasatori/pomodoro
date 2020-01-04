@@ -1,25 +1,38 @@
 @import "../../../app.component";
 @import '~pretty-checkbox/src/pretty-checkbox.scss';
 
-.container{
+.container {
   padding: 20px;
 }
-.profile-photo{
 
-max-width: 75px;
+.profile-photo {
+
+  max-width: 75px;
   max-height: 75px;
 }
-.my-card{
+
+.my-card {
   opacity: 0.9;
 }
-.my-card:hover{
+
+.my-card:hover {
   opacity: 1;
   cursor: pointer;
 }
-.chat-footer{
+
+.chat-footer {
   min-width: 35%;
 }
-.pomodoro-tag{
-display: block;
 
+.pomodoro-tag {
+  display: block;
+
+}
+
+.member-card-header {
+  background-color: $navigationBarColor;
+  color: $basicTextColor;
+}
+.customTimer{
+  font-size: 1.3em;
 }

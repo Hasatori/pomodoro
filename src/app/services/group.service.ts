@@ -138,6 +138,10 @@ export class GroupService {
 
   }
 
+  public reactToGroupMessage(group:Group,message:GroupMessage,reaction:string){
+
+  }
+
   createGroup(name: string, isPublic: boolean): Observable<any> {
     return this.http.post<any>(`${SERVER_URL}/group/create`, {
       name: name,

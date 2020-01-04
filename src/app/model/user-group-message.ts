@@ -3,6 +3,6 @@ import {GroupMessage} from './group-message';
 
 export class UserGroupMessage {
   user: User;
-
   readTimestamp: Date;
+  reaction:string;
 }

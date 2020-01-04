@@ -3,6 +3,8 @@ import {User} from '../../../../model/user';
 import {GroupMessage} from '../../../../model/group-message';
 import {Subscription} from 'rxjs';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
+import {Reaction} from '../../../../model/reaction';
+import {isUndefined} from 'util';
 
 @Component({
   selector: 'app-chat',
@@ -23,14 +25,27 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private limit = 10;
   private end = this.threshold + this.limit;
   @ViewChildren('messages') messagesContainer: QueryList<any>;
+  messagesContainerLength: number = 0;
   seenBy: string = '';
   lastMessage: GroupMessage;
-  private options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-
+  private oldMessageTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+  private recentMessageTimeOptions = {hour: 'numeric'};
   private markAllAsReadSubscription: Subscription;
   private newGroupMessageSubscription: Subscription;
   private lastNumberOfGroupMessagesSubscription: Subscription;
+  private typing: boolean = false;
+  private showReactions: boolean = false;
 
+  reactionsNames: Array<string> =
+    [
+      'happy',
+      'laughing',
+      'sad',
+      'angry',
+      'crying',
+      'confused',
+      'kiss'
+    ];
 
   constructor(private userServiceProvider: UserServiceProvider) {
 
@@ -46,13 +61,22 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.newGroupMessageSubscription = this.userServiceProvider.groupService.getNewGroupMessage(this.groupName).subscribe((newMessage) => {
       this.seenBy = '';
+      this.setReactionsForMessage(newMessage);
       this.messages.push(newMessage);
+      this.processMessagesFromBack(this.messages);
       this.markAllAsReadAndProcessResponse();
+
     });
     this.lastNumberOfGroupMessagesSubscription = this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
       this.messages = response.sort(function(a, b) {
         return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       });
+      for (let i = 0; i < this.messages.length; i++) {
+        let message = this.messages[i];
+        this.setReactionsForMessage(message);
+        message.shouldShowAuthorsName = this.shouldShowAuthorsName(message, i - 1 !== 0 ? this.messages[i - 1] : null);
+        message.shouldShowAuthorsPhoto = this.shouldShowAuthorsPhotograph(message, i < this.messages.length - 1 ? this.messages[i + 1] : null);
+      }
       this.threshold += this.limit;
       this.end += this.limit;
     });
@@ -68,7 +92,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sendMessage(messageValue: string) {
     this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.groupName + '/chat', messageValue);
-
+    this.typing = false;
   }
 
   markAllAsReadAndProcessResponse() {
@@ -81,8 +105,9 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       })[0];
       if (filteredRelatedMessages.length > 0) {
         this.seenBy = `${filteredRelatedMessages.map(message => message.user.username)
-          .join(', ')} on ${new Date(lastRelatedMessageTimestamp.readTimestamp).toLocaleDateString('en-US', this.options)}`;
+          .join(', ')} on ${new Date(lastRelatedMessageTimestamp.readTimestamp).toLocaleDateString('en-US', this.oldMessageTimeOptions)}`;
       }
+
     });
   }
 
@@ -98,16 +123,11 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       result = this.getResult(diff.minutes(), 'minute');
     }
     if (diff.minutes() >= 60) {
-      result = this.getResult(diff.hours(), 'hour');
+
+      result = new Date(currentDate.getMilliseconds() - diff.seconds() * 1000).toLocaleTimeString('en-US');
     }
     if (diff.hours() >= 24) {
-      result = this.getResult(diff.days(), 'day');
-    }
-    if (diff.days() >= 30) {
-      result = this.getResult(diff.months(), 'month');
-    }
-    if (diff.months() >= 12) {
-      result = this.getResult(diff.years(), 'year');
+      result = new Date(messageTimestamp).toLocaleDateString('en-US', this.oldMessageTimeOptions);
     }
     return result;
   }
@@ -122,16 +142,22 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.scrollableWindow = document.getElementById('scrollable-window');
     this.messagesContainer.changes.subscribe(t => {
-      if (!this.fetchingOlder && !this.olderFetched) {
-        this.scrollableWindow.scrollTop = this.scrollableWindow.scrollHeight + 500;
+      let currentLength = t._results.length;
+      if (currentLength !== this.messagesContainerLength) {
+        this.messagesContainerLength = currentLength;
 
+        if (!this.fetchingOlder && !this.olderFetched) {
+          this.scrollableWindow.scrollTop = this.scrollableWindow.scrollHeight + 500;
+
+        }
+        if (this.olderFetched) {
+          this.olderFetched = false;
+          this.scrollableWindow.scrollTop = this.scrollableWindow.scrollHeight - this.scrollableWindow.scrollHeight * 0.95;
+        }
       }
-      if (this.olderFetched) {
-        this.olderFetched = false;
-        this.scrollableWindow.scrollTop = this.scrollableWindow.scrollHeight - this.scrollableWindow.scrollHeight * 0.95;
-      }
+
+
     });
-
   }
 
   scrolled() {
@@ -141,9 +167,17 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
           if (response.length > 0) {
             this.messages = this.messages.concat(response);
+
             this.messages.sort(function(a, b) {
               return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
             });
+            for (let i = 0; i < this.messages.length; i++) {
+              let message = this.messages[i];
+              this.setReactionsForMessage(message);
+              message.shouldShowAuthorsName = this.shouldShowAuthorsName(message, i < this.messages.length - 1 ? this.messages[i + 1] : null);
+              message.shouldShowAuthorsPhoto = this.shouldShowAuthorsPhotograph(message, i !== 0 ? this.messages[i - 1] : null);
+            }
+
             this.threshold += this.limit;
             this.end += this.limit;
 
@@ -159,5 +193,96 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  processMessagesFromBack(messages: Array<GroupMessage>) {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      let currentMessage = messages[i];
+      currentMessage.shouldShowAuthorsPhoto = false;
+      if (i - 1 >= 0) {
+        let previous = messages[i - 1];
+        if (currentMessage.author.username === previous.author.username) {
+          currentMessage.shouldShowAuthorsName = false;
 
+        } else {
+          currentMessage.shouldShowAuthorsName = true;
+          break;
+        }
+      }
+    }
+    messages[messages.length - 1].shouldShowAuthorsPhoto = true;
+  }
+
+  shouldShowAuthorsPhotograph(currentMessage: GroupMessage, nextMessage: GroupMessage): boolean {
+    return nextMessage == null || nextMessage.author.username !== currentMessage.author.username;
+
+  }
+
+  shouldShowAuthorsName(currentMessage: GroupMessage, previousMessage: GroupMessage) {
+    return previousMessage == null || previousMessage.author.username !== currentMessage.author.username;
+
+  }
+
+  reaction(message: string) {
+    console.log(message);
+  }
+
+  setReactionsForMessage(message: GroupMessage) {
+    let reactions: Array<Reaction> = [];
+    this.reactionsNames.forEach(reactionName => {
+      reactions.push(this.createReaction(reactionName));
+    });
+    message.relatedGroupMessages.forEach(relatedMessage => {
+      let reaction = reactions.find(reaction => {
+        return reaction.name === relatedMessage.reaction;
+      });
+      if (!isUndefined(reaction) && reaction !== null) {
+        reaction.users.push(relatedMessage.user);
+      }
+      if (relatedMessage.user.username === this.user.username) {
+        message.currentUserReaction = relatedMessage.reaction;
+      }
+    });
+    message.reactions = reactions;
+  }
+
+  createReaction(reactionName: string): Reaction {
+    let newReaction = new Reaction();
+    newReaction.name = reactionName;
+    newReaction.users = [];
+    return newReaction;
+  }
+
+  addReactionsClicked() {
+    if (this.showReactions) {
+      this.showReactions = false;
+    } else {
+      this.showReactions = true;
+    }
+  }
+
+  react(message: GroupMessage, reactionName: string) {
+    this.removeReaction(message);
+    let reaction = message.reactions.find(r => {
+      return r.name == reactionName;
+    });
+    if (isUndefined(reaction)) {
+      reaction = this.createReaction(reactionName);
+      message.reactions.push(reaction);
+    }
+    reaction.users.push(this.user);
+    message.currentUserReaction = reactionName;
+  }
+
+  removeReaction(message: GroupMessage) {
+    let reaction = message.reactions.find(r => {
+      return r.users.some(user => {
+        return user.username === this.user.username;
+      });
+    });
+    if (!isUndefined(reaction)) {
+      reaction.users = reaction.users.filter(user => {
+        return user.username !== this.user.username;
+      });
+      message.currentUserReaction = null;
+    }
+  }
 }
