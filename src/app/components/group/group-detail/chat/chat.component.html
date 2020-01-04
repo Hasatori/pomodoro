@@ -12,14 +12,19 @@
         </div>
       </div>
       <div #messages *ngFor="let message of messages;last as isLast; let i = index;"
-
+class="messages-container"
       >
 
         <div class="pr-2 d-flex justify-content-end"
              *ngIf="this.user.username===message.author.username"
         >
+
           <mdb-card
             class="my-message rounded float-right z-depth-0 mb-1 d-flex p-1">
+            <mdb-card-header   class="p-0 border-0 bg-transparent text-muted small ml-2 mb-1">
+              <div class="edit-message"><mdb-icon fas icon="pen"></mdb-icon> edit</div>
+
+            </mdb-card-header>
             <mdb-card-body class="p-2 my-message-text small">
               {{message.value}}
             </mdb-card-body>

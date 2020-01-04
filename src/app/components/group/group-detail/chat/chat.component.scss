@@ -50,8 +50,8 @@
 .chat-message {
   padding: 15px;
 }
-.message-reaction{
-opacity: 0.8 !important;
+.message-reaction,.edit-message{
+opacity: 0;
 }
 .message-reaction:hover{
   cursor: pointer;
@@ -118,7 +118,7 @@ textarea::placeholder {
   color: $basicTextColor;
 }
 .reaction-emoji{
-  opacity: 0.8;
+  opacity: 0.8 ;
 }
 .reaction-emoji-selected{
   opacity: 1;
@@ -139,10 +139,13 @@ top:-15%
   opacity: 1;
 
 }
-.reaction-emoji:hover{
-  opacity: 1;
+.reaction-emoji:hover,.edit-message:hover{
+  opacity: 1 !important;
   cursor: pointer;
 }
 .stop-scrolling {
   overflow: hidden !important;
+}
+.messages-container:hover  .message-reaction,.messages-container:hover  .edit-message{
+opacity: 0.8;
 }
