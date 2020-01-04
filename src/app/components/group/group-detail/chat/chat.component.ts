@@ -38,12 +38,11 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   reactionsNames: Array<string> =
     [
       'happy',
-      'laughing',
       'sad',
       'angry',
       'crying',
-      'confused',
-      'kiss'
+      'thumbs-up',
+      'thumbs-down'
     ];
 
 
@@ -183,6 +182,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   scrolled() {
+    console.log(this.scrollableWindow.scrollTop);
     if (this.scrollableWindow.scrollTop == 0 && !this.stopFetchingOlder) {
       this.fetchingOlder = true;
       setTimeout(() => {

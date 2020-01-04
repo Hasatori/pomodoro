@@ -1,7 +1,7 @@
 @import "../../app.component.scss";
 
-footer{
+.page-footer{
 background-color: $navigationBarColor !important;
-  bottom: 0;
+  bottom: 0 !important;
   width: 100%
 }

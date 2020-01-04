@@ -86,6 +86,63 @@
                 </div>
 
               </div>
+              <ng-template #clickImgTemp
+
+              >
+
+                <div
+
+                  class="d-flex flex-row reaction-emojis-container">
+
+                  <div
+
+                    mdbTooltip="{{message.currentUserReaction===reactionName?null:reactionName}}"
+                    [ngClass]="message.currentUserReaction===reactionName?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
+                    *ngFor="let reactionName of reactionsNames">
+                    <img width="18" src="{{'../../../../../assets/emojis/051-'+reactionName+'.svg'}}"
+
+                         (click)="react(message,reactionName)"
+                    >
+                    <small
+                      *ngIf="message.currentUserReaction===reactionName"
+                      class="remove-reaction text-center" (click)="removeReaction(message)">x
+                    </small>
+                  </div>
+                </div>
+              </ng-template>
+
+
+              <ng-template #changesTemplate
+
+              >
+
+                <ul class="list-unstyled changelog">
+                  <div class="text-center small font-weight-bold ">
+                    Changes
+                  </div>
+                  <li *ngFor="let change of message.changes | sort:'creationTimestamp'">
+                    <div class="d-flex flex-nowrap example-parent">
+                      <div class="changelog-item flex-fill order-1 p-1 col-example small border-bottom">{{getMessageTimestampRelevance(change.creationTimestamp)}}</div>
+                      <div class="changelog-item flex-fill order-2 p-1 col-example small border-bottom">{{change.oldValue}}</div>
+                      <div class="changelog-item flex-fill order-3 p-1 col-example small border-bottom">{{change.newValue}}</div>
+                    </div>
+                  </li>
+                </ul>
+              </ng-template>
+              <a placement="right" [mdbPopover]="clickImgTemp" triggers="click"
+                 class="message-reaction text-muted small"
+                 (click)="addReactionsClicked()"
+
+
+              >+ react</a>
+              <a placement="top"
+                 class="ml-2 message-reaction text-muted small"
+                 *ngIf="message.changes!==null && message.changes.length>0"
+                 [mdbPopover]="changesTemplate" triggers="click"
+                 (click)="addReactionsClicked()"
+              >
+                <mdb-icon fas icon="clock"></mdb-icon>
+                changelog</a>
 
 
             </mdb-card-footer>
@@ -123,7 +180,7 @@
               class="p-0 border-0 bg-transparent text-muted small other-member-message-header ml-2">
 
               {{message.author.username}} </mdb-card-header>
-            <mdb-card-body class="pl-3 p-1 other-member-message-text flex-grow-0 small">
+            <mdb-card-body class="pl-3 p-1 other-member-message-text small">
               {{message.value}}
             </mdb-card-body>
             <mdb-card-footer
@@ -150,7 +207,7 @@
 
               </div>
               <ng-template #clickImgTemp
-
+class="shadow z-depth-1"
               >
 
                 <div
@@ -200,7 +257,7 @@
               >+ react</a>
               <a placement="top"
                  class="ml-2 message-reaction text-muted small"
-                 *ngIf="message.changes.length>0"
+                 *ngIf="message.changes!==null && message.changes.length>0"
                  [mdbPopover]="changesTemplate" triggers="click"
                  (click)="addReactionsClicked()"
               >
