@@ -78,7 +78,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     this.groupMessageReactionSubscription = this.userServiceProvider.groupService.getReactedGroupMessage(this.groupName).subscribe((reactedMessage) => {
-      console.log(reactedMessage);
       let foundMessage = this.messages.find(message => {
         return message.id === reactedMessage.id;
       });
@@ -187,7 +186,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   scrolled() {
-    console.log(this.scrollableWindow.scrollTop);
     if (this.scrollableWindow.scrollTop == 0 && !this.stopFetchingOlder) {
       this.fetchingOlder = true;
       setTimeout(() => {
@@ -248,9 +246,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  reaction(message: string) {
-    console.log(message);
-  }
 
   setReactionsForMessage(message: GroupMessage) {
     let reactions: Array<Reaction> = [];
@@ -309,7 +304,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   getInnerHtml(message: string): string {
     for (let emoji of this.emojis) {
       let emojiTextExpression= emoji.textExpression.replace(/(\)|\()/,"\\$1");
-      console.log(emojiTextExpression);
       message = message.replace(new RegExp(emojiTextExpression,'g'), `<img width="18" src="../../../../../assets/emojis/051-${emoji.name}.svg">`);
 
     }
