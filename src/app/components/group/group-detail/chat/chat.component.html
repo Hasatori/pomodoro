@@ -118,7 +118,7 @@
 
                 <ul class="list-unstyled changelog">
                   <div class="text-center small font-weight-bold ">
-                    Changes
+                    Changes made by {{this.user.username}}
                   </div>
                   <li *ngFor="let change of message.changes | sort:'creationTimestamp'">
                     <div class="d-flex flex-nowrap example-parent">
@@ -238,7 +238,7 @@ class="shadow z-depth-1"
 
                 <ul class="list-unstyled changelog">
                   <div class="text-center small font-weight-bold ">
-               Changes made by {{this.user.username}}
+               Changes made by {{message.author.username}}
                   </div>
                   <li *ngFor="let change of message.changes | sort:'creationTimestamp'">
                     <div class="d-flex flex-nowrap example-parent">
