@@ -45,6 +45,11 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       'thumbs-down'
     ];
 
+  private emojis: Array<any> =
+    [
+      {name: 'happy', textExpression: ':)'},
+      {name: 'sad', textExpression: ':('},
+    ];
 
   private markAllAsReadSubscription: Subscription;
   private newGroupMessageSubscription: Subscription;
@@ -68,7 +73,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setReactionsForMessage(newMessage);
       this.messages.push(newMessage);
       this.processMessagesFromBack(this.messages);
-      if (!this.chatHidden){
+      if (!this.chatHidden) {
         this.markAllAsReadAndProcessResponse();
       }
     });
@@ -300,4 +305,17 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
   }
+
+  getInnerHtml(message: string): string {
+    for (let emoji of this.emojis) {
+      let emojiTextExpression= emoji.textExpression.replace(/(\)|\()/,"\\$1");
+      console.log(emojiTextExpression);
+      message = message.replace(new RegExp(emojiTextExpression,'g'), `<img width="18" src="../../../../../assets/emojis/051-${emoji.name}.svg">`);
+
+    }
+    return message;
+
+  }
+
+
 }

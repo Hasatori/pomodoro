@@ -60,8 +60,8 @@
               </div>
 
             </mdb-card-header>
-            <mdb-card-body class="pl-3 p-2 my-message-text small">
-              {{message.value}}
+            <mdb-card-body class="pl-3 p-2 my-message-text small" [innerHTML]="getInnerHtml(message.value)">
+
             </mdb-card-body>
             <mdb-card-footer
               class="mr-2 p-0 border-0 bg-transparent  other-member-message-header">
@@ -122,9 +122,12 @@
                   </div>
                   <li *ngFor="let change of message.changes | sort:'creationTimestamp'">
                     <div class="d-flex flex-nowrap example-parent">
-                      <div class="changelog-item flex-fill order-1 p-1 col-example small border-bottom">{{getMessageTimestampRelevance(change.creationTimestamp)}}</div>
-                      <div class="changelog-item flex-fill order-2 p-1 col-example small border-bottom">{{change.oldValue}}</div>
-                      <div class="changelog-item flex-fill order-3 p-1 col-example small border-bottom">{{change.newValue}}</div>
+                      <div
+                        class="changelog-item flex-fill order-1 p-1 col-example small border-bottom">{{getMessageTimestampRelevance(change.creationTimestamp)}}</div>
+                      <div
+                        class="changelog-item flex-fill order-2 p-1 col-example small border-bottom">{{change.oldValue}}</div>
+                      <div
+                        class="changelog-item flex-fill order-3 p-1 col-example small border-bottom">{{change.newValue}}</div>
                     </div>
                   </li>
                 </ul>
@@ -191,7 +194,7 @@
                     <div class="d-flex reactions-message">
                       <div class="pl-1 reactions-count" *ngIf="reaction.users.length>1"> {{reaction.users.length}}</div>
                       <div class="pl-1" [mdbTooltip]="reactionTooltip"><img width="18"
-                                                                           src="{{'../../../../../assets/emojis/051-'+reaction.name+'.svg'}}"
+                                                                            src="{{'../../../../../assets/emojis/051-'+reaction.name+'.svg'}}"
 
                       ></div>
 
@@ -207,7 +210,7 @@
 
               </div>
               <ng-template #clickImgTemp
-class="shadow z-depth-1"
+                           class="shadow z-depth-1"
               >
 
                 <div
@@ -239,13 +242,16 @@ class="shadow z-depth-1"
 
                 <ul class="list-unstyled changelog">
                   <div class="text-center small font-weight-bold ">
-               Changes made by {{message.author.username}}
+                    Changes made by {{message.author.username}}
                   </div>
                   <li *ngFor="let change of message.changes | sort:'creationTimestamp'">
                     <div class="d-flex flex-nowrap example-parent">
-                      <div class="changelog-item flex-fill order-1 p-1 col-example small border-bottom">{{getMessageTimestampRelevance(change.creationTimestamp)}}</div>
-                      <div class="changelog-item flex-fill order-2 p-1 col-example small border-bottom">{{change.oldValue}}</div>
-                      <div class="changelog-item flex-fill order-3 p-1 col-example small border-bottom">{{change.newValue}}</div>
+                      <div
+                        class="changelog-item flex-fill order-1 p-1 col-example small border-bottom">{{getMessageTimestampRelevance(change.creationTimestamp)}}</div>
+                      <div
+                        class="changelog-item flex-fill order-2 p-1 col-example small border-bottom">{{change.oldValue}}</div>
+                      <div
+                        class="changelog-item flex-fill order-3 p-1 col-example small border-bottom">{{change.newValue}}</div>
                     </div>
                   </li>
                 </ul>
@@ -276,8 +282,13 @@ class="shadow z-depth-1"
     </mdb-card-body>
   </div>
   <mdb-card-footer class="chat-footer pt-1 pb-1 px-3">
-    <textarea type="text" (focus)="markAllAsReadAndProcessResponse();typing=true;"
+    <textarea
+      type="textbox"
+
+      (focus)="markAllAsReadAndProcessResponse();typing=true;"
+              (keypress)="textArea(message)"
               #message
+
               class="form-control"
               placeholder="Type a message..."></textarea>
     <div>
