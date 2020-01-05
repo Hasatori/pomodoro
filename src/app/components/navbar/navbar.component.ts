@@ -27,9 +27,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userServiceProvider.groupService.getGroups().pipe(first()).subscribe(groups => {
 
-    });
   }
 
   callParent() {

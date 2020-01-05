@@ -10,6 +10,8 @@ import {GroupMessage} from '../model/group-message';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {UserService} from './user.service';
 import {GroupInvatation} from '../model/group-invatation';
+import {isUndefined} from 'util';
+import {UserServiceProvider} from './user-service-provider';
 
 @Injectable({
   providedIn: 'root'
@@ -29,11 +31,27 @@ export class GroupService {
   public notOwnedGroupsUnreadMessages: number = 0;
   public numberOfNotAcceptedGroupInvitations: number = 0;
   public invitations: Array<GroupInvatation> = [];
+  public groups: Array<Group> = [];
+  public ownedGroups: Array<Group> = [];
+  public participatingGroups: Array<Group> = [];
 
   constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
   }
 
-  startListeningForChats() {
+  private reset() {
+    this.groups = [];
+    this.ownedGroups = [];
+    this.participatingGroups = [];
+    this.invitations = [];
+    this.allUnreadMessages = 0;
+    this.groupUnreadMessages = new Map<string, number>();
+    this.ownedGroupsUnreadMessages = 0;
+    this.notOwnedGroupsUnreadMessages = 0;
+    this.numberOfNotAcceptedGroupInvitations = 0;
+  }
+
+  startSockets() {
+    this.reset();
     this.audio = document.createElement('audio');
     this.audio.setAttribute('src', this.SOUNDS_PATH + this.messageCameSoundName);
     this.userService.getUser().subscribe((user) => {
@@ -41,6 +59,32 @@ export class GroupService {
 
     });
     this.getGroups().subscribe((groups) => {
+      this.groups = groups;
+      this.userService.getUser().subscribe(user => {
+        this.user = user;
+        let count = 1;
+        for (let group of groups) {
+          if (count < 5) {
+            group.layoutImagePath = this.getLayoutImagePath(count);
+          } else {
+            group.layoutImagePath = this.getLayoutImagePath(Math.floor(Math.random() * 5) + 1);
+          }
+
+          if (group.owner.username === this.user.username) {
+            this.ownedGroups.push(group);
+          } else {
+            this.participatingGroups.push(group);
+          }
+          count++;
+        }
+      });
+      this.getNewGroup().subscribe(newGroup => {
+        if (newGroup.owner.username === this.user.username) {
+          this.ownedGroups.push(newGroup);
+        } else {
+          this.participatingGroups.push(newGroup);
+        }
+      });
       for (let group of groups) {
         this.groupUnreadMessages.set(group.name, 0);
         this.getAllUnreadMessagesForGroup(group.name).subscribe(messages => {
@@ -56,7 +100,10 @@ export class GroupService {
             this.notOwnedGroupsUnreadMessages += numberToSet;
           }
 
-        });
+        })
+
+
+        ;
         this.getNewGroupMessage(group.name).subscribe(message => {
           if (message.author.username !== this.user.username) {
             this.audio.play();
@@ -78,6 +125,9 @@ export class GroupService {
     });
   }
 
+  getLayoutImagePath(number: number): string {
+    return `../../../../assets/group/layouts/teamwork-${number}.jpg`;
+  }
 
   private getAllUnreadMessagesForGroup(groupName: string): Observable<Array<GroupMessage>> {
     return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-unread-messages`, {
@@ -222,6 +272,22 @@ export class GroupService {
     return this.http.post<any>(`${SERVER_URL}/not-accepted-group-invitations`, {}).pipe(map(response => {
       return response;
     }));
+
+  }
+
+  public acceptGroupInvitation(groupInvitation: GroupInvatation) {
+    this.http.post<any>(`${SERVER_URL}/accept-invitation`, groupInvitation).pipe(map(pomodoro => {
+      return pomodoro;
+    })).subscribe(result => {
+      if (!isUndefined(result.success)) {
+        this.invitations = this.invitations.filter(invitation => {
+          return invitation.id !== groupInvitation.id;
+        });
+        sessionStorage.removeItem(this.GROUPS_KEY);
+        groupInvitation.group.layoutImagePath = this.getLayoutImagePath(Math.floor(Math.random() * 5) + 1);
+        this.participatingGroups.push(groupInvitation.group);
+      }
+    });
 
   }
 }

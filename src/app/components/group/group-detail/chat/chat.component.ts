@@ -66,8 +66,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.user = user;
 
     });
-    this.userServiceProvider.groupService.getUsersForGroup(this.groupName).subscribe((users) => {
-    });
     this.newGroupMessageSubscription = this.userServiceProvider.groupService.getNewGroupMessage(this.groupName).subscribe((newMessage) => {
       this.seenBy = '';
       this.setReactionsForMessage(newMessage);

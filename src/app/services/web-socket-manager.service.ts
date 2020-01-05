@@ -29,7 +29,7 @@ initAllSockets(){
       this.webSocketService.configure(config);
       this.webSocketService.activate();
       this.pomodoroService.init();
-      this.groupService.startListeningForChats();
+      this.groupService.startSockets();
     }
   )
 }
