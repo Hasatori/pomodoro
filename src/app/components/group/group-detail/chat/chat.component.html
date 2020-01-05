@@ -183,8 +183,8 @@
               class="p-0 border-0 bg-transparent text-muted small other-member-message-header ml-2">
 
               {{message.author.username}} </mdb-card-header>
-            <mdb-card-body class="pl-3 p-1 other-member-message-text small">
-              {{message.value}}
+            <mdb-card-body class="pl-3 p-1 other-member-message-text small"  [innerHTML]="getInnerHtml(message.value)">
+
             </mdb-card-body>
             <mdb-card-footer
               class="ml-2 p-0 border-0 bg-transparent  other-member-message-header">
@@ -286,7 +286,7 @@
       type="textbox"
 
       (focus)="markAllAsReadAndProcessResponse();typing=true;"
-              (keypress)="textArea(message)"
+
               #message
 
               class="form-control"
