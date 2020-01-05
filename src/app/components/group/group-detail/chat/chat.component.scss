@@ -61,10 +61,17 @@ font-size: 0.8rem;
 }
 
 .my-message-text, .other-member-message-text {
-  border-radius: 20px !important;
+
   font-size: 1em !important;
 }
+.my-message-text{
+  border-radius: 15px 15px 2px 15px;
+}
+.other-member-message-text{
+  border-radius: 15px 15px 15px 2px;
+  border: 1px solid $lightBorderColor;
 
+}
 .message-margin-left {
   margin-left: 35px;
 }

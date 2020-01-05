@@ -60,7 +60,7 @@
               </div>
 
             </mdb-card-header>
-            <mdb-card-body class="p-2 my-message-text small">
+            <mdb-card-body class="pl-3 p-2 my-message-text small">
               {{message.value}}
             </mdb-card-body>
             <mdb-card-footer
@@ -218,6 +218,7 @@ class="shadow z-depth-1"
 
                     mdbTooltip="{{message.currentUserReaction===reactionName?null:reactionName}}"
                     [ngClass]="message.currentUserReaction===reactionName?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
+
                     *ngFor="let reactionName of reactionsNames">
                     <img width="18" src="{{'../../../../../assets/emojis/051-'+reactionName+'.svg'}}"
 
