@@ -1,22 +1,43 @@
-<div class="container py-5">
-  <div class="card shadow custom-card">
+<p class="h1-responsive text-center mb-4 header">Pomodoro</p>
+<div class="container pomodoro-container">
+  <mdb-badge
+    *ngIf="freeTrialService.timer.phase==='NOT RUNNING'"
+    danger="true" class="pomodoro-tag">Not running
+  </mdb-badge>
+  <mdb-badge
+    *ngIf="freeTrialService.timer.phase==='PAUSE'"
+    success="true" class="pomodoro-tag">Pause
+  </mdb-badge>
+  <mdb-badge
+    *ngIf="freeTrialService.timer.phase==='WORK'"
+    warning="true" class="pomodoro-tag">Work
+  </mdb-badge>
 
-    <!-- Card content -->
-    <div class="card-body">
 
-      <h1 id="head">{{freeTrialService.timer.phase}}</h1>
-      <div class="customTimer">
-        {{freeTrialService.timer.timeLeft}}
-      </div>
+  <div class="view">
+    <img src="../../../assets/pomodoro/pomodoro.svg" class="pomodoro-img">
 
-      <button *ngIf="!freeTrialService.timer.started" type="button" class="btn btn-primary btn-rounded  my-button"
-              (click)="freeTrialService.startPomodoro()">START
-      </button>
-      <button *ngIf="freeTrialService.timer.started" type="button" class="btn btn-danger btn-rounded  my-button"
-              (click)="freeTrialService.timer.pause()">RESET
-      </button>
+
+    <div class="mask flex-center waves-effect waves-light rgba-teal-strong">
+      <p
+        *ngIf="freeTrialService.timer.phase==='NOT RUNNING'"
+        class="customTimer text-danger"
+      > {{freeTrialService.timer.timeLeft}}</p>
+      <p
+        *ngIf="freeTrialService.timer.phase==='PAUSE'"
+        class="customTimer text-success"
+      > {{freeTrialService.timer.timeLeft}}</p>
+      <p
+        *ngIf="freeTrialService.timer.phase==='WORK'"
+        class="customTimer text-warning"
+      > {{freeTrialService.timer.timeLeft}}</p>
     </div>
+
   </div>
-<app-want-more-functionality></app-want-more-functionality>
+  <button *ngIf="!freeTrialService.timer.started" type="button" class="btn btn-primary btn-rounded  my-button"
+          (click)="freeTrialService.startPomodoro()">START
+  </button>
+    <button *ngIf="freeTrialService.timer.started" type="button" class="btn  btn-primary btn-rounded  my-button"
+            (click)="freeTrialService.timer.pause()">RESET</button>
 
 </div>

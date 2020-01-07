@@ -280,11 +280,23 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   react(message: GroupMessage, reactionName: string) {
+  //  this.addReactionToMessage(message,reactionName);
     this.userServiceProvider.groupService.reactToGroupMessage(this.groupName, message, reactionName);
+
   }
 
-  removeReaction(message: GroupMessage) {
+  removeReaction(message: GroupMessage, reactionName: string) {
+    /*
+        let currentUserReaction = message.reactions.find(r => {
+          return r.name === reaction && r.users.some(user => user.username == this.user.username);
+        });
+        currentUserReaction.users = currentUserReaction.users.filter(user => {
+          return user.username !== this.user.username;
+        });
+    */
+
     this.userServiceProvider.groupService.reactToGroupMessage(this.groupName, message, null);
+
   }
 
   hideOrShowChat() {
@@ -299,10 +311,28 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  addReactionToMessage(message: GroupMessage, reaction: string) {
+    let foundReaction = message.reactions.find(r => {
+      return r.name === reaction;
+    });
+    let currentUserReaction = message.reactions.find(r => {
+      return r.name === reaction && r.users.some(user => user.username == this.user.username);
+    });
+    currentUserReaction.users = currentUserReaction.users.filter(user => {
+      return user.username !== this.user.username;
+    });
+    if (isUndefined(foundReaction)) {
+      foundReaction = this.createReaction(reaction);
+    }
+    foundReaction.users.push(this.user);
+    message.currentUserReaction = reaction;
+    message.reactions.push(foundReaction);
+  }
+
   getInnerHtml(message: string): string {
     for (let emoji of this.emojis) {
-      let emojiTextExpression= emoji.textExpression.replace(/(\)|\()/,"\\$1");
-      message = message.replace(new RegExp(emojiTextExpression,'g'), `<img width="18" src="../../../../../assets/emojis/051-${emoji.name}.svg">`);
+      let emojiTextExpression = emoji.textExpression.replace(/(\)|\()/, '\\$1');
+      message = message.replace(new RegExp(emojiTextExpression, 'g'), `<img width="18" src="../../../../../assets/emojis/051-${emoji.name}.svg">`);
 
     }
     return message;
