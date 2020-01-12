@@ -1,41 +1,54 @@
 @import "../group-detail.component";
 
-.chat-room,.minimalize {
+.chat-room, .minimize {
   right: 1%;
   bottom: 1%;
-  width: 25rem !important;
+  width: 24rem !important;
   height: 30rem !important;
   position: fixed !important;
 }
-.maximalize{
+
+.maximize {
   font-size: 1rem;
-  position: fixed!important;
- bottom: 1% !important;
+  position: fixed !important;
+  bottom: 1% !important;
   right: 1%;
-background-color: $navigationBarColor;
+  background-color: $navigationBarColor;
   color: $basicTextColor;
 
 
 }
-.hidden{
+
+.hidden {
   display: none !important;
 }
-.minimalize{
+
+.minimize {
+  font-size: 1.3rem !important;
   position: fixed;
   width: initial !important;
   height: initial !important;
-  bottom:29rem;
+  bottom: 28.6rem;
   right: 2%;
-font-size: 0.8rem;
   color: $basicTextColor;
   z-index: 1000;
 
 }
-.minimalize {
+@media (max-width: 410px) {
+  .chat-room{
+   width: 95% !important;
+    max-width: 24rem !important;;
+  }
+  .minimize{
+    right: 5%;
+  }
+}
+.minimize {
 
   opacity: 0.8;
 }
-.minimalize:hover,.maximalize:hover{
+
+.minimize:hover, .maximize:hover {
   opacity: 1;
   cursor: pointer;
 }
@@ -64,14 +77,17 @@ font-size: 0.8rem;
 
   font-size: 1em !important;
 }
-.my-message-text{
+
+.my-message-text {
   border-radius: 15px 15px 2px 15px;
 }
-.other-member-message-text{
+
+.other-member-message-text {
   border-radius: 15px 15px 15px 2px;
   border: 1px solid $lightBorderColor;
 
 }
+
 .message-margin-left {
   margin-left: 35px;
 }
@@ -175,7 +191,8 @@ textarea::placeholder {
   border-radius: 10px;
 
 }
-.reactions-message:hover .reactions-count{
+
+.reactions-message:hover .reactions-count {
   font-weight: bold;
 }
 
@@ -194,7 +211,7 @@ textarea::placeholder {
 
 }
 
-.reaction-emoji:hover,.reactions-message:hover, .edit-message:hover {
+.reaction-emoji:hover, .reactions-message:hover, .edit-message:hover {
   opacity: 1 !important;
   cursor: pointer;
 }
@@ -207,12 +224,13 @@ textarea::placeholder {
   opacity: 0.8;
 }
 
-.changelog{
-z-index: 100 !important;
+.changelog {
+  z-index: 100 !important;
   max-height: 150px !important;
-  width: 255px!important;
+  width: 255px !important;
   overflow-y: scroll !important;
 }
-.changelog-item{
-  width: 85px!important;
+
+.changelog-item {
+  width: 85px !important;
 }
