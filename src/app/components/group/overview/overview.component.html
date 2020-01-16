@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <div class="col-lg-12 col-xl-10">
+  <div class="col-lg-12 col-xl-9">
     <div class="container-fluid my-5 section" id="your-groups" mdbScrollSpyWindow="scrollspy4">
       <div class="section-header row mr-0">
         <h2 class="h2-responsive text-left font-weight-bold col-sm-9 col-md-10">Your groups</h2>
@@ -58,7 +58,7 @@
 
       </div>
       <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-5"
+        <div class="col-sm-6 col-lg-4 col-xl-3 mt-5"
              *ngFor="let group of userServiceProvider.groupService.ownedGroups">
           <!--Card-->
           <!--Card-->
@@ -156,7 +156,7 @@
         <h2 class="h2-responsive text-left font-weight-bold">Groups you are member of</h2>
       </div>
       <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-5"
+        <div class="col-sm-6 col-lg-4 col-xl-3 mt-5"
              *ngFor="let group of userServiceProvider.groupService.participatingGroups">
 
           <!--Card-->
@@ -251,7 +251,7 @@
           <div class="col-lg-2 col-md-4" *ngFor="let group of ownedGroups">
         -->
         <div class="row">
-          <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-5"
+          <div class="col-sm-6 col-lg-4 col-xl-3 mt-5"
                *ngFor="let invitation of userServiceProvider.groupService.invitations">
 
             <mdb-flipping-card #cards class="my-card">
@@ -340,4 +340,5 @@
       </div>
     </div>
   </div>
+  <div class="col-xl-1"></div>
 </div>
