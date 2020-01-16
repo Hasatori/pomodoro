@@ -1,7 +1,7 @@
 <h1 class="h1-responsive text-center py-3 border-bottom m-0"><strong>{{this.groupName}}</strong>
 </h1>
 
-<div class="d-flex flex-row justify-content-center">
+<div *ngIf="isOwner" class="d-flex flex-row justify-content-center">
 
     <div class="mt-2 px-3 pb-1 group-menu-item ">
       <i class="fas fa-pen"></i>
