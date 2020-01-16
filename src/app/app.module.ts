@@ -67,6 +67,7 @@ import {ScrollSpyModule,ButtonsModule, WavesModule, CardsModule} from 'ng-uikit-
 import { BackToTopComponent } from './components/back-to-top/back-to-top.component';
 import { SortPipe } from './pipes/sort.pipe';
 import { AcceptCookiesComponent } from './components/modals/accept-cookies/accept-cookies.component';
+import {UserCardComponent} from './components/group/group-detail/user-card/user-card.component';
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
@@ -108,7 +109,8 @@ const routes: Routes = [
     OverviewComponent,
     BackToTopComponent,
     SortPipe,
-    AcceptCookiesComponent
+    AcceptCookiesComponent,
+    UserCardComponent
 
   ],
   imports: [
