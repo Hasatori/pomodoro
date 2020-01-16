@@ -1,18 +1,18 @@
 @import "../group-detail.component";
 
 .chat-room, .minimize {
-  right: 1%;
+  right: 0.5rem;
   bottom: 1%;
-  width: 24rem !important;
-  height: 30rem !important;
+  width: 24em !important;
+  height: 30em !important;
   position: fixed !important;
 }
 
 .maximize {
-  font-size: 1rem;
+  font-size: 0.7rem;
   position: fixed !important;
   bottom: 1% !important;
-  right: 1%;
+  left: 1%;
   background-color: $navigationBarColor;
   color: $basicTextColor;
 
@@ -29,7 +29,7 @@
   width: initial !important;
   height: initial !important;
   bottom: 28.6rem;
-  right: 2%;
+  right: 1.1rem;
   color: $basicTextColor;
   z-index: 1000;
 
