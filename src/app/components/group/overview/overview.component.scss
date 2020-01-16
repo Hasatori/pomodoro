@@ -3,7 +3,9 @@
 .rotate-card {
   font-weight: bold;
 }
-
+.mask:hover{
+  cursor: initial!important;
+}
 .back-side {
   background-color: $navigationBarColor !important;
   color: $basicTextColor;

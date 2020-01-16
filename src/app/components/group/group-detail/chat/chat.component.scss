@@ -13,12 +13,16 @@
   position: fixed !important;
   bottom: 1% !important;
   left: 1%;
-  background-color: $navigationBarColor;
-  color: $basicTextColor;
+  background-color: $basicTextColor !important;
+  color: $navigationBarColor !important;
 
 
 }
+.maximize:hover{
+  background-color: $basicTextColor !important;
+  color: $navigationBarColor !important;
 
+}
 .hidden {
   display: none !important;
 }
