@@ -57,7 +57,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private groupMessageReactionSubscription: Subscription;
 
   constructor(private userServiceProvider: UserServiceProvider) {
-
+console.log('test '+this.users)
   }
 
   ngOnInit() {

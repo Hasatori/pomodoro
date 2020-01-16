@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {User} from '../../../../model/user';
-import {Timer} from '../../../../model/Timer';
+import {User} from '../../../../../model/user';
+import {Timer} from '../../../../../model/Timer';
+
 
 @Component({
   selector: 'app-user-card',

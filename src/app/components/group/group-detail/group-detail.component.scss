@@ -19,3 +19,11 @@
   cursor: pointer;
   opacity: 1;
 }
+
+.accordion-body, .accordion-header {
+  background-color: $backgroundColor !important;
+}
+
+.accordion-header-text{
+  color: $navigationBarColor !important;
+}

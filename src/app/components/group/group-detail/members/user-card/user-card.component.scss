@@ -1,4 +1,4 @@
-@import "../group-detail.component";
+@import "../../group-detail.component";
 
 .my-card {
   opacity: 0.9;
@@ -19,8 +19,8 @@
 }
 
 .member-card-header {
-  background-color: $navigationBarColor;
-  color: $basicTextColor;
+  background-color: $navigationBarColor !important;
+  color: $basicTextColor !important;
 }
 .customTimer{
   font-size: 1.3em;
@@ -46,4 +46,7 @@
 .dropdown .dropdown-menu .danger-item:hover{
   background-color: $danger;
   color: $backgroundColor !important;
+}
+.mask:hover,.card-header{
+  cursor: initial !important;
 }

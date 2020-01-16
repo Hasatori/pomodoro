@@ -48,9 +48,10 @@ export class GroupDetailComponent implements OnInit, OnPhaseChanged, OnDestroy {
   userError: string;
   groupError: string;
   isOwner: boolean = false;
+  membersVisible: boolean = false;
   private getNewGroupMemberSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient,private log: NGXLogger,private userServiceProvider: UserServiceProvider) {
+  constructor(private route: ActivatedRoute, private http: HttpClient, private log: NGXLogger, private userServiceProvider: UserServiceProvider) {
     this.route.paramMap.subscribe(groupName => {
       this.reset();
       this.groupName = groupName.get('name');

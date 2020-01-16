@@ -3,71 +3,90 @@
 
 <div *ngIf="isOwner" class="d-flex flex-row justify-content-center">
 
-    <div class="mt-2 px-3 pb-1 group-menu-item ">
-      <i class="fas fa-pen"></i>
-      edit group
-    </div>
   <div class="mt-2 px-3 pb-1 group-menu-item ">
-   <i class="fas fa-plus"></i> invite user
+    <i class="fas fa-pen"></i>
+    edit group
+  </div>
+  <div class="mt-2 px-3 pb-1 group-menu-item ">
+    <i class="fas fa-plus"></i> invite user
 
   </div>
 </div>
 <div class="container-fluid pt-5 pb-5 pl-2 pr-2">
 
-  <div class="container  ">
+  <div class="container">
 
     <div class="row">
-      <div class="col-sm-12 col-md-10">
+      <div class="col-1"></div>
+      <div class="col-sm-12 col-md-10 ">
+        <mdb-accordion [multiple]="true">
+          <mdb-accordion-item [collapsed]="membersVisible" (click)="membersVisible=!membersVisible">
+            <mdb-accordion-item-head [indicator]="false" class="accordion-header">
+              <div class="accordion-header-text">
 
-        <h4 class="h4-responsive"><strong>Filter</strong></h4>
-        <div class="pretty p-default">
-          <input #selectWork type="checkbox" checked="true" id='WORK' (change)="select(selectWork)"/>
-          <div class="state  p-primary">
-            <label>Work</label>
-          </div>
-        </div>
-        <div class="pretty p-default">
-          <input #selectPause type="checkbox" checked="true" id='PAUSE' (change)="select(selectPause)"/>
-          <div class="state  p-primary">
-            <label>Pause</label>
-          </div>
-        </div>
-        <div class="pretty p-default">
-          <input #selectNotRunning type="checkbox" checked="true" id='NOT RUNNING' (change)="select(selectNotRunning)"/>
-          <div class="state p-primary">
-            <label>Not running</label>
-          </div>
-        </div>
-        <br>
-        <div class="col-xl-6">
-          <div *ngIf="success!=null" class="alert alert-success" role="alert">
-            {{success}}
-          </div>
-          <div *ngIf="userError!=null" class="alert alert-danger" role="alert">
-            {{userError}}
-          </div>
-          <div *ngIf="groupError!=null" class="alert alert-danger" role="alert">
-            {{groupError}}
-          </div>
-        </div>
-        <ul *ngFor="let data of dataset">
-          <li>{{data}}</li>
-        </ul>
-        <div class="pb-0 mt-3">
-          <div class="row">
-            <div class="col-sm-4 col-md-3" *ngFor="let row of filteredRows|keyvalue">
-              <app-user-card [user]="row.key" [timer]="row.value" [isOwner]="isOwner"></app-user-card>
-            </div>
-          </div>
-        </div>
+                <div class="d-flex mb-3">
+                  <div class="flex-grow-1">Members</div>
+                  <div *ngIf="!membersVisible"><i class="fas fa-angle-up"></i></div>
+                  <div *ngIf="membersVisible"><i class="fas fa-angle-down"></i></div>
+                </div>
+
+              </div>
+            </mdb-accordion-item-head>
+            <mdb-accordion-item-body class="accordion-body">
+              <h4 class="h4-responsive"><strong>Filter</strong></h4>
+              <div class="pretty p-default">
+                <input #selectWork type="checkbox" checked="true" id='WORK' (change)="select(selectWork)"/>
+                <div class="state  p-primary">
+                  <label>Work</label>
+                </div>
+              </div>
+              <div class="pretty p-default">
+                <input #selectPause type="checkbox" checked="true" id='PAUSE' (change)="select(selectPause)"/>
+                <div class="state  p-primary">
+                  <label>Pause</label>
+                </div>
+              </div>
+              <div class="pretty p-default">
+                <input #selectNotRunning type="checkbox" checked="true" id='NOT RUNNING' (change)="select(selectNotRunning)"/>
+                <div class="state p-primary">
+                  <label>Not running</label>
+                </div>
+              </div>
+              <br>
+              <div class="col-xl-6">
+                <div *ngIf="success!=null" class="alert alert-success" role="alert">
+                  {{success}}
+                </div>
+                <div *ngIf="userError!=null" class="alert alert-danger" role="alert">
+                  {{userError}}
+                </div>
+                <div *ngIf="groupError!=null" class="alert alert-danger" role="alert">
+                  {{groupError}}
+                </div>
+              </div>
+              <ul *ngFor="let data of dataset">
+                <li>{{data}}</li>
+              </ul>
+              <div class="pb-0 mt-3">
+                <div class="row">
+                  <div class="col-sm-4 col-md-3" *ngFor="let row of filteredRows|keyvalue">
+                    <app-user-card [user]="row.key" [timer]="row.value" [isOwner]="isOwner"></app-user-card>
+                  </div>
+                </div>
+              </div>
+
+            </mdb-accordion-item-body>
+          </mdb-accordion-item>
+        </mdb-accordion>
 
       </div>
 
-      <div class="col-2 col-lg-2">
-        <app-chat [users]="this.allUsers" [group]="this.groupName"></app-chat>
+      <div class="col-1">
+
+
       </div>
     </div>
-
+    <app-chat [users]="this.allUsers" [group]="this.groupName"></app-chat>
   </div>
 
 </div>
