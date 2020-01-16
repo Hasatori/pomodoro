@@ -12,15 +12,15 @@
   font-size: 0.7rem;
   position: fixed !important;
   bottom: 1% !important;
-  left: 1%;
-  background-color: $basicTextColor !important;
-  color: $navigationBarColor !important;
+ right: 1%;
+  background-color: $navigationBarColor !important;
+  color: $basicTextColor !important;
 
 
 }
 .maximize:hover{
-  background-color: $basicTextColor !important;
-  color: $navigationBarColor !important;
+  background-color: $navigationBarColor !important;
+  color: $basicTextColor !important;
 
 }
 .hidden {

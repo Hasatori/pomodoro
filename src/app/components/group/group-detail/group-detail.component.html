@@ -1,11 +1,24 @@
-<h1 class="h1-responsive text-center my-3"><strong>{{this.groupName}}</strong></h1>
+<h1 class="h1-responsive text-center py-3 border-bottom m-0"><strong>{{this.groupName}}</strong>
+</h1>
+
+<div class="d-flex flex-row justify-content-center">
+
+    <div class="mt-2 px-3 pb-1 group-menu-item ">
+      <i class="fas fa-pen"></i>
+      edit group
+    </div>
+  <div class="mt-2 px-3 pb-1 group-menu-item ">
+   <i class="fas fa-plus"></i> invite user
+
+  </div>
+</div>
 <div class="container-fluid pt-5 pb-5 pl-2 pr-2">
 
   <div class="container  ">
 
     <div class="row">
       <div class="col-sm-12 col-md-10">
-        <h3 class="h3-responsive text-center mb-4"><strong>Members</strong></h3>
+
         <h4 class="h4-responsive"><strong>Filter</strong></h4>
         <div class="pretty p-default">
           <input #selectWork type="checkbox" checked="true" id='WORK' (change)="select(selectWork)"/>
@@ -26,23 +39,6 @@
           </div>
         </div>
         <br>
-        <div *ngIf="isOwner" class="input-group md-form form-sm form-1 pl-0">
-          <div class="input-group-prepend">
-        <span class="input-group-text primary-color-dark lighten-3" id="basic-text1"><i class="fas fa-search text-white"
-                                                                                        aria-hidden="true"></i></span>
-          </div>
-          <input id="searchBox" #searchBox class="form-control my-0 py-1" type="text" placeholder="find user ..."
-                 aria-label="Search" (keyup)="searchUsers(searchBox.value)"
-                 value=""
-
-          >
-          <button gradient="blue" block="true" rounded="true"
-                  (click)="inviteUser(searchBox.value.trim())"
-                  class="btn btn-primary"
-          >Invite user
-          </button>
-        </div>
-
         <div class="col-xl-6">
           <div *ngIf="success!=null" class="alert alert-success" role="alert">
             {{success}}
@@ -60,7 +56,7 @@
         <div class="pb-0 mt-3">
           <div class="row">
             <div class="col-sm-4 col-md-3" *ngFor="let row of filteredRows|keyvalue">
-              <app-user-card [user]="row.key" [timer]="row.value"></app-user-card>
+              <app-user-card [user]="row.key" [timer]="row.value" [isOwner]="isOwner"></app-user-card>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ import {Timer} from '../../../../model/Timer';
 export class UserCardComponent implements OnInit {
 @Input() user:User;
 @Input()timer:Timer;
-
+@Input()isOwner:boolean;
 
 
   constructor() { }

@@ -25,3 +25,25 @@
 .customTimer{
   font-size: 1.3em;
 }
+.user-actions-icon{
+  position: absolute;
+  left: 0.5rem;
+  top:0.2rem;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.user-actions-icon:hover{
+  opacity: 1;
+}
+.dropdown .dropdown-menu .custom-item:hover{
+  background-color: $navigationBarColor;
+  color: $basicTextColor !important;
+}
+.dropdown .dropdown-menu .danger-item{
+  color: $danger !important;
+}
+
+.dropdown .dropdown-menu .danger-item:hover{
+  background-color: $danger;
+  color: $backgroundColor !important;
+}

@@ -5,8 +5,10 @@ $basicTextColor: #DCBA89;
 $secondaryTextColor: #333333;
 $backgroundColor: #F8F8F8;
 $lightBorderColor: #dee2e6;
+$danger: #d9534f;
+
 .mainContent {
-  min-height: 85vh !important;
+  min-height: 100vh !important;
   background-color: $backgroundColor !important;
 
 }
@@ -186,6 +188,7 @@ $lightBorderColor: #dee2e6;
   background-color: transparent;
 
 }
-.pomodoro-container{
+
+.pomodoro-container {
   max-width: 500px;
 }

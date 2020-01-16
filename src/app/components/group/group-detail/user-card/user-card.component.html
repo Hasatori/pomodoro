@@ -1,9 +1,18 @@
 <mdb-card class="mb-3">
+
   <mdb-card-header class="member-card-header">
-    <div class="h5-responsive text-center ">
+    <div class="h5-responsive text-center">
       {{user.username}}
     </div>
-
+    <div *ngIf="isOwner" class="user-actions-icon dropdown" mdbDropdown>
+      <div mdbDropdownToggle ><i class="fas fa-ellipsis-v "></i></div>
+      <div class="dropdown-menu dropdown-menu-top">
+        <a class="dropdown-item custom-item" href="#">View profile</a>
+        <a class="dropdown-item custom-item" href="#">Open chat</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item danger-item" href="#">Remove from group</a>
+      </div>
+    </div>
   </mdb-card-header>
   <mdb-card-body>
     <mdb-badge
