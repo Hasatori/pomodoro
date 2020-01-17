@@ -59,9 +59,11 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private userServiceProvider: UserServiceProvider) {
 
+
   }
 
   ngOnInit() {
+    this.hideOrShowChat();
     this.loading = true;
     this.markAllAsReadAndProcessResponse();
     this.userServiceProvider.userService.getUser().subscribe((user) => {
