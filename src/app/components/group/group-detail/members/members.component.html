@@ -33,10 +33,10 @@
   <div *ngIf="allUsers.length==0" class="p-2 m-auto text-center">
     No members
   </div>
-  <div class="row container m-auto" *ngIf="!loading">
-    <div *ngFor="let row of filteredRows|keyvalue" class="  col-sm-6 cl-lg-3 col-xl-4">
+  <ul  class="list-group list-group-flush" *ngIf="!loading">
+    <div *ngFor="let row of filteredRows|keyvalue" >
       <app-user-card [user]="row.key" [timer]="row.value" [isOwner]="isOwner"></app-user-card>
     </div>
 
-  </div>
+  </ul>
 </div>

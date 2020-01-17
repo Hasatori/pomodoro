@@ -1,18 +1,13 @@
+<!--
+
+
 <mdb-card class="mb-3 z-depth-1">
 
   <mdb-card-header class="member-card-header">
-    <div class="h5-responsive text-center">
+    <div class="text-center">
       {{user.username}}
     </div>
-    <div *ngIf="isOwner" class="user-actions-icon dropdown" mdbDropdown>
-      <div mdbDropdownToggle ><i class="fas fa-ellipsis-v "></i></div>
-      <div class="dropdown-menu dropdown-menu-top">
-        <a class="dropdown-item custom-item" href="#">View profile</a>
-        <a class="dropdown-item custom-item" href="#">Open chat</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item danger-item" href="#">Remove from group</a>
-      </div>
-    </div>
+
   </mdb-card-header>
   <mdb-card-body class="card-body">
     <mdb-badge
@@ -47,4 +42,53 @@
 
     </div>
   </mdb-card-body>
-</mdb-card>
+</mdb-card>-->
+<li class="list-group-item d-flex justify-content-between   dropdown border-bottom" mdbDropdown>
+
+    <div class="d-flex flex-column">
+      <div><img width="35px" src="../../../assets/images/user.svg"></div>
+      <div>{{user.username}}</div>
+      </div>
+  <div class="dropdown-menu dropdown-menu-top z-depth-5">
+    <a class="dropdown-item custom-item" href="#">View profile</a>
+    <a class="dropdown-item custom-item" href="#">Open chat</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item danger-item" href="#">Remove from group</a>
+  </div>
+    <div class="d-flex justify-content-between"> <div class="d-flex flex-column">
+      <div >  <mdb-badge
+        *ngIf="timer.phase==='NOT RUNNING'"
+        danger="true" class="pomodoro-tag">Not running
+      </mdb-badge>
+        <mdb-badge
+          *ngIf="timer.phase==='PAUSE'"
+          success="true" class="pomodoro-tag">Pause
+        </mdb-badge>
+        <mdb-badge
+          *ngIf="timer.phase==='WORK'"
+          warning="true" class="pomodoro-tag">Work
+        </mdb-badge></div>
+
+      <div class="mask flex-center waves-effect waves-light rgba-teal-strong">
+        <p
+          *ngIf="timer.phase==='NOT RUNNING'"
+          class="customTimer text-danger"
+        >  {{timer.timeLeft}}</p>
+        <p
+          *ngIf="timer.phase==='PAUSE'"
+          class="customTimer text-success"
+        >  {{timer.timeLeft}}</p>
+        <p
+          *ngIf="timer.phase==='WORK'"
+          class="customTimer text-warning"
+        >  {{timer.timeLeft}}</p>
+      </div>
+    </div></div>
+    <div class="">  <div *ngIf="isOwner" class="user-actions-icon" >
+      <div mdbDropdownToggle ><i class="fas fa-ellipsis-v "></i></div>
+
+    </div></div>
+
+
+
+</li>

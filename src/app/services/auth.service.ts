@@ -54,7 +54,8 @@ export class AuthService {
   private serverLoginResponseCame(response: any) {
     if (response) {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
-      sessionStorage.setItem(this.ACCESS_TOKEN_KEY, response.token);
+      console.log(response);
+      sessionStorage.setItem(this.ACCESS_TOKEN_KEY, response.jwttoken);
       this.accessToken = sessionStorage.getItem(this.ACCESS_TOKEN_KEY);
     }
     return response;

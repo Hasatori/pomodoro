@@ -28,10 +28,12 @@ export class GroupService {
   private user: User;
   public allUnreadMessages: number = 0;
   public groupUnreadMessages: Map<string, number> = new Map<string, number>();
+
   public ownedGroupsUnreadMessages: number = 0;
   public notOwnedGroupsUnreadMessages: number = 0;
   public numberOfNotAcceptedGroupInvitations: number = 0;
   public invitations: Array<GroupInvatation> = [];
+
   public groups: Array<Group> = [];
   public ownedGroups: Array<Group> = [];
   public participatingGroups: Array<Group> = [];
@@ -101,10 +103,7 @@ export class GroupService {
             this.notOwnedGroupsUnreadMessages += numberToSet;
           }
 
-        })
-
-
-        ;
+        });
         this.getNewGroupMessage(group.name).subscribe(message => {
           if (message.author.username !== this.user.username) {
             this.audio.play();
@@ -188,6 +187,7 @@ export class GroupService {
     }));
 
   }
+
   public getLastNumberOfGroupChanges(groupName: string, start: number, stop: number): Observable<Array<GroupChange>> {
     return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-changes`, {
       groupName: groupName,
@@ -199,6 +199,7 @@ export class GroupService {
     }));
 
   }
+
   public reactToGroupMessage(groupName: string, groupMessage: GroupMessage, reaction: string) {
     let groupMessageReaction = {
       groupMessageId: groupMessage.id,
@@ -225,25 +226,37 @@ export class GroupService {
 
 
   addUser(username: string, groupName: string) {
-    let groupRequest = {
+/*    let groupRequest = {
       username: username,
       groupName: groupName
     };
     this.webSocketProxyService.publish('/app/group/' + groupName + '/group-members', JSON.stringify(groupRequest));
+  */  this.sendChange(groupName,`${this.user.username} has invited ${username}`)
+  }
 
+  private sendChange(groupName: string, changeDescription: string) {
+    this.webSocketProxyService.publish('/app/group/' + groupName + '/change', changeDescription);
   }
 
   removeUser(username: string, groupName: string): Observable<any> {
     return this.http.post<any>(`${SERVER_URL}/group/removeUser`, {
       username: username, groupName: groupName
     }).pipe(map(response => {
+      this.sendChange(groupName,`${this.user.username} has removed ${username} from the group`)
       return response;
     }));
+
   }
 
   getNewGroupMessage(groupName: string): Observable<GroupMessage> {
     return this.webSocketProxyService.watch('/group/' + groupName + '/chat').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
+    }));
+  }
+
+  getNewGroupChange(groupName: string): Observable<GroupChange> {
+    return this.webSocketProxyService.watch('/group/' + groupName + '/change').pipe(map(change => {
+      return JSON.parse(change.body);
     }));
   }
 

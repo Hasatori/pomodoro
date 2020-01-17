@@ -141,6 +141,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getMessageTimestampRelevance(messageTimestamp: Date): string {
     let currentDate = new Date();
+    // @ts-ignore
     let DateDiff = require('date-diff');
     let diff = new DateDiff(currentDate, new Date(messageTimestamp));
     let result = this.getResult(diff.seconds(), 'second');

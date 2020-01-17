@@ -7,40 +7,15 @@
     <i class="fas fa-pen"></i>
     edit group
   </div>
-  <div class="mt-2 px-3 pb-1 group-menu-item ">
-    <i class="fas fa-plus"></i> invite user
+  <div class="mt-2 px-3 pb-1 group-menu-item " (click)="userServiceProvider.groupService.addUser('test',groupName)">
+    <i class="fas fa-plus" ></i> invite user
 
   </div>
 </div>
-<div class="container-fluid pt-5 pb-5 pl-2 pr-2">
+<div class="container-fluid pt-5 pb-5 group-wrapper">
 
   <div class="row">
-    <div class="col-sm-12 col-xl-3">
-      <mdb-accordion [multiple]="true">
-        <mdb-accordion-item customClass="z-depth-1 rounded " [collapsed]="!toDoVisible">
-          <mdb-accordion-item-head
-            [indicator]="false" (click)="toDoVisible=!toDoVisible"
-            [ngClass]="toDoVisible?'accordion-header border-bottom mb-2':'accordion-header'"
-          >
-            <div class="accordion-header-text">
-
-              <div class="d-flex">
-                <div class="flex-grow-1 "><h5 class="h5-responsive">To do</h5></div>
-                <div *ngIf="!toDoVisible"><i class="fas fa-angle-up"></i></div>
-                <div *ngIf="toDoVisible"><i class="fas fa-angle-down"></i></div>
-              </div>
-
-            </div>
-          </mdb-accordion-item-head>
-          <mdb-accordion-item-body class="accordion-body">
-            <app-to-do-list></app-to-do-list>
-          </mdb-accordion-item-body>
-        </mdb-accordion-item>
-      </mdb-accordion>
-
-    </div>
-
-    <div class="col-sm-12 col-xl-6">
+    <div class="col-sm-6 col-md-5 col-lg-3 group-section">
       <mdb-accordion [multiple]="true">
         <mdb-accordion-item customClass="z-depth-1 rounded" [collapsed]="!membersVisible">
           <mdb-accordion-item-head [indicator]="false"
@@ -67,9 +42,35 @@
         </mdb-accordion-item>
       </mdb-accordion>
 
+
+
     </div>
 
-    <div class="col-sm-12 col-xl-3 ">
+    <div class="col-sm-6 col-md-7 col-lg-9 col-xl-6 group-section">
+      <mdb-accordion [multiple]="true">
+        <mdb-accordion-item customClass="z-depth-1 rounded " [collapsed]="!toDoVisible">
+          <mdb-accordion-item-head
+            [indicator]="false" (click)="toDoVisible=!toDoVisible"
+            [ngClass]="toDoVisible?'accordion-header border-bottom mb-2':'accordion-header'"
+          >
+            <div class="accordion-header-text">
+
+              <div class="d-flex">
+                <div class="flex-grow-1 "><h5 class="h5-responsive">To do</h5></div>
+                <div *ngIf="!toDoVisible"><i class="fas fa-angle-up"></i></div>
+                <div *ngIf="toDoVisible"><i class="fas fa-angle-down"></i></div>
+              </div>
+
+            </div>
+          </mdb-accordion-item-head>
+          <mdb-accordion-item-body class="accordion-body">
+            <app-to-do-list></app-to-do-list>
+          </mdb-accordion-item-body>
+        </mdb-accordion-item>
+      </mdb-accordion>
+    </div>
+
+    <div class="col-sm-12 col-xl-3 group-section">
       <mdb-accordion [multiple]="true">
         <mdb-accordion-item customClass="z-depth-1 rounded" [collapsed]="!changeLogVisible">
           <mdb-accordion-item-head [indicator]="false"

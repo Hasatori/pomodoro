@@ -28,3 +28,20 @@
 .accordion-header-text{
   color: $navigationBarColor !important;
 }
+@media (min-width: 576px) {
+  .group-section{
+    margin-bottom: 1rem;
+  }
+}
+@media (min-width: 1100px) {
+  .group-wrapper{
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+  }
+}
+@media (max-width: 1100px) {
+  .group-wrapper{
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+  }
+}
