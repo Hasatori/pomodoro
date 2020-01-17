@@ -12,6 +12,7 @@ import {UserService} from './user.service';
 import {GroupInvatation} from '../model/group-invatation';
 import {isUndefined} from 'util';
 import {UserServiceProvider} from './user-service-provider';
+import {GroupChange} from '../model/group-change';
 
 @Injectable({
   providedIn: 'root'
@@ -187,7 +188,17 @@ export class GroupService {
     }));
 
   }
+  public getLastNumberOfGroupChanges(groupName: string, start: number, stop: number): Observable<Array<GroupChange>> {
+    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-changes`, {
+      groupName: groupName,
+      start: start,
+      stop: stop
+    }).pipe(map(response => {
+      console.log(response);
+      return response;
+    }));
 
+  }
   public reactToGroupMessage(groupName: string, groupMessage: GroupMessage, reaction: string) {
     let groupMessageReaction = {
       groupMessageId: groupMessage.id,

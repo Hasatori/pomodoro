@@ -88,7 +88,10 @@
             </div>
           </mdb-accordion-item-head>
           <mdb-accordion-item-body class="accordion-body">
-            <app-change-log></app-change-log>
+            <div *ngIf="group">
+              <app-change-log [group]="group"></app-change-log>
+            </div>
+
           </mdb-accordion-item-body>
         </mdb-accordion-item>
       </mdb-accordion>

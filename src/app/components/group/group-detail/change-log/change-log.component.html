@@ -1,1 +1,6 @@
-<p>change-log works!</p>
+<ul>
+  <li *ngFor="let change of changes">
+    {{change.changeTimestamp + " => " + change.changeDescription}}
+  </li>
+
+</ul>
