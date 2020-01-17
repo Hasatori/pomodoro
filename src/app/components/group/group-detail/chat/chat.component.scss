@@ -1,13 +1,12 @@
 @import "../group-detail.component";
 
-.chat-room, .minimize {
+.chat-room, .minimize{
   right: 0.5rem;
   bottom: 1%;
   width: 24em !important;
   height: 30em !important;
   position: fixed !important;
 }
-
 .maximize {
   font-size: 0.7rem;
   position: fixed !important;
@@ -237,4 +236,7 @@ textarea::placeholder {
 
 .changelog-item {
   width: 85px !important;
+}
+.text-dark{
+  color: $navigationBarColor !important;
 }

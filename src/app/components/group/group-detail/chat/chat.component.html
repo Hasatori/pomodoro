@@ -14,268 +14,279 @@
     <mdb-icon fas icon="angle-up"></mdb-icon>
   </div>
   <div class="text-center flex-shrink-1" *ngIf="chatHidden">chat</div>
-  <small *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(groupName)!==0" class="align-right ml-2">
+  <small *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)!==0" class="align-right ml-2">
     <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
     <span
-      class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.groupUnreadMessages.get(groupName)}}</span>
+      class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
   </small>
 </div>
 
 
 <mdb-card class="chat-room small-chat wide " id="chat">
 
-
   <mdb-card-header class="chat-heading p-3" id="toggle" style="cursor: pointer;">
     <p class="name mb-0 text-center">
       <strong>Group chat</strong></p>
-
 
   </mdb-card-header>
   <div
     [ngClass]="showReactions?'my-custom-scrollbar stop-scrolling':'my-custom-scrollbar'"
     id="scrollable-window" (scroll)="scrolled()">
     <mdb-card-body class="p-3 pb-5">
-
-      <div class=" d-flex justify-content-center">
-        <div *ngIf="fetchingOlder" class="spinner-border" role="status">
-        </div>
-      </div>
-      <div #messages *ngFor="let message of messages;last as isLast; let i = index;"
-           class="messages-container"
-
-      >
-
-        <div class="pr-2 d-flex justify-content-end"
-             *ngIf="this.user.username===message.author.username"
-        >
-
-          <mdb-card
-
-            class="my-message rounded float-right z-depth-0 mb-1 d-flex p-1">
-            <mdb-card-header class="p-0 border-0 bg-transparent text-muted small ml-2 mb-1">
-              <div class="edit-message">
-                <mdb-icon fas icon="pen"></mdb-icon>
-                edit
-              </div>
-
-            </mdb-card-header>
-            <mdb-card-body class="pl-3 p-2 my-message-text small" [innerHTML]="getInnerHtml(message.value)">
-
-            </mdb-card-body>
-            <mdb-card-footer
-              class="mr-2 p-0 border-0 bg-transparent  other-member-message-header">
-              <div class="d-flex flex-row m-0">
-                <div *ngFor="let reaction of message.reactions">
-                  <div class="pl-1" *ngIf="reaction.users.length>0">
-                    <div class="d-flex reactions-message">
-                      <div class="pl-1 reactions-count" *ngIf="reaction.users.length>1"> {{reaction.users.length}}</div>
-                      <div class="pl-1" [mdbTooltip]="reactionTooltip"><img width="18"
-                                                                            src="{{'../../../../../assets/emojis/051-'+reaction.name+'.svg'}}"
-
-                      ></div>
-
-                    </div>
-                    <ng-template #reactionTooltip class="mb-2">
-                      <ul class="list-unstyled ">
-                        <li class="list-item" *ngFor="let user of reaction.users">{{user.username}}</li>
-                      </ul>
-                    </ng-template>
-
-                  </div>
-                </div>
-
-              </div>
-              <ng-template #clickImgTemp
-
-              >
-
-                <div
-
-                  class="d-flex flex-row reaction-emojis-container">
-
-                  <div
-
-                    mdbTooltip="{{message.currentUserReaction===reactionName?null:reactionName}}"
-                    [ngClass]="message.currentUserReaction===reactionName?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
-                    *ngFor="let reactionName of reactionsNames">
-                    <img width="18" src="{{'../../../../../assets/emojis/051-'+reactionName+'.svg'}}"
-
-                         (click)="react(message,reactionName)"
-                    >
-                    <small
-                      *ngIf="message.currentUserReaction===reactionName"
-                      class="remove-reaction text-center" (click)="removeReaction(message,reactionName)">x
-                    </small>
-                  </div>
-                </div>
-              </ng-template>
-
-
-              <ng-template #changesTemplate
-
-              >
-
-                <ul class="list-unstyled changelog">
-                  <div class="text-center small font-weight-bold ">
-                    Changes made by {{this.user.username}}
-                  </div>
-                  <li *ngFor="let change of message.changes | sort:'creationTimestamp'">
-                    <div class="d-flex flex-nowrap example-parent">
-                      <div
-                        class="changelog-item flex-fill order-1 p-1 col-example small border-bottom">{{getMessageTimestampRelevance(change.creationTimestamp)}}</div>
-                      <div
-                        class="changelog-item flex-fill order-2 p-1 col-example small border-bottom">{{change.oldValue}}</div>
-                      <div
-                        class="changelog-item flex-fill order-3 p-1 col-example small border-bottom">{{change.newValue}}</div>
-                    </div>
-                  </li>
-                </ul>
-              </ng-template>
-              <a placement="right" [mdbPopover]="clickImgTemp" triggers="click"
-                 class="message-reaction text-muted small"
-                 (click)="addReactionsClicked()"
-
-
-              >+ react</a>
-              <a placement="top"
-                 class="ml-2 message-reaction text-muted small"
-                 *ngIf="message.changes!==null && message.changes.length>0"
-                 [mdbPopover]="changesTemplate" triggers="click"
-                 (click)="addReactionsClicked()"
-              >
-                <mdb-icon fas icon="clock"></mdb-icon>
-                changelog</a>
-
-
-            </mdb-card-footer>
-          </mdb-card>
-        </div>
-
-        <div class="text-muted small text-center mb-3 message-time"
-
-             *ngIf="message.shouldShowAuthorsName && this.user.username!==message.author.username">
-          {{getMessageTimestampRelevance(message.timestamp)}}
-        </div>
-        <div *ngIf="this.user.username!==message.author.username"
-             [ngClass]="message.shouldShowAuthorsName?'pl-2 d-flex justify-content-start mb-2 other-member-message':'pl-2 d-flex justify-content-start mb-1  other-member-message'"
-        >
-          <div
-            *ngIf="!message.shouldShowAuthorsPhoto"
-            class="message-margin-left"
-          ></div>
-          <div
-            *ngIf="message.shouldShowAuthorsPhoto"
-            class="profile-photo message-photo ">
-            <img src="../../../../../assets/images/user.svg" alt="avatar"
-                 class="avatar rounded-circle mr-1 ml-0 mb-0">
-            <span class="state"></span>
-
+      <div *ngIf="loading" class="d-flex flex-column">
+        <div class="p-2 m-auto">
+          <div class="spinner-grow text-dark" role="status">
+            <span class="sr-only">Loading...</span>
           </div>
+        </div>
+        <div class="p-2 m-auto">Loading chat</div>
 
+      </div>
 
-          <mdb-card bgColor="bg-transparent" class="z-depth-0"
+      <div *ngIf="!loading">
+        <div class=" d-flex justify-content-center">
+          <mdb-spinner *ngIf="fetchingOlder" spinnerColor="blue" spinnerType="small"></mdb-spinner>
 
+        </div>
+        <div #messages *ngFor="let message of messages;last as isLast; let i = index;"
+             class="messages-container"
+
+        >
+
+          <div class="pr-2 d-flex justify-content-end"
+               *ngIf="this.user.username===message.author.username"
           >
 
-            <mdb-card-header
-              *ngIf="message.shouldShowAuthorsName"
-              class="p-0 border-0 bg-transparent text-muted small other-member-message-header ml-2">
+            <mdb-card
 
-              {{message.author.username}} </mdb-card-header>
-            <mdb-card-body class="pl-3 p-1 other-member-message-text small"  [innerHTML]="getInnerHtml(message.value)">
-
-            </mdb-card-body>
-            <mdb-card-footer
-              class="ml-2 p-0 border-0 bg-transparent  other-member-message-header">
-              <div class="d-flex flex-row m-0">
-                <div *ngFor="let reaction of message.reactions">
-                  <div class="pl-1" *ngIf="reaction.users.length>0">
-                    <div class="d-flex reactions-message">
-                      <div class="pl-1 reactions-count" *ngIf="reaction.users.length>1"> {{reaction.users.length}}</div>
-                      <div class="pl-1" [mdbTooltip]="reactionTooltip"><img width="18"
-                                                                            src="{{'../../../../../assets/emojis/051-'+reaction.name+'.svg'}}"
-
-                      ></div>
-
-                    </div>
-                    <ng-template #reactionTooltip class="mb-2">
-                      <ul class="list-unstyled ">
-                        <li class="list-item" *ngFor="let user of reaction.users">{{user.username}}</li>
-                      </ul>
-                    </ng-template>
-
-                  </div>
+              class="my-message rounded float-right z-depth-0 mb-1 d-flex p-1">
+              <mdb-card-header class="p-0 border-0 bg-transparent text-muted small ml-2 mb-1">
+                <div class="edit-message">
+                  <mdb-icon fas icon="pen"></mdb-icon>
+                  edit
                 </div>
 
-              </div>
-              <ng-template #clickImgTemp
-                           class="shadow z-depth-1"
-              >
+              </mdb-card-header>
+              <mdb-card-body class="pl-3 p-2 my-message-text small" [innerHTML]="getInnerHtml(message.value)">
 
-                <div
+              </mdb-card-body>
+              <mdb-card-footer
+                class="mr-2 p-0 border-0 bg-transparent  other-member-message-header">
+                <div class="d-flex flex-row m-0">
+                  <div *ngFor="let reaction of message.reactions">
+                    <div class="pl-1" *ngIf="reaction.users.length>0">
+                      <div class="d-flex reactions-message">
+                        <div class="pl-1 reactions-count"
+                             *ngIf="reaction.users.length>1"> {{reaction.users.length}}</div>
+                        <div class="pl-1" [mdbTooltip]="reactionTooltip"><img width="18"
+                                                                              src="{{'../../../../../assets/emojis/051-'+reaction.name+'.svg'}}"
 
-                  class="d-flex flex-row reaction-emojis-container">
+                        ></div>
+
+                      </div>
+                      <ng-template #reactionTooltip class="mb-2">
+                        <ul class="list-unstyled ">
+                          <li class="list-item" *ngFor="let user of reaction.users">{{user.username}}</li>
+                        </ul>
+                      </ng-template>
+
+                    </div>
+                  </div>
+
+                </div>
+                <ng-template #clickImgTemp
+
+                >
 
                   <div
 
-                    mdbTooltip="{{message.currentUserReaction===reactionName?null:reactionName}}"
-                    [ngClass]="message.currentUserReaction===reactionName?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
+                    class="d-flex flex-row reaction-emojis-container">
 
-                    *ngFor="let reactionName of reactionsNames">
-                    <img width="18" src="{{'../../../../../assets/emojis/051-'+reactionName+'.svg'}}"
+                    <div
 
-                         (click)="react(message,reactionName)"
-                    >
-                    <small
-                      *ngIf="message.currentUserReaction===reactionName"
-                      class="remove-reaction text-center" (click)="removeReaction(message)">x
-                    </small>
-                  </div>
-                </div>
-              </ng-template>
+                      mdbTooltip="{{message.currentUserReaction===reactionName?null:reactionName}}"
+                      [ngClass]="message.currentUserReaction===reactionName?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
+                      *ngFor="let reactionName of reactionsNames">
+                      <img width="18" src="{{'../../../../../assets/emojis/051-'+reactionName+'.svg'}}"
 
-
-              <ng-template #changesTemplate
-
-              >
-
-                <ul class="list-unstyled changelog">
-                  <div class="text-center small font-weight-bold ">
-                    Changes made by {{message.author.username}}
-                  </div>
-                  <li *ngFor="let change of message.changes | sort:'creationTimestamp'">
-                    <div class="d-flex flex-nowrap example-parent">
-                      <div
-                        class="changelog-item flex-fill order-1 p-1 col-example small border-bottom">{{getMessageTimestampRelevance(change.creationTimestamp)}}</div>
-                      <div
-                        class="changelog-item flex-fill order-2 p-1 col-example small border-bottom">{{change.oldValue}}</div>
-                      <div
-                        class="changelog-item flex-fill order-3 p-1 col-example small border-bottom">{{change.newValue}}</div>
+                           (click)="react(message,reactionName)"
+                      >
+                      <small
+                        *ngIf="message.currentUserReaction===reactionName"
+                        class="remove-reaction text-center" (click)="removeReaction(message,reactionName)">x
+                      </small>
                     </div>
-                  </li>
-                </ul>
-              </ng-template>
-              <a placement="right" [mdbPopover]="clickImgTemp" triggers="click"
-                 class="message-reaction text-muted small"
-                 (click)="addReactionsClicked()"
+                  </div>
+                </ng-template>
 
 
-              >+ react</a>
-              <a placement="top"
-                 class="ml-2 message-reaction text-muted small"
-                 *ngIf="message.changes!==null && message.changes.length>0"
-                 [mdbPopover]="changesTemplate" triggers="click"
-                 (click)="addReactionsClicked()"
-              >
-                <mdb-icon fas icon="clock"></mdb-icon>
-                changelog</a>
+                <ng-template #changesTemplate
 
-            </mdb-card-footer>
-          </mdb-card>
-        </div>
-        <div class="text-muted small text-center mb-2 message-time"
-             *ngIf="isLast && seenBy!==''">
-          Seen by: {{seenBy}}
+                >
+
+                  <ul class="list-unstyled changelog">
+                    <div class="text-center small font-weight-bold ">
+                      Changes made by {{this.user.username}}
+                    </div>
+                    <li *ngFor="let change of message.changes | sort:'creationTimestamp'">
+                      <div class="d-flex flex-nowrap example-parent">
+                        <div
+                          class="changelog-item flex-fill order-1 p-1 col-example small border-bottom">{{getMessageTimestampRelevance(change.creationTimestamp)}}</div>
+                        <div
+                          class="changelog-item flex-fill order-2 p-1 col-example small border-bottom">{{change.oldValue}}</div>
+                        <div
+                          class="changelog-item flex-fill order-3 p-1 col-example small border-bottom">{{change.newValue}}</div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-template>
+                <a placement="right" [mdbPopover]="clickImgTemp" triggers="click"
+                   class="message-reaction text-muted small"
+                   (click)="addReactionsClicked()"
+
+
+                >+ react</a>
+                <a placement="top"
+                   class="ml-2 message-reaction text-muted small"
+                   *ngIf="message.changes!==null && message.changes.length>0"
+                   [mdbPopover]="changesTemplate" triggers="click"
+                   (click)="addReactionsClicked()"
+                >
+                  <mdb-icon fas icon="clock"></mdb-icon>
+                  changelog</a>
+
+
+              </mdb-card-footer>
+            </mdb-card>
+          </div>
+
+          <div class="text-muted small text-center mb-3 message-time"
+
+               *ngIf="message.shouldShowAuthorsName && this.user.username!==message.author.username">
+            {{getMessageTimestampRelevance(message.timestamp)}}
+          </div>
+          <div *ngIf="this.user.username!==message.author.username"
+               [ngClass]="message.shouldShowAuthorsName?'pl-2 d-flex justify-content-start mb-2 other-member-message':'pl-2 d-flex justify-content-start mb-1  other-member-message'"
+          >
+            <div
+              *ngIf="!message.shouldShowAuthorsPhoto"
+              class="message-margin-left"
+            ></div>
+            <div
+              *ngIf="message.shouldShowAuthorsPhoto"
+              class="profile-photo message-photo ">
+              <img src="../../../../../assets/images/user.svg" alt="avatar"
+                   class="avatar rounded-circle mr-1 ml-0 mb-0">
+              <span class="state"></span>
+
+            </div>
+
+
+            <mdb-card bgColor="bg-transparent" class="z-depth-0"
+
+            >
+
+              <mdb-card-header
+                *ngIf="message.shouldShowAuthorsName"
+                class="p-0 border-0 bg-transparent text-muted small other-member-message-header ml-2">
+
+                {{message.author.username}} </mdb-card-header>
+              <mdb-card-body class="pl-3 p-1 other-member-message-text small" [innerHTML]="getInnerHtml(message.value)">
+
+              </mdb-card-body>
+              <mdb-card-footer
+                class="ml-2 p-0 border-0 bg-transparent  other-member-message-header">
+                <div class="d-flex flex-row m-0">
+                  <div *ngFor="let reaction of message.reactions">
+                    <div class="pl-1" *ngIf="reaction.users.length>0">
+                      <div class="d-flex reactions-message">
+                        <div class="pl-1 reactions-count"
+                             *ngIf="reaction.users.length>1"> {{reaction.users.length}}</div>
+                        <div class="pl-1" [mdbTooltip]="reactionTooltip"><img width="18"
+                                                                              src="{{'../../../../../assets/emojis/051-'+reaction.name+'.svg'}}"
+
+                        ></div>
+
+                      </div>
+                      <ng-template #reactionTooltip class="mb-2">
+                        <ul class="list-unstyled ">
+                          <li class="list-item" *ngFor="let user of reaction.users">{{user.username}}</li>
+                        </ul>
+                      </ng-template>
+
+                    </div>
+                  </div>
+
+                </div>
+                <ng-template #clickImgTemp
+                             class="shadow z-depth-1"
+                >
+
+                  <div
+
+                    class="d-flex flex-row reaction-emojis-container">
+
+                    <div
+
+                      mdbTooltip="{{message.currentUserReaction===reactionName?null:reactionName}}"
+                      [ngClass]="message.currentUserReaction===reactionName?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
+
+                      *ngFor="let reactionName of reactionsNames">
+                      <img width="18" src="{{'../../../../../assets/emojis/051-'+reactionName+'.svg'}}"
+
+                           (click)="react(message,reactionName)"
+                      >
+                      <small
+                        *ngIf="message.currentUserReaction===reactionName"
+                        class="remove-reaction text-center" (click)="removeReaction(message,reactionName)">x
+                      </small>
+                    </div>
+                  </div>
+                </ng-template>
+
+
+                <ng-template #changesTemplate
+
+                >
+
+                  <ul class="list-unstyled changelog">
+                    <div class="text-center small font-weight-bold ">
+                      Changes made by {{message.author.username}}
+                    </div>
+                    <li *ngFor="let change of message.changes | sort:'creationTimestamp'">
+                      <div class="d-flex flex-nowrap example-parent">
+                        <div
+                          class="changelog-item flex-fill order-1 p-1 col-example small border-bottom">{{getMessageTimestampRelevance(change.creationTimestamp)}}</div>
+                        <div
+                          class="changelog-item flex-fill order-2 p-1 col-example small border-bottom">{{change.oldValue}}</div>
+                        <div
+                          class="changelog-item flex-fill order-3 p-1 col-example small border-bottom">{{change.newValue}}</div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-template>
+                <a placement="right" [mdbPopover]="clickImgTemp" triggers="click"
+                   class="message-reaction text-muted small"
+                   (click)="addReactionsClicked()"
+
+
+                >+ react</a>
+                <a placement="top"
+                   class="ml-2 message-reaction text-muted small"
+                   *ngIf="message.changes!==null && message.changes.length>0"
+                   [mdbPopover]="changesTemplate" triggers="click"
+                   (click)="addReactionsClicked()"
+                >
+                  <mdb-icon fas icon="clock"></mdb-icon>
+                  changelog</a>
+
+              </mdb-card-footer>
+            </mdb-card>
+          </div>
+          <div class="text-muted small text-center mb-2 message-time"
+               *ngIf="isLast && seenBy!==''">
+            Seen by: {{seenBy}}
+          </div>
         </div>
       </div>
     </mdb-card-body>
@@ -286,10 +297,10 @@
 
       (focus)="markAllAsReadAndProcessResponse();typing=true;"
 
-              #message
+      #message
 
-              class="form-control"
-              placeholder="Type a message..."></textarea>
+      class="form-control"
+      placeholder="Type a message..."></textarea>
     <div>
       <a>
         <mdb-icon far icon="file-image" class="mr-2"></mdb-icon>

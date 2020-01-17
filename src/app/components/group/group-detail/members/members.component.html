@@ -12,19 +12,31 @@
   </div>
 </div>
 <div class="pretty p-default">
-  <input #selectNotRunning type="checkbox" checked="true" id='NOT RUNNING'
-         (change)="select(selectNotRunning)"/>
+  <input #selectNotRunning type="checkbox" checked="true" id='NOT RUNNING' (change)="select(selectNotRunning)"/>
   <div class="state p-primary">
     <label>Not running</label>
   </div>
 </div>
 <br>
-
-
 <div class="pb-0 mt-3">
-  <div class="row">
-    <div class="col-sm-4 col-md-3" *ngFor="let row of filteredRows|keyvalue">
+  <div class="row" *ngIf="loading">
+    <div class="d-flex flex-column m-auto">
+      <div class="p-2 m-auto">
+        <div class="spinner-grow text-dark" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div class="p-2 m-auto">Loading members</div>
+    </div>
+
+  </div>
+  <div *ngIf="allUsers.length==0" class="p-2 m-auto text-center">
+    No members
+  </div>
+  <div class="row container m-auto" *ngIf="!loading">
+    <div *ngFor="let row of filteredRows|keyvalue" class="  col-sm-6 cl-lg-3 col-xl-4">
       <app-user-card [user]="row.key" [timer]="row.value" [isOwner]="isOwner"></app-user-card>
     </div>
+
   </div>
 </div>

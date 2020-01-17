@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
 import {Reaction} from '../../../../model/reaction';
 import {isUndefined} from 'util';
+import {Group} from '../../../../model/group';
 
 @Component({
   selector: 'app-chat',
@@ -13,8 +14,7 @@ import {isUndefined} from 'util';
 })
 export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @Input('users') users: Array<User>;
-  @Input('group') groupName: string;
+  @Input() group: Group;
   messages: Array<GroupMessage> = new Array<GroupMessage>();
   user: User;
   scrollableWindow;
@@ -55,18 +55,20 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private newGroupMessageSubscription: Subscription;
   private lastNumberOfGroupMessagesSubscription: Subscription;
   private groupMessageReactionSubscription: Subscription;
+  private loading: boolean = false;
 
   constructor(private userServiceProvider: UserServiceProvider) {
-console.log('test '+this.users)
+
   }
 
   ngOnInit() {
+    this.loading = true;
     this.markAllAsReadAndProcessResponse();
     this.userServiceProvider.userService.getUser().subscribe((user) => {
       this.user = user;
 
     });
-    this.newGroupMessageSubscription = this.userServiceProvider.groupService.getNewGroupMessage(this.groupName).subscribe((newMessage) => {
+    this.newGroupMessageSubscription = this.userServiceProvider.groupService.getNewGroupMessage(this.group.name).subscribe((newMessage) => {
       this.seenBy = '';
       this.setReactionsForMessage(newMessage);
       this.messages.push(newMessage);
@@ -75,7 +77,7 @@ console.log('test '+this.users)
         this.markAllAsReadAndProcessResponse();
       }
     });
-    this.groupMessageReactionSubscription = this.userServiceProvider.groupService.getReactedGroupMessage(this.groupName).subscribe((reactedMessage) => {
+    this.groupMessageReactionSubscription = this.userServiceProvider.groupService.getReactedGroupMessage(this.group.name).subscribe((reactedMessage) => {
       let foundMessage = this.messages.find(message => {
         return message.id === reactedMessage.id;
       });
@@ -90,7 +92,7 @@ console.log('test '+this.users)
         foundMessage.currentUserReaction = isUndefined(reaction) ? null : reaction.name;
       }
     });
-    this.lastNumberOfGroupMessagesSubscription = this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
+    this.lastNumberOfGroupMessagesSubscription = this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.group.name, this.threshold, this.end).subscribe((response) => {
       this.messages = response.sort(function(a, b) {
         return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       });
@@ -102,6 +104,7 @@ console.log('test '+this.users)
       }
       this.threshold += this.limit;
       this.end += this.limit;
+      this.loading=false;
     });
 
   }
@@ -114,12 +117,12 @@ console.log('test '+this.users)
   }
 
   sendMessage(messageValue: string) {
-    this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.groupName + '/chat', messageValue);
+    this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/chat', messageValue);
     this.typing = false;
   }
 
   markAllAsReadAndProcessResponse() {
-    this.markAllAsReadSubscription = this.userServiceProvider.groupService.markAllFromGroupAsRead(this.groupName).subscribe((lastMessage) => {
+    this.markAllAsReadSubscription = this.userServiceProvider.groupService.markAllFromGroupAsRead(this.group.name).subscribe((lastMessage) => {
       this.lastMessage = lastMessage;
       let filteredRelatedMessages = lastMessage.relatedGroupMessages
         .filter(message => message.readTimestamp !== null && message.user.username !== this.user.username && message.user.username !== lastMessage.author.username);
@@ -187,7 +190,7 @@ console.log('test '+this.users)
     if (this.scrollableWindow.scrollTop == 0 && !this.stopFetchingOlder) {
       this.fetchingOlder = true;
       setTimeout(() => {
-        this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.groupName, this.threshold, this.end).subscribe((response) => {
+        this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.group.name, this.threshold, this.end).subscribe((response) => {
           if (response.length > 0) {
             this.messages = this.messages.concat(response);
 
@@ -280,8 +283,8 @@ console.log('test '+this.users)
   }
 
   react(message: GroupMessage, reactionName: string) {
-  //  this.addReactionToMessage(message,reactionName);
-    this.userServiceProvider.groupService.reactToGroupMessage(this.groupName, message, reactionName);
+    //  this.addReactionToMessage(message,reactionName);
+    this.userServiceProvider.groupService.reactToGroupMessage(this.group.name, message, reactionName);
 
   }
 
@@ -295,7 +298,7 @@ console.log('test '+this.users)
         });
     */
 
-    this.userServiceProvider.groupService.reactToGroupMessage(this.groupName, message, null);
+    this.userServiceProvider.groupService.reactToGroupMessage(this.group.name, message, null);
 
   }
 

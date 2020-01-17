@@ -14,79 +14,91 @@
 </div>
 <div class="container-fluid pt-5 pb-5 pl-2 pr-2">
 
-  <div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-xl-3">
+      <mdb-accordion [multiple]="true">
+        <mdb-accordion-item customClass="z-depth-1 rounded " [collapsed]="!toDoVisible">
+          <mdb-accordion-item-head
+            [indicator]="false" (click)="toDoVisible=!toDoVisible"
+            [ngClass]="toDoVisible?'accordion-header border-bottom mb-2':'accordion-header'"
+          >
+            <div class="accordion-header-text">
 
-    <div class="row">
-      <div class="col-1"></div>
-      <div class="col-sm-12 col-md-10 ">
-        <mdb-accordion [multiple]="true">
-          <mdb-accordion-item [collapsed]="membersVisible" (click)="membersVisible=!membersVisible">
-            <mdb-accordion-item-head [indicator]="false" class="accordion-header">
-              <div class="accordion-header-text">
-
-                <div class="d-flex mb-3">
-                  <div class="flex-grow-1">Members</div>
-                  <div *ngIf="!membersVisible"><i class="fas fa-angle-up"></i></div>
-                  <div *ngIf="membersVisible"><i class="fas fa-angle-down"></i></div>
-                </div>
-
-              </div>
-            </mdb-accordion-item-head>
-            <mdb-accordion-item-body class="accordion-body">
-              <h4 class="h4-responsive"><strong>Filter</strong></h4>
-              <div class="pretty p-default">
-                <input #selectWork type="checkbox" checked="true" id='WORK' (change)="select(selectWork)"/>
-                <div class="state  p-primary">
-                  <label>Work</label>
-                </div>
-              </div>
-              <div class="pretty p-default">
-                <input #selectPause type="checkbox" checked="true" id='PAUSE' (change)="select(selectPause)"/>
-                <div class="state  p-primary">
-                  <label>Pause</label>
-                </div>
-              </div>
-              <div class="pretty p-default">
-                <input #selectNotRunning type="checkbox" checked="true" id='NOT RUNNING' (change)="select(selectNotRunning)"/>
-                <div class="state p-primary">
-                  <label>Not running</label>
-                </div>
-              </div>
-              <br>
-              <div class="col-xl-6">
-                <div *ngIf="success!=null" class="alert alert-success" role="alert">
-                  {{success}}
-                </div>
-                <div *ngIf="userError!=null" class="alert alert-danger" role="alert">
-                  {{userError}}
-                </div>
-                <div *ngIf="groupError!=null" class="alert alert-danger" role="alert">
-                  {{groupError}}
-                </div>
-              </div>
-              <ul *ngFor="let data of dataset">
-                <li>{{data}}</li>
-              </ul>
-              <div class="pb-0 mt-3">
-                <div class="row">
-                  <div class="col-sm-4 col-md-3" *ngFor="let row of filteredRows|keyvalue">
-                    <app-user-card [user]="row.key" [timer]="row.value" [isOwner]="isOwner"></app-user-card>
-                  </div>
-                </div>
+              <div class="d-flex">
+                <div class="flex-grow-1 "><h5 class="h5-responsive">To do</h5></div>
+                <div *ngIf="!toDoVisible"><i class="fas fa-angle-up"></i></div>
+                <div *ngIf="toDoVisible"><i class="fas fa-angle-down"></i></div>
               </div>
 
-            </mdb-accordion-item-body>
-          </mdb-accordion-item>
-        </mdb-accordion>
+            </div>
+          </mdb-accordion-item-head>
+          <mdb-accordion-item-body class="accordion-body">
+            <app-to-do-list></app-to-do-list>
+          </mdb-accordion-item-body>
+        </mdb-accordion-item>
+      </mdb-accordion>
 
-      </div>
-
-      <div class="col-1">
-
-
-      </div>
     </div>
-    <app-chat [users]="this.allUsers" [group]="this.groupName"></app-chat>
+
+    <div class="col-sm-12 col-xl-6">
+      <mdb-accordion [multiple]="true">
+        <mdb-accordion-item customClass="z-depth-1 rounded" [collapsed]="!membersVisible">
+          <mdb-accordion-item-head [indicator]="false"
+                                   [ngClass]="membersVisible?'accordion-header border-bottom mb-2':'accordion-header'"
+                                   (click)="membersVisible=!membersVisible">
+            <div class="accordion-header-text">
+
+              <div class="d-flex">
+                <div class="flex-grow-1"><h5 class="h5-responsive">Members</h5></div>
+                <div *ngIf="!membersVisible"><i class="fas fa-angle-up"></i></div>
+                <div *ngIf="membersVisible"><i class="fas fa-angle-down"></i></div>
+              </div>
+
+            </div>
+          </mdb-accordion-item-head>
+          <mdb-accordion-item-body class="accordion-body">
+            <div
+              *ngIf="allUsers && group && user"
+            >
+              <app-members [allUsers]="allUsers" [group]="group" [user]="user" [isOwner]="isOwner"></app-members>
+            </div>
+
+          </mdb-accordion-item-body>
+        </mdb-accordion-item>
+      </mdb-accordion>
+
+    </div>
+
+    <div class="col-sm-12 col-xl-3 ">
+      <mdb-accordion [multiple]="true">
+        <mdb-accordion-item customClass="z-depth-1 rounded" [collapsed]="!changeLogVisible">
+          <mdb-accordion-item-head [indicator]="false"
+                                   [ngClass]="changeLogVisible?'accordion-header border-bottom mb-2':'accordion-header'"
+                                   (click)="changeLogVisible=!changeLogVisible">
+            <div class="accordion-header-text">
+
+              <div class="d-flex">
+                <div class="flex-grow-1">
+                  <h5 class="h5-responsive">Change log</h5>
+                </div>
+                <div *ngIf="!changeLogVisible"><i class="fas fa-angle-up"></i></div>
+                <div *ngIf="changeLogVisible"><i class="fas fa-angle-down"></i></div>
+              </div>
+
+            </div>
+          </mdb-accordion-item-head>
+          <mdb-accordion-item-body class="accordion-body">
+            <app-change-log></app-change-log>
+          </mdb-accordion-item-body>
+        </mdb-accordion-item>
+      </mdb-accordion>
+
+    </div>
+  </div>
+  <div *ngIf="group">
+    <app-chat
+      [group]="group"></app-chat>
   </div>
 
 </div>
+

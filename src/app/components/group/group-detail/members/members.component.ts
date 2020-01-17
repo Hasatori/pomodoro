@@ -14,28 +14,28 @@ import {NGXLogger} from 'ngx-logger';
   styleUrls: ['./members.component.scss']
 })
 export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
-  group: Group;
-  user: User;
-  @Input() groupName: string;
-  isOwner: boolean = false;
 
+  @Input() group: Group;
+  @Input() user: User;
+  @Input() isOwner: boolean;
+  @Input() allUsers: Array<User>;
 
-  allUsers: Array<User>;
-  private columnCount: number = 3;
   private workSelected: boolean = true;
   private pauseSelected: boolean = true;
   private notRunningSelected: boolean = true;
-  private onPhaseChangedMonitor: OnPhaseChanged;
-
   private allRows: Map<User, Timer>;
   private filteredRows: Map<User, Timer>;
 
 
   private getNewGroupMemberSubscription: Subscription;
+  loading: boolean = false;
 
   constructor(private userServiceProvider: UserServiceProvider, private log: NGXLogger,) {
+  }
+
+  ngOnInit() {
     this.fetchMembers();
-    this.getNewGroupMemberSubscription = this.userServiceProvider.groupService.getNewGroupMember(this.groupName).subscribe(user => {
+    this.getNewGroupMemberSubscription = this.userServiceProvider.groupService.getNewGroupMember(this.group.name).subscribe(user => {
       this.allUsers.push(user);
       let timer = new Timer(this.log, null, this);
       this.userServiceProvider.pomodoroService.watchStartingPomodoroForUser(user, timer);
@@ -58,40 +58,33 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
     });
   }
 
-  ngOnInit() {
-  }
-
   private fetchMembers() {
-    this.userServiceProvider.groupService.getGroups().subscribe((groups) => {
-      this.group = groups.find((group) => group.name === this.groupName);
-      this.isOwner = this.group.owner.username === this.user.username;
-      this.allRows = new Map<User, Timer>();
-      this.filteredRows = new Map<User, Timer>();
-      this.userServiceProvider.groupService.getUsersForGroup(this.group.name).pipe(first()).subscribe(users => {
-        this.allUsers = users;
-        for (let i = 0; i < users.length; i++) {
-          let user = users[i];
+    this.loading = true;
+    this.allRows = new Map<User, Timer>();
+    this.filteredRows = new Map<User, Timer>();
+    for (let i = 0; i < this.allUsers.length; i++) {
+      let user = this.allUsers[i];
+      this.userServiceProvider.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
+        pomodoro => {
+          let timer = new Timer(this.log, null, this);
+          this.userServiceProvider.pomodoroService.watchStartingPomodoroForUser(user, timer);
+          this.userServiceProvider.pomodoroService.watchStopingPomodoroForUser(user, timer);
+          this.allRows.set(user, timer);
+          if (pomodoro != null) {
+            timer.start(pomodoro);
+          }
+          if (this.allRows.size === this.allUsers.length) {
+            this.updateFilter();
+            this.loading = false;
+          }
+        }, error1 => {
 
-          this.userServiceProvider.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
-            pomodoro => {
-              let timer = new Timer(this.log, null, this);
-              this.userServiceProvider.pomodoroService.watchStartingPomodoroForUser(user, timer);
-              this.userServiceProvider.pomodoroService.watchStopingPomodoroForUser(user, timer);
-              this.allRows.set(user, timer);
-              if (pomodoro != null) {
-                timer.start(pomodoro);
-              }
-              if (this.allRows.size === users.length) {
-                this.updateFilter();
-              }
-            }, error1 => {
-
-            }
-          );
         }
-      });
-    });
-
+      );
+    }
+    if (this.allUsers.length==0){
+      this.loading = false;
+    }
   }
 
   private select(input: HTMLInputElement) {
