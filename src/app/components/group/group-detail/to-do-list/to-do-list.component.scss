@@ -1,3 +1,30 @@
-.tree-view{
+@import "../group-detail.component";
+
+.tree-view {
   overflow-y: scroll;
+}
+
+::ng-deep .md-accordion .card:first-of-type {
+
+  border: 0px !important;
+}
+
+::ng-deep .accordion .card .card-header, .no-children-task {
+  color: $secondaryTextColor !important;
+  font-size: 1rem !important;
+
+}
+
+::ng-deep .accordion .card .card-body{
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.no-children-task{
+
+  padding: 1rem 1.5rem !important;
+}
+
+::ng-deep .custom-checkbox > .form-check > .form-check-label{
+  padding: 0 !important;
+  padding-right: 0.2rem !important;
 }

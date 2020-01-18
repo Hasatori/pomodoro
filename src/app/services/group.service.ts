@@ -13,6 +13,7 @@ import {GroupInvatation} from '../model/group-invatation';
 import {isUndefined} from 'util';
 import {UserServiceProvider} from './user-service-provider';
 import {GroupChange} from '../model/group-change';
+import {GroupToDo} from '../model/GroupToDo';
 
 @Injectable({
   providedIn: 'root'
@@ -182,7 +183,6 @@ export class GroupService {
       start: start,
       stop: stop
     }).pipe(map(response => {
-      console.log(response);
       return response;
     }));
 
@@ -194,12 +194,19 @@ export class GroupService {
       start: start,
       stop: stop
     }).pipe(map(response => {
+      return response;
+    }));
+
+  }
+  public getGroupToDos(groupName: string): Observable<Array<GroupToDo>> {
+    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-todos`, {
+      groupName: groupName
+    }).pipe(map(response => {
       console.log(response);
       return response;
     }));
 
   }
-
   public reactToGroupMessage(groupName: string, groupMessage: GroupMessage, reaction: string) {
     let groupMessageReaction = {
       groupMessageId: groupMessage.id,

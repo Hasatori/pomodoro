@@ -64,7 +64,12 @@
             </div>
           </mdb-accordion-item-head>
           <mdb-accordion-item-body class="accordion-body">
-            <app-to-do-list></app-to-do-list>
+
+            <div *ngIf="group">
+              <app-to-do-list [group]="group"></app-to-do-list>
+
+            </div>
+
           </mdb-accordion-item-body>
         </mdb-accordion-item>
       </mdb-accordion>

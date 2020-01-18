@@ -1,9 +1,9 @@
 <h4 class="h5-responsive"><strong>Filter</strong></h4>
-<mdb-checkbox class="custom-checkbox" #selectWork [filledIn]="true"  [checked]="true" (change)="select('WORK',selectWork)" [inline]="true">Work</mdb-checkbox>
+<mdb-checkbox #selectWork [filledIn]="true"  [checked]="true" (change)="select('WORK',selectWork)" [inline]="true">Work</mdb-checkbox>
 
-<mdb-checkbox class="custom-checkbox" #selectPause [filledIn]="true"  checked="true"  (change)="select('PAUSE',selectPause)" [inline]="true">Pause</mdb-checkbox>
+<mdb-checkbox  #selectPause [filledIn]="true"  checked="true"  (change)="select('PAUSE',selectPause)" [inline]="true">Pause</mdb-checkbox>
 
-<mdb-checkbox class="custom-checkbox" #selectNotRunning [filledIn]="true" checked="true"  (change)="select('NOT RUNNING',selectNotRunning)" [inline]="true">Not running</mdb-checkbox>
+<mdb-checkbox #selectNotRunning [filledIn]="true" checked="true"  (change)="select('NOT RUNNING',selectNotRunning)" [inline]="true">Not running</mdb-checkbox>
 
 <br>
 <div class="pb-0 mt-3">

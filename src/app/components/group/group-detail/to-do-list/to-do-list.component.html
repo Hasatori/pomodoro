@@ -1,39 +1,82 @@
 <!-- Material inline 1 -->
 <div class="container pb-3 border-bottom">
 
-  <mdb-checkbox class="custom-checkbox" [filledIn]="true" [inline]="true">Only my tasks</mdb-checkbox>
+  <mdb-checkbox [filledIn]="true" [inline]="true">Only my tasks</mdb-checkbox>
 
 </div>
 
 <div class="container mt-3 mb-3 border-bottom">
-  <h4 class="h5-responsive"><strong>Tasks</strong></h4>
+  <h4 class="h5-responsive"><strong>Tasks      </strong>   <mdb-checkbox  #checkbox [checked]="false"
+                                                                          (change)="selectAll()" [filledIn]="true" [inline]="true">select all</mdb-checkbox></h4>
+
   <div class="row">
     <div class="col-12 tree-view">
-      <mdb-tree
-        (checked)="onCheck($event)"
-        (checkedKeys)="onCheckedKeys($event)"
-        (nodesChanged)="onNodesChanged($event)"
-        [expandAll]="true"
-        [checkboxes]="true"
-        textField="name"
-        childrenField="children"
-        checkboxesField="checked"
-        [toggleOnTitleClick]="true"
-        [nodes]="data"
-      ></mdb-tree>
+
+      <ng-template #recursiveListTmpl let-list>
+        <li *ngFor="let item of list">
+          <mdb-accordion *ngIf="item.children.length>0" [multiple]="false">
+            <mdb-accordion-item [collapsed]="!item.visible">
+
+              <mdb-accordion-item-head [indicator]="false"
+                                       (click)="showOrHideToDo(item)">
+                <div class="d-flex flex-row">
+                  <div class="p-0 text-center">
+                    <mdb-checkbox class="custom-checkbox" #checkbox [checked]="item.selected"
+                                  (change)="select(item)" [filledIn]="true" [inline]="true"></mdb-checkbox>
+
+                  </div>
+                  <div class="pl-1 pr-2 text-center">
+                    <mdb-icon
+                      *ngIf="!item.visible" fas icon="angle-right"></mdb-icon>
+                    <mdb-icon
+                      *ngIf="item.visible" fas icon="angle-down"></mdb-icon>
+                  </div>
+                  <div class="p-0 text-center"> {{ item.description }}</div>
+                </div>
+
+
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body>
+                <ul class="list-unstyled" *ngIf="item.children.length > 0">
+
+                  <ng-container
+                    *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: item.children }"></ng-container>
+                </ul>
+              </mdb-accordion-item-body>
+            </mdb-accordion-item>
+          </mdb-accordion>
+          <h5 class="no-children-task" *ngIf="item.children.length===0">
+
+            <div class="d-flex flex-row">
+              <div class="p-0 text-center">
+                <mdb-checkbox class="custom-checkbox" #checkbox [checked]="item.selected"
+                              (change)="select(item)" [filledIn]="true" [inline]="true"></mdb-checkbox>
+
+              </div>
+              <div class="pl-1 text-center"> {{ item.description }}</div>
+            </div>
+          </h5>
+
+        </li>
+      </ng-template>
+
+      <ul class="list-unstyled">
+        <ng-container *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit:todos }"></ng-container>
+      </ul>
+
     </div>
   </div>
 </div>
 <div class="d-flex flex-row">
   <div class="d-flex flex-column">
-    <div class="p-0"><a mdbBtn floating="true" size="sm" color="success"  mdbWavesEffect>
+    <div class="p-0"><a mdbBtn floating="true" size="sm" color="success" mdbWavesEffect>
       <mdb-icon fas icon="plus"></mdb-icon>
     </a></div>
     <div class="p-0 small text-center">Add task</div>
   </div>
   <div class="pl-1">
- <div class="d-flex flex-column">
-      <div class=" text-center"><a mdbBtn floating="true" size="sm" color="primary"  mdbWavesEffect>
+    <div class="d-flex flex-column">
+      <div class=" text-center"><a mdbBtn floating="true" size="sm" color="primary" mdbWavesEffect>
         <mdb-icon fas icon="map-pin"></mdb-icon>
       </a></div>
       <div class="p-0 small text-center">Assign member</div>
@@ -41,11 +84,12 @@
   </div>
   <div class="pl-1">
     <div class="d-flex flex-column">
-      <div class=" text-center"><a mdbBtn floating="true" size="sm" color="danger"  mdbWavesEffect>
+      <div class=" text-center"><a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect>
         <mdb-icon fas icon="trash-alt"></mdb-icon>
       </a></div>
       <div class="p-0 small text-center">Delete task</div>
     </div>
   </div>
 </div>
+
 

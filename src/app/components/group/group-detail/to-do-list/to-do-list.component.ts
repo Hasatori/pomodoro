@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {UserServiceProvider} from '../../../../services/user-service-provider';
+import {Group} from '../../../../model/group';
+import {GroupToDo} from '../../../../model/GroupToDo';
+import {select} from 'd3-selection';
+import {CheckboxComponent} from 'ng-uikit-pro-standard';
+import {isUndefined} from 'util';
 
 @Component({
   selector: 'app-to-do-list',
@@ -7,59 +13,88 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToDoListComponent implements OnInit {
 
-  constructor() { }
+  @Input() group: Group;
+
+  private todos: Array<GroupToDo> = [];
+  private visitedTodos: Array<GroupToDo> = [];
+
+  constructor(private userServiceProvider: UserServiceProvider) {
+
+
+  }
 
   ngOnInit() {
-  }
-  data = [
-    {
+    this.userServiceProvider.groupService.getGroupToDos(this.group.name).subscribe(todos => {
+      for (let toDo of todos) {
+        toDo.children = [];
+        toDo.visible = true;
+        toDo.selected = false;
+        this.assignChildren(todos, toDo);
+      }
+      console.log(this.todos);
+    });
 
-      name: 'Root1',
-      checked: false,
-      children: [
-        {
-          name: 'FolderV1.0',
-          cheched: false,
-          children: [
-            {
-              name: 'FolderV2.0',
-              checked: true,
-              children: [],
-            },
-          ],
-        },
-        {
-          name: 'FolderV2.0 (empty)',
-          checked: false,
-        },
-      ],
-    },
-    {
-      name: 'FolderV2.0 (empty)',
-    },
-    {
-      name: 'FolderV3.0 (empty)',
-      checked: false,
-    },
-    {
-      name: 'Root2',
-      checked: true,
-    },
-  ];
+  }
 
-  onCheck(e: any) {
-    console.log('%c Returned checked object ', 'background: #222; color:  #ff8080');
-    console.log(e);
-    console.log('%c ************************************ ', 'background: #222; color: #bada05');
+  assignChildren(todos: Array<GroupToDo>, toDo: GroupToDo) {
+    toDo.children = toDo.children.concat(todos.filter(candidate => candidate.parent !== null && candidate.parent.id === toDo.id));
+    if (toDo.parent === null) {
+      this.todos.push(toDo);
+    }
   }
-  onCheckedKeys(e: any) {
-    console.log('%c Returned array with checked checkboxes ', 'background: #222; color: #bada55');
-    console.log(e);
-    console.log('%c ************************************ ', 'background: #222; color: #bada05');
+
+  showOrHideToDo(toDo: GroupToDo) {
+    toDo.visible = !toDo.visible;
   }
-  onNodesChanged(e: any) {
-    console.log('%c Returned json with marked checkboxes ', 'background: #222; color: #99ccff');
-    console.table(e);
-    console.log('%c ************************************ ', 'background: #222; color: #bada05');
+
+  select(item: GroupToDo) {
+    if (item.selected && item.parent !== null) {
+
+      let todo = this.findToDoWithId(this.todos, item.parent.id);
+      if (!todo.children.some(child => child.selected&&child.id!==item.id)) {
+        todo.selected = false;
+      }
+
+    } else if (!item.selected && item.parent !== null) {
+      let todo = this.findToDoWithId(this.todos, item.parent.id);
+      if (!todo.children.some(child => !child.selected&&child.id!==item.id)) {
+        todo.selected = true;
+      }
+
+    }
+
+    this.fillSelect(item);
+
+  }
+
+  findToDoWithId(todos: Array<GroupToDo>, id: number): GroupToDo {
+    let result;
+    for (let todo of todos) {
+      if (todo.id === id) {
+        result = todo;
+        break;
+      } else if (!isUndefined(todo.children)) {
+        result = this.findToDoWithId(todo.children, id);
+      }
+      if (result.id === id) {
+        break;
+      }
+    }
+    return result;
+  }
+
+  fillSelect(item: GroupToDo) {
+    item.selected = !item.selected;
+    for (let child of item.children) {
+      this.fillSelect(child);
+      console.log(item.selected);
+    }
+
+  }
+
+  selectAll() {
+    for (let todo of this.todos){
+     this.fillSelect(todo);
+    }
   }
 }
