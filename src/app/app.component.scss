@@ -192,3 +192,7 @@ $danger: #d9534f;
 .pomodoro-container {
   max-width: 500px;
 }
+::ng-deep  .form-check .form-check-label::after{
+  background-color: $navigationBarColor !important;
+  border:  $navigationBarColor  !important;
+}

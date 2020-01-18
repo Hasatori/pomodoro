@@ -1,48 +1,4 @@
-<!--
 
-
-<mdb-card class="mb-3 z-depth-1">
-
-  <mdb-card-header class="member-card-header">
-    <div class="text-center">
-      {{user.username}}
-    </div>
-
-  </mdb-card-header>
-  <mdb-card-body class="card-body">
-    <mdb-badge
-      *ngIf="timer.phase==='NOT RUNNING'"
-      danger="true" class="pomodoro-tag">Not running
-    </mdb-badge>
-    <mdb-badge
-      *ngIf="timer.phase==='PAUSE'"
-      success="true" class="pomodoro-tag">Pause
-    </mdb-badge>
-    <mdb-badge
-      *ngIf="timer.phase==='WORK'"
-      warning="true" class="pomodoro-tag">Work
-    </mdb-badge>
-    <div class="view">
-      <img src="../../../assets/pomodoro/pomodoro.svg" class="pomodoro-img">
-
-      <div class="mask flex-center waves-effect waves-light rgba-teal-strong">
-        <p
-          *ngIf="timer.phase==='NOT RUNNING'"
-          class="customTimer text-danger"
-        >  {{timer.timeLeft}}</p>
-        <p
-          *ngIf="timer.phase==='PAUSE'"
-          class="customTimer text-success"
-        >  {{timer.timeLeft}}</p>
-        <p
-          *ngIf="timer.phase==='WORK'"
-          class="customTimer text-warning"
-        >  {{timer.timeLeft}}</p>
-      </div>
-
-    </div>
-  </mdb-card-body>
-</mdb-card>-->
 <li class="list-group-item d-flex justify-content-between   dropdown border-bottom" mdbDropdown>
 
     <div class="d-flex flex-column">

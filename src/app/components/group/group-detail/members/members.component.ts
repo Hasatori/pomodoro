@@ -7,6 +7,7 @@ import {Group} from '../../../../model/group';
 import {OnPhaseChanged} from '../../../../model/OnPhaseChanged';
 import {Subscription} from 'rxjs';
 import {NGXLogger} from 'ngx-logger';
+import {CheckboxComponent, MdbCheckboxChange} from 'ng-uikit-pro-standard';
 
 @Component({
   selector: 'app-members',
@@ -87,10 +88,9 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
     }
   }
 
-  private select(input: HTMLInputElement) {
-    let which = input.id;
+  private select(which:string,input: CheckboxComponent) {
     let selected = input.checked;
-    console.log(selected);
+    console.log(which);
     switch (which) {
       case 'WORK':
         this.workSelected = selected;

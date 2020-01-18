@@ -1,22 +1,10 @@
-<h4 class="h4-responsive"><strong>Filter</strong></h4>
-<div class="pretty p-default">
-  <input #selectWork type="checkbox" checked="true" id='WORK' (change)="select(selectWork)"/>
-  <div class="state  p-primary">
-    <label>Work</label>
-  </div>
-</div>
-<div class="pretty p-default">
-  <input #selectPause type="checkbox" checked="true" id='PAUSE' (change)="select(selectPause)"/>
-  <div class="state  p-primary">
-    <label>Pause</label>
-  </div>
-</div>
-<div class="pretty p-default">
-  <input #selectNotRunning type="checkbox" checked="true" id='NOT RUNNING' (change)="select(selectNotRunning)"/>
-  <div class="state p-primary">
-    <label>Not running</label>
-  </div>
-</div>
+<h4 class="h5-responsive"><strong>Filter</strong></h4>
+<mdb-checkbox class="custom-checkbox" #selectWork [filledIn]="true"  [checked]="true" (change)="select('WORK',selectWork)" [inline]="true">Work</mdb-checkbox>
+
+<mdb-checkbox class="custom-checkbox" #selectPause [filledIn]="true"  checked="true"  (change)="select('PAUSE',selectPause)" [inline]="true">Pause</mdb-checkbox>
+
+<mdb-checkbox class="custom-checkbox" #selectNotRunning [filledIn]="true" checked="true"  (change)="select('NOT RUNNING',selectNotRunning)" [inline]="true">Not running</mdb-checkbox>
+
 <br>
 <div class="pb-0 mt-3">
   <div class="row" *ngIf="loading">
