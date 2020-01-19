@@ -6,56 +6,109 @@
 </div>
 
 <div class="container mt-3 mb-3 border-bottom">
-  <h4 class="h5-responsive"><strong>Tasks      </strong>   <mdb-checkbox  #checkbox [checked]="false"
-                                                                          (change)="selectAll()" [filledIn]="true" [inline]="true">select all</mdb-checkbox></h4>
+  <h4 class="h5-responsive"><strong>Tasks </strong>
+    <mdb-checkbox #checkbox [checked]="false"
+                  (change)="selectAll(checkbox)" [filledIn]="true" [inline]="true">select all
+    </mdb-checkbox>
+  </h4>
 
   <div class="row">
     <div class="col-12 tree-view">
 
       <ng-template #recursiveListTmpl let-list>
-        <li *ngFor="let item of list">
+        <li *ngFor="let item of list" class="d-flex flex-nowrap">
           <mdb-accordion *ngIf="item.children.length>0" [multiple]="false">
-            <mdb-accordion-item [collapsed]="!item.visible">
+            <mdb-accordion-item [collapsed]="!item.visible"
+                                class="accordion-item"
+            >
 
               <mdb-accordion-item-head [indicator]="false"
-                                       (click)="showOrHideToDo(item)">
-                <div class="d-flex flex-row">
-                  <div class="p-0 text-center">
+                                       [isDisabled]="item.accordionDisabled"
+                                       (click)="showOrHideToDo(item)"
+
+              >
+
+                <div class="d-flex flex-row dropdown" mdbDropdown
+                (hidden)="item.accordionDisabled=false"
+                >
+
+                  <div class="pr-3 text-center"   >
+                    <mdb-icon
+                      *ngIf="!item.visible" fas icon="angle-right" class="indicator"></mdb-icon>
+                    <mdb-icon
+                      *ngIf="item.visible" fas icon="angle-down" class="indicator"></mdb-icon>
+                  </div>
+                  <div class="pl-1 pr-1 text-center">
                     <mdb-checkbox class="custom-checkbox" #checkbox [checked]="item.selected"
                                   (change)="select(item)" [filledIn]="true" [inline]="true"></mdb-checkbox>
+                  </div>
+                  <div class="pr-3 text-center small"> {{ item.description }}
+                    <div class="dropdown-menu dropdown-primary">
+                      <a class="dropdown-item" href="#"><mdb-icon fas icon="pen"></mdb-icon> Edit</a>
+                    </div>
+                  </div>
+
+                  <div class="small text-muted " (click)="item.accordionDisabled=!item.accordionDisabled;">
+                    <mdb-icon class="task-dropdown-toggle" fas icon="ellipsis-v" mdbDropdownToggle></mdb-icon>
 
                   </div>
-                  <div class="pl-1 pr-2 text-center">
-                    <mdb-icon
-                      *ngIf="!item.visible" fas icon="angle-right"></mdb-icon>
-                    <mdb-icon
-                      *ngIf="item.visible" fas icon="angle-down"></mdb-icon>
-                  </div>
-                  <div class="p-0 text-center"> {{ item.description }}</div>
                 </div>
 
+                <div class="d-flex flex-row ml-5">
 
+                  <div class="p-0 text-center small ">
+
+                    <mdb-badge success="true" class="mr-2">{{item.status}}</mdb-badge>
+                    <mdb-badge info="true">
+                      <mdb-icon class="mr-1" far icon="clock"></mdb-icon>
+                      {{getDeadlineFormat(item)}}</mdb-badge>
+                  </div>
+
+                </div>
+                <!--          <div class="chip">
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="Contact Person"> Jane Doe
+                          </div>
+                          <div class="chip">
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="Contact Person"> Jane Doe
+                          </div>-->
               </mdb-accordion-item-head>
-              <mdb-accordion-item-body>
-                <ul class="list-unstyled" *ngIf="item.children.length > 0">
+              <mdb-accordion-item-body class=" ">
 
+                <ul class="list-unstyled " *ngIf="item.children.length > 0">
                   <ng-container
                     *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: item.children }"></ng-container>
                 </ul>
               </mdb-accordion-item-body>
             </mdb-accordion-item>
           </mdb-accordion>
-          <h5 class="no-children-task" *ngIf="item.children.length===0">
+          <div class="no-children-task" *ngIf="item.children.length===0">
 
-            <div class="d-flex flex-row">
-              <div class="p-0 text-center">
+            <div class="d-flex flex-row dropdown" mdbDropdown>
+              <div class="p-0 pr-1 text-center">
                 <mdb-checkbox class="custom-checkbox" #checkbox [checked]="item.selected"
                               (change)="select(item)" [filledIn]="true" [inline]="true"></mdb-checkbox>
 
               </div>
-              <div class="pl-1 text-center"> {{ item.description }}</div>
+              <div class="pr-3"> {{ item.description }}
+                <div class="dropdown-menu dropdown-primary">
+                  <a class="dropdown-item" href="#"><mdb-icon fas icon="pen"></mdb-icon> Edit</a>
+                </div>
+              </div>
+              <div class="small text-muted">
+                <mdb-icon class="task-dropdown-toggle" fas icon="ellipsis-v" mdbDropdownToggle></mdb-icon>
+
+              </div>
             </div>
-          </h5>
+            <div class="d-flex flex-row ml-2">
+              <div class="pl-1 text-center d-flex flex-nowrap">
+                <mdb-badge success="true" class="mr-2">{{item.status}}</mdb-badge>
+                <mdb-badge info="true">
+                  <mdb-icon class="mr-1" far icon="clock"></mdb-icon>
+                  {{getDeadlineFormat(item)}}</mdb-badge>
+              </div>
+
+            </div>
+          </div>
 
         </li>
       </ng-template>
@@ -68,28 +121,9 @@
   </div>
 </div>
 <div class="d-flex flex-row">
-  <div class="d-flex flex-column">
-    <div class="p-0"><a mdbBtn floating="true" size="sm" color="success" mdbWavesEffect>
-      <mdb-icon fas icon="plus"></mdb-icon>
-    </a></div>
-    <div class="p-0 small text-center">Add task</div>
-  </div>
-  <div class="pl-1">
-    <div class="d-flex flex-column">
-      <div class=" text-center"><a mdbBtn floating="true" size="sm" color="primary" mdbWavesEffect>
-        <mdb-icon fas icon="map-pin"></mdb-icon>
-      </a></div>
-      <div class="p-0 small text-center">Assign member</div>
-    </div>
-  </div>
-  <div class="pl-1">
-    <div class="d-flex flex-column">
-      <div class=" text-center"><a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect>
-        <mdb-icon fas icon="trash-alt"></mdb-icon>
-      </a></div>
-      <div class="p-0 small text-center">Delete task</div>
-    </div>
-  </div>
+<div>
+  <button mdbBtn type="button" color="default" size="sm" [disabled]="!anySelected" mdbWavesEffect>Button</button>
+</div>
 </div>
 
 

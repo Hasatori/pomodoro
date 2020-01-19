@@ -13,5 +13,6 @@ export class GroupToDo {
   children?: Array<GroupToDo> = [];
   visible?: boolean;
   selected?:boolean;
+  accordionDisabled?:boolean;
 
 }

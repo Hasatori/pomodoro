@@ -1,9 +1,9 @@
 @import "../group-detail.component";
 
 .tree-view {
-  overflow-y: scroll;
+  resize: none !important;
+  overflow-x: scroll;
 }
-
 ::ng-deep .md-accordion .card:first-of-type {
 
   border: 0px !important;
@@ -12,7 +12,7 @@
 ::ng-deep .accordion .card .card-header, .no-children-task {
   color: $secondaryTextColor !important;
   font-size: 1rem !important;
-
+padding-bottom: 0.2rem !important;
 }
 
 ::ng-deep .accordion .card .card-body{
@@ -21,10 +21,28 @@
 }
 .no-children-task{
 
-  padding: 1rem 1.5rem !important;
+  padding: 0.2rem 3.4rem !important;
 }
 
 ::ng-deep .custom-checkbox > .form-check > .form-check-label{
   padding: 0 !important;
   padding-right: 0.2rem !important;
+}
+.deadline{
+  color:$secondaryTextColor;
+  font-size: 0.8rem;
+}
+::ng-deep .accordion-item *:hover{
+  cursor: default!important;
+}
+::ng-deep  .indicator i{
+  opacity: 0.8 !important;
+}
+::ng-deep  .indicator i:hover{
+  cursor: pointer !important;
+  opacity: 1 !important;
+}
+::ng-deep .task-dropdown-toggle i:hover{
+  cursor: pointer !important;
+  color: $secondaryTextColor !important;
 }

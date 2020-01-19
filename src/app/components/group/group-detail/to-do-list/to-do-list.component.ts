@@ -16,7 +16,8 @@ export class ToDoListComponent implements OnInit {
   @Input() group: Group;
 
   private todos: Array<GroupToDo> = [];
-  private visitedTodos: Array<GroupToDo> = [];
+  private deadlineTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+  private anySelected = false;
 
   constructor(private userServiceProvider: UserServiceProvider) {
 
@@ -29,9 +30,9 @@ export class ToDoListComponent implements OnInit {
         toDo.children = [];
         toDo.visible = true;
         toDo.selected = false;
+        toDo.accordionDisabled = false;
         this.assignChildren(todos, toDo);
       }
-      console.log(this.todos);
     });
 
   }
@@ -44,26 +45,28 @@ export class ToDoListComponent implements OnInit {
   }
 
   showOrHideToDo(toDo: GroupToDo) {
-    toDo.visible = !toDo.visible;
+    if (!toDo.accordionDisabled) {
+      toDo.visible = !toDo.visible;
+    }
   }
 
   select(item: GroupToDo) {
     if (item.selected && item.parent !== null) {
 
       let todo = this.findToDoWithId(this.todos, item.parent.id);
-      if (!todo.children.some(child => child.selected&&child.id!==item.id)) {
+      if (todo.children.some(child => child.selected && child.id !== item.id)) {
         todo.selected = false;
       }
 
     } else if (!item.selected && item.parent !== null) {
       let todo = this.findToDoWithId(this.todos, item.parent.id);
-      if (!todo.children.some(child => !child.selected&&child.id!==item.id)) {
+      if (!todo.children.some(child => !child.selected && child.id !== item.id)) {
         todo.selected = true;
       }
 
     }
-
-    this.fillSelect(item);
+    let status = !item.selected;
+    this.fillSelect(item, status);
 
   }
 
@@ -83,18 +86,23 @@ export class ToDoListComponent implements OnInit {
     return result;
   }
 
-  fillSelect(item: GroupToDo) {
-    item.selected = !item.selected;
+  fillSelect(item: GroupToDo, state: boolean) {
+    item.selected = state;
     for (let child of item.children) {
-      this.fillSelect(child);
-      console.log(item.selected);
+      this.fillSelect(child, state);
     }
 
   }
 
-  selectAll() {
-    for (let todo of this.todos){
-     this.fillSelect(todo);
+  selectAll(checkbox: CheckboxComponent) {
+    for (let todo of this.todos) {
+      this.fillSelect(todo, checkbox.checked);
     }
   }
+
+  getDeadlineFormat(todo: GroupToDo): string {
+    return new Date(todo.deadline).toLocaleDateString('en-US', this.deadlineTimeOptions);
+  }
+
+
 }
