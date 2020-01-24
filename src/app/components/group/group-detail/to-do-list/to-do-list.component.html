@@ -20,9 +20,9 @@
 
       <ng-template #recursiveListTmpl let-list>
         <li *ngFor="let item of list" class="d-flex flex-nowrap" @items>
-          <mdb-accordion  [multiple]="false">
+          <mdb-accordion [multiple]="false">
             <mdb-accordion-item [collapsed]="!item.visible"
-                                class="accordion-item"
+                                class="accordion-item border-bottom"
             >
 
               <mdb-accordion-item-head [indicator]="false"
@@ -53,59 +53,63 @@
 
 
               </mdb-accordion-item-head>
-              <mdb-accordion-item-body >
-                <div class= "ml-5 mb-2 d-flex justify-content-start small text-muted edit-task-button" (click)="createOrUpdateToDo.show('Update todo',item);">
-                  <mdb-icon fas icon="pen"></mdb-icon>
-                  Edit
+              <mdb-accordion-item-body>
+                <div class="ml-5 mb-2 d-flex flex-row justify-content-start small text-muted edit-task-button"
+                     (click)="createOrUpdateToDo.show('Update todo',item);">
+                  <div class="mr-1">
+                    <mdb-icon fas icon="pen"></mdb-icon>
+                  </div>
+                  <div>
+                    edit
+                  </div>
                 </div>
-                <div class="d-flex flex-column border-bottom">
-                <div class="d-flex flex-row ml-5 mb-2">
-                  <div class="text-muted mr-2">Status:</div>
-                  <div ngSwitch="{{item.status.toUpperCase()}}">
-                    <mdb-badge info="true" *ngSwitchCase="'IN PROGRESS'">{{item.status}}</mdb-badge>
-                    <mdb-badge warning="true"  *ngSwitchCase="'NOT STARTED'">{{item.status}}</mdb-badge>
-                    <mdb-badge success="true" *ngSwitchCase="'DONE'">{{item.status}}</mdb-badge>
-                    <mdb-badge danger="true" *ngSwitchDefault>{{item.status}}</mdb-badge>
+                <div class="d-flex flex-column">
+                  <div class="d-flex flex-row ml-5 mb-2">
+                    <div class="mr-1">
+                      <mdb-icon fas icon="spinner"></mdb-icon>
+                    </div>
+
+                    <div class="text-muted mr-2">Status:</div>
+                    <div class="mr-2" ngSwitch="{{item.status.toUpperCase()}}">
+                      <mdb-badge info="true" *ngSwitchCase="'IN PROGRESS'">{{item.status}}</mdb-badge>
+                      <mdb-badge warning="true" *ngSwitchCase="'NOT STARTED'">{{item.status}}</mdb-badge>
+                      <mdb-badge success="true" *ngSwitchCase="'DONE'">{{item.status}}</mdb-badge>
+                    </div>
+                    <div *ngIf="todoOverdue(item)===true">
+                      <mdb-badge danger="true">Overdue</mdb-badge>
+                    </div>
+
+                  </div>
+                  <div class="d-flex flex-row ml-5 mb-2">
+                    <div class="mr-1">
+                      <mdb-icon far icon="clock"></mdb-icon>
+                    </div>
+                    <div class="text-muted mr-2">Deadline:</div>
+                    <div clas>{{getDeadlineFormat(item)}}</div>
+
                   </div>
 
-                </div>
-                  <div class="d-flex flex-row ml-5 mb-2">
-                    <div class="text-muted mr-2">Deadline:</div>
-                    <div>{{getDeadlineFormat(item)}}</div>
+                  <div class="d-flex flex-row ml-5 ">
+                    <div class="mr-1">
+                      <mdb-icon fas icon="hands-helping"></mdb-icon>
+                    </div>
+
+                    <div class="text-muted mr-2">Assigned users:</div>
+                    <div class="text-info" *ngIf="item.assignedUsers.length===0">
+                      no assigned users
+                    </div>
+                    <div class="chip" *ngFor="let assignedMember of item.assignedUsers">
+                      <img src="../../../../../assets/images/user.svg" alt="Contact Person">{{assignedMember.username}}
+                    </div>
                   </div>
-                <div class="d-flex flex-row ml-5 " *ngIf="item.assignedUsers.length>0">
-                  <div class="text-muted mr-2">Assigned users:</div>
-                  <div class="chip" *ngFor="let assignedMember of item.assignedUsers">
-                    <img src="../../../../../assets/images/user.svg" alt="Contact Person">{{assignedMember.username}}
-                  </div>
                 </div>
-                </div>
-                <ul class="list-unstyled " *ngIf="item.children.length > 0">
+                <ul class="list-unstyled task-body ml-5" *ngIf="item.children.length > 0">
                   <ng-container
                     *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: item.children }"></ng-container>
                 </ul>
               </mdb-accordion-item-body>
             </mdb-accordion-item>
           </mdb-accordion>
-         <!-- <div class="no-children-task" *ngIf="item.children.length===0">
-
-            <div class="d-flex flex-row dropdown" mdbDropdown>
-              <div class="p-0 pr-1 text-center">
-                <mdb-checkbox class="custom-checkbox" #checkbox [checked]="item.selected"
-                              (change)="select(item)" [filledIn]="true" [inline]="true"></mdb-checkbox>
-
-              </div>
-              <div class="pr-3 task-text"> {{ item.description }}
-              </div>
-              <div class="small text-muted edit-task-button mr-4"  (click)="createOrUpdateToDo.show('Update todo',item);" >         <mdb-icon fas icon="pen"  ></mdb-icon>
-                Edit</div>
-              <div class="chip" *ngFor="let assignedMember of item.assignedUsers">
-                <img src="../../../../../assets/images/user.svg" alt="Contact Person">{{assignedMember.username}}
-              </div>
-            </div>
-
-          </div>-->
-
         </li>
       </ng-template>
 
@@ -121,15 +125,17 @@
 <div class="d-flex flex-row">
 
   <div>
-    <button mdbBtn type="button" color="default" size="sm" mdbWavesEffect
+    <button mdbBtn type="button" class="custom-button" size="sm" mdbWavesEffect
             (click)="createOrUpdateToDo.show('create to do')">Add task to root
     </button>
   </div>
   <div>
-    <button mdbBtn type="button" color="default" size="sm" [disabled]="!anySelected" mdbWavesEffect>Delete task</button>
+    <button mdbBtn type="button" class="custom-button" size="sm" [disabled]="!anySelected" mdbWavesEffect>Delete task</button>
   </div>
   <div>
-    <button mdbBtn type="button" color="default" size="sm" [disabled]="!anySelected" mdbWavesEffect>Add task</button>
+    <button mdbBtn type="button" class="custom-button" size="sm" [disabled]="!anySelected"
+            (click)="createOrUpdateToDo.show('Create todo',selectedTodos)" mdbWavesEffect>Add subtask
+    </button>
   </div>
 
 

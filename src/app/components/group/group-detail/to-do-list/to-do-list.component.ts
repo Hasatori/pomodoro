@@ -38,6 +38,7 @@ export class ToDoListComponent implements OnInit {
   private allToDos: Array<GroupToDo> = [];
   private deadlineTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   private anySelected = false;
+  private selectedTodos: Array<GroupToDo> = [];
 
   constructor(private userServiceProvider: UserServiceProvider) {
 
@@ -67,7 +68,7 @@ export class ToDoListComponent implements OnInit {
       this.todos = [];
       for (let toDo of this.allToDos) {
         toDo.children = [];
-        toDo.visible = true;
+        toDo.visible = false;
         toDo.selected = false;
         toDo.accordionDisabled = false;
         this.assignChildren(this.allToDos, toDo);
@@ -83,7 +84,7 @@ export class ToDoListComponent implements OnInit {
     }
   }
 
-  showOrHideToDo(toDo: GroupToDo,popupShown:boolean) {
+  showOrHideToDo(toDo: GroupToDo, popupShown: boolean) {
     if (!popupShown) {
       toDo.visible = !toDo.visible;
     }
@@ -105,9 +106,15 @@ export class ToDoListComponent implements OnInit {
 
      }*/
     item.selected = !item.selected;
+    if (item.selected){
+      this.selectedTodos.push(item);
+    } else{
+      this.selectedTodos=this.selectedTodos.filter(todo=>{return todo.id!==item.id});
+    }
     this.anySelected = this.isAnySelected(this.todos);
     /*  let status = !item.selected;
       this.fillSelect(item, status);*/
+    console.log(this.selectedTodos);
 
   }
 
@@ -170,5 +177,9 @@ export class ToDoListComponent implements OnInit {
     this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/todos', JSON.stringify(groupToDo));
   }
 
+  todoOverdue(todo:GroupToDo):boolean{
+    let todoDeadlineMillis=new Date(todo.deadline).getTime();
+  return Date.now()>todoDeadlineMillis;
+  }
 
 }

@@ -50,7 +50,9 @@ $danger: #d9534f;
   background-color: $navigationBarColor !important;
   color: $basicTextColor !important;
 }
-
+ .btn:disabled{
+opacity: 0.5 !important;
+}
 .custom-button:hover, .pagination .page-item:hover .page-link {
   opacity: 1;
   background-color: $navigationBarColor !important;

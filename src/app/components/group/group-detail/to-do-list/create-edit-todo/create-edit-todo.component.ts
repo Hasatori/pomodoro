@@ -15,16 +15,16 @@ import {Group} from '../../../../../model/group';
   templateUrl: './create-edit-todo.component.html',
   styleUrls: ['./create-edit-todo.component.scss']
 })
-export class CreateEditTodoComponent implements OnInit,AfterViewInit {
+export class CreateEditTodoComponent implements OnInit, AfterViewInit {
   title: string = '';
   groupToDo: GroupToDo = null;
+  parents: Array<GroupToDo> = [];
   @Input() group: Group;
   @Input() users: Array<User>;
   @Input() user: User;
   // @ts-ignore
   @ViewChild('basicModal') input: ModalDirective;
-shown:boolean=false;
-
+  shown: boolean = false;
 
 
   inProgress: boolean = false;
@@ -34,18 +34,17 @@ shown:boolean=false;
   assignedMembers: Array<any> = [];
   statuses: Array<any> = [
     {
-      value: 0,
+      value: 1,
       label: 'Not started'
     },
     {
-      value: 1,
+      value: 2,
       label: 'In progress'
     },
     {
-      value: 2,
+      value: 3,
       label: 'Done',
     }
-
   ];
   selectedDate: string;
 
@@ -64,17 +63,19 @@ shown:boolean=false;
 
   }
 
-  show(title: string, groupToDo?: GroupToDo) {
+  show(title: string, parents?: Array<GroupToDo>, groupToDo?: GroupToDo) {
     this.groupToDo = new GroupToDo();
+    this.parents=isUndefined(parents)?[]:parents;
     this.assignedMembers = [];
     this.title = title;
+
     if (!isUndefined(groupToDo)) {
       this.groupToDo = groupToDo;
       this.elegantForm.controls.assignUsersSelect.setValue(this.groupToDo.assignedUsers.map(assignedUser => {
         return assignedUser.id;
       }));
 
-      this.elegantForm.controls.statusSelect.setValue([this.statuses.find(status=>status.label.toUpperCase()===groupToDo.status.toUpperCase()).value]);
+      this.elegantForm.controls.statusSelect.setValue([this.statuses.find(status => status.label.toUpperCase() === groupToDo.status.toUpperCase()).value]);
       this.selectedDate = this.datepipe.transform(new Date(this.groupToDo.deadline).getTime(), 'yyyy-MM-dd');
       let iconPath = '../../../../../../../assets/images/user.svg';
       this.users.forEach(user => {
@@ -90,24 +91,33 @@ shown:boolean=false;
   }
 
   onSave(description: string, status: number, deadline: IMyDate, assignedMembers: Array<number>) {
-    this.groupToDo.groupId=this.group.id;
-    this.groupToDo.authorId=this.user.id;
+    this.groupToDo.groupId = this.group.id;
+    this.groupToDo.authorId = this.user.id;
     this.groupToDo.description = description;
     this.groupToDo.status = this.statuses.find(status1 => status1.value === status).label;
     this.groupToDo.deadline = new Date(Date.parse(`${deadline.month} ${deadline.day} ${deadline.year}`));
     this.groupToDo.assignedUsers = this.users.filter(user => assignedMembers.some(memberId => {
       return memberId === user.id;
     }));
-    this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/todos', JSON.stringify(this.groupToDo));
-    this.input.hide();
+    if (this.parents.length>0){
+      this.parents.forEach(parent=>{
+        this.groupToDo.parentId=parent.id;
+        this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/todos', JSON.stringify(this.groupToDo));
+        this.input.hide();
+      });
+    }else{
+      this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/todos', JSON.stringify(this.groupToDo));
+      this.input.hide();
+    }
+
   }
 
   ngAfterViewInit(): void {
-    this.input.onShow.subscribe(()=>{
-      this.shown=true;
+    this.input.onShow.subscribe(() => {
+      this.shown = true;
     });
-    this.input.onHide.subscribe(()=>{
-      this.shown=false;
-    })
+    this.input.onHide.subscribe(() => {
+      this.shown = false;
+    });
   }
 }
