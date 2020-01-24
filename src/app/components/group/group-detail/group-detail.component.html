@@ -65,8 +65,8 @@
           </mdb-accordion-item-head>
           <mdb-accordion-item-body class="accordion-body">
 
-            <div *ngIf="group">
-              <app-to-do-list [group]="group"></app-to-do-list>
+            <div *ngIf="group && allUsers">
+              <app-to-do-list [group]="group" [users]="this.allUsers"></app-to-do-list>
 
             </div>
 

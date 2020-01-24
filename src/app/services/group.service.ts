@@ -311,14 +311,15 @@ export class GroupService {
       return pomodoro;
     })).subscribe(result => {
       if (!isUndefined(result.success)) {
-        this.invitations = this.invitations.filter(invitation => {
-          return invitation.id !== groupInvitation.id;
-        });
+        let index=this.invitations.indexOf(groupInvitation,0);
+        if (index>-1){
+          this.invitations.splice(index,1)
+        }
         sessionStorage.removeItem(this.GROUPS_KEY);
         groupInvitation.group.layoutImagePath = this.getLayoutImagePath(Math.floor(Math.random() * 5) + 1);
         this.participatingGroups.push(groupInvitation.group);
       }
     });
-
   }
+  
 }

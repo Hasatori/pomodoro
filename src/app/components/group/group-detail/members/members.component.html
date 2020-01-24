@@ -21,8 +21,8 @@
   <div *ngIf="allUsers.length==0" class="p-2 m-auto text-center">
     No members
   </div>
-  <ul  class="list-group list-group-flush" *ngIf="!loading">
-    <div *ngFor="let row of filteredRows|keyvalue" >
+  <ul  class="list-group list-group-flush" *ngIf="!loading" @list>
+    <div *ngFor="let row of filteredRows|keyvalue" @items>
       <app-user-card [user]="row.key" [timer]="row.value" [isOwner]="isOwner"></app-user-card>
     </div>
 

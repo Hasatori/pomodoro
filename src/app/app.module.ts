@@ -63,14 +63,18 @@ import {
 } from 'ng-uikit-pro-standard';
 import {OverviewComponent} from './components/group/overview/overview.component';
 // MDB Angular Pro
-import {ScrollSpyModule,ButtonsModule, WavesModule, CardsModule} from 'ng-uikit-pro-standard';
-import { BackToTopComponent } from './components/back-to-top/back-to-top.component';
-import { SortPipe } from './pipes/sort.pipe';
-import { AcceptCookiesComponent } from './components/modals/accept-cookies/accept-cookies.component';
+import {ScrollSpyModule, ButtonsModule, WavesModule, CardsModule} from 'ng-uikit-pro-standard';
+import {BackToTopComponent} from './components/back-to-top/back-to-top.component';
+import {SortPipe} from './pipes/sort.pipe';
+import {AcceptCookiesComponent} from './components/modals/accept-cookies/accept-cookies.component';
 import {UserCardComponent} from './components/group/group-detail/members/user-card/user-card.component';
 import {MembersComponent} from './components/group/group-detail/members/members.component';
 import {ToDoListComponent} from './components/group/group-detail/to-do-list/to-do-list.component';
 import {ChangeLogComponent} from './components/group/group-detail/change-log/change-log.component';
+import {CreateEditTodoComponent} from './components/group/group-detail/to-do-list/create-edit-todo/create-edit-todo.component';
+import {DatePipe} from '@angular/common';
+import {EditGroupComponent} from './components/group/group-detail/edit-group/edit-group.component';
+
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
@@ -80,7 +84,7 @@ const routes: Routes = [
   {path: 'forgotten-password', component: ForgottenPasswordComponent},
   {path: 'pomodoro', component: PomodoroComponent, canActivate: [AuthGuard]},
   {path: 'group', component: GroupComponent, canActivate: [AuthGuard], children: groupDetailRoutes},
-  {path: 'my-account',component:MyAccountComponent, canActivate: [AuthGuard]},
+  {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard], children: myAccountRoutes},
 
@@ -116,8 +120,8 @@ const routes: Routes = [
     UserCardComponent,
     MembersComponent,
     ToDoListComponent,
-    ChangeLogComponent
-
+    ChangeLogComponent,
+    CreateEditTodoComponent
   ],
   imports: [
     BrowserModule,
@@ -157,7 +161,6 @@ const routes: Routes = [
     TableModule
 
 
-
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {
     provide: HTTP_INTERCEPTORS,
@@ -173,7 +176,10 @@ const routes: Routes = [
       provide: AuthServiceConfig,
       useFactory: provideConfig
     },
-    MDBSpinningPreloader,],
+    MDBSpinningPreloader,
+    DatePipe
+  ]
+  ,
   bootstrap: [AppComponent]
 })
 

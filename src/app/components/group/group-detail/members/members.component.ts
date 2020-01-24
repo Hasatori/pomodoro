@@ -8,11 +8,35 @@ import {OnPhaseChanged} from '../../../../model/OnPhaseChanged';
 import {Subscription} from 'rxjs';
 import {NGXLogger} from 'ngx-logger';
 import {CheckboxComponent, MdbCheckboxChange} from 'ng-uikit-pro-standard';
+import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
+
 
 @Component({
   selector: 'app-members',
   templateUrl: './members.component.html',
-  styleUrls: ['./members.component.scss']
+  styleUrls: ['./members.component.scss'],
+  animations: [
+    trigger('items', [
+      transition(':enter', [
+        style({ transform: 'scale(0.5)', opacity: 0 }),  // initial
+        animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
+          style({ transform: 'scale(1)', opacity: 1 }))  // final
+      ]),
+      transition(':leave', [
+        style({ transform: 'scale(1)', opacity: 1, height: '*' }),
+        animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
+          style({
+            transform: 'scale(0.5)', opacity: 0,
+            height: '0px', margin: '0px'
+          }))
+      ])
+    ]),
+    trigger('list', [
+      transition(':enter', [
+        query('@items', stagger(200, animateChild()))
+      ]),
+    ])
+  ]
 })
 export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
 
@@ -63,6 +87,7 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
     this.loading = true;
     this.allRows = new Map<User, Timer>();
     this.filteredRows = new Map<User, Timer>();
+    this.allUsers= this.allUsers.filter(user => user.username !== this.user.username);
     for (let i = 0; i < this.allUsers.length; i++) {
       let user = this.allUsers[i];
       this.userServiceProvider.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(

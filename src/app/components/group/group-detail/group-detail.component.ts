@@ -14,7 +14,7 @@ import {UserServiceProvider} from '../../../services/user-service-provider';
 @Component({
   selector: 'app-group-detail',
   templateUrl: './group-detail.component.html',
-  styleUrls: ['./group-detail.component.scss']
+  styleUrls: ['./group-detail.component.scss'],
 })
 export class GroupDetailComponent {
   private group: Group;
@@ -35,7 +35,7 @@ export class GroupDetailComponent {
           this.user = user;
           this.isOwner = this.group.owner.username === this.user.username;
           this.userServiceProvider.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
-            this.allUsers = users.filter(user => user.username !== this.user.username);
+            this.allUsers =users;
 
           });
 

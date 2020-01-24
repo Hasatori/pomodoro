@@ -251,8 +251,8 @@
           <div class="col-lg-2 col-md-4" *ngFor="let group of ownedGroups">
         -->
         <div class="row">
-          <div class="col-sm-6 col-lg-4 col-xl-3 mt-5"
-               *ngFor="let invitation of userServiceProvider.groupService.invitations">
+          <div class="col-sm-6 col-lg-4 col-xl-3 mt-5" @items
+               *ngFor="let invitation of userServiceProvider.groupService.invitations" >
 
             <mdb-flipping-card #cards class="my-card">
               <!--Front Side-->

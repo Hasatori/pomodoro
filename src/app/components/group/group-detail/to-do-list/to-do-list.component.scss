@@ -2,6 +2,12 @@
 
 .tree-view {
   resize: none !important;
+
+}
+.tasks{
+  max-height: 400px;
+  overflow-y: scroll;
+
   overflow-x: scroll;
 }
 ::ng-deep .md-accordion .card:first-of-type {
@@ -12,37 +18,59 @@
 ::ng-deep .accordion .card .card-header, .no-children-task {
   color: $secondaryTextColor !important;
   font-size: 1rem !important;
-padding-bottom: 0.2rem !important;
+  padding-bottom: 0.2rem !important;
 }
 
-::ng-deep .accordion .card .card-body{
+::ng-deep .accordion .card .card-body {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
-.no-children-task{
+
+.no-children-task {
 
   padding: 0.2rem 3.4rem !important;
 }
 
-::ng-deep .custom-checkbox > .form-check > .form-check-label{
+::ng-deep .custom-checkbox > .form-check > .form-check-label {
   padding: 0 !important;
   padding-right: 0.2rem !important;
 }
-.deadline{
-  color:$secondaryTextColor;
+
+.deadline {
+  color: $secondaryTextColor;
   font-size: 0.8rem;
 }
-::ng-deep .accordion-item *:hover{
-  cursor: default!important;
+
+::ng-deep .accordion-item *:hover {
+  cursor: default !important;
 }
-::ng-deep  .indicator i{
+
+::ng-deep .indicator i {
   opacity: 0.8 !important;
 }
-::ng-deep  .indicator i:hover{
+
+::ng-deep .indicator i:hover {
   cursor: pointer !important;
   opacity: 1 !important;
 }
-::ng-deep .task-dropdown-toggle i:hover{
+
+::ng-deep .task-dropdown-toggle i:hover {
   cursor: pointer !important;
   color: $secondaryTextColor !important;
+}
+
+::ng-deep .task-text {
+  font-size: 1rem !important;
+  font-weight: initial;
+  color: $secondaryTextColor !important;
+}
+
+.edit-task-button {
+  font-size: 0.8rem !important;
+  opacity: 0.8 ;
+}
+
+.edit-task-button:hover {
+  opacity: 1;
+  cursor: pointer !important;
 }

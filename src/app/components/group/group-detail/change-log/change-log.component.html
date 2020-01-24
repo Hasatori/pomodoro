@@ -1,6 +1,6 @@
 
-<ul class="list-unstyled">
-  <li *ngFor="let change of changes">
+<ul class="list-unstyled" @list>
+  <li *ngFor="let change of changes" @items>
     {{change.changeTimestamp + " => " + change.changeDescription}}
   </li>
 

@@ -1,5 +1,6 @@
 $navigationBarColor: #2E314C;
 $navigationBarColorTransparent: #818393;
+$navigationBarColorLight:#42455d;
 $customCardBackgroundColor: #f7f7f7;
 $basicTextColor: #DCBA89;
 $secondaryTextColor: #333333;
@@ -73,7 +74,7 @@ $danger: #d9534f;
   box-shadow: 0 0 0 0.2rem $navigationBarColorTransparent;
 }
 
-.md-form input:focus:not([readonly]) {
+::ng-deep .md-form input:focus:not([readonly]) {
   border-bottom: 1px solid $navigationBarColor !important;
   box-shadow: 0 1px 0 0 $navigationBarColor;
 
@@ -195,4 +196,30 @@ $danger: #d9534f;
 ::ng-deep  .form-check .form-check-label::after{
   background-color: $navigationBarColor !important;
   border:  $navigationBarColor  !important;
+}
+
+::ng-deep mdb-select-dropdown .dropdown-content li > span, ::ng-deep mdb-select > label,::ng-deep .md-form label.active
+
+{
+  color: $navigationBarColor !important;
+}
+::ng-deep .picker__box .picker__table .picker__day--selected{
+  color: $basicTextColor !important;
+  background-color: $navigationBarColor !important;
+}
+::ng-deep .picker__box .picker__table .picker__weekday{
+  color: $navigationBarColor !important;
+  font-weight: bold !important;
+}
+::ng-deep .picker__box .picker__footer button{
+  opacity: 0.8 !important;
+  background-color:  $navigationBarColor !important;
+  color: $basicTextColor !important;
+}
+
+::ng-deep .picker__box .picker__footer button:hover{
+opacity: 1 !important;
+}
+::ng-deep .picker__box .picker__table td.picker__day div.picker__day.picker__day--today{
+  color: $basicTextColor !important;
 }

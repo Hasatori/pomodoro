@@ -1,0 +1,9 @@
+@import "../to-do-list.component";
+.modal-header{
+  background-color: $navigationBarColor;
+  color: $basicTextColor;
+}
+.modal-header .close{
+  color: $basicTextColor;
+
+}

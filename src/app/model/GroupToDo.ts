@@ -3,9 +3,12 @@ import {User} from './user';
 
 export class GroupToDo {
   id: number;
-  group: Group;
+  group:Group;
+  groupId:number;
   parent: GroupToDo;
+  parentId:number;
   author: User;
+  authorId:number;
   status: string;
   deadline: Date;
   description: string;
