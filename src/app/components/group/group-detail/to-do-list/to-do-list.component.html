@@ -130,7 +130,7 @@
     </button>
   </div>
   <div>
-    <button mdbBtn type="button" class="custom-button" size="sm" [disabled]="!anySelected" mdbWavesEffect>Delete task</button>
+    <button mdbBtn type="button" class="custom-button" size="sm" (click)="removeTodos()" [disabled]="!anySelected" mdbWavesEffect>Delete task</button>
   </div>
   <div>
     <button mdbBtn type="button" class="custom-button" size="sm" [disabled]="!anySelected"

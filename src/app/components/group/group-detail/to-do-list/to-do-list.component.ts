@@ -68,9 +68,6 @@ export class ToDoListComponent implements OnInit {
       this.todos = [];
       for (let toDo of this.allToDos) {
         toDo.children = [];
-        toDo.visible = false;
-        toDo.selected = false;
-        toDo.accordionDisabled = false;
         this.assignChildren(this.allToDos, toDo);
       }
     });
@@ -106,10 +103,12 @@ export class ToDoListComponent implements OnInit {
 
      }*/
     item.selected = !item.selected;
-    if (item.selected){
+    if (item.selected) {
       this.selectedTodos.push(item);
-    } else{
-      this.selectedTodos=this.selectedTodos.filter(todo=>{return todo.id!==item.id});
+    } else {
+      this.selectedTodos = this.selectedTodos.filter(todo => {
+        return todo.id !== item.id;
+      });
     }
     this.anySelected = this.isAnySelected(this.todos);
     /*  let status = !item.selected;
@@ -177,9 +176,35 @@ export class ToDoListComponent implements OnInit {
     this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/todos', JSON.stringify(groupToDo));
   }
 
-  todoOverdue(todo:GroupToDo):boolean{
-    let todoDeadlineMillis=new Date(todo.deadline).getTime();
-  return Date.now()>todoDeadlineMillis;
+  todoOverdue(todo: GroupToDo): boolean {
+    let todoDeadlineMillis = new Date(todo.deadline).getTime();
+    return Date.now() > todoDeadlineMillis;
   }
 
+  removeTodos() {
+    this.userServiceProvider.groupService.removeGroupTodos(this.group, this.selectedTodos).subscribe(
+      response => {
+        this.allToDos = this.removeTodosAndAllChildren(this.allToDos,this.selectedTodos);
+        this.todos = [];
+        for (let toDo of this.allToDos) {
+          toDo.children = [];
+          toDo.visible = false;
+          toDo.selected = false;
+          toDo.accordionDisabled = false;
+          this.assignChildren(this.allToDos, toDo);
+        }
+
+      }
+    );
+  }
+
+  removeTodosAndAllChildren(allTodos: Array<GroupToDo>, todosToRemove: Array<GroupToDo>): Array<GroupToDo> {
+    allTodos = allTodos.filter(candidate => !todosToRemove.some(todo => todo.id === candidate.id));
+    todosToRemove.forEach(todoToRemove=>{
+      if (todoToRemove.children!==null){
+        this.removeTodosAndAllChildren(allTodos,todoToRemove.children)
+      }
+    });
+    return allTodos;
+  }
 }

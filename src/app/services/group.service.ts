@@ -198,6 +198,7 @@ export class GroupService {
     }));
 
   }
+
   public getGroupToDos(groupName: string): Observable<Array<GroupToDo>> {
     return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-todos`, {
       groupName: groupName
@@ -207,6 +208,7 @@ export class GroupService {
     }));
 
   }
+
   public reactToGroupMessage(groupName: string, groupMessage: GroupMessage, reaction: string) {
     let groupMessageReaction = {
       groupMessageId: groupMessage.id,
@@ -233,12 +235,13 @@ export class GroupService {
 
 
   addUser(username: string, groupName: string) {
-/*    let groupRequest = {
-      username: username,
-      groupName: groupName
-    };
-    this.webSocketProxyService.publish('/app/group/' + groupName + '/group-members', JSON.stringify(groupRequest));
-  */  this.sendChange(groupName,`${this.user.username} has invited ${username}`)
+    /*    let groupRequest = {
+          username: username,
+          groupName: groupName
+        };
+        this.webSocketProxyService.publish('/app/group/' + groupName + '/group-members', JSON.stringify(groupRequest));
+      */
+    this.sendChange(groupName, `${this.user.username} has invited ${username}`);
   }
 
   private sendChange(groupName: string, changeDescription: string) {
@@ -249,7 +252,7 @@ export class GroupService {
     return this.http.post<any>(`${SERVER_URL}/group/removeUser`, {
       username: username, groupName: groupName
     }).pipe(map(response => {
-      this.sendChange(groupName,`${this.user.username} has removed ${username} from the group`)
+      this.sendChange(groupName, `${this.user.username} has removed ${username} from the group`);
       return response;
     }));
 
@@ -311,9 +314,9 @@ export class GroupService {
       return pomodoro;
     })).subscribe(result => {
       if (!isUndefined(result.success)) {
-        let index=this.invitations.indexOf(groupInvitation,0);
-        if (index>-1){
-          this.invitations.splice(index,1)
+        let index = this.invitations.indexOf(groupInvitation, 0);
+        if (index > -1) {
+          this.invitations.splice(index, 1);
         }
         sessionStorage.removeItem(this.GROUPS_KEY);
         groupInvitation.group.layoutImagePath = this.getLayoutImagePath(Math.floor(Math.random() * 5) + 1);
@@ -321,5 +324,17 @@ export class GroupService {
       }
     });
   }
-  
+
+  removeGroupTodos(group: Group, todos: Array<GroupToDo>): Observable<any> {
+    console.log(todos);
+    let ids = todos.map(todo => todo.id);
+
+    return this.http.post<any>(`${SERVER_URL}/group/remove-todo`, ids).pipe(map(response => {
+      todos.forEach(todo => {
+        this.sendChange(group.name, `${this.user.username} has removed todo ${todo.description} from the group`);
+      });
+      return response;
+    }));
+
+  }
 }

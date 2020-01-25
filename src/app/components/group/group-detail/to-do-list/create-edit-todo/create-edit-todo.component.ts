@@ -68,6 +68,7 @@ export class CreateEditTodoComponent implements OnInit, AfterViewInit {
     this.parents=isUndefined(parents)?[]:parents;
     this.assignedMembers = [];
     this.title = title;
+    console.log(parents);
 
     if (!isUndefined(groupToDo)) {
       this.groupToDo = groupToDo;
