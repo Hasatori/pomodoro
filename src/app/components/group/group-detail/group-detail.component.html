@@ -15,13 +15,13 @@
 <div class="container-fluid pt-5 pb-5 group-wrapper">
 
   <div class="row">
-    <div class="col-sm-6 col-md-5 col-lg-3 group-section">
+    <div class="col-md-5 col-lg-6 col-xl-3 group-section">
       <mdb-accordion [multiple]="true">
         <mdb-accordion-item customClass="z-depth-1 rounded" [collapsed]="!membersVisible">
           <mdb-accordion-item-head [indicator]="false"
                                    [ngClass]="membersVisible?'accordion-header border-bottom mb-2':'accordion-header'"
                                    (click)="membersVisible=!membersVisible">
-            <div class="accordion-header-text">
+            <div class="accordion-header-text ">
 
               <div class="d-flex">
                 <div class="flex-grow-1"><h5 class="h5-responsive">Members</h5></div>
@@ -31,7 +31,7 @@
 
             </div>
           </mdb-accordion-item-head>
-          <mdb-accordion-item-body class="accordion-body">
+          <mdb-accordion-item-body class="accordion-body mt-2">
             <div
               *ngIf="allUsers && group && user"
             >
@@ -46,7 +46,7 @@
 
     </div>
 
-    <div class="col-sm-6 col-md-7 col-lg-9 col-xl-6 group-section">
+    <div class="col-md-7 col-lg-6  group-section">
       <mdb-accordion [multiple]="true">
         <mdb-accordion-item customClass="z-depth-1 rounded " [collapsed]="!toDoVisible">
           <mdb-accordion-item-head
@@ -63,7 +63,7 @@
 
             </div>
           </mdb-accordion-item-head>
-          <mdb-accordion-item-body class="accordion-body">
+          <mdb-accordion-item-body class="accordion-body mt-2">
 
             <div *ngIf="group && allUsers">
               <app-to-do-list [group]="group" [users]="this.allUsers"></app-to-do-list>
@@ -75,7 +75,7 @@
       </mdb-accordion>
     </div>
 
-    <div class="col-sm-12 col-xl-3 group-section">
+    <div class="col-xl-3 group-section">
       <mdb-accordion [multiple]="true">
         <mdb-accordion-item customClass="z-depth-1 rounded" [collapsed]="!changeLogVisible">
           <mdb-accordion-item-head [indicator]="false"
@@ -93,7 +93,7 @@
 
             </div>
           </mdb-accordion-item-head>
-          <mdb-accordion-item-body class="accordion-body">
+          <mdb-accordion-item-body  class="accordion-body mt-2">
             <div *ngIf="group">
               <app-change-log [group]="group"></app-change-log>
             </div>

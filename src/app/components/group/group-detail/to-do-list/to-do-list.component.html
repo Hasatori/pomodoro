@@ -2,20 +2,20 @@
                       [group]="group"></app-create-edit-todo>
 
 <!-- Material inline 1 -->
-<div class="container pb-3 border-bottom">
+<div class="container-fluid pb-3 border-bottom">
 
   <mdb-checkbox [filledIn]="true" [inline]="true">Only my tasks</mdb-checkbox>
 
 </div>
 
-<div class="container mt-3 mb-3 border-bottom">
+<div class="container-fluid mt-3 mb-3 border-bottom  tasks">
   <h4 class="h5-responsive"><strong>Tasks </strong>
     <mdb-checkbox #checkbox [checked]="false"
                   (change)="selectAll(checkbox)" [filledIn]="true" [inline]="true">select all
     </mdb-checkbox>
   </h4>
 
-  <div class="row tasks">
+  <div class="row">
     <div class="col-12 tree-view">
 
       <ng-template #recursiveListTmpl let-list>
@@ -55,7 +55,7 @@
               </mdb-accordion-item-head>
               <mdb-accordion-item-body>
                 <div class="ml-5 mb-2 d-flex flex-row justify-content-start small text-muted edit-task-button"
-                     (click)="createOrUpdateToDo.show('Update todo',item);">
+                     (click)="createOrUpdateToDo.show('Update todo',null,item);">
                   <div class="mr-1">
                     <mdb-icon fas icon="pen"></mdb-icon>
                   </div>
@@ -122,7 +122,7 @@
 </div>
 
 
-<div class="d-flex flex-row">
+<div class="d-flex flex-row mb-3">
 
   <div>
     <button mdbBtn type="button" class="custom-button" size="sm" mdbWavesEffect
@@ -130,7 +130,13 @@
     </button>
   </div>
   <div>
-    <button mdbBtn type="button" class="custom-button" size="sm" (click)="removeTodos()" [disabled]="!anySelected" mdbWavesEffect>Delete task</button>
+    <app-are-you-sure
+      #areYouSureComponent
+      [heading]="'Are you sure you want to these to dos?'"
+      [important]="'This action will remove all its sub tasks'"
+      (onOk)="removeTodos()"
+    ></app-are-you-sure>
+    <button mdbBtn type="button" class="custom-button" size="sm" (click)="areYouSureComponent.show()" [disabled]="!anySelected" mdbWavesEffect>Delete task</button>
   </div>
   <div>
     <button mdbBtn type="button" class="custom-button" size="sm" [disabled]="!anySelected"

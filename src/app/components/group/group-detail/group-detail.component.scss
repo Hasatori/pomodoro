@@ -20,18 +20,25 @@
   opacity: 1;
 }
 
-.accordion-body, .accordion-header {
+.accordion-body  {
   background-color: white !important;
+  min-height: 0px !important;
 
 }
+.accordion-header{
+  background-color: $navigationBarColor !important;
 
+}
+.accordion-body{
+  max-height: 700px !important;
+  overflow-y: auto;
+
+}
 .accordion-header-text{
-  color: $navigationBarColor !important;
+  color: $basicTextColor !important;
 }
-@media (min-width: 576px) {
-  .group-section{
-    margin-bottom: 1rem;
-  }
+.group-section{
+  margin-bottom: 1rem;
 }
 @media (min-width: 1100px) {
   .group-wrapper{

@@ -7,8 +7,9 @@ import {GroupToDo} from '../../../../../model/GroupToDo';
 import {IMyDate, IMyOptions, SelectComponent} from 'ng-uikit-pro-standard';
 import {DatePipe} from '@angular/common';
 import {ModalDirective} from 'angular-bootstrap-md';
-import {isUndefined} from 'util';
+
 import {Group} from '../../../../../model/group';
+import {isUndefined} from 'util';
 
 @Component({
   selector: 'app-create-edit-todo',
@@ -65,11 +66,9 @@ export class CreateEditTodoComponent implements OnInit, AfterViewInit {
 
   show(title: string, parents?: Array<GroupToDo>, groupToDo?: GroupToDo) {
     this.groupToDo = new GroupToDo();
-    this.parents=isUndefined(parents)?[]:parents;
+    this.parents=parents===null|| isUndefined(parents)?[]:parents;
     this.assignedMembers = [];
     this.title = title;
-    console.log(parents);
-
     if (!isUndefined(groupToDo)) {
       this.groupToDo = groupToDo;
       this.elegantForm.controls.assignUsersSelect.setValue(this.groupToDo.assignedUsers.map(assignedUser => {
@@ -86,12 +85,12 @@ export class CreateEditTodoComponent implements OnInit, AfterViewInit {
           icon: iconPath
         }];
       });
-
     }
     this.input.show();
   }
 
   onSave(description: string, status: number, deadline: IMyDate, assignedMembers: Array<number>) {
+    let oldTodo=Object.assign({},this.groupToDo);
     this.groupToDo.groupId = this.group.id;
     this.groupToDo.authorId = this.user.id;
     this.groupToDo.description = description;
@@ -103,14 +102,20 @@ export class CreateEditTodoComponent implements OnInit, AfterViewInit {
     if (this.parents.length>0){
       this.parents.forEach(parent=>{
         this.groupToDo.parentId=parent.id;
-        this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/todos', JSON.stringify(this.groupToDo));
-        this.input.hide();
+        if (isUndefined(this.groupToDo.id)){
+          this.userServiceProvider.groupService.addToDo(this.group,this.groupToDo);
+        } else{
+          this.userServiceProvider.groupService.updateTodo(this.group,oldTodo,this.groupToDo)
+        }
       });
     }else{
-      this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/todos', JSON.stringify(this.groupToDo));
-      this.input.hide();
+      if (isUndefined(this.groupToDo.id)){
+        this.userServiceProvider.groupService.addToDo(this.group,this.groupToDo);
+      } else{
+        this.userServiceProvider.groupService.updateTodo(this.group,oldTodo,this.groupToDo)
+      }
     }
-
+    this.input.hide();
   }
 
   ngAfterViewInit(): void {

@@ -1,0 +1,33 @@
+<div mdbModal  (input)="frame" #frame class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-danger modal-dialog-centered" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead font-weight-bold">{{heading}}</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="text-center font-weight-bold">
+
+          <p class="h4-responsive">{{subheading}}</p>
+          <p class="text-danger"><mdb-icon fas icon="exclamation-circle"></mdb-icon> {{important}}</p>
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" mdbBtn class="custom-danger-button" mdbWavesEffect (click)="this.onOk.emit();this.input.hide()">Yes
+        </a>
+        <a type="button" mdbBtn  class="custom-button" mdbWavesEffect (click)="frame.hide()">No</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>

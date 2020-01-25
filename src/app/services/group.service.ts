@@ -11,8 +11,7 @@ import {WebSocketProxyService} from './web-socket-proxy.service';
 import {UserService} from './user.service';
 import {GroupInvatation} from '../model/group-invatation';
 import {isUndefined} from 'util';
-import {UserServiceProvider} from './user-service-provider';
-import {GroupChange} from '../model/group-change';
+import {ChangeType, GroupChange} from '../model/group-change';
 import {GroupToDo} from '../model/GroupToDo';
 
 @Injectable({
@@ -241,18 +240,21 @@ export class GroupService {
         };
         this.webSocketProxyService.publish('/app/group/' + groupName + '/group-members', JSON.stringify(groupRequest));
       */
-    this.sendChange(groupName, `${this.user.username} has invited ${username}`);
+    this.sendChange(groupName,ChangeType.CREATE, `${username} has been invited `);
   }
 
-  private sendChange(groupName: string, changeDescription: string) {
-    this.webSocketProxyService.publish('/app/group/' + groupName + '/change', changeDescription);
+  private sendChange(groupName: string,changeType:ChangeType, changeDescription: string) {
+    let change=new GroupChange();
+    change.changeDescription=changeDescription;
+    change.changeType=changeType;
+    this.webSocketProxyService.publish('/app/group/' + groupName + '/change', JSON.stringify(change));
   }
 
   removeUser(username: string, groupName: string): Observable<any> {
     return this.http.post<any>(`${SERVER_URL}/group/removeUser`, {
       username: username, groupName: groupName
     }).pipe(map(response => {
-      this.sendChange(groupName, `${this.user.username} has removed ${username} from the group`);
+      this.sendChange(groupName,ChangeType.DELETE, `${username} has been removed`);
       return response;
     }));
 
@@ -325,16 +327,43 @@ export class GroupService {
     });
   }
 
+  updateTodo(group: Group, oldToDo: GroupToDo, updatedTodo: GroupToDo) {
+    let changeMessage = `To do ${oldToDo.description}has been updated\nChanges:\n`;
+    if (oldToDo.description !== updatedTodo.description) {
+      changeMessage = changeMessage + `Name change to ${updatedTodo.description}\n`;
+    }
+    if (new Date(oldToDo.deadline).getTime() !== new Date(updatedTodo.deadline).getTime()) {
+      changeMessage = changeMessage + `Deadline change to ${updatedTodo.deadline}\n`;
+    }
+    let newMembers = updatedTodo.assignedUsers.filter(updatedTodoMember => !oldToDo.assignedUsers.some(oldTodoMember => oldTodoMember.id === updatedTodoMember.id)).map(member=>member.username);
+    let removedMembers = oldToDo.assignedUsers.filter(oldTodoMember => !updatedTodo.assignedUsers.some(updatedTodoMember => oldTodoMember.id === updatedTodoMember.id)).map(member=>member.username);
+
+    if (newMembers.length > 0) {
+      changeMessage=changeMessage+`These members were assigned: ${newMembers}\n`;
+    }
+    if (removedMembers.length > 0) {
+      changeMessage=changeMessage+`These members were unassigned: ${removedMembers}\n`;
+    }
+    this.sendChange(group.name,ChangeType.UPDATE, changeMessage);
+    this.webSocketProxyService.publish('/app/group/' + group.name + '/todos', JSON.stringify(updatedTodo));
+
+  }
+
+  addToDo(group: Group, newTodo: GroupToDo) {
+    this.sendChange(group.name,ChangeType.CREATE,  `To do ${newTodo.description} has been added`);
+    this.webSocketProxyService.publish('/app/group/' + group.name + '/todos', JSON.stringify(newTodo));
+
+  }
+
   removeGroupTodos(group: Group, todos: Array<GroupToDo>): Observable<any> {
     console.log(todos);
     let ids = todos.map(todo => todo.id);
 
     return this.http.post<any>(`${SERVER_URL}/group/remove-todo`, ids).pipe(map(response => {
       todos.forEach(todo => {
-        this.sendChange(group.name, `${this.user.username} has removed todo ${todo.description} from the group`);
+        this.sendChange(group.name,ChangeType.DELETE, `Todo ${todo.description} has been deleted`);
       });
       return response;
     }));
-
   }
 }

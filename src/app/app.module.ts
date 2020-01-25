@@ -74,6 +74,7 @@ import {ChangeLogComponent} from './components/group/group-detail/change-log/cha
 import {CreateEditTodoComponent} from './components/group/group-detail/to-do-list/create-edit-todo/create-edit-todo.component';
 import {DatePipe} from '@angular/common';
 import {EditGroupComponent} from './components/group/group-detail/edit-group/edit-group.component';
+import { AreYouSureComponent } from './components/modals/are-you-sure/are-you-sure.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -121,7 +122,8 @@ const routes: Routes = [
     MembersComponent,
     ToDoListComponent,
     ChangeLogComponent,
-    CreateEditTodoComponent
+    CreateEditTodoComponent,
+    AreYouSureComponent
   ],
   imports: [
     BrowserModule,

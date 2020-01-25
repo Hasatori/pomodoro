@@ -1,0 +1,12 @@
+@import "../group-detail.component";
+.table-header{
+  background-color: $backgroundColor;
+  color: $secondaryTextColor;
+}
+.table-header:hover{
+  cursor: pointer;
+}
+.table{
+  overflow-y: auto;
+  max-height: 650px;
+}

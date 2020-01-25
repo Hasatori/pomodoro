@@ -1,7 +1,36 @@
-
+<!--
 <ul class="list-unstyled" @list>
   <li *ngFor="let change of changes" @items>
     {{change.changeTimestamp + " => " + change.changeDescription}}
   </li>
 
-</ul>
+</ul>-->
+<table id="scrollable-table" (scroll)="scrolled()" mdbTable responsive="true" @list class="table w-100">
+  <thead>
+  <tr>
+    <th (click)="sort(header.id,!header.sortedAsc)" *ngFor="let header of headElements" [mdbTableSort]="changes"
+        sortBy="{{header.sortBy}}" scope="col" class="font-weight-bold text-center table-header">{{header.value}}
+      <mdb-icon *ngIf="header.sortedAsc" fas icon="angle-down"></mdb-icon>
+      <mdb-icon *ngIf="!header.sortedAsc" fas icon="angle-up"></mdb-icon>
+
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr mdbTableCol *ngFor="let change of changes" @items class="text-center" #changes>
+    <th scope="row">{{ this.datepipe.transform(change.changeTimestamp, 'dd-MM-yyyy HH:mm:ss')}}</th>
+    <td>{{change.changeAuthor.username}}</td>
+    <td>{{change.changeType}}</td>
+    <td>{{change.changeDescription}}</td>
+  </tr>
+
+  </tbody>
+
+
+</table>
+<div *ngIf="fetchingOlder"
+  class="d-flex justify-content-center"
+>
+  fetching older changes...
+  <mdb-spinner spinnerColor="blue" spinnerType="small"></mdb-spinner>
+</div>
