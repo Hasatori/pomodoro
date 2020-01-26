@@ -39,6 +39,7 @@ export class ToDoListComponent implements OnInit {
   private deadlineTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   private anySelected = false;
   private selectedTodos: Array<GroupToDo> = [];
+  loading: boolean=true;
 
   constructor(private userServiceProvider: UserServiceProvider) {
 
@@ -46,6 +47,7 @@ export class ToDoListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading=true;
     this.userServiceProvider.userService.getUser().subscribe(user => {
       this.user = user;
     });
@@ -58,6 +60,7 @@ export class ToDoListComponent implements OnInit {
         toDo.accordionDisabled = false;
         this.assignChildren(todos, toDo);
       }
+      this.loading=false;
     });
     this.userServiceProvider.webSocketProxyService.watch('/group/' + this.group.name + '/todos').pipe(map(groupToDo => {
       return JSON.parse(groupToDo.body);

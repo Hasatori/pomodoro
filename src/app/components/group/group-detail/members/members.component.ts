@@ -87,7 +87,7 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
     this.loading = true;
     this.allRows = new Map<User, Timer>();
     this.filteredRows = new Map<User, Timer>();
-    this.allUsers= this.allUsers.filter(user => user.username !== this.user.username);
+    this.allUsers = this.allUsers.filter(user => user.id !== this.user.id);
     for (let i = 0; i < this.allUsers.length; i++) {
       let user = this.allUsers[i];
       this.userServiceProvider.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(

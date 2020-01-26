@@ -34,7 +34,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private typing: boolean = false;
   private showReactions: boolean = false;
 
-  chatHidden: boolean = false;
+  chatHidden: boolean = true;
   reactionsNames: Array<string> =
     [
       'happy',

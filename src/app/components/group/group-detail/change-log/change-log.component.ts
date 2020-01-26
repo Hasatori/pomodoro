@@ -75,11 +75,13 @@ export class ChangeLogComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
   private scrollableWindow: HTMLElement;
   private realScrollHeight: number = 0;
+  private loading: boolean=true;
 
   constructor(private userServiceProvider: UserServiceProvider, public datepipe: DatePipe) {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.userServiceProvider.groupService.getLastNumberOfGroupChanges(this.group.name, this.threshold, this.end).subscribe((changes) => {
       this.changes = [];
       this.changes = changes.sort(function(a, b) {
@@ -89,6 +91,7 @@ export class ChangeLogComponent implements OnInit, OnDestroy, AfterViewInit {
       this.end += this.limit;
 
       this.init = true;
+      this.loading = false;
     });
     this.newGroupChangeSubscription = this.userServiceProvider.groupService.getNewGroupChange(this.group.name).subscribe(change => {
       this.changes.push(change);

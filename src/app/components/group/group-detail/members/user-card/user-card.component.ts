@@ -13,7 +13,6 @@ export class UserCardComponent implements OnInit {
 @Input()timer:Timer;
 @Input()isOwner:boolean;
 
-
   constructor() { }
 
   ngOnInit() {

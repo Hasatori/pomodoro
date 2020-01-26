@@ -16,6 +16,18 @@
   </h4>
 
   <div class="row">
+    <div  class="col-12 d-flex flex-column" *ngIf="loading" >
+      <div class="p-2 m-auto">
+        <div class="spinner-grow text-dark" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div class="p-2 m-auto">loading todos</div>
+
+    </div>
+    <div  class="col-12 d-flex justify-content-center mb-2" *ngIf="!loading && allToDos.length===0" >
+      no todos
+    </div>
     <div class="col-12 tree-view">
 
       <ng-template #recursiveListTmpl let-list>
