@@ -1,1 +1,94 @@
-<p>invite-user works!</p>
+<div mdbModal (input)="inviteUserFrame" #inviteUserFrame class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myBasicModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="inviteUserFrame.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100 font-weight-bold" id="myModalLabel">Invite user</h4>
+      </div>
+      <div class="modal-body ">
+        <div class="d-flex flex-column search-section ">
+          <div class=" md-form">
+            <input type="search" #search (keyup)="searchUsername(search.value)" placeholder="find user">
+
+          </div>
+          <div class="results-box position-absolute w-50">
+            <ul class="list-group  z-depth-1">
+              <li (click)="selectUser(data,search.value);search.value=data.username"
+                  *ngFor="let data of usersToDisplay | userFilter: search.value"
+                  class=" list-group-item d-flex flex-row">
+                <div class="mr-1"><img width="35px" src="../../../../../assets/images/user.svg"></div>
+                <div class="mr-1 ">   {{data.username}}</div>
+                <div class="flex-grow-1"></div>
+                <div *ngIf="!alreadyMember(data);else alreadyMemberTemplate">
+                  <div *ngIf="wasInvited(data)" class="text-success">
+                    <mdb-icon fas icon="check-circle"></mdb-icon>
+                    already invited
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div *ngIf="selectedUser!==null" class="p-3 w-50 search-result">
+
+          <div class="d-flex flex-column">
+            <div class="d-flex flex-row mb-3 p-3 searched-user rounded">
+              <div class="d-flex   flex-grow-0 flex-column mr-2  ">
+                <div class="flex-center"><img width="35px" src="../../../../../assets/images/user.svg"></div>
+                <div class="flex-center">{{selectedUser.username}}</div>
+              </div>
+              <div class="d-flex flex-grow-1 mr-2 flex-center"><a class="custom-link">view profile</a></div>
+              <div class="d-flex flex-grow-1 h-50 flex-center">
+                <div *ngIf="!alreadyMember(selectedUser);else alreadyMemberTemplate"
+                     ngSwitch="{{wasInvited(selectedUser).toString()}}">
+                  <button mdbBtn class="custom-button" size="sm" *ngSwitchCase="'false'"
+                          (click)="inviteUser(selectedUser)">invite
+                  </button>
+                  <div class="text-success" *ngSwitchCase="'true'">
+                    <mdb-icon fas icon="check-circle"></mdb-icon>
+                    already invited
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 font-weight-bold pb-1" *ngIf="searchedUsers.length >0">Other results</div>
+            <div *ngFor="let user of searchedUsers" class="d-flex flex-row border-bottom p-3 searched-user rounded">
+              <div class="d-flex   flex-grow-0 flex-column mr-2">
+                <div class="flex-center"><img width="35px" src="../../../../../assets/images/user.svg"></div>
+                <div class="flex-center">{{user.username}}</div>
+              </div>
+              <div class="d-flex flex-grow-1 mr-2 flex-center"><a class="custom-link">view profile</a></div>
+              <div class="d-flex flex-grow-1 h-50 flex-center">
+                <div *ngIf="!alreadyMember(user);else alreadyMemberTemplate"
+                     ngSwitch="{{wasInvited(user).toString()}}">
+                  <button mdbBtn class="custom-button" size="sm" *ngSwitchCase="'false'"
+                          (click)="inviteUser(user)">invite
+                  </button>
+                  <div class="text-success" *ngSwitchCase="'true'">
+                    <mdb-icon fas icon="check-circle"></mdb-icon>
+                    already invited
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" mdbBtn class="custom-primary-button" aria-label="Close"
+                (click)="inviteUserFrame.hide()" mdbWavesEffect>Close
+        </button>
+      </div>
+    </div>
+  </div>
+  <ng-template  #alreadyMemberTemplate>
+    <mdb-badge class="h-50 d-flex flex-center" info="true"> already member</mdb-badge>
+  </ng-template>
+</div>

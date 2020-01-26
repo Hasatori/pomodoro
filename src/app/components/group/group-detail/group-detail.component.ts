@@ -36,7 +36,6 @@ export class GroupDetailComponent {
           this.isOwner = this.group.owner.username === this.user.username;
           this.userServiceProvider.groupService.getUsersForGroup(this.groupName).pipe(first()).subscribe(users => {
             this.allUsers =users;
-
           });
 
         });

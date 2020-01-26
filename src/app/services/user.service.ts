@@ -5,7 +5,7 @@ import {User} from '../model/user';
 import {Observable, of} from 'rxjs';
 import {Pomodoro} from '../model/pomodoro';
 import {Settings} from '../model/settings';
-import {GroupInvatation} from '../model/group-invatation';
+import {GroupInvitation} from '../model/group-invitation';
 import {SERVER_URL} from '../ServerConfig';
 
 @Injectable({

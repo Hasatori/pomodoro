@@ -296,7 +296,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         let currentUserReaction = message.reactions.find(r => {
           return r.name === reaction && r.users.some(user => user.username == this.user.username);
         });
-        currentUserReaction.users = currentUserReaction.users.filter(user => {
+        currentUserReaction.users = currentUserReaction.users.UserFilter(user => {
           return user.username !== this.user.username;
         });
     */

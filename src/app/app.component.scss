@@ -225,3 +225,8 @@ opacity: 1 !important;
 ::ng-deep .picker__box .picker__table td.picker__day div.picker__day.picker__day--today{
   color: $basicTextColor !important;
 }
+.custom-primary-button{
+  background-color: $lightBorderColor;
+  color:$navigationBarColor;
+  font-weight: bold;
+}

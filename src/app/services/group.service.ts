@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Injectable, OnDestroy} from '@angular/core';
+import {Observable, of, Subscription} from 'rxjs';
 import {Group} from '../model/group';
 import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
@@ -9,7 +9,7 @@ import {SERVER_URL} from '../ServerConfig';
 import {GroupMessage} from '../model/group-message';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {UserService} from './user.service';
-import {GroupInvatation} from '../model/group-invatation';
+import {GroupInvitation} from '../model/group-invitation';
 import {isUndefined} from 'util';
 import {ChangeType, GroupChange} from '../model/group-change';
 import {GroupToDo} from '../model/GroupToDo';
@@ -17,7 +17,7 @@ import {GroupToDo} from '../model/GroupToDo';
 @Injectable({
   providedIn: 'root'
 })
-export class GroupService {
+export class GroupService implements OnDestroy{
 
   private GROUPS_KEY: string = 'userGroups';
   private GROUP_USERS_KEY: string = 'groupUsers';
@@ -32,11 +32,13 @@ export class GroupService {
   public ownedGroupsUnreadMessages: number = 0;
   public notOwnedGroupsUnreadMessages: number = 0;
   public numberOfNotAcceptedGroupInvitations: number = 0;
-  public invitations: Array<GroupInvatation> = [];
+  public invitations: Array<GroupInvitation> = [];
 
   public groups: Array<Group> = [];
   public ownedGroups: Array<Group> = [];
   public participatingGroups: Array<Group> = [];
+
+  private subscriptions:Array<Subscription>=[];
 
   constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
   }
@@ -240,13 +242,13 @@ export class GroupService {
         };
         this.webSocketProxyService.publish('/app/group/' + groupName + '/group-members', JSON.stringify(groupRequest));
       */
-    this.sendChange(groupName,ChangeType.CREATE, `${username} has been invited `);
+    this.sendChange(groupName, ChangeType.CREATE, `${username} has been invited `);
   }
 
-  private sendChange(groupName: string,changeType:ChangeType, changeDescription: string) {
-    let change=new GroupChange();
-    change.changeDescription=changeDescription;
-    change.changeType=changeType;
+  private sendChange(groupName: string, changeType: ChangeType, changeDescription: string) {
+    let change = new GroupChange();
+    change.changeDescription = changeDescription;
+    change.changeType = changeType;
     this.webSocketProxyService.publish('/app/group/' + groupName + '/change', JSON.stringify(change));
   }
 
@@ -254,7 +256,7 @@ export class GroupService {
     return this.http.post<any>(`${SERVER_URL}/group/removeUser`, {
       username: username, groupName: groupName
     }).pipe(map(response => {
-      this.sendChange(groupName,ChangeType.DELETE, `${username} has been removed`);
+      this.sendChange(groupName, ChangeType.DELETE, `${username} has been removed`);
       return response;
     }));
 
@@ -304,14 +306,14 @@ export class GroupService {
   }
 
 
-  private getNotAcceptedGroupInvitations(): Observable<Array<GroupInvatation>> {
+  private getNotAcceptedGroupInvitations(): Observable<Array<GroupInvitation>> {
     return this.http.post<any>(`${SERVER_URL}/not-accepted-group-invitations`, {}).pipe(map(response => {
       return response;
     }));
 
   }
 
-  public acceptGroupInvitation(groupInvitation: GroupInvatation) {
+  public acceptGroupInvitation(groupInvitation: GroupInvitation) {
     this.http.post<any>(`${SERVER_URL}/accept-invitation`, groupInvitation).pipe(map(pomodoro => {
       return pomodoro;
     })).subscribe(result => {
@@ -335,22 +337,22 @@ export class GroupService {
     if (new Date(oldToDo.deadline).getTime() !== new Date(updatedTodo.deadline).getTime()) {
       changeMessage = changeMessage + `Deadline change to ${updatedTodo.deadline}\n`;
     }
-    let newMembers = updatedTodo.assignedUsers.filter(updatedTodoMember => !oldToDo.assignedUsers.some(oldTodoMember => oldTodoMember.id === updatedTodoMember.id)).map(member=>member.username);
-    let removedMembers = oldToDo.assignedUsers.filter(oldTodoMember => !updatedTodo.assignedUsers.some(updatedTodoMember => oldTodoMember.id === updatedTodoMember.id)).map(member=>member.username);
+    let newMembers = updatedTodo.assignedUsers.filter(updatedTodoMember => !oldToDo.assignedUsers.some(oldTodoMember => oldTodoMember.id === updatedTodoMember.id)).map(member => member.username);
+    let removedMembers = oldToDo.assignedUsers.filter(oldTodoMember => !updatedTodo.assignedUsers.some(updatedTodoMember => oldTodoMember.id === updatedTodoMember.id)).map(member => member.username);
 
     if (newMembers.length > 0) {
-      changeMessage=changeMessage+`These members were assigned: ${newMembers}\n`;
+      changeMessage = changeMessage + `These members were assigned: ${newMembers}\n`;
     }
     if (removedMembers.length > 0) {
-      changeMessage=changeMessage+`These members were unassigned: ${removedMembers}\n`;
+      changeMessage = changeMessage + `These members were unassigned: ${removedMembers}\n`;
     }
-    this.sendChange(group.name,ChangeType.UPDATE, changeMessage);
+    this.sendChange(group.name, ChangeType.UPDATE, changeMessage);
     this.webSocketProxyService.publish('/app/group/' + group.name + '/todos', JSON.stringify(updatedTodo));
 
   }
 
   addToDo(group: Group, newTodo: GroupToDo) {
-    this.sendChange(group.name,ChangeType.CREATE,  `To do ${newTodo.description} has been added`);
+    this.sendChange(group.name, ChangeType.CREATE, `To do ${newTodo.description} has been added`);
     this.webSocketProxyService.publish('/app/group/' + group.name + '/todos', JSON.stringify(newTodo));
 
   }
@@ -361,9 +363,31 @@ export class GroupService {
 
     return this.http.post<any>(`${SERVER_URL}/group/remove-todo`, ids).pipe(map(response => {
       todos.forEach(todo => {
-        this.sendChange(group.name,ChangeType.DELETE, `Todo ${todo.description} has been deleted`);
+        this.sendChange(group.name, ChangeType.DELETE, `Todo ${todo.description} has been deleted`);
       });
       return response;
     }));
+  }
+
+  getInvitationsForGroup(group:Group):Observable<Array<GroupInvitation>>{
+    return this.http.post<any>(`${SERVER_URL}/group/${group.name}/invitations`, group
+    ).pipe(map(response => {
+      return response;
+    }));
+
+  }
+
+  invitedUserToGroup(user: User, group: Group): Observable<any> {
+    return this.http.post<any>(`${SERVER_URL}/group/${group.name}/invite-user`, {
+      invitedUser: user,
+      group: group
+    }).pipe(map(response => {
+      this.sendChange(group.name, ChangeType.UPDATE, `User ${user.username} was invited to the group`);
+      return response;
+    }));
+
+  }
+
+  ngOnDestroy(): void {
   }
 }

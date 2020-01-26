@@ -1,0 +1,30 @@
+@import "../group-detail.component";
+
+.results-box {
+z-index: 100;
+  margin-top: 3.5rem;
+}
+
+.list-group-item {
+  background-color: white;
+}
+
+.list-group-item:hover {
+  cursor: pointer;
+  opacity: 1;
+  background-color: $backgroundColor;
+}
+.modal-header{
+  background-color: $navigationBarColor;
+  color:$basicTextColor;
+
+}
+.modal-header .close{
+color:$basicTextColor;}
+.searched-user{
+  background-color: $backgroundColor;
+}
+.search-result{
+  max-height: 50vh;
+  overflow-y: auto;
+}

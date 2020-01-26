@@ -75,6 +75,10 @@ import {CreateEditTodoComponent} from './components/group/group-detail/to-do-lis
 import {DatePipe} from '@angular/common';
 import {EditGroupComponent} from './components/group/group-detail/edit-group/edit-group.component';
 import { AreYouSureComponent } from './components/modals/are-you-sure/are-you-sure.component';
+import {InviteUserComponent} from './components/group/group-detail/invite-user/invite-user.component';
+import { UserFilterPipe } from './pipes/UserFilter.pipe';
+
+
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -123,7 +127,11 @@ const routes: Routes = [
     ToDoListComponent,
     ChangeLogComponent,
     CreateEditTodoComponent,
-    AreYouSureComponent
+    AreYouSureComponent,
+    InviteUserComponent,
+    UserFilterPipe,
+
+
   ],
   imports: [
     BrowserModule,
@@ -179,7 +187,8 @@ const routes: Routes = [
       useFactory: provideConfig
     },
     MDBSpinningPreloader,
-    DatePipe
+    DatePipe,
+    UserFilterPipe
   ]
   ,
   bootstrap: [AppComponent]
