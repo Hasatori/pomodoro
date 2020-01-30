@@ -1,18 +1,18 @@
 <h1 class="h1-responsive text-center py-3 border-bottom m-0"><strong>{{this.groupName}}</strong>
 </h1>
 
-<div *ngIf="isOwner" class="d-flex flex-row justify-content-center">
+<div *ngIf="isOwner && group && allUsers" class="d-flex flex-row justify-content-center">
 
-  <div class="mt-2 px-3 pb-1 group-menu-item ">
+  <div class="mt-2 px-3 pb-1 group-menu-item " (click)="editGroup.show()">
     <i class="fas fa-pen"></i>
     edit group
   </div>
-  <div *ngIf="group && allUsers">
+  <app-edit-group #editGroup [group]="this.group"></app-edit-group>
+
   <div class="mt-2 px-3 pb-1 group-menu-item " (click)="inviteUsers.show()" >
       <i class="fas fa-plus" ></i> invite user
   </div>
     <app-invite-user #inviteUsers [users]="allUsers" [group]="group"></app-invite-user>
-  </div>
 </div>
 <div class="container-fluid pt-5 pb-5 group-wrapper">
 
@@ -112,4 +112,5 @@
   </div>
 
 </div>
+
 

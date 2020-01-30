@@ -1,0 +1,22 @@
+@import "../group-detail/group-detail.component";
+
+.modal-header{
+  background-color: $navigationBarColor;
+  color: $basicTextColor;
+}
+.modal-header .close{
+  color: $basicTextColor;
+}
+.is-public-icon{
+  color: $navigationBarColor;
+}
+.carousel-indicators {
+  display: none;
+}
+.default-layout-image{
+  opacity: 0.9;
+}
+.mask{
+  background-color: $navigationBarColor;
+  opacity: 0.4;
+}

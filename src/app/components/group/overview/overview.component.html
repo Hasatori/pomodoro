@@ -51,9 +51,10 @@
         <h2 class="h2-responsive text-left font-weight-bold col-sm-9 col-md-10">Your groups</h2>
         <div class="col-sm-2 col-md-1">
           <button mdbBtn type="button" class="custom-button" color="success" rounded="true"
-                  [routerLink]="['/group/create']" mdbWavesEffect>
+                 (click)="editGroup.show()" mdbWavesEffect>
             <mdb-icon fas icon="plus"></mdb-icon>
           </button>
+          <app-edit-group #editGroup ></app-edit-group>
         </div>
 
       </div>

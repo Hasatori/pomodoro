@@ -40,7 +40,7 @@ import {provideConfig} from './ServerConfig';
 import {WantMoreFunctionalityComponent} from './components/modals/want-more-functionality/want-more-functionality.component';
 import {SuccessComponent} from './components/modals/success/success.component';
 import {ChatComponent} from './components/group/group-detail/chat/chat.component';
-
+import { LightBoxModule, CarouselModule, ModalModule, WavesModule } from 'ng-uikit-pro-standard'
 import {
   AccordionModule,
   AnimatedCardsModule,
@@ -73,7 +73,7 @@ import {ToDoListComponent} from './components/group/group-detail/to-do-list/to-d
 import {ChangeLogComponent} from './components/group/group-detail/change-log/change-log.component';
 import {CreateEditTodoComponent} from './components/group/group-detail/to-do-list/create-edit-todo/create-edit-todo.component';
 import {DatePipe} from '@angular/common';
-import {EditGroupComponent} from './components/group/group-detail/edit-group/edit-group.component';
+import {EditGroupComponent} from './components/group/edit-group/edit-group.component';
 import { AreYouSureComponent } from './components/modals/are-you-sure/are-you-sure.component';
 import {InviteUserComponent} from './components/group/group-detail/invite-user/invite-user.component';
 import { UserFilterPipe } from './pipes/UserFilter.pipe';
@@ -130,6 +130,7 @@ const routes: Routes = [
     AreYouSureComponent,
     InviteUserComponent,
     UserFilterPipe,
+    EditGroupComponent
 
 
   ],
@@ -168,7 +169,9 @@ const routes: Routes = [
     TabsModule.forRoot(),
     ChipsModule,
     TimePickerModule,
-    TableModule
+    TableModule,
+    CardsModule,
+    ModalModule
 
 
   ],

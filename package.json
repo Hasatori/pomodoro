@@ -44,7 +44,7 @@
     "pretty-checkbox": "^3.0.3",
     "rxjs": "~6.4.0",
     "rxjs-observe": "^2.1.4",
-    "screenfull": "^3.3.0",
+    "screenfull": "^3.3.3",
     "serialize-javascript": "^2.1.2",
     "sockjs-client": "^1.4.0",
     "stompjs": "^2.3.3",

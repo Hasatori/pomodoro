@@ -1,0 +1,82 @@
+
+<div style="overflow-y: auto" mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myBasicModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Group editing</h4>
+      </div>
+      <div class="modal-body">
+        <form class="m-auto">
+          <div class="md-form ">
+            <input mdbInput type="text" id="form1" class="form-control" value="{{groupName}}">
+            <label for="form1" class="">Name</label>
+          </div>
+          <div class="border-bottom pb-2">
+            <mdb-checkbox [checked]="isPublic">is group public
+              <mdb-icon class="is-public-icon"
+                        mdbTooltip="Group will be visible to all users and the may ask owner to become member"
+                        placement="top" fas icon="question-circle"></mdb-icon>
+            </mdb-checkbox>
+          </div>
+          <div class="md-form">
+            <textarea class="md-textarea form-control " rows="3" id="input_text" type="text" length="120" mdbCharCounter
+                      mdbInput [value]="description"></textarea>
+            <label for="input_text">group description</label>
+          </div>
+          <div class="mb-2 font-weight-bold">Card layout image</div>
+          <img width="100%" src="{{selectedImage}}" >
+
+
+          <div class="file-field md-form flex-center">
+            <div class="d-flex flex-column">
+              <div class="small text-muted text-center">drag and drop image</div>
+              <div class="d-flex flex-row">
+                <mdb-icon class="align-self-center" fas icon="file-upload"></mdb-icon>
+                <div mdbBtn color="primary" size="sm" class="waves-light" mdbWavesEffect>
+                  <span>upload layout image</span>
+                  <input type="file" #fileSelect mdbFileSelect accept='image/*'  (change)="readURL($event);">
+                </div></div>
+              <div class="text-center">or</div>
+            </div>
+
+            <!--    <div class="file-path-wrapper">
+                  <input class="file-path" type="text" placeholder="Upload your file" [value]="showFiles()">
+                </div>-->
+
+          </div>
+
+          <div>Select one of default layouts</div>
+          <div class="row">
+
+            <div class="col-md-4 my-1" *ngFor="let image of images">
+              <div class="view" *ngIf="image===selectedImage">
+                <img class="img-fluid"
+                                                       src="{{image}}">
+                  <div class="mask flex-center waves-effect waves-light rgba-teal-strong">
+                    <p class="white-text"></p>
+                  </div>
+
+              </div>
+             <a *ngIf="image!==selectedImage"> <img class="hoverable img-fluid" (click)="selectImage(image)"
+                   src="{{image}}"></a>
+            </div>
+
+
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+                (click)="basicModal.hide()" mdbWavesEffect>Close
+        </button>
+        <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
