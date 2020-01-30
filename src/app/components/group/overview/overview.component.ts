@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../../../model/user';
 import {UserServiceProvider} from '../../../services/user-service-provider';
 import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
+import {DatePipe} from '@angular/common';
 @Component({
   selector: 'overview',
   templateUrl: './overview.component.html',
@@ -26,7 +27,7 @@ export class OverviewComponent implements OnInit {
 
   private user: User;
 
-  constructor(private userServiceProvider: UserServiceProvider) {
+  constructor(private userServiceProvider: UserServiceProvider,private datePipe:DatePipe) {
 
 
   }

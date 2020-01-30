@@ -51,10 +51,10 @@
         <h2 class="h2-responsive text-left font-weight-bold col-sm-9 col-md-10">Your groups</h2>
         <div class="col-sm-2 col-md-1">
           <button mdbBtn type="button" class="custom-button" color="success" rounded="true"
-                 (click)="editGroup.show()" mdbWavesEffect>
+                  (click)="editGroup.show()" mdbWavesEffect>
             <mdb-icon fas icon="plus"></mdb-icon>
           </button>
-          <app-edit-group #editGroup ></app-edit-group>
+          <app-edit-group #editGroup></app-edit-group>
         </div>
 
       </div>
@@ -115,7 +115,7 @@
               <ul class="list-group list-group-horizontal">
                 <li class="list-inline-item">
                   <mdb-icon far icon="clock" class="pr-1"></mdb-icon>
-                  05/10/2015
+                  {{datePipe.transform(this.group.created, 'dd-MM-yyyy')}}
                 </li>
               </ul>
             </mdb-card-footer>
@@ -212,7 +212,7 @@
               <ul class="list-group list-group-horizontal">
                 <li class="list-inline-item">
                   <mdb-icon far icon="clock" class="pr-1"></mdb-icon>
-                  05/10/2015
+                  {{datePipe.transform(this.group.created,'dd-MM-yyyy')}}
                 </li>
               </ul>
             </mdb-card-footer>
@@ -253,7 +253,7 @@
         -->
         <div class="row">
           <div class="col-sm-6 col-lg-4 col-xl-3 mt-5" @items
-               *ngFor="let invitation of userServiceProvider.groupService.invitations" >
+               *ngFor="let invitation of userServiceProvider.groupService.invitations">
 
             <mdb-flipping-card #cards class="my-card">
               <!--Front Side-->

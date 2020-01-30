@@ -6,4 +6,5 @@ export class Group {
   name: string;
   owner: User;
   layoutImagePath?:string;
+  created:Date;
 }
