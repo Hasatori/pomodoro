@@ -1,24 +1,10 @@
-@import "../../../app.component";
+@import "../group.component";
 @import '~pretty-checkbox/src/pretty-checkbox.scss';
 
 .container {
   padding: 20px;
 }
 
-.group-menu-item {
-
-  border-bottom: 1px solid transparent;
-  color: $secondaryTextColor;
-  opacity: 0.8;
-
-}
-
-.group-menu-item:hover {
-  border-color: $lightBorderColor;
-
-  cursor: pointer;
-  opacity: 1;
-}
 
 
 .group-section{

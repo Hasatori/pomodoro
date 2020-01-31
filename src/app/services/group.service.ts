@@ -85,9 +85,9 @@ export class GroupService implements OnDestroy{
       });
       this.getNewGroup().subscribe(newGroup => {
         if (newGroup.owner.username === this.user.username) {
-          this.ownedGroups.push(newGroup);
+          this.ownedGroups.unshift(newGroup);
         } else {
-          this.participatingGroups.push(newGroup);
+          this.participatingGroups.unshift(newGroup);
         }
       });
       for (let group of groups) {

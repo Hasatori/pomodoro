@@ -251,3 +251,11 @@ opacity: 1 !important;
 .customBlockquote .h2{
   color: $navigationBarColor !important;
 }
+::ng-deep .ngx-pagination .current {
+  background-color: $navigationBarColor !important;
+  color:$basicTextColor !important;
+}
+::ng-deep .ngx-pagination .disabled {
+
+  color:$lightBorderColor !important;
+}

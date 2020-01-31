@@ -15,7 +15,7 @@ export class UserFilterPipe implements PipeTransform {
       return items;
     }
 
-    searchText = searchText.toLocaleLowerCase();
+    searchText = searchText.toLocaleLowerCase().trim();
     if (searchText !== '') {
       return items.filter(it => {
         return it.username.toLowerCase().includes(searchText);

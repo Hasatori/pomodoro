@@ -41,6 +41,7 @@
     "ng-uikit-pro-standard": "git+https://oauth2:mnzs4Vd13Vx5Xrm9DPtY@git.mdbootstrap.com/mdb/angular/ng-uikit-pro-standard.git",
     "ngx-countdown": "^8.0.1",
     "ngx-logger": "^4.0.7",
+    "ngx-pagination": "^5.0.0",
     "pretty-checkbox": "^3.0.3",
     "rxjs": "~6.4.0",
     "rxjs-observe": "^2.1.4",
@@ -52,7 +53,7 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.21",
+    "@angular-devkit/build-angular": "^0.803.24",
     "@angular/cli": "~8.2.2",
     "@angular/compiler-cli": "~8.2.0",
     "@angular/language-service": "~8.2.0",

@@ -78,6 +78,9 @@ import { AreYouSureComponent } from './components/modals/are-you-sure/are-you-su
 import {InviteUserComponent} from './components/group/group-detail/invite-user/invite-user.component';
 import { UserFilterPipe } from './pipes/UserFilter.pipe';
 import { UserTodoComponent } from './components/pomodoro/user-todo/user-todo.component';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { GroupFilterPipe } from './pipes/group-filter.pipe';
+import { InvitationFilterPipe } from './pipes/invitation-filter.pipe';
 
 
 
@@ -132,7 +135,9 @@ const routes: Routes = [
     InviteUserComponent,
     UserFilterPipe,
     EditGroupComponent,
-    UserTodoComponent
+    UserTodoComponent,
+    GroupFilterPipe,
+    InvitationFilterPipe
 
 
   ],
@@ -173,7 +178,8 @@ const routes: Routes = [
     TimePickerModule,
     TableModule,
     CardsModule,
-    ModalModule
+    ModalModule,
+    NgxPaginationModule
 
 
   ],
