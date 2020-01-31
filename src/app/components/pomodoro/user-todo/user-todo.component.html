@@ -1,0 +1,109 @@
+<div class="container-fluid mt-3 mb-3 border-bottom overflow-auto">
+  <h4 class="h5-responsive"><strong>Tasks </strong>
+    <mdb-checkbox #checkbox [checked]="false"
+                [filledIn]="true" [inline]="true">select all
+    </mdb-checkbox>
+  </h4>
+
+  <div class="row">
+    <div  class="col-12 d-flex justify-content-center mb-2" *ngIf="userTodos.length===0" >
+      no userTodos
+    </div>
+    <div class="col-12">
+
+      <ng-template #recursiveListTmpl let-list>
+        <li *ngFor="let item of list" class="d-flex" @items>
+          <mdb-accordion [multiple]="false">
+            <mdb-accordion-item [collapsed]="!item.visible"
+                                class="accordion-item border-bottom"
+            >
+
+              <mdb-accordion-item-head [indicator]="false"
+
+              >
+
+                <div class="d-flex flex-row"
+
+                >
+
+                  <div class="pr-3 text-center">
+                    <mdb-icon
+                      *ngIf="!item.visible" fas icon="angle-right" class="indicator"></mdb-icon>
+                    <mdb-icon
+                      *ngIf="item.visible" fas icon="angle-down" class="indicator"></mdb-icon>
+                  </div>
+                  <div class="pl-1 pr-1 text-center">
+                    <mdb-checkbox class="custom-checkbox" #checkbox [checked]="item.selected"
+                                 [filledIn]="true" [inline]="true"></mdb-checkbox>
+                  </div>
+                  <div class="pr-3 text-center task-text flex-nowrap"> {{ item.description }}
+
+                  </div>
+
+                </div>
+
+
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body>
+
+                <div class="d-flex flex-column">
+                  <div class="d-flex flex-row ml-5 mb-2">
+                    <div class="mr-1">
+                      <mdb-icon fas icon="spinner"></mdb-icon>
+                    </div>
+
+                    <div class="text-muted mr-2">Status:</div>
+                    <div class="mr-2" ngSwitch="{{item.status.toUpperCase()}}">
+                      <mdb-badge info="true" *ngSwitchCase="'IN PROGRESS'">{{item.status}}</mdb-badge>
+                      <mdb-badge warning="true" *ngSwitchCase="'NOT STARTED'">{{item.status}}</mdb-badge>
+                      <mdb-badge success="true" *ngSwitchCase="'DONE'">{{item.status}}</mdb-badge>
+                    </div>
+
+
+                  </div>
+                  <div class="d-flex flex-row ml-5 mb-2">
+                    <div class="mr-1">
+                      <mdb-icon far icon="clock"></mdb-icon>
+                    </div>
+                    <div class="text-muted mr-2">Deadline:</div>
+                    <div clas>{{item.deadline}}</div>
+
+                  </div>
+                </div>
+                <ul class="list-unstyled" *ngIf="item.children.length > 0">
+                  <ng-container
+                    *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: item.children }"></ng-container>
+                </ul>
+              </mdb-accordion-item-body>
+            </mdb-accordion-item>
+          </mdb-accordion>
+        </li>
+      </ng-template>
+
+      <ul class="list-unstyled">
+        <ng-container *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit:userTodos }"></ng-container>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="d-flex flex-row mb-3">
+
+  <div>
+
+  </div>
+  <div>
+    <app-are-you-sure
+      #areYouSureComponent
+      [heading]="'Are you sure you want to these to dos?'"
+      [important]="'This action will remove all its sub tasks'"
+    ></app-are-you-sure>
+    <button mdbBtn type="button" class="custom-button" size="sm" (click)="areYouSureComponent.show()"mdbWavesEffect>Delete task</button>
+  </div>
+  <div>
+  </div>
+
+
+</div>

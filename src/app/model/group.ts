@@ -1,5 +1,6 @@
 import {User} from './user';
 import {Pomodoro} from './pomodoro';
+import {GroupToDo} from './GroupToDo';
 
 export class Group {
   id: number;
@@ -7,4 +8,5 @@ export class Group {
   owner: User;
   layoutImagePath?:string;
   created:Date;
+  groupTodos?:Array<GroupToDo>;
 }

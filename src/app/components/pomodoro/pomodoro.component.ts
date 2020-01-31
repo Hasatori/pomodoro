@@ -7,9 +7,9 @@ import {UserServiceProvider} from '../../services/user-service-provider';
   styleUrls: ['./pomodoro.component.scss']
 })
 export class PomodoroComponent {
+  todosVisible: boolean = false;
 
-
-  constructor(private userServiceProvider:UserServiceProvider) {
+  constructor(private userServiceProvider: UserServiceProvider) {
   }
 
 

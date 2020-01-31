@@ -50,7 +50,7 @@ import {
   ChartSimpleModule, ChipsModule,
   DatepickerModule,
   FileInputModule,
-  LightBoxModule, MDBBootstrapModulePro,
+ MDBBootstrapModulePro,
   MDBBootstrapModulesPro,
   MDBSpinningPreloader,
   PreloadersModule,
@@ -63,7 +63,7 @@ import {
 } from 'ng-uikit-pro-standard';
 import {OverviewComponent} from './components/group/overview/overview.component';
 // MDB Angular Pro
-import {ScrollSpyModule, ButtonsModule, WavesModule, CardsModule} from 'ng-uikit-pro-standard';
+import {ScrollSpyModule, ButtonsModule, CardsModule} from 'ng-uikit-pro-standard';
 import {BackToTopComponent} from './components/back-to-top/back-to-top.component';
 import {SortPipe} from './pipes/sort.pipe';
 import {AcceptCookiesComponent} from './components/modals/accept-cookies/accept-cookies.component';
@@ -77,6 +77,7 @@ import {EditGroupComponent} from './components/group/edit-group/edit-group.compo
 import { AreYouSureComponent } from './components/modals/are-you-sure/are-you-sure.component';
 import {InviteUserComponent} from './components/group/group-detail/invite-user/invite-user.component';
 import { UserFilterPipe } from './pipes/UserFilter.pipe';
+import { UserTodoComponent } from './components/pomodoro/user-todo/user-todo.component';
 
 
 
@@ -130,7 +131,8 @@ const routes: Routes = [
     AreYouSureComponent,
     InviteUserComponent,
     UserFilterPipe,
-    EditGroupComponent
+    EditGroupComponent,
+    UserTodoComponent
 
 
   ],

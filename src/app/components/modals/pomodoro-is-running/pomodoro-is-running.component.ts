@@ -10,7 +10,7 @@ import {Modal} from '../modal';
 })
 export class PomodoroIsRunningComponent extends Modal implements AfterViewInit {
   // @ts-ignore
-  @ViewChild('frame') input: ModalDirective;
+  @ViewChild('pomodoroIsRunning') input: ModalDirective;
   private WAIT: number = 600000;// 10 Minutes
   constructor() {
     super();

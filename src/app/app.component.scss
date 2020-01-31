@@ -192,9 +192,7 @@ opacity: 0.5 !important;
 
 }
 
-.pomodoro-container {
-  max-width: 500px;
-}
+
 ::ng-deep  .form-check .form-check-label::after{
   background-color: $navigationBarColor !important;
   border:  $navigationBarColor  !important;
@@ -229,4 +227,21 @@ opacity: 1 !important;
   background-color: $lightBorderColor;
   color:$navigationBarColor;
   font-weight: bold;
+}
+.accordion-body  {
+  background-color: white !important;
+  min-height: 0px !important;
+
+}
+.accordion-header{
+  background-color: $navigationBarColor !important;
+
+}
+.accordion-body{
+  max-height: 700px !important;
+  overflow-y: auto;
+
+}
+.accordion-header-text{
+  color: $basicTextColor !important;
 }

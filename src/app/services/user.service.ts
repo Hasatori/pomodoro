@@ -7,6 +7,8 @@ import {Pomodoro} from '../model/pomodoro';
 import {Settings} from '../model/settings';
 import {GroupInvitation} from '../model/group-invitation';
 import {SERVER_URL} from '../ServerConfig';
+import {UserTodo} from '../model/user-todo';
+import {GroupToDo} from '../model/GroupToDo';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +17,8 @@ export class UserService {
 
   private USER_KEY: string = 'currentUser';
   private POMODOROS_KEY: string = 'pomodoros';
-
-
+  private USER_TODOS_KEY: string = 'userTodos';
+  private USER_GROUP_TODOS_KEY: string = 'userGroupTodos';
   constructor(private http: HttpClient) {
   }
 
@@ -67,6 +69,29 @@ export class UserService {
       return this.http.post<any>(`http://localhost:8080/userPomodoros`, '').pipe(map(pomodoros => {
         window.sessionStorage.setItem(this.POMODOROS_KEY, JSON.stringify(pomodoros));
         return pomodoros;
+      }));
+    }
+  }
+
+  userTodos(): Observable<Array<UserTodo>> {
+    let todos: Array<UserTodo> = JSON.parse(window.sessionStorage.getItem(this.USER_TODOS_KEY));
+    if (todos != null) {
+      return of(todos);
+    } else {
+      return this.http.post<any>(`http://localhost:8080/userTodos`, '').pipe(map(todos => {
+        window.sessionStorage.setItem(this.USER_TODOS_KEY, JSON.stringify(todos));
+        return todos;
+      }));
+    }
+  }
+  groupTodos(): Observable<Array<GroupToDo>> {
+    let todos: Array<GroupToDo> = JSON.parse(window.sessionStorage.getItem(this.USER_GROUP_TODOS_KEY));
+    if (todos != null) {
+      return of(todos);
+    } else {
+      return this.http.post<any>(`http://localhost:8080/groupTodos`, '').pipe(map(todos => {
+        window.sessionStorage.setItem(this.USER_GROUP_TODOS_KEY, JSON.stringify(todos));
+        return todos;
       }));
     }
   }
