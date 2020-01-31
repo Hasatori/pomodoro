@@ -1,5 +1,16 @@
-<!-- Default form register -->
-<div class="custom-card py-5">
+<div class="row custom-container">
+  <div class="col-md-12 col-lg-5 align-self-center mx-auto logo">
+    <img src="../../../assets/icons/Logo-transparent-background.png" class="text-center w-100" >
+    <blockquote class="blockquote bq-primary customBlockquote flex-center ">
+      <p class="lead ">
+        Pomapp is web application based on time management method developed by Francesco Cirillo in the late 1980s. The technique uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks. Each interval is known as a pomodoro, from the Italian word for 'tomato', after the tomato-shaped kitchen timer that Cirillo used as a university student.
+      </p>
+    </blockquote> <a type="button" mdbBtn [routerLink]="['/free-trial']" type="button" class="btn btn-success btn-rounded">Free trial
+  </a>
+
+  </div>
+  <div class="col-md-12 col-lg-7 mx-auto my-5">
+<div class="custom-card ">
   <form class="text-center border border-light p-5 z-depth-1"
         [formGroup]="elegantForm"
         (ngSubmit)="signUp(firstName.value,secondName.value,elegantFormUsername.value,elegantFormPassword.value,elegantFormPasswordConfirm.value,elegantFormEmail.value)"
@@ -109,3 +120,5 @@
 
 </div>
 <app-success #successComponent (successComponent)="successComponent"></app-success>
+  </div>
+</div>

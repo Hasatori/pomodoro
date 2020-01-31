@@ -5,3 +5,26 @@
 .custom-button:hover{
    opacity: 1;
  }
+.lead{
+  text-align: justify !important;
+}
+@media (min-width: 1140px) {
+
+  .custom-container {
+    margin-left: 20%;
+    margin-right: 10%;
+  }
+}
+@media (min-width: 992px) {
+
+  .custom-container {
+    margin-left: 10%;
+    margin-right: 5%;
+  }
+}
+@media (max-width: 1500px) {
+
+  .logo {
+    display: none !important;
+  }
+}
