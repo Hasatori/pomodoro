@@ -3,20 +3,33 @@
 
 <!-- Material inline 1 -->
 <div class="container-fluid pb-3 border-bottom">
+  <div class="ml-2 mb-1">
+    <strong>Filter</strong>
+  </div>
 
-  <mdb-checkbox [filledIn]="true" [inline]="true">Only my tasks</mdb-checkbox>
+  <div class="d-flex flex-row">
 
+    <div class="ml-2">
+      <mdb-checkbox #selectMyTasks [filledIn]="true" [inline]="true">Only my tasks</mdb-checkbox>
+    </div>
+    <div class="ml-2">
+      <mdb-checkbox #checkbox [checked]="false"
+                    (change)="selectAll(checkbox)" [filledIn]="true" [inline]="true">select all
+      </mdb-checkbox>
+    </div>
+    <div class=" md-form p-0 m-0 ml-2">
+      <input type="search" #searchTodo (keyup)="searchTodo.value" placeholder="search todo">
+    </div>
+  </div>
 </div>
 
 <div class="container-fluid mt-3 mb-3 border-bottom  tasks">
-  <h4 class="h5-responsive"><strong>Tasks </strong>
-    <mdb-checkbox #checkbox [checked]="false"
-                  (change)="selectAll(checkbox)" [filledIn]="true" [inline]="true">select all
-    </mdb-checkbox>
-  </h4>
 
+  <div class="ml-2">
+    <h4 class="h5-responsive"><strong>Tasks </strong>
+    </h4></div>
   <div class="row">
-    <div  class="col-12 d-flex flex-column" *ngIf="loading" >
+    <div class="col-12 d-flex flex-column" *ngIf="loading">
       <div class="p-2 m-auto">
         <div class="spinner-grow text-dark" role="status">
           <span class="sr-only">Loading...</span>
@@ -25,13 +38,14 @@
       <div class="p-2 m-auto">loading todos</div>
 
     </div>
-    <div  class="col-12 d-flex justify-content-center mb-2" *ngIf="!loading && allToDos.length===0" >
+    <div class="col-12 d-flex justify-content-center mb-2" *ngIf="!loading && allToDos.length===0">
       no todos
     </div>
     <div class="col-12 tree-view">
 
       <ng-template #recursiveListTmpl let-list>
-        <li *ngFor="let item of list" class="d-flex flex-nowrap" @items>
+        <li *ngFor="let item of list "
+            class="d-flex flex-nowrap" @items>
           <mdb-accordion [multiple]="false">
             <mdb-accordion-item [collapsed]="!item.visible"
                                 class="accordion-item border-bottom"
@@ -126,7 +140,9 @@
       </ng-template>
 
       <ul class="list-unstyled">
-        <ng-container *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit:todos }"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: todos|userTodosFilter:this.user:selectMyTasks.checked|todoFilter:searchTodo.value}"
+        ></ng-container>
       </ul>
 
     </div>
@@ -148,7 +164,9 @@
       [important]="'This action will remove all its sub tasks'"
       (onOk)="removeTodos()"
     ></app-are-you-sure>
-    <button mdbBtn type="button" class="custom-button" size="sm" (click)="areYouSureComponent.show()" [disabled]="!anySelected" mdbWavesEffect>Delete task</button>
+    <button mdbBtn type="button" class="custom-button" size="sm" (click)="areYouSureComponent.show()"
+            [disabled]="!anySelected" mdbWavesEffect>Delete task
+    </button>
   </div>
   <div>
     <button mdbBtn type="button" class="custom-button" size="sm" [disabled]="!anySelected"

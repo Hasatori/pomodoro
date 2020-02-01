@@ -81,6 +81,8 @@ import { UserTodoComponent } from './components/pomodoro/user-todo/user-todo.com
 import {NgxPaginationModule} from 'ngx-pagination';
 import { GroupFilterPipe } from './pipes/group-filter.pipe';
 import { InvitationFilterPipe } from './pipes/invitation-filter.pipe';
+import { UserTodosFilterPipe } from './pipes/user-todos-filter.pipe';
+import { TodoFilterPipe } from './pipes/todo-filter.pipe';
 
 
 
@@ -137,7 +139,9 @@ const routes: Routes = [
     EditGroupComponent,
     UserTodoComponent,
     GroupFilterPipe,
-    InvitationFilterPipe
+    InvitationFilterPipe,
+    UserTodosFilterPipe,
+    TodoFilterPipe
 
 
   ],

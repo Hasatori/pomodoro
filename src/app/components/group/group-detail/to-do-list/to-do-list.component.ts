@@ -39,7 +39,7 @@ export class ToDoListComponent implements OnInit {
   private deadlineTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   private anySelected = false;
   private selectedTodos: Array<GroupToDo> = [];
-  loading: boolean=true;
+  loading: boolean = true;
 
   constructor(private userServiceProvider: UserServiceProvider) {
 
@@ -47,7 +47,7 @@ export class ToDoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading=true;
+    this.loading = true;
     this.userServiceProvider.userService.getUser().subscribe(user => {
       this.user = user;
     });
@@ -55,12 +55,12 @@ export class ToDoListComponent implements OnInit {
       this.allToDos = todos;
       for (let toDo of todos) {
         toDo.children = [];
-        toDo.visible = false;
+        toDo.visible = true;
         toDo.selected = false;
         toDo.accordionDisabled = false;
         this.assignChildren(todos, toDo);
       }
-      this.loading=false;
+      this.loading = false;
     });
     this.userServiceProvider.webSocketProxyService.watch('/group/' + this.group.name + '/todos').pipe(map(groupToDo => {
       return JSON.parse(groupToDo.body);
@@ -187,7 +187,7 @@ export class ToDoListComponent implements OnInit {
   removeTodos() {
     this.userServiceProvider.groupService.removeGroupTodos(this.group, this.selectedTodos).subscribe(
       response => {
-        this.allToDos = this.removeTodosAndAllChildren(this.allToDos,this.selectedTodos);
+        this.allToDos = this.removeTodosAndAllChildren(this.allToDos, this.selectedTodos);
         this.todos = [];
         for (let toDo of this.allToDos) {
           toDo.children = [];
@@ -203,11 +203,17 @@ export class ToDoListComponent implements OnInit {
 
   removeTodosAndAllChildren(allTodos: Array<GroupToDo>, todosToRemove: Array<GroupToDo>): Array<GroupToDo> {
     allTodos = allTodos.filter(candidate => !todosToRemove.some(todo => todo.id === candidate.id));
-    todosToRemove.forEach(todoToRemove=>{
-      if (todoToRemove.children!==null){
-        this.removeTodosAndAllChildren(allTodos,todoToRemove.children)
+    todosToRemove.forEach(todoToRemove => {
+      if (todoToRemove.children !== null) {
+        this.removeTodosAndAllChildren(allTodos, todoToRemove.children);
       }
     });
     return allTodos;
+  }
+
+  selectOnlyMyTasks(checkbox: CheckboxComponent) {
+    if (checkbox.checked) {
+
+    }
   }
 }
