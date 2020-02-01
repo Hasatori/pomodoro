@@ -39,10 +39,9 @@ export class GroupService implements OnDestroy {
   public participatingGroups: Array<Group> = [];
 
   private subscriptions: Array<Subscription> = [];
-  public cached: Map<string, any> ;
+
 
   constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
-    this.cached= new Map<string, any>();
   }
 
   private reset() {

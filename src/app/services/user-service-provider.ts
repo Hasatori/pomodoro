@@ -6,6 +6,7 @@ import {UserService} from './user.service';
 import {WebSocketManagerService} from './web-socket-manager.service';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {TodoService} from './todo.service';
+import {CachingService} from './caching.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class UserServiceProvider {
     public userService: UserService,
     public webSocketManagerService: WebSocketManagerService,
     public webSocketProxyService: WebSocketProxyService,
-    public todoService:TodoService
+    public todoService:TodoService,
+    public cachingService:CachingService
   ) {
   }
 }

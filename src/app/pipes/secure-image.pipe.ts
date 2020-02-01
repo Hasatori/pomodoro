@@ -5,17 +5,18 @@ import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {GroupService} from '../services/group.service';
 import {isUndefined} from 'util';
+import {UserServiceProvider} from '../services/user-service-provider';
 
 @Pipe({
   name: 'secureImage'
 })
 export class SecureImagePipe implements PipeTransform {
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer, private test: GroupService) {
-console.log(test.cached);
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer, private userServiceProvider: UserServiceProvider) {
   }
+
   transform(url): Observable<SafeUrl> {
-    let val = this.test.cached.get(url);
+    let val = this.userServiceProvider.cachingService.getImageFromCache(url);
     if (!isUndefined(val)) {
       return of(val);
     } else {
@@ -24,7 +25,8 @@ console.log(test.cached);
         .pipe(
           map(val => {
             let result = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(val));
-            this.test.cached.set(url, result);
+            this.userServiceProvider.cachingService.cacheImage(url, result);
+            console.log(typeof result);
             return result;
           }));
     }
