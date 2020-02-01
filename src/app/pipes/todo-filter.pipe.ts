@@ -2,6 +2,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 import {GroupToDo} from '../model/GroupToDo';
 import {User} from '../model/user';
 import {isUndefined} from 'util';
+import {UserTodo} from '../model/user-todo';
 
 
 @Pipe({
@@ -9,7 +10,7 @@ import {isUndefined} from 'util';
 })
 export class TodoFilterPipe implements PipeTransform {
 
-  transform(items: GroupToDo[], searchText: string): GroupToDo[] {
+  transform(items: GroupToDo[]|UserTodo[], searchText: string): GroupToDo[]|UserTodo[] {
 
     if (!items) {
       return [];
@@ -23,7 +24,7 @@ export class TodoFilterPipe implements PipeTransform {
 
   }
 
-  private findTodo(todos: Array<GroupToDo>, searchText: string): GroupToDo[] {
+  private findTodo(todos: Array<GroupToDo>|Array<UserTodo>, searchText: string): GroupToDo[]|UserTodo[] {
     let result = [];
     for (let todo of todos) {
       if (todo.description.toLowerCase().includes(searchText)) {

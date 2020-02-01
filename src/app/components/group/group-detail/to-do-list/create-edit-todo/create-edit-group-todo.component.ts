@@ -12,11 +12,12 @@ import {Group} from '../../../../../model/group';
 import {isUndefined} from 'util';
 
 @Component({
-  selector: 'app-create-edit-todo',
-  templateUrl: './create-edit-todo.component.html',
-  styleUrls: ['./create-edit-todo.component.scss']
+  selector: 'app-create-edit-group-todo',
+  templateUrl: './create-edit-group-todo.component.html',
+  styleUrls: ['./create-edit-group-todo.component.scss']
 })
-export class CreateEditTodoComponent implements OnInit, AfterViewInit {
+export class CreateEditGroupTodoComponent implements OnInit, AfterViewInit {
+  @Input()
   title: string = '';
   groupToDo: GroupToDo = null;
   parents: Array<GroupToDo> = [];

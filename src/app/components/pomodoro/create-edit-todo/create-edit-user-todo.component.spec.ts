@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateEditTodoComponent } from './create-edit-todo.component';
+import { CreateEditUserTodoComponent } from './create-edit-user-todo.component';
 
-describe('CreateEditTodoComponent', () => {
-  let component: CreateEditTodoComponent;
-  let fixture: ComponentFixture<CreateEditTodoComponent>;
+describe('CreateEditUserTodoComponent', () => {
+  let component: CreateEditUserTodoComponent;
+  let fixture: ComponentFixture<CreateEditUserTodoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateEditTodoComponent ]
+      declarations: [ CreateEditUserTodoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateEditTodoComponent);
+    fixture = TestBed.createComponent(CreateEditUserTodoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

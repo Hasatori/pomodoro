@@ -9,6 +9,9 @@ import {GroupInvitation} from '../model/group-invitation';
 import {SERVER_URL} from '../ServerConfig';
 import {UserTodo} from '../model/user-todo';
 import {GroupToDo} from '../model/GroupToDo';
+import {Group} from '../model/group';
+import {ChangeType} from '../model/group-change';
+import {WebSocketProxyService} from './web-socket-proxy.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +22,8 @@ export class UserService {
   private POMODOROS_KEY: string = 'pomodoros';
   private USER_TODOS_KEY: string = 'userTodos';
   private USER_GROUP_TODOS_KEY: string = 'userGroupTodos';
-  constructor(private http: HttpClient) {
+
+  constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService) {
   }
 
   getUser(): Observable<User> {
@@ -84,6 +88,7 @@ export class UserService {
       }));
     }
   }
+
   groupTodos(): Observable<Array<GroupToDo>> {
     let todos: Array<GroupToDo> = JSON.parse(window.sessionStorage.getItem(this.USER_GROUP_TODOS_KEY));
     if (todos != null) {
@@ -96,4 +101,36 @@ export class UserService {
     }
   }
 
+  public getGroupToDos(groupName: string): Observable<Array<GroupToDo>> {
+    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-todos`, {
+      groupName: groupName
+    }).pipe(map(response => {
+      return response;
+    }));
+
+  }
+
+  removeTodos(todos: Array<UserTodo>): Observable<any> {
+    let ids = todos.map(todo => todo.id);
+    return this.http.post<any>(`${SERVER_URL}/remove-todo`, ids).pipe(map(response => {
+      if (response.success!==null){
+        window.sessionStorage.removeItem(this.USER_TODOS_KEY);
+      }
+      return response;
+    }));
+  }
+
+  updateTodo(updatedTodo: UserTodo) {
+    this.getUser().subscribe(user => {
+      this.webSocketProxyService.publish('/app/user/' + user.username + '/todos', JSON.stringify(updatedTodo));
+      window.sessionStorage.removeItem(this.USER_TODOS_KEY);
+    });
+  }
+
+  addToDo(newTodo: UserTodo) {
+    this.getUser().subscribe(user => {
+      this.webSocketProxyService.publish('/app/user/' + user.username + '/todos', JSON.stringify(newTodo));
+      window.sessionStorage.removeItem(this.USER_TODOS_KEY);
+    });
+  }
 }

@@ -1,1 +1,7 @@
 @import "../pomodoro.component";
+.tasks{
+
+  overflow-y: auto;
+  max-height: 400px;
+  overflow-x: auto;
+}

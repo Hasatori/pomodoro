@@ -1,6 +1,6 @@
 <p class="h1-responsive text-center mb-4 header">Pomodoro</p>
 
-<div class="container pomodoro-container">
+<div class="container pomodoro-container pb-5">
   <div class="row">
     <div class="col-md-3">
 
@@ -54,13 +54,15 @@
     </div>
   </div>
   <div class="row pt-3 mt-5 border-top">
-    <div class="col-md-3">
+    <div class="col-md-2">
 
     </div>
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-8">
       <mdb-accordion>
-        <mdb-accordion-item>
-          <mdb-accordion-item-head   [indicator]="false"
+        <mdb-accordion-item [collapsed]="!todosVisible" customClass="z-depth-1">
+          <mdb-accordion-item-head
+
+            [indicator]="false"
                                    [ngClass]="todosVisible?'accordion-header border-bottom mb-2':'accordion-header'"
                                    (click)="todosVisible=!todosVisible">
             <div class="accordion-header-text ">
@@ -73,14 +75,14 @@
             </div>
 
           </mdb-accordion-item-head>
-          <mdb-accordion-item-body>
+          <mdb-accordion-item-body >
             <app-user-todo></app-user-todo>
           </mdb-accordion-item-body>
         </mdb-accordion-item>
       </mdb-accordion>
 
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
 
     </div>
     <div class="col-5">

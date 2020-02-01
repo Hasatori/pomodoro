@@ -1,6 +1,6 @@
 
 <div  mdbModal (input)="basicModal" #basicModal class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-     aria-hidden="true">
+      aria-hidden="true">
   <div class="modal-dialog modal-md modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -32,23 +32,13 @@
                              label="Deadline"
                              [selDate]="selectedDate"
                              required></mdb-date-picker>    </div>
-            <div>
-
-              <mdb-select #assignedUsersSelect [filterEnabled]="true" [options]="assignedMembers" [multiple]="true"
-                          label="Assigned members"
-
-                          formControlName="assignUsersSelect"
-                          placeholder="Choose member"></mdb-select>
-
-            </div>
-
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" mdbBtn class="custom-button" aria-label="Close" (click)="basicModal.hide()"
                 mdbWavesEffect>Close
         </button>
-        <button type="button" mdbBtn class="custom-button" (click)="onSave(todoDesciption.value,statusSelect.value,deadlinePicker.selectedDate,assignedUsersSelect.value)" mdbWavesEffect>Save</button>
+        <button type="button" mdbBtn class="custom-button" (click)="onSave(todoDesciption.value,statusSelect.value,deadlinePicker.selectedDate)" mdbWavesEffect>Save</button>
       </div>
     </div>
   </div>

@@ -3,6 +3,9 @@
 
 .tasks{
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 400px;
+
 }
 
 ::ng-deep .md-accordion .card:first-of-type {

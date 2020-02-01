@@ -71,7 +71,7 @@ import {UserCardComponent} from './components/group/group-detail/members/user-ca
 import {MembersComponent} from './components/group/group-detail/members/members.component';
 import {ToDoListComponent} from './components/group/group-detail/to-do-list/to-do-list.component';
 import {ChangeLogComponent} from './components/group/group-detail/change-log/change-log.component';
-import {CreateEditTodoComponent} from './components/group/group-detail/to-do-list/create-edit-todo/create-edit-todo.component';
+import {CreateEditGroupTodoComponent} from './components/group/group-detail/to-do-list/create-edit-todo/create-edit-group-todo.component';
 import {DatePipe} from '@angular/common';
 import {EditGroupComponent} from './components/group/edit-group/edit-group.component';
 import { AreYouSureComponent } from './components/modals/are-you-sure/are-you-sure.component';
@@ -81,8 +81,10 @@ import { UserTodoComponent } from './components/pomodoro/user-todo/user-todo.com
 import {NgxPaginationModule} from 'ngx-pagination';
 import { GroupFilterPipe } from './pipes/group-filter.pipe';
 import { InvitationFilterPipe } from './pipes/invitation-filter.pipe';
-import { UserTodosFilterPipe } from './pipes/user-todos-filter.pipe';
+import { GroupTodosFilterPipe } from './pipes/group-todos-filter.pipe';
 import { TodoFilterPipe } from './pipes/todo-filter.pipe';
+import {CreateEditUserTodoComponent} from './components/pomodoro/create-edit-todo/create-edit-user-todo.component';
+
 
 
 
@@ -132,7 +134,7 @@ const routes: Routes = [
     MembersComponent,
     ToDoListComponent,
     ChangeLogComponent,
-    CreateEditTodoComponent,
+    CreateEditGroupTodoComponent,
     AreYouSureComponent,
     InviteUserComponent,
     UserFilterPipe,
@@ -140,8 +142,9 @@ const routes: Routes = [
     UserTodoComponent,
     GroupFilterPipe,
     InvitationFilterPipe,
-    UserTodosFilterPipe,
-    TodoFilterPipe
+    GroupTodosFilterPipe,
+    TodoFilterPipe,
+   CreateEditUserTodoComponent
 
 
   ],

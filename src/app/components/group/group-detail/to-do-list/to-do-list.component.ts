@@ -8,7 +8,7 @@ import {isUndefined} from 'util';
 import {map} from 'rxjs/operators';
 import {User} from '../../../../model/user';
 import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
-import {CreateEditTodoComponent} from './create-edit-todo/create-edit-todo.component';
+import {CreateEditGroupTodoComponent} from './create-edit-todo/create-edit-group-todo.component';
 
 @Component({
   selector: 'app-to-do-list',
@@ -70,6 +70,10 @@ export class ToDoListComponent implements OnInit {
       this.allToDos.push(toDo);
       this.todos = [];
       for (let toDo of this.allToDos) {
+        toDo.children = [];
+        toDo.visible = true;
+        toDo.selected = false;
+        toDo.accordionDisabled = false;
         toDo.children = [];
         this.assignChildren(this.allToDos, toDo);
       }

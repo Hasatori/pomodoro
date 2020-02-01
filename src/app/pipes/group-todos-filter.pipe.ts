@@ -5,9 +5,9 @@ import {User} from '../model/user';
 import {isUndefined} from 'util';
 
 @Pipe({
-  name: 'userTodosFilter'
+  name: 'groupTodosFilter'
 })
-export class UserTodosFilterPipe implements PipeTransform {
+export class GroupTodosFilterPipe implements PipeTransform {
 
   transform(items: GroupToDo[], user: User, onlyMyTodos: boolean): GroupToDo[] {
 

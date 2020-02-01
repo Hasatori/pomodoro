@@ -1,5 +1,5 @@
-<app-create-edit-todo #createOrUpdateToDo [user]="user" [title]="'Update'" [users]="this.users"
-                      [group]="group"></app-create-edit-todo>
+<app-create-edit-group-todo #createOrUpdateToDo [user]="user" [title]="'Update'" [users]="this.users"
+                      [group]="group"></app-create-edit-group-todo>
 
 <!-- Material inline 1 -->
 <div class="container-fluid pb-3 border-bottom">
@@ -141,7 +141,7 @@
 
       <ul class="list-unstyled">
         <ng-container
-          *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: todos|userTodosFilter:this.user:selectMyTasks.checked|todoFilter:searchTodo.value}"
+          *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: todos|groupTodosFilter:this.user:selectMyTasks.checked|todoFilter:searchTodo.value}"
         ></ng-container>
       </ul>
 
