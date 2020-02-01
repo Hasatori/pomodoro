@@ -17,7 +17,7 @@ import {GroupToDo} from '../model/GroupToDo';
 @Injectable({
   providedIn: 'root'
 })
-export class GroupService implements OnDestroy{
+export class GroupService implements OnDestroy {
 
   private GROUPS_KEY: string = 'userGroups';
   private GROUP_USERS_KEY: string = 'groupUsers';
@@ -38,9 +38,11 @@ export class GroupService implements OnDestroy{
   public ownedGroups: Array<Group> = [];
   public participatingGroups: Array<Group> = [];
 
-  private subscriptions:Array<Subscription>=[];
+  private subscriptions: Array<Subscription> = [];
+  public cached: Map<string, any> ;
 
   constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
+    this.cached= new Map<string, any>();
   }
 
   private reset() {
@@ -53,6 +55,7 @@ export class GroupService implements OnDestroy{
     this.ownedGroupsUnreadMessages = 0;
     this.notOwnedGroupsUnreadMessages = 0;
     this.numberOfNotAcceptedGroupInvitations = 0;
+
   }
 
   startSockets() {
@@ -69,12 +72,6 @@ export class GroupService implements OnDestroy{
         this.user = user;
         let count = 1;
         for (let group of groups) {
-          if (count < 5) {
-            group.layoutImagePath = this.getLayoutImagePath(count);
-          } else {
-            group.layoutImagePath = this.getLayoutImagePath(Math.floor(Math.random() * 5) + 1);
-          }
-
           if (group.owner.username === this.user.username) {
             this.ownedGroups.push(group);
           } else {
@@ -323,7 +320,6 @@ export class GroupService implements OnDestroy{
           this.invitations.splice(index, 1);
         }
         sessionStorage.removeItem(this.GROUPS_KEY);
-        groupInvitation.group.layoutImagePath = this.getLayoutImagePath(Math.floor(Math.random() * 5) + 1);
         this.participatingGroups.push(groupInvitation.group);
       }
     });
@@ -369,7 +365,7 @@ export class GroupService implements OnDestroy{
     }));
   }
 
-  getInvitationsForGroup(group:Group):Observable<Array<GroupInvitation>>{
+  getInvitationsForGroup(group: Group): Observable<Array<GroupInvitation>> {
     return this.http.post<any>(`${SERVER_URL}/group/${group.name}/invitations`, group
     ).pipe(map(response => {
       return response;
@@ -390,4 +386,6 @@ export class GroupService implements OnDestroy{
 
   ngOnDestroy(): void {
   }
+
+
 }

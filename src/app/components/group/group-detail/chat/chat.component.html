@@ -175,7 +175,7 @@
             <div
               *ngIf="message.shouldShowAuthorsPhoto"
               class="profile-photo message-photo ">
-              <img src="../../../../../assets/images/user.svg" alt="avatar"
+              <img  [src]="'http://localhost:8080/users/'+message.author.id+'/'+message.author.id+'.jpg' | secureImage | async" alt="avatar"
                    class="avatar rounded-circle mr-1 ml-0 mb-0">
               <span class="state"></span>
 

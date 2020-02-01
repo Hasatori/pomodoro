@@ -2,7 +2,10 @@
 <li class="list-group-item d-flex justify-content-between   dropdown border-bottom" mdbDropdown>
 
     <div class="d-flex flex-column">
-      <div class="flex-center"><img width="35px" src="../../../assets/images/user.svg"></div>
+      <div class="avatar mx-auto white"><img  height="45px" width="45px"  [src]="'http://localhost:8080/users/'+user.id+'/'+user.id+'.jpg'| secureImage | async"
+                                             alt="avatar mx-auto white" class="rounded-circle">
+      </div>
+
       <div>{{user.username}}</div>
       </div>
   <div class="dropdown-menu dropdown-menu-top z-depth-5">

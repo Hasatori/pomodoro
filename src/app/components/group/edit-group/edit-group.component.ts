@@ -16,7 +16,7 @@ export class EditGroupComponent implements OnInit{
   private groupName:string='';
   private isPublic:boolean=false;
   private description:string='';
-  selectedImage:string="../../../../../assets/group/layouts/teamwork-3.jpg";
+  selectedImage:string="http://localhost:8080/group/layout/teamwork-3.jpg";
 
 
   formData: FormData;
@@ -32,7 +32,7 @@ export class EditGroupComponent implements OnInit{
     this.humanizeBytes = new Function;
 
     for(let i=1;i <6;i++){
-      this.images.push(`../../../../../assets/group/layouts/teamwork-${i}.jpg`)
+      this.images.push(`http://localhost:8080/group/layout/teamwork-${i}.jpg`)
     }
   }
 
@@ -111,6 +111,7 @@ export class EditGroupComponent implements OnInit{
       this.groupName=this.group.name;
       this.isPublic=false;
       this.description='';
+      this.selectedImage=this.group.layoutImage;
     }
   }
 }

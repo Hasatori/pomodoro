@@ -125,7 +125,7 @@
                       no assigned users
                     </div>
                     <div class="chip" *ngFor="let assignedMember of item.assignedUsers">
-                      <img src="../../../../../assets/images/user.svg" alt="Contact Person">{{assignedMember.username}}
+                      <img   [src]="'http://localhost:8080/users/'+assignedMember.id+'/'+assignedMember.id+'.jpg'| secureImage | async" alt="Contact Person">{{assignedMember.username}}
                     </div>
                   </div>
                 </div>
