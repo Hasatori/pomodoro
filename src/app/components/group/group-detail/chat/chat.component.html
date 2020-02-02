@@ -1,32 +1,70 @@
-<div *ngIf="!chatHidden && !showReactions" (click)="hideOrShowChat()" class="minimize small d-flex flex-column">
-  <div class="p-0 text-center flex-shrink-1" mdbTooltip="hide">
-    <mdb-icon fas icon="angle-down"></mdb-icon>
-  </div>
-
-
-</div>
 <div
   *ngIf="chatHidden"
-  mdbBtn (click)="hideOrShowChat()"
-  class="pl-2 pr-2 pb-3 z-depth-1a custom-button maximize small d-flex flex-column shadow rounded"
+  mdbBtn
+  class="pl-2 pr-2 pb-3 z-depth-1a custom-button maximize  d-flexshadow rounded flex-row"
 >
-  <div class=" text-center flex-shrink-1">
-    <mdb-icon fas icon="angle-up"></mdb-icon>
+  <div class="text-center maximize-text" *ngIf="chatHidden">chat</div>
+  <div class="d-flex flex-row">
+    <div class="chat-volume mr-2 align-self-center" ngSwitch="{{userServiceProvider.groupService.chatMuted}}"
+         (click)="userServiceProvider.groupService.chatMuted= !userServiceProvider.groupService.chatMuted">
+      <div class="p-0 " mdbTooltip="volume-up" *ngSwitchCase="'true'">
+        <mdb-icon fas icon="volume-mute"></mdb-icon>
+      </div>
+      <div class="p-0 " mdbTooltip="mute" *ngSwitchCase="'false'">
+        <mdb-icon fas icon="volume-up"></mdb-icon>
+      </div>
+    </div>
+    <div class="" (click)="hideOrShowChat()">
+      <div class=" text-center flex-shrink-1">
+        <mdb-icon fas icon="angle-up"></mdb-icon>
+      </div>
+    </div>
+
   </div>
-  <div class="text-center flex-shrink-1" *ngIf="chatHidden">chat</div>
-  <small *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)!==0" class="align-right ml-2">
-    <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
-    <span
-      class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
-  </small>
+  <div class="text-center">
+    <small *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)!==0" class="align-right ml-2">
+      <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
+      <span
+        class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
+    </small>
+  </div>
 </div>
 
 
 <mdb-card class="chat-room small-chat wide " id="chat">
 
   <mdb-card-header class="chat-heading p-3" id="toggle" style="cursor: pointer;">
+    <div class="chat-open-settings">
+      <div class="d-flex flex-row">
+        <div class="chat-volume" ngSwitch="{{userServiceProvider.groupService.chatMuted}}"
+             (click)="userServiceProvider.groupService.chatMuted= !userServiceProvider.groupService.chatMuted">
+          <div class="p-0 " mdbTooltip="volume-up" *ngSwitchCase="'true'">
+            <mdb-icon fas icon="volume-mute"></mdb-icon>
+          </div>
+          <div class="p-0 " mdbTooltip="mute" *ngSwitchCase="'false'">
+            <mdb-icon fas icon="volume-up"></mdb-icon>
+          </div>
+        </div>
+        <div class="ml-2">
+          <small *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)!==0"
+                 class="align-right ml-2">
+            <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
+            <span
+              class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
+          </small>
+        </div>
+
+      </div>
+
+    </div>
     <p class="name mb-0 text-center">
       <strong>Group chat</strong></p>
+
+    <div *ngIf="!chatHidden && !showReactions" (click)="hideOrShowChat()" class="minimize -align-right">
+      <div class="p-0 " mdbTooltip="hide">
+        <mdb-icon fas icon="angle-down"></mdb-icon>
+      </div>
+    </div>
 
   </mdb-card-header>
   <div
@@ -175,9 +213,9 @@
             <div
               *ngIf="message.shouldShowAuthorsPhoto"
               class="profile-photo message-photo ">
-              <img  [src]="'http://localhost:8080/users/'+message.author.id+'/profile.jpg' | secureImage | async" alt="avatar"
+              <img [src]="'http://localhost:8080/users/'+message.author.id+'/profile.jpg' | secureImage | async"
+                   alt="avatar"
                    class="avatar rounded-circle mr-1 ml-0 mb-0">
-              <span class="state"></span>
 
             </div>
 
@@ -293,7 +331,7 @@
   </div>
   <mdb-card-footer class="chat-footer pt-1 pb-1 px-3">
     <textarea
-      type="textbox"
+      type="textbox" (keydown.enter)="sendMessage(message.value);message.value='';false"
 
       (focus)="markAllAsReadAndProcessResponse();typing=true;"
 
@@ -303,26 +341,24 @@
       placeholder="Type a message..."></textarea>
     <div>
       <a>
-        <mdb-icon far icon="file-image" class="mr-2"></mdb-icon>
+        <mdb-icon far icon="file-image" class="mr-2  chat-icon"></mdb-icon>
       </a>
       <a>
-        <mdb-icon far icon="laugh" class="mr-2"></mdb-icon>
+        <mdb-icon far icon="laugh" class="mr-2  chat-icon"></mdb-icon>
       </a>
       <a>
-        <mdb-icon fas icon="gamepad" class="mr-2"></mdb-icon>
+        <mdb-icon fas icon="gamepad" class="mr-2  chat-icon"></mdb-icon>
       </a>
       <a>
-        <mdb-icon fas icon="paperclip" class="mr-2"></mdb-icon>
-      </a>
-      <a>
-        <mdb-icon fas icon="camera" class="mr-2"></mdb-icon>
+        <mdb-icon fas icon="paperclip" class="mr-2  chat-icon"></mdb-icon>
       </a>
       <a>
         <mdb-icon
           *ngIf="typing"
-          fas icon="paper-plane" class="float-right" (click)="sendMessage(message.value);message.value=''"></mdb-icon>
+          fas icon="paper-plane" class="float-right chat-icon"
+          (click)="sendMessage(message.value);message.value=''"></mdb-icon>
 
-        <mdb-icon *ngIf="!typing" fas icon="thumbs-up" class="float-right"
+        <mdb-icon *ngIf="!typing" fas icon="thumbs-up" class="float-right  chat-icon"
         ></mdb-icon>
 
       </a>

@@ -1,6 +1,6 @@
 @import "../group-detail.component";
 
-.chat-room, .minimize{
+.chat-room{
   right: 0.5rem;
   bottom: 1%;
   width: 24em !important;
@@ -17,6 +17,11 @@
 
 
 }
+.maximize-text{
+  position: absolute;
+  top:-50%;
+  color: $secondaryTextColor;
+}
 .maximize:hover{
   background-color: $navigationBarColor !important;
   color: $basicTextColor !important;
@@ -27,24 +32,17 @@
 }
 
 .minimize {
-  font-size: 1.3rem !important;
-  position: fixed;
-  width: initial !important;
-  height: initial !important;
-  bottom: 28.6rem;
-  right: 1.1rem;
-  color: $basicTextColor;
-  z-index: 1000;
-
+position: absolute;
+  right: 3%;
+  top:0;
+  font-size: 1em;
 }
 @media (max-width: 410px) {
   .chat-room{
    width: 95% !important;
     max-width: 24rem !important;;
   }
-  .minimize{
-    right: 5%;
-  }
+
 }
 .minimize {
 
@@ -239,4 +237,11 @@ textarea::placeholder {
 }
 .text-dark{
   color: $navigationBarColor !important;
+}
+.chat-open-settings{
+  position: absolute;
+}
+
+.chat-icon{
+  color:$basicTextColor !important;
 }

@@ -40,6 +40,7 @@ export class GroupService implements OnDestroy {
 
   private subscriptions: Array<Subscription> = [];
 
+  public chatMuted:boolean=false;
 
   constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
   }
@@ -104,7 +105,9 @@ export class GroupService implements OnDestroy {
         });
         this.getNewGroupMessage(group.name).subscribe(message => {
           if (message.author.username !== this.user.username) {
-            this.audio.play();
+            if (!this.chatMuted){
+              this.audio.play();
+            }
             this.allUnreadMessages++;
             this.groupUnreadMessages.set(group.name, this.groupUnreadMessages.get(group.name) + 1);
             if (group.owner.username === this.user.username) {

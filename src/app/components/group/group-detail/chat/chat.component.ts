@@ -56,6 +56,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private lastNumberOfGroupMessagesSubscription: Subscription;
   private groupMessageReactionSubscription: Subscription;
   private loading: boolean = false;
+  chatMutted: boolean=false;
 
   constructor(private userServiceProvider: UserServiceProvider) {
 
@@ -75,9 +76,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setReactionsForMessage(newMessage);
       this.messages.push(newMessage);
       this.processMessagesFromBack(this.messages);
-      if (!this.chatHidden) {
-        this.markAllAsReadAndProcessResponse();
-      }
+
     });
     this.groupMessageReactionSubscription = this.userServiceProvider.groupService.getReactedGroupMessage(this.group.name).subscribe((reactedMessage) => {
       let foundMessage = this.messages.find(message => {
@@ -344,6 +343,4 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     return message;
 
   }
-
-
 }

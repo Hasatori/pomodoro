@@ -38,11 +38,11 @@
   color: $basicTextColor !important;
 }
 .dropdown .dropdown-menu .danger-item{
-  color: $danger !important;
+  color: $myDanger !important;
 }
 
 .dropdown .dropdown-menu .danger-item:hover{
-  background-color: $danger;
+  background-color: $myDanger;
   color: $backgroundColor !important;
 }
 .mask:hover,.card-header{
