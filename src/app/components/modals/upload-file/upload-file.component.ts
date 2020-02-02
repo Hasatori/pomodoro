@@ -10,7 +10,7 @@ import {SERVER_URL} from '../../../ServerConfig';
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFileComponent implements AfterViewInit {
+export class UploadFileComponent  {
 
   private files: FileList;
   private uploadedFileName = '';
@@ -72,9 +72,6 @@ export class UploadFileComponent implements AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
-    this.input.show();
-  }
 
   private postFile(fileToUpload: File): Observable<HttpEvent<any>> {
     if (fileToUpload.size < this.FILE_SIZE_LIMIT) {
