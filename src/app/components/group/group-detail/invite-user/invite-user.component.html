@@ -20,7 +20,9 @@
               <li (click)="selectUser(data,search.value);search.value=data.username"
                   *ngFor="let data of usersToDisplay | userFilter: search.value"
                   class=" list-group-item d-flex flex-row">
-                <div class="mr-1"><img width="35px" src="../../../../../assets/images/user.svg"></div>
+                <div class="mr-1">      <div class="avatar mx-auto white"><img  height="45px" width="45px"  [src]="'http://localhost:8080/users/'+data.id+'/profile.jpg'| secureImage | async"
+                                                                                alt="avatar mx-auto white" class="rounded-circle">
+                </div></div>
                 <div class="mr-1 ">   {{data.username}}</div>
                 <div class="flex-grow-1"></div>
                 <div *ngIf="!alreadyMember(data);else alreadyMemberTemplate">

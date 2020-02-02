@@ -304,6 +304,7 @@ export class GroupService implements OnDestroy {
 
   private getNotAcceptedGroupInvitations(): Observable<Array<GroupInvitation>> {
     return this.http.post<any>(`${SERVER_URL}/not-accepted-group-invitations`, {}).pipe(map(response => {
+      console.log(response);
       return response;
     }));
 
