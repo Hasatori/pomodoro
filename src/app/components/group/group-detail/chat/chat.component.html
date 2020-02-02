@@ -1,3 +1,4 @@
+
 <div
   *ngIf="chatHidden"
   mdbBtn
@@ -350,7 +351,10 @@
         <mdb-icon fas icon="gamepad" class="mr-2  chat-icon"></mdb-icon>
       </a>
       <a>
-        <mdb-icon fas icon="paperclip" class="mr-2  chat-icon"></mdb-icon>
+
+        <input #uploadFile type="file" style="display:none"  (change)="uploadFileComponent.handleFileInput($event.target.files)" multiple>
+        <mdb-icon fas icon="paperclip" (click)="uploadFile.click()"  class="mr-2  chat-icon"></mdb-icon>
+
       </a>
       <a>
         <mdb-icon
@@ -366,3 +370,5 @@
   </mdb-card-footer>
 </mdb-card>
 
+
+<app-upload-file #uploadFileComponent></app-upload-file>

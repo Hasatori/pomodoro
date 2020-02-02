@@ -1,0 +1,18 @@
+@import "../../../app.component";
+
+::ng-deep mdb-progress .progress,::ng-deep mdb-progress .progress .progress-bar.progress-bar-success {
+  height: 40px !important;
+  background-color: $navigationBarColorTransparent !important;
+}
+
+::ng-deep .default .progress .progress-bar.progress-bar-success{
+
+  background-color: $navigationBarColor !important;
+}
+.done{
+  color:$mySuccess !important;
+}
+::ng-deep .success .progress .progress-bar.progress-bar-success{
+
+  background-color: $mySuccess !important;
+}

@@ -85,6 +85,7 @@ import { GroupTodosFilterPipe } from './pipes/group-todos-filter.pipe';
 import { TodoFilterPipe } from './pipes/todo-filter.pipe';
 import {CreateEditUserTodoComponent} from './components/pomodoro/create-edit-todo/create-edit-user-todo.component';
 import { SecureImagePipe } from './pipes/secure-image.pipe';
+import { UploadFileComponent } from './components/modals/upload-file/upload-file.component';
 
 
 
@@ -146,7 +147,8 @@ const routes: Routes = [
     GroupTodosFilterPipe,
     TodoFilterPipe,
    CreateEditUserTodoComponent,
-   SecureImagePipe
+   SecureImagePipe,
+   UploadFileComponent
 
 
   ],

@@ -6,6 +6,7 @@ import {UserServiceProvider} from '../../../../services/user-service-provider';
 import {Reaction} from '../../../../model/reaction';
 import {isUndefined} from 'util';
 import {Group} from '../../../../model/group';
+import {HttpEventType, HttpResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-chat',
@@ -57,6 +58,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private groupMessageReactionSubscription: Subscription;
   private loading: boolean = false;
   chatMutted: boolean=false;
+  private progress: number=0;
 
   constructor(private userServiceProvider: UserServiceProvider) {
 
@@ -343,4 +345,5 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     return message;
 
   }
+
 }

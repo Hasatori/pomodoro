@@ -1,13 +1,13 @@
 $navigationBarColor: #2E314C;
 $navigationBarColorTransparent: #818393;
-$navigationBarColorLight:#42455d;
+$navigationBarColorLight: #42455d;
 $customCardBackgroundColor: #f7f7f7;
 $basicTextColor: #DCBA89;
 $secondaryTextColor: #333333;
 $backgroundColor: #F8F8F8;
 $lightBorderColor: #dee2e6;
 $myDanger: #d9534f;
-
+$mySuccess: #5cb85c;
 .mainContent {
   min-height: 100vh !important;
   background-color: $backgroundColor !important;
@@ -50,9 +50,11 @@ $myDanger: #d9534f;
   background-color: $navigationBarColor !important;
   color: $basicTextColor !important;
 }
- .btn:disabled{
-opacity: 0.5 !important;
+
+.btn:disabled {
+  opacity: 0.5 !important;
 }
+
 .custom-button:hover, .pagination .page-item:hover .page-link {
   opacity: 1;
   background-color: $navigationBarColor !important;
@@ -193,69 +195,83 @@ opacity: 0.5 !important;
 }
 
 
-::ng-deep  .form-check .form-check-label::after{
+::ng-deep .form-check .form-check-label::after {
   background-color: $navigationBarColor !important;
-  border:  $navigationBarColor  !important;
+  border: $navigationBarColor !important;
 }
 
-::ng-deep mdb-select-dropdown .dropdown-content li > span, ::ng-deep mdb-select > label,::ng-deep .md-form label.active
-
-{
+::ng-deep mdb-select-dropdown .dropdown-content li > span, ::ng-deep mdb-select > label, ::ng-deep .md-form label.active {
   color: $navigationBarColor !important;
 }
-::ng-deep .picker__box .picker__table .picker__day--selected{
+
+::ng-deep .picker__box .picker__table .picker__day--selected {
   color: $basicTextColor !important;
   background-color: $navigationBarColor !important;
 }
-::ng-deep .picker__box .picker__table .picker__weekday{
+
+::ng-deep .picker__box .picker__table .picker__weekday {
   color: $navigationBarColor !important;
   font-weight: bold !important;
 }
-::ng-deep .picker__box .picker__footer button{
+
+::ng-deep .picker__box .picker__footer button {
   opacity: 0.8 !important;
-  background-color:  $navigationBarColor !important;
+  background-color: $navigationBarColor !important;
   color: $basicTextColor !important;
 }
 
-::ng-deep .picker__box .picker__footer button:hover{
-opacity: 1 !important;
+::ng-deep .picker__box .picker__footer button:hover {
+  opacity: 1 !important;
 }
-::ng-deep .picker__box .picker__table td.picker__day div.picker__day.picker__day--today{
+
+::ng-deep .picker__box .picker__table td.picker__day div.picker__day.picker__day--today {
   color: $basicTextColor !important;
 }
-.custom-primary-button{
-  background-color: $lightBorderColor;
-  color:$navigationBarColor;
+
+.custom-primary-button {
+  background-color: $lightBorderColor !important;
+  color: $navigationBarColor !important;
   font-weight: bold;
 }
-.accordion-body  {
+
+.accordion-body {
   background-color: white !important;
   min-height: 0px !important;
 
 }
-.accordion-header{
+
+.accordion-header {
   background-color: $navigationBarColor !important;
 
 }
-.accordion-body{
+
+.accordion-body {
   max-height: 700px !important;
   overflow-y: auto;
 
 }
-.accordion-header-text{
+
+.accordion-header-text {
   color: $basicTextColor !important;
 }
-.customBlockquote{
+
+.customBlockquote {
   border-left: 3px solid $navigationBarColor !important
 }
-.customBlockquote .h2{
+
+.customBlockquote .h2 {
   color: $navigationBarColor !important;
 }
+
 ::ng-deep .ngx-pagination .current {
   background-color: $navigationBarColor !important;
-  color:$basicTextColor !important;
+  color: $basicTextColor !important;
 }
+
 ::ng-deep .ngx-pagination .disabled {
 
-  color:$lightBorderColor !important;
+  color: $lightBorderColor !important;
+}
+.custom-danger-button,.modal-header{
+  background-color: $myDanger !important;
 }

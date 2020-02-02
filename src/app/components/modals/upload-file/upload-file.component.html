@@ -1,0 +1,32 @@
+<div mdbModal (input)="frame" #frame class="modal fade" id="frameModalTop" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered" role="document">
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Body-->
+      <div class="modal-body">
+        <p class="h4-responsive">Uploading files </p>
+        <mdb-icon fas icon="cloud-upload-alt" class="ml-1"></mdb-icon>
+        <span class="ml-2">{{uploadedFileName}}</span>
+
+        <div class="d-flex flex-row">
+          <div class="flex-grow-1">
+            <mdb-progress value="{{progress}}" min="0" max="100" type="success" aria-valuemin="0"
+                          aria-valuemax="100" [ngClass]="done?'success':'default'">{{progress}}%
+
+            </mdb-progress>
+          </div>
+          <div class="ml-2">
+            <mdb-icon fas icon="check" class="done" *ngIf="done"></mdb-icon>
+          </div>
+        </div>
+        <span class="text-danger" *ngIf="fileToBig">Files larger than {{(FILE_SIZE_LIMIT/1000000)/8}}MB can not be uploaded.</span>
+        <a *ngIf="!done && !fileToBig" type="button" mdbBtn class="custom-danger-button float-right" mdbWavesEffect>Cancel</a>
+        <a *ngIf="done ||fileToBig" (click)="frame.hide()" type="button" mdbBtn class="custom-primary-button float-right" mdbWavesEffect>Close</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
