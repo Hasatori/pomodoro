@@ -31,7 +31,7 @@ export class UserService {
     if (user != null) {
       return of(user);
     } else {
-      return this.http.post<any>(`http://localhost:8080/userDetails`, '').pipe(map(user => {
+      return this.http.post<any>(`${SERVER_URL}/userDetails`, '').pipe(map(user => {
         window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
         return user;
       }));
@@ -39,14 +39,14 @@ export class UserService {
   }
 
   updateUser(updatedUser: User): Observable<any> {
-    return this.http.post<any>(`http://localhost:8080/updateDetails`, updatedUser).pipe(map(response => {
+    return this.http.post<any>(`${SERVER_URL}/updateDetails`, updatedUser).pipe(map(response => {
       window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(updatedUser));
       return response;
     }));
   }
 
   updateSettings(updatedSettings: Settings): Observable<any> {
-    return this.http.post<any>(`http://localhost:8080/updateSettings`, updatedSettings).pipe(map(response => {
+    return this.http.post<any>(`${SERVER_URL}/updateSettings`, updatedSettings).pipe(map(response => {
       this.getUser().subscribe(user => {
         user.settings = updatedSettings;
         window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
@@ -57,7 +57,7 @@ export class UserService {
   }
 
   changePassword(oldPasswword: string, newPassword: string) {
-    return this.http.post<any>(`http://localhost:8080/changePassword`, {
+    return this.http.post<any>(`${SERVER_URL}/changePassword`, {
       oldPassword: oldPasswword,
       newPassword: newPassword
     }).pipe(map(response => {
@@ -70,7 +70,7 @@ export class UserService {
     if (pomodoros != null) {
       return of(pomodoros);
     } else {
-      return this.http.post<any>(`http://localhost:8080/userPomodoros`, '').pipe(map(pomodoros => {
+      return this.http.post<any>(`${SERVER_URL}/userPomodoros`, '').pipe(map(pomodoros => {
         window.sessionStorage.setItem(this.POMODOROS_KEY, JSON.stringify(pomodoros));
         return pomodoros;
       }));
@@ -82,7 +82,7 @@ export class UserService {
     if (todos != null) {
       return of(todos);
     } else {
-      return this.http.post<any>(`http://localhost:8080/userTodos`, '').pipe(map(todos => {
+      return this.http.post<any>(`${SERVER_URL}/userTodos`, '').pipe(map(todos => {
         window.sessionStorage.setItem(this.USER_TODOS_KEY, JSON.stringify(todos));
         return todos;
       }));
@@ -94,7 +94,7 @@ export class UserService {
     if (todos != null) {
       return of(todos);
     } else {
-      return this.http.post<any>(`http://localhost:8080/groupTodos`, '').pipe(map(todos => {
+      return this.http.post<any>(`${SERVER_URL}/groupTodos`, '').pipe(map(todos => {
         window.sessionStorage.setItem(this.USER_GROUP_TODOS_KEY, JSON.stringify(todos));
         return todos;
       }));

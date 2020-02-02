@@ -16,7 +16,7 @@ export class EditGroupComponent implements OnInit{
   private groupName:string='';
   private isPublic:boolean=false;
   private description:string='';
-  selectedImage:string="http://localhost:8080/group/layout/teamwork-3.jpg";
+  selectedImage:string="https://pomodoro-rest-api.herokuapp.com/group/layout/teamwork-3.jpg";
 
 
   formData: FormData;
@@ -32,7 +32,7 @@ export class EditGroupComponent implements OnInit{
     this.humanizeBytes = new Function;
 
     for(let i=1;i <6;i++){
-      this.images.push(`http://localhost:8080/group/layout/teamwork-${i}.jpg`)
+      this.images.push(`https://pomodoro-rest-api.herokuapp.com/group/layout/teamwork-${i}.jpg`)
     }
   }
 

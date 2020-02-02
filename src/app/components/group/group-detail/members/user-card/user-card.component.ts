@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../../../../../model/user';
 import {Timer} from '../../../../../model/Timer';
-
+import {SERVER_URL} from '../../../../../ServerConfig';
 
 @Component({
   selector: 'app-user-card',

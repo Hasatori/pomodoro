@@ -214,7 +214,7 @@
             <div
               *ngIf="message.shouldShowAuthorsPhoto"
               class="profile-photo message-photo ">
-              <img [src]="'http://localhost:8080/users/'+message.author.id+'/profile.jpg' | secureImage | async"
+              <img [src]="'https://pomodoro-rest-api.herokuapp.com/users/'+message.author.id+'/profile.jpg' | secureImage | async"
                    alt="avatar"
                    class="avatar rounded-circle mr-1 ml-0 mb-0">
 
