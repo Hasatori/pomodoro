@@ -11,21 +11,21 @@ import {UserServiceProvider} from '../../../services/user-service-provider';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent {
-  private phaseChangedSoundPlaying: boolean = false;
-  private pauseSoundPlaying: boolean = false;
-  private workSoundPlaying: boolean = false;
-  private noValueWasChanged: boolean = false;
-  private currentSettings: Settings;
-  private sounds: Array<String> =
+  public phaseChangedSoundPlaying: boolean = false;
+  public pauseSoundPlaying: boolean = false;
+  public workSoundPlaying: boolean = false;
+  public noValueWasChanged: boolean = false;
+  public currentSettings: Settings;
+  public sounds: Array<String> =
     [
       null,
       'Noise-cancelling-sound.mp3',
       'Simple-alert-bells-tone.mp3'
     ];
-  private inProgress: boolean = false;
-  private success: boolean = false;
+  public  inProgress: boolean = false;
+  public  success: boolean = false;
 
-  constructor(private userServiceProvider: UserServiceProvider) {
+  constructor(public userServiceProvider: UserServiceProvider) {
 
     userServiceProvider.userService.getUser().subscribe((user) => {
       this.currentSettings = user.settings;

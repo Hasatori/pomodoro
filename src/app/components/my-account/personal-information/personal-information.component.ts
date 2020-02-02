@@ -26,7 +26,7 @@ export class PersonalInformationComponent implements OnInit {
   // @ts-ignore
   @ViewChild('successComponent') successComponent: SuccessComponent;
 
-  constructor(public fb: FormBuilder, private userServiceProvider: UserServiceProvider) {
+  constructor(public fb: FormBuilder, public userServiceProvider: UserServiceProvider) {
     this.elegantForm = fb.group({
       'elegantFormUsername': ['', [Validators.required]],
       'elegantFormEmail': ['', [Validators.required, Validators.pattern(/[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm)]],

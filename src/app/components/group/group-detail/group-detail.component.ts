@@ -17,16 +17,16 @@ import {UserServiceProvider} from '../../../services/user-service-provider';
   styleUrls: ['./group-detail.component.scss'],
 })
 export class GroupDetailComponent {
-  private group: Group;
-  private groupName: string;
-  private allUsers: Array<User>;
-  private user: User;
+  public group: Group;
+  public groupName: string;
+  public allUsers: Array<User>;
+  public user: User;
   membersVisible: boolean = true;
   toDoVisible: boolean =true;
   changeLogVisible: boolean = true;
   isOwner: boolean = false;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private log: NGXLogger, private userServiceProvider: UserServiceProvider) {
+  constructor(private route: ActivatedRoute, private http: HttpClient, private log: NGXLogger, public userServiceProvider: UserServiceProvider) {
     this.route.paramMap.subscribe(groupName => {
       this.groupName = groupName.get('name');
       this.userServiceProvider.groupService.getGroups().subscribe((groups) => {

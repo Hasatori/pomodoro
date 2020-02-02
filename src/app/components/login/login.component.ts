@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   elegantFormUsernameEx: AbstractControl;
   submitted: boolean = false;
 
-  constructor(public fb: FormBuilder, private router: Router, private facebookAuth: FacebookAuth, private userServiceProvider: UserServiceProvider) {
+  constructor(public fb: FormBuilder, private router: Router, private facebookAuth: FacebookAuth, public userServiceProvider: UserServiceProvider) {
     this.elegantForm = fb.group({
       'elegantFormUsernameEx': ['', [Validators.required]],
       'elegantFormPasswordEx': ['', Validators.required],

@@ -9,14 +9,14 @@ import {Group} from '../../../model/group';
   templateUrl: './edit-group.component.html',
   styleUrls: ['./edit-group.component.scss']
 })
-export class EditGroupComponent implements OnInit{
+export class EditGroupComponent implements OnInit {
   // @ts-ignore
   @ViewChild('basicModal') input: ModalDirective;
-  @Input()group:Group=null;
-  private groupName:string='';
-  private isPublic:boolean=false;
-  private description:string='';
-  selectedImage:string="https://pomodoro-rest-api.herokuapp.com/group/layout/teamwork-3.jpg";
+  @Input() group: Group = null;
+  public  groupName: string = '';
+  public  isPublic: boolean = false;
+  public  description: string = '';
+  selectedImage: string = 'https://pomodoro-rest-api.herokuapp.com/group/layout/teamwork-3.jpg';
 
 
   formData: FormData;
@@ -31,18 +31,18 @@ export class EditGroupComponent implements OnInit{
     this.uploadInput = new EventEmitter<UploadInput>();
     this.humanizeBytes = new Function;
 
-    for(let i=1;i <6;i++){
-      this.images.push(`https://pomodoro-rest-api.herokuapp.com/group/layout/teamwork-${i}.jpg`)
+    for (let i = 1; i < 6; i++) {
+      this.images.push(`https://pomodoro-rest-api.herokuapp.com/group/layout/teamwork-${i}.jpg`);
     }
   }
 
-  show(){
+  show() {
     this.input.show();
   }
 
   showFiles() {
     let files = '';
-    for (let i = 0; i < this.files.length; i ++) {
+    for (let i = 0; i < this.files.length; i++) {
       files += this.files[i].name;
       if (!(this.files.length - 1 === i)) {
         files += ',';
@@ -56,14 +56,14 @@ export class EditGroupComponent implements OnInit{
       type: 'uploadAll',
       url: 'your-path-to-backend-endpoint',
       method: 'POST',
-      data: { foo: 'bar' },
+      data: {foo: 'bar'},
     };
     this.files = [];
     this.uploadInput.emit(event);
   }
 
   cancelUpload(id: string): void {
-    this.uploadInput.emit({ type: 'cancel', id: id });
+    this.uploadInput.emit({type: 'cancel', id: id});
   }
 
   onUploadOutput(output: UploadOutput | any): void {
@@ -86,20 +86,21 @@ export class EditGroupComponent implements OnInit{
     }
     this.showFiles();
   }
-  images = [
-  ];
+
+  images = [];
 
   selectImage(image: string) {
-   this.selectedImage=image;
+    this.selectedImage = image;
   }
+
   readURL(event: Event): void {
     // @ts-ignore
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
-      reader.onload = (event:any) => {
+      reader.onload = (event: any) => {
         this.selectedImage = event.target.result;
-      }
+      };
 
       // @ts-ignore
       reader.readAsDataURL(event.target.files[0]);
@@ -107,11 +108,11 @@ export class EditGroupComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if (this.group!==null){
-      this.groupName=this.group.name;
-      this.isPublic=false;
-      this.description='';
-      this.selectedImage=this.group.layoutImage;
+    if (this.group !== null) {
+      this.groupName = this.group.name;
+      this.isPublic = false;
+      this.description = '';
+      this.selectedImage = this.group.layoutImage;
     }
   }
 }

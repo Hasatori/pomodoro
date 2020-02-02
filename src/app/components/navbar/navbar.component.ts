@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
   @Output() myEvent = new EventEmitter<string>();
   private user: User;
 
-  constructor(private userServiceProvider: UserServiceProvider, private router: Router, private freeTrialService: FreeTrialService) {
+  constructor(public  userServiceProvider: UserServiceProvider, public router: Router, public freeTrialService: FreeTrialService) {
     userServiceProvider.userService.getUser().subscribe(user => {
       this.user = user;
     });

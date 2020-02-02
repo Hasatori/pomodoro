@@ -18,7 +18,7 @@ import {FreeTrialService} from '../../services/free-trial.service';
 })
 export class FreeTrialComponent {
 
-  constructor(private freeTrialService:FreeTrialService) {
+  constructor(public freeTrialService:FreeTrialService) {
   }
 
 }

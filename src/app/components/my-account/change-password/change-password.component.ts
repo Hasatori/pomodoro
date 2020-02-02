@@ -22,7 +22,7 @@ export class ChangePasswordComponent implements OnInit {
   submitted: boolean = false;
   inProgress: boolean = false;
 
-  constructor(private userServiceProvider: UserServiceProvider, public fb: FormBuilder) {
+  constructor(public userServiceProvider: UserServiceProvider, public fb: FormBuilder) {
     this.elegantForm = fb.group({
       'elegantFormOldPassword': ['', Validators.required],
       'elegantFormNewPassword': ['', Validators.required],

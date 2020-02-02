@@ -14,15 +14,15 @@ import {select} from 'd3-selection';
 })
 export class UserTodoComponent implements OnInit {
 
-  private userTodos: Array<UserTodo> = [];
-  private allToDos: Array<UserTodo> = [];
-  private loading: boolean = false;
-  private deadlineTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-  private anySelected = false;
-  private selectedTodos: Array<UserTodo> = [];
-  private user: User;
+  public userTodos: Array<UserTodo> = [];
+  public allToDos: Array<UserTodo> = [];
+  public loading: boolean = false;
+  public deadlineTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+  public anySelected = false;
+  public selectedTodos: Array<UserTodo> = [];
+  public user: User;
 
-  constructor(private userServiceProvider: UserServiceProvider) {
+  constructor(public userServiceProvider: UserServiceProvider) {
 
 
   }

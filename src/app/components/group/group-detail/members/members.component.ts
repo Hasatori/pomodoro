@@ -45,17 +45,17 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
   @Input() isOwner: boolean;
   @Input() allUsers: Array<User>;
 
-  private workSelected: boolean = true;
-  private pauseSelected: boolean = true;
+  public  workSelected: boolean = true;
+  public  pauseSelected: boolean = true;
   private notRunningSelected: boolean = true;
   private allRows: Map<User, Timer>;
-  private filteredRows: Map<User, Timer>;
+  public filteredRows: Map<User, Timer>;
 
 
   private getNewGroupMemberSubscription: Subscription;
   loading: boolean = false;
 
-  constructor(private userServiceProvider: UserServiceProvider, private log: NGXLogger,) {
+  constructor(public userServiceProvider: UserServiceProvider, private log: NGXLogger,) {
   }
 
   ngOnInit() {
@@ -113,7 +113,7 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
     }
   }
 
-  private select(which:string,input: CheckboxComponent) {
+  public  select(which:string,input: CheckboxComponent) {
     let selected = input.checked;
     console.log(which);
     switch (which) {

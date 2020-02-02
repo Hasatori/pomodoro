@@ -46,7 +46,7 @@ export class CreateEditUserTodoComponent implements OnInit {
   ];
   selectedDate: string;
 
-  constructor(public fb: FormBuilder, private userServiceProvider: UserServiceProvider, public datepipe: DatePipe) {
+  constructor(public fb: FormBuilder, public userServiceProvider: UserServiceProvider, public datepipe: DatePipe) {
     this.elegantForm = this.fb.group({
       'statusSelect': [],
       'datePicker': [],

@@ -14,9 +14,9 @@ export class PomodoroHistoryComponent implements OnInit {
   public chartType: string = 'bar';
   public dayToPast: number = 1;
   private pomodoros: Array<Pomodoro>;
-  private showLegend = true;
+  public  showLegend = true;
 
-  constructor(private userServiceProvider: UserServiceProvider) {
+  constructor(public userServiceProvider: UserServiceProvider) {
 
     this.userServiceProvider.userService.userPomodoros().pipe(first()).subscribe(
       pomodoros => {

@@ -16,7 +16,7 @@ export class CreateGroupComponent implements OnInit {
   nameNotFilled: boolean = false;
   success: boolean = false;
 
-  constructor(private userServiceProvider: UserServiceProvider, private router: Router) {
+  constructor(public userServiceProvider: UserServiceProvider, private router: Router) {
   }
 
   ngOnInit() {

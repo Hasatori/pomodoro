@@ -9,7 +9,7 @@ import {UserServiceProvider} from '../../services/user-service-provider';
 export class PomodoroComponent {
   todosVisible: boolean = true;
 
-  constructor(private userServiceProvider: UserServiceProvider) {
+  constructor(public userServiceProvider: UserServiceProvider) {
   }
 
 

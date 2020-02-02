@@ -41,7 +41,7 @@ export class ChangeLogComponent implements OnInit, OnDestroy, AfterViewInit {
   olderFetched: boolean = false;
   stopFetchingOlder: boolean = false;
   init: boolean = false;
-  private changes: Array<GroupChange>;
+  public  changes: Array<GroupChange>;
   private threshold = 0;
   private limit = 10;
   private end = this.threshold + this.limit;
@@ -75,9 +75,9 @@ export class ChangeLogComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
   private scrollableWindow: HTMLElement;
   private realScrollHeight: number = 0;
-  private loading: boolean=true;
+  public  loading: boolean=true;
 
-  constructor(private userServiceProvider: UserServiceProvider, public datepipe: DatePipe) {
+  constructor(public userServiceProvider: UserServiceProvider, public datepipe: DatePipe) {
   }
 
   ngOnInit() {

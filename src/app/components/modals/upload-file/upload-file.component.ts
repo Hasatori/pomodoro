@@ -12,17 +12,17 @@ import {SERVER_URL} from '../../../ServerConfig';
 })
 export class UploadFileComponent  {
 
-  private files: FileList;
-  private uploadedFileName = '';
-  private progress: number = 0;
-  private alreadyUploaded: number = 0;
-  private done: boolean;
-  private FILE_SIZE_LIMIT: number = 80000000;
-  private fileToBig: boolean = false;
+  public files: FileList;
+  public uploadedFileName = '';
+  public progress: number = 0;
+  public alreadyUploaded: number = 0;
+  public done: boolean;
+  public FILE_SIZE_LIMIT: number = 80000000;
+  public fileToBig: boolean = false;
   // @ts-ignore
   @ViewChild('frame') input: ModalDirective;
 
-  constructor(private userServiceProvider: UserServiceProvider, private httpClient: HttpClient) {
+  constructor(public userServiceProvider: UserServiceProvider, public httpClient: HttpClient) {
   }
 
   reset() {
@@ -44,7 +44,7 @@ export class UploadFileComponent  {
     }
   }
 
-  private allFilesMatchRestrictions(files: FileList): boolean {
+  public allFilesMatchRestrictions(files: FileList): boolean {
     for (let i = 0; i < files.length; i++) {
       if (files.item(i).size > this.FILE_SIZE_LIMIT) {
         return false;
@@ -53,7 +53,7 @@ export class UploadFileComponent  {
     return true;
   }
 
-  private uploadFile(file: File, index: number) {
+  public uploadFile(file: File, index: number) {
     this.uploadedFileName = file.name;
     this.postFile(this.files[index]).subscribe(event => {
         if (event.type === HttpEventType.UploadProgress) {
@@ -73,7 +73,7 @@ export class UploadFileComponent  {
   }
 
 
-  private postFile(fileToUpload: File): Observable<HttpEvent<any>> {
+  public postFile(fileToUpload: File): Observable<HttpEvent<any>> {
     if (fileToUpload.size < this.FILE_SIZE_LIMIT) {
       const endpoint = `${SERVER_URL}/upload`;
       const data: FormData = new FormData();

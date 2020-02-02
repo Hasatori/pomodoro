@@ -34,14 +34,14 @@ export class ToDoListComponent implements OnInit {
   @Input() group: Group;
   @Input() users: Array<User>;
   user: User;
-  private todos: Array<GroupToDo> = [];
-  private allToDos: Array<GroupToDo> = [];
+  public  todos: Array<GroupToDo> = [];
+  public  allToDos: Array<GroupToDo> = [];
   private deadlineTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-  private anySelected = false;
-  private selectedTodos: Array<GroupToDo> = [];
+  public  anySelected = false;
+  public  selectedTodos: Array<GroupToDo> = [];
   loading: boolean = true;
 
-  constructor(private userServiceProvider: UserServiceProvider) {
+  constructor(public userServiceProvider: UserServiceProvider) {
 
 
   }

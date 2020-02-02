@@ -32,8 +32,8 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private oldMessageTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   private recentMessageTimeOptions = {hour: 'numeric'};
 
-  private typing: boolean = false;
-  private showReactions: boolean = false;
+  public typing: boolean = false;
+  public showReactions: boolean = false;
 
   chatHidden: boolean = true;
   reactionsNames: Array<string> =
@@ -56,11 +56,11 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private newGroupMessageSubscription: Subscription;
   private lastNumberOfGroupMessagesSubscription: Subscription;
   private groupMessageReactionSubscription: Subscription;
-  private loading: boolean = false;
-  chatMutted: boolean=false;
-  private progress: number=0;
+  public  loading: boolean = false;
+  chatMutted: boolean = false;
+  private progress: number = 0;
 
-  constructor(private userServiceProvider: UserServiceProvider) {
+  constructor(public userServiceProvider: UserServiceProvider) {
 
 
   }
@@ -107,7 +107,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.threshold += this.limit;
       this.end += this.limit;
-      this.loading=false;
+      this.loading = false;
     });
 
   }

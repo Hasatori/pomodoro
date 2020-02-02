@@ -26,16 +26,16 @@ import {DatePipe} from '@angular/common';
 export class OverviewComponent implements OnInit {
 
 
-  private user: User;
+  public user: User;
 
-  private pageSize: number = 10;
+  public pageSize: number = 10;
 
-  private ownedGroupsPage = 1;
-  private participatingGroupsPage = 1;
-  private invitationsPage = 1;
+  public ownedGroupsPage = 1;
+  public participatingGroupsPage = 1;
+  public invitationsPage = 1;
 
 
-  constructor(private userServiceProvider: UserServiceProvider, private datePipe: DatePipe) {
+  constructor(public userServiceProvider: UserServiceProvider, public datePipe: DatePipe) {
 
 
   }

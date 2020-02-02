@@ -26,7 +26,7 @@ export class InviteUserComponent implements OnInit {
   selectedUser: User = null;
   success:boolean=false;
 
-  constructor(private http: HttpClient, private userFilter: UserFilterPipe, private userServiceProvider: UserServiceProvider) {
+  constructor(private http: HttpClient, private userFilter: UserFilterPipe, public userServiceProvider: UserServiceProvider) {
   }
 
 
