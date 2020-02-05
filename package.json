@@ -1,5 +1,5 @@
 {
-  "name": "mdb-angular-free",
+  "name": "pomodoro",
   "version": "8.3.0",
   "scripts": {
     "ng": "ng",
@@ -40,6 +40,7 @@
     "easy-pie-chart": "^2.1.7",
     "eva-icons": "^1.1.2",
     "experss": "0.0.1-security",
+    "express": "^4.17.1",
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
     "mdbootstrap": "^4.11.0",
