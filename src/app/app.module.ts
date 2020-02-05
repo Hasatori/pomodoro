@@ -86,6 +86,7 @@ import { TodoFilterPipe } from './pipes/todo-filter.pipe';
 import {CreateEditUserTodoComponent} from './components/pomodoro/create-edit-todo/create-edit-user-todo.component';
 import { SecureImagePipe } from './pipes/secure-image.pipe';
 import { UploadFileComponent } from './components/modals/upload-file/upload-file.component';
+import {ServerConfigService} from './services/server-config.service';
 
 
 
@@ -210,7 +211,8 @@ const routes: Routes = [
     },
     MDBSpinningPreloader,
     DatePipe,
-    UserFilterPipe
+    UserFilterPipe,
+    ServerConfigService
   ]
   ,
   bootstrap: [AppComponent]
