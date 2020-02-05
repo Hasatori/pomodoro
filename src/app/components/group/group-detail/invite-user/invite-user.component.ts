@@ -1,12 +1,13 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {SERVER_URL} from '../../../../ServerConfig';
+
 import {map} from 'rxjs/operators';
 import {User} from '../../../../model/user';
 import {UserFilterPipe} from '../../../../pipes/UserFilter.pipe';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
 import {Group} from '../../../../model/group';
 import {ModalDirective} from 'angular-bootstrap-md';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-invite-user',
@@ -40,7 +41,7 @@ export class InviteUserComponent implements OnInit {
     if (hint !== '' && !this.allFoundUsers.some(data => data.username.includes(hint)) && !this.searchInProgress) {
       this.searchInProgress = true;
       setTimeout(() => {
-        this.http.post<Array<User>>(`${SERVER_URL}/users-on-hint`, {value: hint}).pipe(map(response => {
+        this.http.post<Array<User>>(`${environment.backend}users-on-hint`, {value: hint}).pipe(map(response => {
           return response;
         })).subscribe(users => {
           this.allFoundUsers = this.allFoundUsers.concat(users);

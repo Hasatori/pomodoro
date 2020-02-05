@@ -5,15 +5,14 @@ import {Pomodoro} from '../model/pomodoro';
 import {first, map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {webSocketConfig} from '../WebSocketConfig';
-import {RxStompService} from '@stomp/ng2-stompjs';
+
 import {Timer} from '../model/Timer';
 import {AuthService} from './auth.service';
-import {SERVER_URL} from '../ServerConfig';
 import {Group} from '../model/group';
 import {NGXLogger} from 'ngx-logger';
 import {tree} from 'd3-hierarchy';
 import {WebSocketProxyService} from './web-socket-proxy.service';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +39,7 @@ export class PomodoroService {
   }
 
   public getLastPomodoro(): Observable<Pomodoro> {
-    return this.http.post<any>(SERVER_URL + `/pomodoro/update`, '').pipe(map(pomodoro => {
+    return this.http.post<any>(environment.backend + `pomodoro/update`, '').pipe(map(pomodoro => {
       return pomodoro;
     }));
   }

@@ -6,12 +6,13 @@ import {Observable, of} from 'rxjs';
 import {Pomodoro} from '../model/pomodoro';
 import {Settings} from '../model/settings';
 import {GroupInvitation} from '../model/group-invitation';
-import {SERVER_URL} from '../ServerConfig';
+
 import {UserTodo} from '../model/user-todo';
 import {GroupToDo} from '../model/GroupToDo';
 import {Group} from '../model/group';
 import {ChangeType} from '../model/group-change';
 import {WebSocketProxyService} from './web-socket-proxy.service';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class UserService {
     if (user != null) {
       return of(user);
     } else {
-      return this.http.post<any>(`${SERVER_URL}/userDetails`, '').pipe(map(user => {
+      return this.http.post<any>(`${environment.backend}userDetails`, '').pipe(map(user => {
         window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
         return user;
       }));
@@ -39,14 +40,14 @@ export class UserService {
   }
 
   updateUser(updatedUser: User): Observable<any> {
-    return this.http.post<any>(`${SERVER_URL}/updateDetails`, updatedUser).pipe(map(response => {
+    return this.http.post<any>(`${environment.backend}updateDetails`, updatedUser).pipe(map(response => {
       window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(updatedUser));
       return response;
     }));
   }
 
   updateSettings(updatedSettings: Settings): Observable<any> {
-    return this.http.post<any>(`${SERVER_URL}/updateSettings`, updatedSettings).pipe(map(response => {
+    return this.http.post<any>(`${environment.backend}updateSettings`, updatedSettings).pipe(map(response => {
       this.getUser().subscribe(user => {
         user.settings = updatedSettings;
         window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
@@ -57,7 +58,7 @@ export class UserService {
   }
 
   changePassword(oldPasswword: string, newPassword: string) {
-    return this.http.post<any>(`${SERVER_URL}/changePassword`, {
+    return this.http.post<any>(`${environment.backend}changePassword`, {
       oldPassword: oldPasswword,
       newPassword: newPassword
     }).pipe(map(response => {
@@ -70,7 +71,7 @@ export class UserService {
     if (pomodoros != null) {
       return of(pomodoros);
     } else {
-      return this.http.post<any>(`${SERVER_URL}/userPomodoros`, '').pipe(map(pomodoros => {
+      return this.http.post<any>(`${environment.backend}userPomodoros`, '').pipe(map(pomodoros => {
         window.sessionStorage.setItem(this.POMODOROS_KEY, JSON.stringify(pomodoros));
         return pomodoros;
       }));
@@ -82,7 +83,7 @@ export class UserService {
     if (todos != null) {
       return of(todos);
     } else {
-      return this.http.post<any>(`${SERVER_URL}/userTodos`, '').pipe(map(todos => {
+      return this.http.post<any>(`${environment.backend}userTodos`, '').pipe(map(todos => {
         window.sessionStorage.setItem(this.USER_TODOS_KEY, JSON.stringify(todos));
         return todos;
       }));
@@ -94,7 +95,7 @@ export class UserService {
     if (todos != null) {
       return of(todos);
     } else {
-      return this.http.post<any>(`${SERVER_URL}/groupTodos`, '').pipe(map(todos => {
+      return this.http.post<any>(`${environment.backend}groupTodos`, '').pipe(map(todos => {
         window.sessionStorage.setItem(this.USER_GROUP_TODOS_KEY, JSON.stringify(todos));
         return todos;
       }));
@@ -102,7 +103,7 @@ export class UserService {
   }
 
   public getGroupToDos(groupName: string): Observable<Array<GroupToDo>> {
-    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-todos`, {
+    return this.http.post<any>(`${environment.backend}groups/${groupName}/fetch-todos`, {
       groupName: groupName
     }).pipe(map(response => {
       return response;
@@ -112,7 +113,7 @@ export class UserService {
 
   removeTodos(todos: Array<UserTodo>): Observable<any> {
     let ids = todos.map(todo => todo.id);
-    return this.http.post<any>(`${SERVER_URL}/remove-todo`, ids).pipe(map(response => {
+    return this.http.post<any>(`${environment.backend}remove-todo`, ids).pipe(map(response => {
       if (response.success!==null){
         window.sessionStorage.removeItem(this.USER_TODOS_KEY);
       }

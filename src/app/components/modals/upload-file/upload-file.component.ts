@@ -3,7 +3,8 @@ import {ModalDirective} from 'angular-bootstrap-md';
 import {HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse} from '@angular/common/http';
 import {UserServiceProvider} from '../../../services/user-service-provider';
 import {Observable, of} from 'rxjs';
-import {SERVER_URL} from '../../../ServerConfig';
+import {environment} from '../../../../environments/environment';
+
 
 @Component({
   selector: 'app-upload-file',
@@ -75,7 +76,7 @@ export class UploadFileComponent  {
 
   public postFile(fileToUpload: File): Observable<HttpEvent<any>> {
     if (fileToUpload.size < this.FILE_SIZE_LIMIT) {
-      const endpoint = `${SERVER_URL}/upload`;
+      const endpoint = `${environment.backend}upload`;
       const data: FormData = new FormData();
       data.append('file', fileToUpload);
       const newRequest = new HttpRequest('POST', endpoint, data, {

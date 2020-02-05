@@ -3,6 +3,7 @@ import {UploadFile, UploadInput, UploadOutput} from 'ng-uikit-pro-standard';
 import {image} from 'd3-fetch';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {Group} from '../../../model/group';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-edit-group',
@@ -16,7 +17,7 @@ export class EditGroupComponent implements OnInit {
   public  groupName: string = '';
   public  isPublic: boolean = false;
   public  description: string = '';
-  selectedImage: string = 'https://pomodoro-rest-api.herokuapp.com/group/layout/teamwork-3.jpg';
+  selectedImage: string = environment.backend+'group/layout/teamwork-3.jpg';
 
 
   formData: FormData;
@@ -32,7 +33,7 @@ export class EditGroupComponent implements OnInit {
     this.humanizeBytes = new Function;
 
     for (let i = 1; i < 6; i++) {
-      this.images.push(`https://pomodoro-rest-api.herokuapp.com/group/layout/teamwork-${i}.jpg`);
+      this.images.push(`${environment.backend}group/layout/teamwork-${i}.jpg`);
     }
   }
 

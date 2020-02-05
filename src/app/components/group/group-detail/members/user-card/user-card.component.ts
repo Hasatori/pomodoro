@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../../../../../model/user';
 import {Timer} from '../../../../../model/Timer';
-import {SERVER_URL} from '../../../../../ServerConfig';
+import {UserServiceProvider} from '../../../../../services/user-service-provider';
+
 
 @Component({
   selector: 'app-user-card',
@@ -13,7 +14,7 @@ export class UserCardComponent implements OnInit {
 @Input()timer:Timer;
 @Input()isOwner:boolean;
 
-  constructor() { }
+  constructor(public userServiceProvider:UserServiceProvider) { }
 
   ngOnInit() {
   }

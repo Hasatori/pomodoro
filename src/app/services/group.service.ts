@@ -5,7 +5,6 @@ import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../model/user';
 import {Pomodoro} from '../model/pomodoro';
-import {SERVER_URL} from '../ServerConfig';
 import {GroupMessage} from '../model/group-message';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {UserService} from './user.service';
@@ -13,6 +12,7 @@ import {GroupInvitation} from '../model/group-invitation';
 import {isUndefined} from 'util';
 import {ChangeType, GroupChange} from '../model/group-change';
 import {GroupToDo} from '../model/GroupToDo';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -131,7 +131,7 @@ export class GroupService implements OnDestroy {
   }
 
   private getAllUnreadMessagesForGroup(groupName: string): Observable<Array<GroupMessage>> {
-    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-unread-messages`, {
+    return this.http.post<any>(`${environment.backend}groups/${groupName}/fetch-unread-messages`, {
       groupName: groupName,
     }).pipe(map(response => {
       return response;
@@ -141,7 +141,7 @@ export class GroupService implements OnDestroy {
   markAllFromGroupAsRead(groupName: string): Observable<GroupMessage> {
     this.allUnreadMessages -= this.groupUnreadMessages.get(groupName);
     this.groupUnreadMessages.set(groupName, 0);
-    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/mark-all-as-read`, {}).pipe(map(response => {
+    return this.http.post<any>(`${environment.backend}groups/${groupName}/mark-all-as-read`, {}).pipe(map(response => {
       return response;
     }));
   }
@@ -151,7 +151,7 @@ export class GroupService implements OnDestroy {
     if (groups != null) {
       return of(groups);
     } else {
-      return this.http.post<any>(`${SERVER_URL}/groups`, '').pipe(map(groups => {
+      return this.http.post<any>(`${environment.backend}groups`, '').pipe(map(groups => {
         sessionStorage.setItem(this.GROUPS_KEY, JSON.stringify(groups));
         return groups;
       }));
@@ -163,7 +163,7 @@ export class GroupService implements OnDestroy {
     if (groupUsers != null) {
       return of(groupUsers);
     } else {
-      return this.http.post<any>(`${SERVER_URL}/groups/` + groupName, '').pipe(map(users => {
+      return this.http.post<any>(`${environment.backend}groups/` + groupName, '').pipe(map(users => {
         sessionStorage.setItem(this.createParameterizedKey(this.GROUP_USERS_KEY, groupName), JSON.stringify(users));
         return users;
       }));
@@ -171,14 +171,14 @@ export class GroupService implements OnDestroy {
   }
 
   public getLastPomodoroForUser(userName: string): Observable<Pomodoro> {
-    return this.http.post<any>(`${SERVER_URL}/groups/update/` + userName, '').pipe(map(pomodoro => {
+    return this.http.post<any>(`${environment.backend}groups/update/` + userName, '').pipe(map(pomodoro => {
       return pomodoro;
     }));
 
   }
 
   public getLastNumberOfGroupMessages(groupName: string, start: number, stop: number): Observable<Array<GroupMessage>> {
-    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-chat-messages`, {
+    return this.http.post<any>(`${environment.backend}groups/${groupName}/fetch-chat-messages`, {
       groupName: groupName,
       start: start,
       stop: stop
@@ -189,7 +189,7 @@ export class GroupService implements OnDestroy {
   }
 
   public getLastNumberOfGroupChanges(groupName: string, start: number, stop: number): Observable<Array<GroupChange>> {
-    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-changes`, {
+    return this.http.post<any>(`${environment.backend}groups/${groupName}/fetch-changes`, {
       groupName: groupName,
       start: start,
       stop: stop
@@ -200,7 +200,7 @@ export class GroupService implements OnDestroy {
   }
 
   public getGroupToDos(groupName: string): Observable<Array<GroupToDo>> {
-    return this.http.post<any>(`${SERVER_URL}/groups/${groupName}/fetch-todos`, {
+    return this.http.post<any>(`${environment.backend}groups/${groupName}/fetch-todos`, {
       groupName: groupName
     }).pipe(map(response => {
       console.log(response);
@@ -224,7 +224,7 @@ export class GroupService implements OnDestroy {
   }
 
   createGroup(name: string, isPublic: boolean): Observable<any> {
-    return this.http.post<any>(`${SERVER_URL}/group/create`, {
+    return this.http.post<any>(`${environment.backend}group/create`, {
       name: name,
       isPublic: isPublic
     }).pipe(map(response => {
@@ -252,7 +252,7 @@ export class GroupService implements OnDestroy {
   }
 
   removeUser(username: string, groupName: string): Observable<any> {
-    return this.http.post<any>(`${SERVER_URL}/group/removeUser`, {
+    return this.http.post<any>(`${environment.backend}group/removeUser`, {
       username: username, groupName: groupName
     }).pipe(map(response => {
       this.sendChange(groupName, ChangeType.DELETE, `${username} has been removed`);
@@ -306,7 +306,7 @@ export class GroupService implements OnDestroy {
 
 
   private getNotAcceptedGroupInvitations(): Observable<Array<GroupInvitation>> {
-    return this.http.post<any>(`${SERVER_URL}/not-accepted-group-invitations`, {}).pipe(map(response => {
+    return this.http.post<any>(`${environment.backend}not-accepted-group-invitations`, {}).pipe(map(response => {
       console.log(response);
       return response;
     }));
@@ -314,7 +314,7 @@ export class GroupService implements OnDestroy {
   }
 
   public acceptGroupInvitation(groupInvitation: GroupInvitation) {
-    this.http.post<any>(`${SERVER_URL}/accept-invitation`, groupInvitation).pipe(map(pomodoro => {
+    this.http.post<any>(`${environment.backend}accept-invitation`, groupInvitation).pipe(map(pomodoro => {
       return pomodoro;
     })).subscribe(result => {
       if (!isUndefined(result.success)) {
@@ -360,7 +360,7 @@ export class GroupService implements OnDestroy {
     console.log(todos);
     let ids = todos.map(todo => todo.id);
 
-    return this.http.post<any>(`${SERVER_URL}/group/remove-todo`, ids).pipe(map(response => {
+    return this.http.post<any>(`${environment.backend}group/remove-todo`, ids).pipe(map(response => {
       todos.forEach(todo => {
         this.sendChange(group.name, ChangeType.DELETE, `Todo ${todo.description} has been deleted`);
       });
@@ -369,7 +369,7 @@ export class GroupService implements OnDestroy {
   }
 
   getInvitationsForGroup(group: Group): Observable<Array<GroupInvitation>> {
-    return this.http.post<any>(`${SERVER_URL}/group/${group.name}/invitations`, group
+    return this.http.post<any>(`${environment.backend}group/${group.name}/invitations`, group
     ).pipe(map(response => {
       return response;
     }));
@@ -377,7 +377,7 @@ export class GroupService implements OnDestroy {
   }
 
   invitedUserToGroup(user: User, group: Group): Observable<any> {
-    return this.http.post<any>(`${SERVER_URL}/group/${group.name}/invite-user`, {
+    return this.http.post<any>(`${environment.backend}group/${group.name}/invite-user`, {
       invitedUser: user,
       group: group
     }).pipe(map(response => {

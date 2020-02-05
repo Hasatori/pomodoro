@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {SERVER_URL} from '../../ServerConfig';
+
 import {first, map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {error} from 'util';
@@ -10,6 +10,7 @@ import {ModalDirective} from 'angular-bootstrap-md';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -59,7 +60,7 @@ export class RegisterComponent implements OnInit {
       newUser.username=username;
       newUser.password=password;
       newUser.email=email;
-      this.http.post<any>(`${SERVER_URL}/register`, newUser).pipe(map(response => {
+      this.http.post<any>(`${environment.backend}register`, newUser).pipe(map(response => {
         return response;
       })).pipe(first()).subscribe((result) => {
         this.successComponent.show('Registration', result.Success);

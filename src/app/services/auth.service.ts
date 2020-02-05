@@ -3,8 +3,9 @@ import {BehaviorSubject, from, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {SERVER_URL} from '../ServerConfig';
+
 import {stringify} from 'querystring';
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -25,7 +26,7 @@ export class AuthService {
 
   login(userName: string, password: string) {
     console.log('test');
-    return this.http.post<any>(`${SERVER_URL}/authenticate`, {username: userName, password})
+    return this.http.post<any>(`${environment.backend}authenticate`, {username: userName, password})
       .pipe(map(response => {
         this.serverLoginResponseCame(response);
       }));
@@ -45,7 +46,7 @@ export class AuthService {
   }
 
   loginWithFB(facebookResponse: any): Observable<any> {
-    return this.http.post<any>(`${SERVER_URL}/facebookLogin`, facebookResponse)
+    return this.http.post<any>(`${environment.backend}facebookLogin`, facebookResponse)
       .pipe(map(response => {
         this.serverLoginResponseCame(response);
       }));
