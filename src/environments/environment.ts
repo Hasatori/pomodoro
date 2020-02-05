@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  backend:'http://localhost:8080/',
-  websocket:'ws://localhost:8080/socket'
+  production: true,
+  backend:'https://pomodoro-rest-api.herokuapp.com/',
+  websocket:'wss://pomodoro-rest-api.herokuapp.com/socket'
 };
 
 /*
