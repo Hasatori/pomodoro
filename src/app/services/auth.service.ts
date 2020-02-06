@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   login(userName: string, password: string) {
-    console.log('test');
+
     return this.http.post<any>(`${getEnvironment().backend}authenticate`, {username: userName, password})
       .pipe(map(response => {
         this.serverLoginResponseCame(response);
@@ -34,7 +34,7 @@ export class AuthService {
   }
 
   logout() {
-    console.log('Logging out');
+
     sessionStorage.clear();
     this.accessToken = '';
     this.router.navigate(['login']);
@@ -56,7 +56,7 @@ export class AuthService {
   private serverLoginResponseCame(response: any) {
     if (response) {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
-      console.log(response);
+
       sessionStorage.setItem(this.ACCESS_TOKEN_KEY, response.jwttoken);
       this.accessToken = sessionStorage.getItem(this.ACCESS_TOKEN_KEY);
     }

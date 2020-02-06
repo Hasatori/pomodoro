@@ -42,7 +42,7 @@ export class SettingsComponent {
   }
 
   updateSettings(pauseTime: string, workTime: string, soundOnPhaseChange: string, soundOnWork: string, soundOnPause: string) {
-    console.log('Test' + workTime);
+
     this.resetValues();
     let updatedSettings = new Settings();
     updatedSettings.pauseTime = Number(pauseTime) * 60;

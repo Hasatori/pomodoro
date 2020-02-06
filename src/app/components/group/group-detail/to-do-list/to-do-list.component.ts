@@ -120,7 +120,7 @@ export class ToDoListComponent implements OnInit {
     this.anySelected = this.isAnySelected(this.todos);
     /*  let status = !item.selected;
       this.fillSelect(item, status);*/
-    console.log(this.selectedTodos);
+
 
   }
 

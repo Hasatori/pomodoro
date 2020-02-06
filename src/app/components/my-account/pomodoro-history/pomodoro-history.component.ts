@@ -13,7 +13,7 @@ import {UserServiceProvider} from '../../../services/user-service-provider';
 export class PomodoroHistoryComponent implements OnInit {
   public chartType: string = 'bar';
   public dayToPast: number = 1;
-  private pomodoros: Array<Pomodoro>;
+  private pomodoros: Array<Pomodoro>=[];
   public  showLegend = true;
 
   constructor(public userServiceProvider: UserServiceProvider) {
@@ -30,7 +30,7 @@ export class PomodoroHistoryComponent implements OnInit {
     {data: [], label: 'Finished pomodoros'}, {data: [], label: 'Interrputed pomodoros'}
   ];
 
-  public chartLabels: Array<any>;
+  public chartLabels: Array<any>=[];
 
   public chartColors: Array<any> = [
     {
@@ -75,7 +75,7 @@ export class PomodoroHistoryComponent implements OnInit {
       finishedPomodoros.push(this.pomodoros.filter(pomodoro => pomodoro.creationTimestamp.toString().includes(chartLabel) && pomodoro.interrupted === false).length);
       notFinishedPomodoros.push(this.pomodoros.filter(pomodoro => pomodoro.creationTimestamp.toString().includes(chartLabel)  && pomodoro.interrupted !== false).length);
     }
-    console.log(finishedPomodoros);
+
     this.chartDatasets = [
       {data: finishedPomodoros, label: 'Finished pomodoros'},
       {data: notFinishedPomodoros, label: 'Interrputed pomodoros'}

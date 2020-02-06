@@ -12,6 +12,6 @@ import {UserServiceProvider} from '../../services/user-service-provider';
 export class MyAccountComponent {
 
 
-  public constructor(private userServiceProvider:UserServiceProvider){}
+  public constructor(){}
 
 }

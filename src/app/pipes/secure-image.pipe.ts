@@ -26,7 +26,7 @@ export class SecureImagePipe implements PipeTransform {
           map(val => {
             let result = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(val));
             this.userServiceProvider.cachingService.cacheImage(url, result);
-            console.log(typeof result);
+            
             return result;
           }));
     }

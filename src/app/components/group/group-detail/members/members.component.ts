@@ -77,7 +77,7 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
           }
           this.updateFilter();
         }, error1 => {
-          console.log(error1);
+
         }
       );
     });
@@ -115,7 +115,7 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
 
   public  select(which:string,input: CheckboxComponent) {
     let selected = input.checked;
-    console.log(which);
+
     switch (which) {
       case 'WORK':
         this.workSelected = selected;

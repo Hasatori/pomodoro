@@ -66,17 +66,15 @@ export class LoginComponent implements OnInit {
   }
 
   private loginSuccessful(data: any) {
-    console.log(data);
+
     this.loggingInProgress = false;
     this.userServiceProvider.webSocketManagerService.initAllSockets();
-
-
-    this.router.navigate(['/my-account']);
+    this.router.navigate(['/pomodoro']);
   }
 
   private loginUnsuccessful(error: any) {
     if (error.status === 401) {
-      console.log(error);
+
       this.logInError = true;
     }
     this.loggingInProgress = false;

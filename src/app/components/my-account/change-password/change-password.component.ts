@@ -47,12 +47,12 @@ export class ChangePasswordComponent implements OnInit {
           this.success = response.addUserSuccess;
           this.inProgress = false;
         }, errorResponse => {
-          console.log(errorResponse);
+
           this.oldPasswordError = errorResponse.error.oldPassword;
           this.newPasswordError = errorResponse.error.newPassword;
           this.newPasswordConfirmError = errorResponse.error.newPasswordConfirm;
           this.inProgress = false;
-          console.log(this.newPasswordConfirmError);
+
         }
       );
     }

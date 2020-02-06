@@ -34,7 +34,6 @@ export class PomodoroService {
     this.getLastPomodoro().pipe(first()).subscribe(pomodoro => {
       this.pomodoro = pomodoro;
       this.timer.start(this.pomodoro);
-      console.log("test2");
     });
   }
 

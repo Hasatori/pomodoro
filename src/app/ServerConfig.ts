@@ -1,6 +1,6 @@
 import {AuthServiceConfig, FacebookLoginProvider} from 'angularx-social-login';
-import {isDevMode} from "@angular/core";
-import {environment} from "../environments/environment.prod";
+import {environment} from "../environments/environment";
+
 
 const config = new AuthServiceConfig([
   {

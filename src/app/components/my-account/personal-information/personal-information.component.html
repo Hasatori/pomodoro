@@ -1,6 +1,6 @@
 <p class="h2-responsive text-center mb-4 header">Personal information</p>
 <div class="custom-card shadow my-5">
-  <form class="text-center border border-light p-5"
+  <form class="text-center border border-light p-5" *ngIf="user"
         [formGroup]="elegantForm"
         (ngSubmit)="updateUser(firstName.value,secondName.value,elegantFormUsername.value,elegantFormEmail.value)"
   >

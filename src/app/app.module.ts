@@ -149,7 +149,8 @@ const routes: Routes = [
     TodoFilterPipe,
    CreateEditUserTodoComponent,
    SecureImagePipe,
-   UploadFileComponent
+   UploadFileComponent,
+
 
 
   ],
@@ -191,8 +192,8 @@ const routes: Routes = [
     TableModule,
     CardsModule,
     ModalModule,
-    NgxPaginationModule
-
+    NgxPaginationModule,
+    BrowserAnimationsModule
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {

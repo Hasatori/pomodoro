@@ -120,10 +120,10 @@ export class ChangeLogComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.init) {
       this.scrollableWindow.scrollTop =this.realScrollHeight-5;
     }
-    console.log(this.realScrollHeight);
+
     if ((this.realScrollHeight == this.scrollableWindow.scrollTop) && !this.stopFetchingOlder) {
       this.fetchingOlder = true;
-      console.log('fetching older');
+
       setTimeout(() => {
         this.userServiceProvider.groupService.getLastNumberOfGroupChanges(this.group.name, this.threshold, this.end).subscribe((changes) => {
           if (changes.length > 0) {

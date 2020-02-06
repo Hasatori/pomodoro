@@ -69,7 +69,7 @@ export class EditGroupComponent implements OnInit {
   }
 
   onUploadOutput(output: UploadOutput | any): void {
-    console.log(output);
+
     if (output.type === 'allAddedToQueue') {
     } else if (output.type === 'addedToQueue') {
       this.files.push(output.file); // add file to array when added

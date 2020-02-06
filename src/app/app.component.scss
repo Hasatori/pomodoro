@@ -36,7 +36,9 @@ $mySuccess: #5cb85c;
   opacity: 1;
   text-shadow: 1px 4px 5px rgba(0, 0, 0, 0.3);
 }
-
+.round-social-icon-disabled{
+  opacity: 0.4 !important;
+}
 .facebook-icon {
   color: #4267B2 !important;
 }

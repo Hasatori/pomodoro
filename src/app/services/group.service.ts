@@ -203,7 +203,7 @@ export class GroupService implements OnDestroy {
     return this.http.post<any>(`${getEnvironment().backend}groups/${groupName}/fetch-todos`, {
       groupName: groupName
     }).pipe(map(response => {
-      console.log(response);
+
       return response;
     }));
 
@@ -280,7 +280,7 @@ export class GroupService implements OnDestroy {
       let groupUsers: Array<User> = JSON.parse(window.sessionStorage.getItem(this.createParameterizedKey(this.GROUP_USERS_KEY, groupName)));
       groupUsers.push(newMember);
       sessionStorage.setItem(this.createParameterizedKey(this.GROUP_USERS_KEY, groupName), JSON.stringify(groupUsers));
-      console.log(newMember);
+
       return newMember;
     }));
   }
@@ -307,7 +307,7 @@ export class GroupService implements OnDestroy {
 
   private getNotAcceptedGroupInvitations(): Observable<Array<GroupInvitation>> {
     return this.http.post<any>(`${getEnvironment().backend}not-accepted-group-invitations`, {}).pipe(map(response => {
-      console.log(response);
+
       return response;
     }));
 
@@ -357,7 +357,7 @@ export class GroupService implements OnDestroy {
   }
 
   removeGroupTodos(group: Group, todos: Array<GroupToDo>): Observable<any> {
-    console.log(todos);
+
     let ids = todos.map(todo => todo.id);
 
     return this.http.post<any>(`${getEnvironment().backend}group/remove-todo`, ids).pipe(map(response => {

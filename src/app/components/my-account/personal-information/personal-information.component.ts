@@ -56,7 +56,7 @@ export class PersonalInformationComponent implements OnInit {
   updateUser(firstName: string, secondName: string, username: string, email: string) {
     this.reset();
     this.submitted = true;
-    console.log(`${firstName} ${secondName} ${username} ${email}`);
+
     if (firstName === this.user.firstName && secondName === this.user.lastName && username === this.user.username && email === this.user.email) {
     } else {
       this.inProgress = true;
@@ -65,7 +65,7 @@ export class PersonalInformationComponent implements OnInit {
       updatedUser.lastName = secondName;
       updatedUser.username = username;
       updatedUser.email = email;
-      console.log(updatedUser.firstName);
+
       this.userServiceProvider.userService.updateUser(updatedUser).pipe(first()).subscribe(
         response => {
           this.reset();
