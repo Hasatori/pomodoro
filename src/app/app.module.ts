@@ -25,7 +25,13 @@ import {ChangePasswordComponent} from './components/my-account/change-password/c
 import {myAccountRoutes} from './components/my-account/my-account.module';
 import {PomodoroComponent} from './components/pomodoro/pomodoro.component';
 import {CountdownModule} from 'ngx-countdown';
-import {InjectableRxStompConfig, RxStompService, rxStompServiceFactory, StompConfig, StompService} from '@stomp/ng2-stompjs';
+import {
+  InjectableRxStompConfig,
+  RxStompService,
+  rxStompServiceFactory,
+  StompConfig,
+  StompService
+} from '@stomp/ng2-stompjs';
 import {webSocketConfig} from './WebSocketConfig';
 import {GroupComponent} from './components/group/group.component';
 import {GroupDetailComponent} from './components/group/group-detail/group-detail.component';
@@ -40,7 +46,7 @@ import {provideConfig} from './ServerConfig';
 import {WantMoreFunctionalityComponent} from './components/modals/want-more-functionality/want-more-functionality.component';
 import {SuccessComponent} from './components/modals/success/success.component';
 import {ChatComponent} from './components/group/group-detail/chat/chat.component';
-import { LightBoxModule, CarouselModule, ModalModule, WavesModule } from 'ng-uikit-pro-standard'
+import {LightBoxModule, CarouselModule, ModalModule, WavesModule} from 'ng-uikit-pro-standard'
 import {
   AccordionModule,
   AnimatedCardsModule,
@@ -50,7 +56,7 @@ import {
   ChartSimpleModule, ChipsModule,
   DatepickerModule,
   FileInputModule,
- MDBBootstrapModulePro,
+  MDBBootstrapModulePro,
   MDBBootstrapModulesPro,
   MDBSpinningPreloader,
   PreloadersModule,
@@ -74,21 +80,20 @@ import {ChangeLogComponent} from './components/group/group-detail/change-log/cha
 import {CreateEditGroupTodoComponent} from './components/group/group-detail/to-do-list/create-edit-todo/create-edit-group-todo.component';
 import {DatePipe} from '@angular/common';
 import {EditGroupComponent} from './components/group/edit-group/edit-group.component';
-import { AreYouSureComponent } from './components/modals/are-you-sure/are-you-sure.component';
+import {AreYouSureComponent} from './components/modals/are-you-sure/are-you-sure.component';
 import {InviteUserComponent} from './components/group/group-detail/invite-user/invite-user.component';
-import { UserFilterPipe } from './pipes/UserFilter.pipe';
-import { UserTodoComponent } from './components/pomodoro/user-todo/user-todo.component';
+import {UserFilterPipe} from './pipes/UserFilter.pipe';
+import {UserTodoComponent} from './components/pomodoro/user-todo/user-todo.component';
 import {NgxPaginationModule} from 'ngx-pagination';
-import { GroupFilterPipe } from './pipes/group-filter.pipe';
-import { InvitationFilterPipe } from './pipes/invitation-filter.pipe';
-import { GroupTodosFilterPipe } from './pipes/group-todos-filter.pipe';
-import { TodoFilterPipe } from './pipes/todo-filter.pipe';
+import {GroupFilterPipe} from './pipes/group-filter.pipe';
+import {InvitationFilterPipe} from './pipes/invitation-filter.pipe';
+import {GroupTodosFilterPipe} from './pipes/group-todos-filter.pipe';
+import {TodoFilterPipe} from './pipes/todo-filter.pipe';
 import {CreateEditUserTodoComponent} from './components/pomodoro/create-edit-todo/create-edit-user-todo.component';
-import { SecureImagePipe } from './pipes/secure-image.pipe';
-import { UploadFileComponent } from './components/modals/upload-file/upload-file.component';
+import {SecureImagePipe} from './pipes/secure-image.pipe';
+import {UploadFileComponent} from './components/modals/upload-file/upload-file.component';
 import {ServerConfigService} from './services/server-config.service';
-
-
+import {environment} from "../environments/environment";
 
 
 const routes: Routes = [
@@ -147,10 +152,9 @@ const routes: Routes = [
     InvitationFilterPipe,
     GroupTodosFilterPipe,
     TodoFilterPipe,
-   CreateEditUserTodoComponent,
-   SecureImagePipe,
-   UploadFileComponent,
-
+    CreateEditUserTodoComponent,
+    SecureImagePipe,
+    UploadFileComponent,
 
 
   ],
@@ -162,7 +166,10 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     CountdownModule,
-    LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
+    LoggerModule.forRoot({
+      level: !environment.production ? NgxLoggerLevel.LOG : NgxLoggerLevel.OFF,// serverLogLevel
+      serverLogLevel: NgxLoggerLevel.OFF
+    }),
     SocialLoginModule,
     MDBBootstrapModulesPro.forRoot(),
     ToastModule.forRoot(),
