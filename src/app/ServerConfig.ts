@@ -1,5 +1,6 @@
 import {AuthServiceConfig, FacebookLoginProvider} from 'angularx-social-login';
 import {isDevMode} from "@angular/core";
+import {environment} from "../environments/environment.prod";
 
 const config = new AuthServiceConfig([
   {
@@ -14,7 +15,7 @@ export function provideConfig() {
 
 export function getEnvironment(): Environment {
   let result = new Environment();
-  if (!isDevMode()) {
+  if (environment.production) {
     result.backend = 'https://pomodoro-rest-api.herokuapp.com/';
     result.websocket = 'wss://pomodoro-rest-api.herokuapp.com/socket';
   } else {
