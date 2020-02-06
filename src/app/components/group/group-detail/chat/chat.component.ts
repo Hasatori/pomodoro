@@ -60,7 +60,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   public  loading: boolean = false;
   chatMutted: boolean = false;
   private progress: number = 0;
-
+  private scrollTimer = null;
   constructor(public userServiceProvider: UserServiceProvider) {
 
 
@@ -191,6 +191,14 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   scrolled() {
+    if (this.scrollTimer) {
+      clearTimeout(this.scrollTimer);
+    }
+    this.scrollTimer = setTimeout(()=>this.handleScroll(), 500);
+  }
+
+  handleScroll(){
+    console.log("Scrolled");
     if (this.scrollableWindow.scrollTop == 0 && !this.stopFetchingOlder) {
       this.fetchingOlder = true;
       setTimeout(() => {
@@ -198,7 +206,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
           if (response.length > 0) {
             this.messages = this.messages.concat(response);
 
-            this.messages.sort(function(a, b) {
+            this.messages.sort(function (a, b) {
               return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
             });
             for (let i = 0; i < this.messages.length; i++) {
@@ -222,7 +230,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
   }
-
   processMessagesFromBack(messages: Array<GroupMessage>) {
     for (let i = messages.length - 1; i >= 0; i--) {
       let currentMessage = messages[i];

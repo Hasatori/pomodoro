@@ -32,7 +32,7 @@
 </div>
 
 
-<mdb-card class="chat-room small-chat wide " *ngIf="!chatHidden">
+<mdb-card [ngClass]="chatHidden?'chat-room small-chat wide invisible ':'chat-room small-chat wide'">
 
   <mdb-card-header class="chat-heading p-3" id="toggle" style="cursor: pointer;">
     <div class="chat-open-settings">
@@ -214,7 +214,7 @@
             <div
               *ngIf="message.shouldShowAuthorsPhoto"
               class="profile-photo message-photo ">
-              <img [src]="userServiceProvider.serverConfig.getFullUrl('users/'+message.author.id+'/profile.jpg') | secureImage | async"
+              <img [src]="userServiceProvider.serverConfig.getFullUrl('users/'+message.author.id+'/avatar.jpg') | secureImage | async"
                    alt="avatar"
                    class="avatar rounded-circle mr-1 ml-0 mb-0">
 
