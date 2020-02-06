@@ -12,8 +12,7 @@ import {listAnimation, onCreateListAnimation} from "../../../../animations";
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss'],
-  animations:[listAnimation,onCreateListAnimation]
+  styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -37,7 +36,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   public typing: boolean = false;
   public showReactions: boolean = false;
 
-  chatHidden: boolean = true;
+  chatHidden: boolean = false;
   reactionsNames: Array<string> =
     [
       'happy',
@@ -68,7 +67,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.hideOrShowChat();
     this.loading = true;
     this.markAllAsReadAndProcessResponse();
     this.userServiceProvider.userService.getUser().subscribe((user) => {
@@ -307,19 +305,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userServiceProvider.groupService.reactToGroupMessage(this.group.name, message, null);
 
   }
-
-  hideOrShowChat() {
-    let chat = document.getElementById('chat');
-    if (this.chatHidden) {
-      chat.className = chat.className.replace('hidden', '');
-      this.chatHidden = false;
-    } else {
-      chat.className = chat.className + ' hidden';
-      this.chatHidden = true;
-    }
-
-  }
-
   addReactionToMessage(message: GroupMessage, reaction: string) {
     let foundReaction = message.reactions.find(r => {
       return r.name === reaction;

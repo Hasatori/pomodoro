@@ -15,7 +15,7 @@
         <mdb-icon fas icon="volume-up"></mdb-icon>
       </div>
     </div>
-    <div class="" (click)="hideOrShowChat()">
+    <div class="" (click)="chatHidden=false">
       <div class=" text-center flex-shrink-1">
         <mdb-icon fas icon="angle-up"></mdb-icon>
       </div>
@@ -32,7 +32,7 @@
 </div>
 
 
-<mdb-card class="chat-room small-chat wide " id="chat">
+<mdb-card class="chat-room small-chat wide " *ngIf="!chatHidden">
 
   <mdb-card-header class="chat-heading p-3" id="toggle" style="cursor: pointer;">
     <div class="chat-open-settings">
@@ -61,7 +61,7 @@
     <p class="name mb-0 text-center">
       <strong>Group chat</strong></p>
 
-    <div *ngIf="!chatHidden && !showReactions" (click)="hideOrShowChat()" class="minimize -align-right">
+    <div *ngIf="!chatHidden && !showReactions" (click)="chatHidden=true" class="minimize -align-right">
       <div class="p-0 " mdbTooltip="hide">
         <mdb-icon fas icon="angle-down"></mdb-icon>
       </div>
@@ -82,14 +82,14 @@
 
       </div>
 
-      <div *ngIf="!loading" @list>
+      <div *ngIf="!loading" >
         <div class=" d-flex justify-content-center">
           <mdb-spinner *ngIf="fetchingOlder" spinnerColor="blue" spinnerType="small"></mdb-spinner>
 
         </div>
         <div #messages *ngFor="let message of messages;last as isLast; let i = index;"
              class="messages-container"
-             @items
+
         >
 
           <div class="pr-2 d-flex justify-content-end"
