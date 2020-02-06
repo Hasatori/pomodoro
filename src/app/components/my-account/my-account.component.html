@@ -11,24 +11,24 @@
     <div class="collapsed-part" mdbCollapse #test="bs-collapse">
       <div class="mdb-scrollspy-ex">
         <ul mdbScrollSpy="scrollspy4" class="nav d-flex flex-column p-3">
-          <li class="nav-item py-2"><a mdbScrollSpyLink="personalInformation" class="nav-link"
-                                       [routerLink]="['/my-account#personalInformation']">
+          <li class="nav-item py-2"><a  [routerLinkActive]="['active']" mdbScrollSpyLink="personalInformation" class="nav-link"
+                                       [routerLink]="['./personal-information']">
             <mdb-icon fas icon="info mr-3"></mdb-icon>
             Personal information
           </a></li>
-          <li class="nav-item py-2"><a mdbScrollSpyLink="settings" class="nav-link"
-                                       [routerLink]="['/my-account#settings']">
+          <li class="nav-item py-2" ><a [routerLinkActive]="['active']" mdbScrollSpyLink="settings" class="nav-link"
+                                       [routerLink]="['./settings']">
             <mdb-icon fas icon="cog mr-3"></mdb-icon>
             Settings
           </a></li>
-          <li class="nav-item py-2"><a mdbScrollSpyLink="changePassword" class="nav-link"
-                                       [routerLink]="['/my-account#changePassword']">
+          <li class="nav-item py-2" ><a [routerLinkActive]="['active']" mdbScrollSpyLink="changePassword" class="nav-link"
+                                       [routerLink]="['./change-password']">
             <mdb-icon fas icon="key mr-3"></mdb-icon>
             Change password
           </a></li>
 
-          <li class="nav-item py-2"><a mdbScrollSpyLink="pomodoroHistory" class="nav-link"
-                                       [routerLink]="['/my-account#pomodoroHistory']">
+          <li class="nav-item py-2" ><a [routerLinkActive]="['active']" mdbScrollSpyLink="pomodoroHistory" class="nav-link"
+                                       [routerLink]="['./pomodoro-history']">
             <mdb-icon far icon="clock mr-3"></mdb-icon>
             Pomodoro history
           </a></li>
@@ -38,31 +38,7 @@
   </div>
 
   <div class="col-lg-12 col-xl-10">
-    <div class="container-fluid ">
-      <div class="row section">
-        <div class="col-lg-12 col-xl-6 right-border-section">
-          <div class="row">
-            <div class="col-12 my-5 subsection" id="personalInformation" mdbScrollSpyWindow="scrollspy4">
-              <personal-information></personal-information>
-            </div>
-            <div class="col-12 my-5 subsection subsection-border" id="changePassword" mdbScrollSpyWindow="scrollspy4">
-              <change-password></change-password>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-12 col-xl-6 my-5 left-border-section" id="settings" mdbScrollSpyWindow="scrollspy4">
-          <app-settings></app-settings>
-        </div>
-      </div>
-    </div>
+    <div class="container"> <router-outlet></router-outlet></div>
 
-    <hr class="w-100">
-    <div class="container-fluid ">
-      <div class="row section">
-        <div class="col-12 my-5  subsection subsection-border" id="pomodoroHistory" mdbScrollSpyWindow="scrollspy4">
-          <pomodoro-history></pomodoro-history>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
