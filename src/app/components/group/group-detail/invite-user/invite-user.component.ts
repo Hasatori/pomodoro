@@ -8,6 +8,7 @@ import {UserServiceProvider} from '../../../../services/user-service-provider';
 import {Group} from '../../../../model/group';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {environment} from '../../../../../environments/environment';
+import {getEnvironment} from "../../../../ServerConfig";
 
 @Component({
   selector: 'app-invite-user',
@@ -41,7 +42,7 @@ export class InviteUserComponent implements OnInit {
     if (hint !== '' && !this.allFoundUsers.some(data => data.username.includes(hint)) && !this.searchInProgress) {
       this.searchInProgress = true;
       setTimeout(() => {
-        this.http.post<Array<User>>(`${environment.backend}users-on-hint`, {value: hint}).pipe(map(response => {
+        this.http.post<Array<User>>(`${getEnvironment().backend}users-on-hint`, {value: hint}).pipe(map(response => {
           return response;
         })).subscribe(users => {
           this.allFoundUsers = this.allFoundUsers.concat(users);

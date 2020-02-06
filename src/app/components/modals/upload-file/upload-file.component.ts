@@ -4,6 +4,7 @@ import {HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse} from '@
 import {UserServiceProvider} from '../../../services/user-service-provider';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../../../environments/environment';
+import {getEnvironment} from "../../../ServerConfig";
 
 
 @Component({
@@ -76,7 +77,7 @@ export class UploadFileComponent  {
 
   public postFile(fileToUpload: File): Observable<HttpEvent<any>> {
     if (fileToUpload.size < this.FILE_SIZE_LIMIT) {
-      const endpoint = `${environment.backend}upload`;
+      const endpoint = `${getEnvironment().backend}upload`;
       const data: FormData = new FormData();
       data.append('file', fileToUpload);
       const newRequest = new HttpRequest('POST', endpoint, data, {

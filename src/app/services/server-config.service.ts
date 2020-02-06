@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-
+import {getEnvironment} from "../ServerConfig";
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +11,6 @@ export class ServerConfigService {
 
 
   public getFullUrl(relativePath: string): string {
-    return environment.backend + relativePath;
+    return getEnvironment().backend + relativePath;
   }
 }

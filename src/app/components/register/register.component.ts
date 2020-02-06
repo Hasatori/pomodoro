@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../environments/environment';
+import {getEnvironment} from "../../ServerConfig";
 
 @Component({
   selector: 'app-register',
@@ -60,7 +61,7 @@ export class RegisterComponent implements OnInit {
       newUser.username=username;
       newUser.password=password;
       newUser.email=email;
-      this.http.post<any>(`${environment.backend}register`, newUser).pipe(map(response => {
+      this.http.post<any>(`${getEnvironment().backend}register`, newUser).pipe(map(response => {
         return response;
       })).pipe(first()).subscribe((result) => {
         this.successComponent.show('Registration', result.Success);

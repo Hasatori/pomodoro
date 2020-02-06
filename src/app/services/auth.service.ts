@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 
 import {stringify} from 'querystring';
 import {environment} from '../../environments/environment';
+import {getEnvironment} from "../ServerConfig";
 
 
 @Injectable({
@@ -26,7 +27,7 @@ export class AuthService {
 
   login(userName: string, password: string) {
     console.log('test');
-    return this.http.post<any>(`${environment.backend}authenticate`, {username: userName, password})
+    return this.http.post<any>(`${getEnvironment().backend}authenticate`, {username: userName, password})
       .pipe(map(response => {
         this.serverLoginResponseCame(response);
       }));
@@ -46,7 +47,7 @@ export class AuthService {
   }
 
   loginWithFB(facebookResponse: any): Observable<any> {
-    return this.http.post<any>(`${environment.backend}facebookLogin`, facebookResponse)
+    return this.http.post<any>(`${getEnvironment().backend}facebookLogin`, facebookResponse)
       .pipe(map(response => {
         this.serverLoginResponseCame(response);
       }));

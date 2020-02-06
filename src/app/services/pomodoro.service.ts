@@ -13,7 +13,7 @@ import {NGXLogger} from 'ngx-logger';
 import {tree} from 'd3-hierarchy';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {environment} from '../../environments/environment';
-
+import {getEnvironment} from "../ServerConfig";
 @Injectable({
   providedIn: 'root'
 })
@@ -39,7 +39,7 @@ export class PomodoroService {
   }
 
   public getLastPomodoro(): Observable<Pomodoro> {
-    return this.http.post<any>(environment.backend + `pomodoro/update`, '').pipe(map(pomodoro => {
+    return this.http.post<any>(getEnvironment().backend + `pomodoro/update`, '').pipe(map(pomodoro => {
       return pomodoro;
     }));
   }

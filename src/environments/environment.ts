@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  backend:'http://localhost:8080/',
-  websocket:'ws://localhost:8080/socket'
+/*  backend:'http://localhost:8080/',
+  websocket:'ws://localhost:8080/socket'*/
 };
 
 /*

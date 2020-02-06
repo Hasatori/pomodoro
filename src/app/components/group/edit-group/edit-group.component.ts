@@ -4,6 +4,7 @@ import {image} from 'd3-fetch';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {Group} from '../../../model/group';
 import {environment} from '../../../../environments/environment';
+import {getEnvironment} from "../../../ServerConfig";
 
 @Component({
   selector: 'app-edit-group',
@@ -17,7 +18,7 @@ export class EditGroupComponent implements OnInit {
   public  groupName: string = '';
   public  isPublic: boolean = false;
   public  description: string = '';
-  selectedImage: string = environment.backend+'group/layout/teamwork-3.jpg';
+  selectedImage: string = getEnvironment().backend+'group/layout/teamwork-3.jpg';
 
 
   formData: FormData;
@@ -33,7 +34,7 @@ export class EditGroupComponent implements OnInit {
     this.humanizeBytes = new Function;
 
     for (let i = 1; i < 6; i++) {
-      this.images.push(`${environment.backend}group/layout/teamwork-${i}.jpg`);
+      this.images.push(`${getEnvironment().backend}group/layout/teamwork-${i}.jpg`);
     }
   }
 
