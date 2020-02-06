@@ -13,7 +13,7 @@ export class FreeTrialService {
   private DEFAULT_BREAK_TIME:number=1500; //5 minutes
 
   constructor(private log: NGXLogger) {
-    this.timer = new Timer(log);
+    this.timer = new Timer();
   }
 
   public startPomodoro() {

@@ -20,11 +20,10 @@ export class Timer {
   private SOUNDS_PATH: string = '../assets/sounds/';
   private settings: Settings;
 
-  constructor(private log:NGXLogger,settings?: Settings, onPhaseChanged?: OnPhaseChanged) {
+  constructor(settings?: Settings, onPhaseChanged?: OnPhaseChanged) {
     this.settings = settings;
     this.onPhaseChanged = onPhaseChanged;
     this.audio = document.createElement('audio');
-    this.log.debug(`Initializing timer with settings ${JSON.stringify(settings)}`);
   }
 
   start(pomodoro: Pomodoro) {
@@ -32,7 +31,6 @@ export class Timer {
     // @ts-ignore
     let difference = (new Date().getTime() - new Date(pomodoro.creationTimestamp).getTime()) / 1000;
     let sum=pomodoro.breakTime+pomodoro.workTime;
-  this.log.debug(`Pomodoro was interrupted ${pomodoro.interrupted} and sum is ${sum} and difference is ${difference}`);
     if (pomodoro.interrupted || difference>sum) {
     this.pause();
       this.secondsLeft = 0;
@@ -76,7 +74,6 @@ export class Timer {
   }
 
   private setPhase(newPhase: string) {
-    this.log.debug(`Setting phase from ${this.phase} to ${newPhase}`);
     this.phase = newPhase;
     if (this.settings!=null) {
       this.audio.setAttribute('src', this.SOUNDS_PATH+this.settings.phaseChangedSound);

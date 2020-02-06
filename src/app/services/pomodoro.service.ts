@@ -60,7 +60,7 @@ export class PomodoroService {
 
   private watchStartingPomodoroForCurrentUser() {
     this.userService.getUser().subscribe(user => {
-      this.timer = new Timer(this.log, user.settings);
+      this.timer = new Timer(user.settings);
       this.webSocketProxyService.watch('/pomodoro/start/' + user.username).subscribe(response => {
         this.pomodoro = JSON.parse(response.body);
         this.timer.start(this.pomodoro);
@@ -88,7 +88,7 @@ export class PomodoroService {
   startPomodoroForCurrentUser() {
     this.startedLocally=true;
     this.userService.getUser().subscribe(user => {
-      this.timer = new Timer(this.log, user.settings);
+      this.timer = new Timer(user.settings);
       this.webSocketProxyService.publish( '/app/start/' + user.username);
     });
   }

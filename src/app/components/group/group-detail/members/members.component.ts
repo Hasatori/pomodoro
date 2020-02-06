@@ -40,13 +40,13 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
     this.fetchMembers();
     this.getNewGroupMemberSubscription = this.userServiceProvider.groupService.getNewGroupMember(this.group.name).subscribe(user => {
       this.allUsers.push(user);
-      let timer = new Timer(this.log, null, this);
+      let timer = new Timer( null, this);
       this.userServiceProvider.pomodoroService.watchStartingPomodoroForUser(user, timer);
       this.userServiceProvider.pomodoroService.watchStopingPomodoroForUser(user, timer);
       this.allRows.set(user, timer);
       this.userServiceProvider.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
         pomodoro => {
-          let timer = new Timer(this.log, null, this);
+          let timer = new Timer( null, this);
           this.userServiceProvider.pomodoroService.watchStartingPomodoroForUser(user, timer);
           this.userServiceProvider.pomodoroService.watchStopingPomodoroForUser(user, timer);
           this.allRows.set(user, timer);
@@ -70,7 +70,7 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
       let user = this.allUsers[i];
       this.userServiceProvider.groupService.getLastPomodoroForUser(user.username).pipe().subscribe(
         pomodoro => {
-          let timer = new Timer(this.log, null, this);
+          let timer = new Timer( null, this);
           this.userServiceProvider.pomodoroService.watchStartingPomodoroForUser(user, timer);
           this.userServiceProvider.pomodoroService.watchStopingPomodoroForUser(user, timer);
           this.allRows.set(user, timer);
