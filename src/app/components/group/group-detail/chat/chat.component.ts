@@ -7,16 +7,18 @@ import {Reaction} from '../../../../model/reaction';
 import {isUndefined} from 'util';
 import {Group} from '../../../../model/group';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
+import {listAnimation, onCreateListAnimation} from "../../../../animations";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  styleUrls: ['./chat.component.scss'],
+  animations:[listAnimation,onCreateListAnimation]
 })
 export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() group: Group;
-  messages: Array<GroupMessage> = new Array<GroupMessage>();
+  messages: Array<GroupMessage> =[];
   user: User;
   scrollableWindow;
   fetchingOlder: boolean = false;

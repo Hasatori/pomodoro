@@ -1,42 +1,20 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {User} from '../../../../model/user';
 import {Timer} from '../../../../model/Timer';
-import {first} from 'rxjs/operators';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
 import {Group} from '../../../../model/group';
 import {OnPhaseChanged} from '../../../../model/OnPhaseChanged';
 import {Subscription} from 'rxjs';
 import {NGXLogger} from 'ngx-logger';
-import {CheckboxComponent, MdbCheckboxChange} from 'ng-uikit-pro-standard';
-import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
+import {CheckboxComponent} from 'ng-uikit-pro-standard';
+import {listAnimation, onCreateListAnimation} from "../../../../animations";
 
 
 @Component({
   selector: 'app-members',
   templateUrl: './members.component.html',
   styleUrls: ['./members.component.scss'],
-  animations: [
-    trigger('items', [
-      transition(':enter', [
-        style({ transform: 'scale(0.5)', opacity: 0 }),  // initial
-        animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
-          style({ transform: 'scale(1)', opacity: 1 }))  // final
-      ]),
-      transition(':leave', [
-        style({ transform: 'scale(1)', opacity: 1, height: '*' }),
-        animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
-          style({
-            transform: 'scale(0.5)', opacity: 0,
-            height: '0px', margin: '0px'
-          }))
-      ])
-    ]),
-    trigger('list', [
-      transition(':enter', [
-        query('@items', stagger(200, animateChild()))
-      ]),
-    ])
-  ]
+  animations:[listAnimation,onCreateListAnimation]
 })
 export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
 

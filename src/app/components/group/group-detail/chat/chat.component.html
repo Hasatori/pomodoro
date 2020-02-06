@@ -82,14 +82,14 @@
 
       </div>
 
-      <div *ngIf="!loading">
+      <div *ngIf="!loading" @list>
         <div class=" d-flex justify-content-center">
           <mdb-spinner *ngIf="fetchingOlder" spinnerColor="blue" spinnerType="small"></mdb-spinner>
 
         </div>
         <div #messages *ngFor="let message of messages;last as isLast; let i = index;"
              class="messages-container"
-
+             @items
         >
 
           <div class="pr-2 d-flex justify-content-end"

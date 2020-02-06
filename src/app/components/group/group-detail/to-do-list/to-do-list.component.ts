@@ -9,25 +9,13 @@ import {map} from 'rxjs/operators';
 import {User} from '../../../../model/user';
 import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
 import {CreateEditGroupTodoComponent} from './create-edit-todo/create-edit-group-todo.component';
+import {listAnimation, onCreateListAnimation} from "../../../../animations";
 
 @Component({
   selector: 'app-to-do-list',
   templateUrl: './to-do-list.component.html',
   styleUrls: ['./to-do-list.component.scss'],
-  animations: [
-    trigger('items', [
-      transition(':enter', [
-        style({transform: 'scale(0.5)', opacity: 0}),  // initial
-        animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
-          style({transform: 'scale(1)', opacity: 1}))  // final
-      ]),
-    ]),
-    trigger('list', [
-      transition(':enter', [
-        query('@items', stagger(200, animateChild()))
-      ]),
-    ])
-  ]
+  animations:[listAnimation,onCreateListAnimation]
 })
 export class ToDoListComponent implements OnInit {
 

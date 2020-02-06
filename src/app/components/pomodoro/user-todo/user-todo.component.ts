@@ -6,11 +6,13 @@ import {CheckboxComponent} from 'ng-uikit-pro-standard';
 import {map} from 'rxjs/operators';
 import {User} from '../../../model/user';
 import {select} from 'd3-selection';
+import {listAnimation, onCreateListAnimation} from "../../../animations";
 
 @Component({
   selector: 'app-user-todo',
   templateUrl: './user-todo.component.html',
-  styleUrls: ['./user-todo.component.scss']
+  styleUrls: ['./user-todo.component.scss'],
+animations:[listAnimation,onCreateListAnimation]
 })
 export class UserTodoComponent implements OnInit {
 
