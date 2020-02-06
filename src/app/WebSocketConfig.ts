@@ -1,9 +1,10 @@
 import {InjectableRxStompConfig} from '@stomp/ng2-stompjs';
 import {environment} from '../environments/environment';
+import {getEnvironment} from "./ServerConfig";
 
 export const webSocketConfig: InjectableRxStompConfig = {
   // Which server?
-  brokerURL: environment.websocket,
+  brokerURL: getEnvironment().websocket,
 
   // Headers
   // Typical keys: login, passcode, host
