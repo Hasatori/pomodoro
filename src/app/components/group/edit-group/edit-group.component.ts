@@ -34,11 +34,11 @@ export class EditGroupComponent implements OnInit {
   elegantFormIsPublicEx: AbstractControl;
   elegantFormDesctiptionEx: AbstractControl;
   submitted: boolean = false;
-  private creatingInProgress: boolean=false;
-  private nameError: string=null;
+  creatingInProgress: boolean = false;
+  nameError: string = null;
 
 
-  constructor(public fb: FormBuilder,private userServiceProvider:UserServiceProvider) {
+  constructor(public fb: FormBuilder, private userServiceProvider: UserServiceProvider) {
     this.elegantForm = fb.group({
       'elegantFormNameEx': ['', [Validators.required]],
       'elegantFormIsPublicEx': [],
@@ -138,18 +138,18 @@ export class EditGroupComponent implements OnInit {
   }
 
   createGroup(groupName: string, isPublic: boolean, description: string, layoutImage: string) {
-    this.nameError=null;
+    this.nameError = null;
     this.submitted = true;
     this.elegantFormNameEx.markAsTouched();
     if (this.elegantForm.valid) {
-      layoutImage=layoutImage.replace(getEnvironment().backend,'');
+      layoutImage = layoutImage.replace(getEnvironment().backend, '');
       this.creatingInProgress = true;
-      this.userServiceProvider.groupService.createGroup(groupName,isPublic,description,layoutImage).subscribe(response=>{
-        this.creatingInProgress=false;
+      this.userServiceProvider.groupService.createGroup(groupName, isPublic, description, layoutImage).subscribe(response => {
+        this.creatingInProgress = false;
         this.input.hide();
-      },error1 => {
+      }, error1 => {
         this.nameError = error1.error.name;
-        this.creatingInProgress=false;
+        this.creatingInProgress = false;
       })
     }
   }
