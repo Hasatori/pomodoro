@@ -20,8 +20,9 @@
               <li (click)="selectUser(data,search.value);search.value=data.username"
                   *ngFor="let data of usersToDisplay | userFilter: search.value"
                   class=" list-group-item d-flex flex-row">
-                <div class="mr-1">      <div class="avatar mx-auto white"><img  height="45px" width="45px"  [src]="'https://pomodoro-rest-api.herokuapp.com/users/'+data.id+'/profile.jpg'| secureImage | async"
+                <div class="mr-1">      <div class="avatar mx-auto white"><img  height="45px" width="45px"  [src]="userServiceProvider.serverConfig.getFullUrl('users/'+data.id+'/avatar.jpg')| secureImage | async"
                                                                                 alt="avatar mx-auto white" class="rounded-circle">
+
                 </div></div>
                 <div class="mr-1 ">   {{data.username}}</div>
                 <div class="flex-grow-1"></div>
@@ -42,7 +43,8 @@
           <div class="d-flex flex-column">
             <div class="d-flex flex-row mb-3 p-3 searched-user rounded">
               <div class="d-flex   flex-grow-0 flex-column mr-2  ">
-                <div class="flex-center"><img width="35px" src="../../../../../assets/images/user.svg"></div>
+                <div class="flex-center"><img  height="45px" width="45px"  [src]="userServiceProvider.serverConfig.getFullUrl('users/'+selectedUser.id+'/avatar.jpg')| secureImage | async"
+                                               alt="avatar mx-auto white" class="rounded-circle"></div>
                 <div class="flex-center">{{selectedUser.username}}</div>
               </div>
               <div class="d-flex flex-grow-1 mr-2 flex-center"><a class="custom-link">view profile</a></div>
@@ -62,7 +64,8 @@
             <div class="mb-3 font-weight-bold pb-1" *ngIf="searchedUsers.length >0">Other results</div>
             <div *ngFor="let user of searchedUsers" class="d-flex flex-row border-bottom p-3 searched-user rounded">
               <div class="d-flex   flex-grow-0 flex-column mr-2">
-                <div class="flex-center"><img width="35px" src="../../../../../assets/images/user.svg"></div>
+                <div class="flex-center"><img  height="45px" width="45px"  [src]="userServiceProvider.serverConfig.getFullUrl('users/'+user.id+'/avatar.jpg')| secureImage | async"
+                                               alt="avatar mx-auto white" class="rounded-circle"></div>
                 <div class="flex-center">{{user.username}}</div>
               </div>
               <div class="d-flex flex-grow-1 mr-2 flex-center"><a class="custom-link">view profile</a></div>

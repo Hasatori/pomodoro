@@ -8,5 +8,7 @@ export class Group {
   owner: User;
   layoutImage?:string;
   created:Date;
+  isPublic:boolean;
+  description:string;
   groupTodos?:Array<GroupToDo>;
 }

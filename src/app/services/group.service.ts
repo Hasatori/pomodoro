@@ -14,6 +14,7 @@ import {ChangeType, GroupChange} from '../model/group-change';
 import {GroupToDo} from '../model/GroupToDo';
 import {environment} from '../../environments/environment';
 import {getEnvironment} from "../ServerConfig";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -40,7 +41,7 @@ export class GroupService implements OnDestroy {
 
   private subscriptions: Array<Subscription> = [];
 
-  public chatMuted:boolean=false;
+  public chatMuted: boolean = false;
 
   constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
   }
@@ -67,7 +68,9 @@ export class GroupService implements OnDestroy {
 
     });
     this.getGroups().subscribe((groups) => {
-      this.groups = groups;
+      this.groups = groups.sort(function(a, b) {
+        return new Date(b.created).getTime() - new Date(a.created).getTime();
+      });
       this.userService.getUser().subscribe(user => {
         this.user = user;
         let count = 1;
@@ -105,7 +108,7 @@ export class GroupService implements OnDestroy {
         });
         this.getNewGroupMessage(group.name).subscribe(message => {
           if (message.author.username !== this.user.username) {
-            if (!this.chatMuted){
+            if (!this.chatMuted) {
               this.audio.play();
             }
             this.allUnreadMessages++;
@@ -223,24 +226,23 @@ export class GroupService implements OnDestroy {
     }));
   }
 
-  createGroup(name: string, isPublic: boolean): Observable<any> {
-    return this.http.post<any>(`${getEnvironment().backend}group/create`, {
-      name: name,
-      isPublic: isPublic
-    }).pipe(map(response => {
-      sessionStorage.setItem(this.GROUPS_KEY, JSON.stringify(null));
+  createGroup(name: string, isPublic: boolean, groupDescription: string, layoutImage: string): Observable<any> {
+    let group = new Group();
+    group.name = name;
+    group.isPublic = isPublic;
+    group.layoutImage = layoutImage;
+    group.description = groupDescription;
+    group.created=new Date(Date.now());
+    return this.http.post<any>(`${getEnvironment().backend}group/create`, group
+    ).pipe(map(response => {
+      sessionStorage.removeItem(this.GROUPS_KEY);
+      this.startSockets();
       return response;
     }));
   }
 
-
   addUser(username: string, groupName: string) {
-    /*    let groupRequest = {
-          username: username,
-          groupName: groupName
-        };
-        this.webSocketProxyService.publish('/app/group/' + groupName + '/group-members', JSON.stringify(groupRequest));
-      */
+
     this.sendChange(groupName, ChangeType.CREATE, `${username} has been invited `);
   }
 

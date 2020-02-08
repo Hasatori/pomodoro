@@ -36,7 +36,6 @@ import {webSocketConfig} from './WebSocketConfig';
 import {GroupComponent} from './components/group/group.component';
 import {GroupDetailComponent} from './components/group/group-detail/group-detail.component';
 import {groupDetailRoutes} from './components/group/group.module';
-import {CreateGroupComponent} from './components/group/create-group/create-group.component';
 import {AuthService} from './services/auth.service';
 import {PomodoroIsRunningComponent} from './components/modals/pomodoro-is-running/pomodoro-is-running.component';
 import {LoggerModule, NGXLogger, NgxLoggerLevel} from 'ngx-logger';
@@ -69,6 +68,7 @@ import {
 } from 'ng-uikit-pro-standard';
 import {OverviewComponent} from './components/group/overview/overview.component';
 // MDB Angular Pro
+
 import {ScrollSpyModule, ButtonsModule, CardsModule} from 'ng-uikit-pro-standard';
 import {BackToTopComponent} from './components/back-to-top/back-to-top.component';
 import {SortPipe} from './pipes/sort.pipe';
@@ -128,7 +128,6 @@ const routes: Routes = [
     PomodoroComponent,
     GroupComponent,
     GroupDetailComponent,
-    CreateGroupComponent,
     PomodoroIsRunningComponent,
     FreeTrialComponent,
     WantMoreFunctionalityComponent,
@@ -154,7 +153,7 @@ const routes: Routes = [
     TodoFilterPipe,
     CreateEditUserTodoComponent,
     SecureImagePipe,
-    UploadFileComponent,
+    UploadFileComponent
 
 
   ],

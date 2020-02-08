@@ -5,6 +5,8 @@ import {ModalDirective} from 'angular-bootstrap-md';
 import {Group} from '../../../model/group';
 import {environment} from '../../../../environments/environment';
 import {getEnvironment} from "../../../ServerConfig";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UserServiceProvider} from "../../../services/user-service-provider";
 
 @Component({
   selector: 'app-edit-group',
@@ -15,10 +17,10 @@ export class EditGroupComponent implements OnInit {
   // @ts-ignore
   @ViewChild('basicModal') input: ModalDirective;
   @Input() group: Group = null;
-  public  groupName: string = '';
-  public  isPublic: boolean = false;
-  public  description: string = '';
-  selectedImage: string = getEnvironment().backend+'group/layout/teamwork-3.jpg';
+  public groupName: string = '';
+  public isPublic: boolean = false;
+  public description: string = '';
+  selectedImage: string = getEnvironment().backend + 'group/layout/teamwork-3.jpg';
 
 
   formData: FormData;
@@ -27,8 +29,24 @@ export class EditGroupComponent implements OnInit {
   humanizeBytes: Function;
   dragOver: boolean;
 
+  elegantForm: FormGroup;
+  elegantFormNameEx: AbstractControl;
+  elegantFormIsPublicEx: AbstractControl;
+  elegantFormDesctiptionEx: AbstractControl;
+  submitted: boolean = false;
+  private creatingInProgress: boolean=false;
+  private nameError: string=null;
 
-  constructor() {
+
+  constructor(public fb: FormBuilder,private userServiceProvider:UserServiceProvider) {
+    this.elegantForm = fb.group({
+      'elegantFormNameEx': ['', [Validators.required]],
+      'elegantFormIsPublicEx': [],
+
+    });
+    this.elegantFormNameEx = this.elegantForm.controls['elegantFormNameEx'];
+    this.elegantFormIsPublicEx = this.elegantForm.controls['elegantFormIsPublicEx'];
+
     this.files = [];
     this.uploadInput = new EventEmitter<UploadInput>();
     this.humanizeBytes = new Function;
@@ -39,6 +57,7 @@ export class EditGroupComponent implements OnInit {
   }
 
   show() {
+
     this.input.show();
   }
 
@@ -113,8 +132,25 @@ export class EditGroupComponent implements OnInit {
     if (this.group !== null) {
       this.groupName = this.group.name;
       this.isPublic = false;
-      this.description = '';
-      this.selectedImage = this.group.layoutImage;
+      this.description = this.group.description;
+      this.selectedImage = getEnvironment().backend + this.group.layoutImage;
+    }
+  }
+
+  createGroup(groupName: string, isPublic: boolean, description: string, layoutImage: string) {
+    this.nameError=null;
+    this.submitted = true;
+    this.elegantFormNameEx.markAsTouched();
+    if (this.elegantForm.valid) {
+      layoutImage=layoutImage.replace(getEnvironment().backend,'');
+      this.creatingInProgress = true;
+      this.userServiceProvider.groupService.createGroup(groupName,isPublic,description,layoutImage).subscribe(response=>{
+        this.creatingInProgress=false;
+        this.input.hide();
+      },error1 => {
+        this.nameError = error1.error.name;
+        this.creatingInProgress=false;
+      })
     }
   }
 }
