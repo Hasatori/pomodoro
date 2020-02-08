@@ -22,9 +22,9 @@
             <mdb-icon fas icon="check" class="done" *ngIf="done"></mdb-icon>
           </div>
         </div>
-        <span class="text-danger" *ngIf="fileToBig">Files larger than {{(FILE_SIZE_LIMIT/1000000)/8}}MB can not be uploaded.</span>
-        <a *ngIf="!done && !fileToBig" type="button" mdbBtn class="custom-danger-button float-right" mdbWavesEffect>Cancel</a>
-        <a *ngIf="done ||fileToBig" (click)="frame.hide()" type="button" mdbBtn class="custom-primary-button float-right" mdbWavesEffect>Close</a>
+        <span class="text-danger" *ngIf="fileToBigOrEmpty">Files that are larger than {{(FILE_SIZE_LIMIT/1000000)/8}}MB or are empty can not be uploaded.</span>
+        <a *ngIf="!done && !fileToBigOrEmpty" type="button" mdbBtn class="custom-danger-button float-right" mdbWavesEffect>Cancel</a>
+        <a *ngIf="done ||fileToBigOrEmpty" (click)="frame.hide()" type="button" mdbBtn class="custom-primary-button float-right" mdbWavesEffect>Close</a>
       </div>
     </div>
     <!--/.Content-->

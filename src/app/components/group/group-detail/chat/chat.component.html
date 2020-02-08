@@ -1,4 +1,3 @@
-
 <div
   *ngIf="chatHidden"
   mdbBtn
@@ -82,7 +81,7 @@
 
       </div>
 
-      <div *ngIf="!loading" >
+      <div *ngIf="!loading">
         <div class=" d-flex justify-content-center">
           <mdb-spinner *ngIf="fetchingOlder" spinnerColor="blue" spinnerType="small"></mdb-spinner>
 
@@ -106,8 +105,16 @@
                 </div>
 
               </mdb-card-header>
-              <mdb-card-body class="pl-3 p-2 my-message-text small" [innerHTML]="getInnerHtml(message.value)">
 
+              <mdb-card-body *ngIf="!message.attachment" class="pl-3 p-2 my-message-text small"
+                             [innerHTML]="getInnerHtml(message.value)">
+
+              </mdb-card-body>
+              <mdb-card-body *ngIf="message.attachment" class="pl-3 p-2 small">
+                <img width="20px" [src]="getAttachmentIcon(message.attachment)" class="mr-1" *ngIf="!isAttachmentImage(message.attachment)"><a
+                (click)="downloadAttachment(message)">{{message.value}}</a>
+                <img class="rounded img-fluid mw-100" *ngIf="isAttachmentImage(message.attachment)"
+                     [src]="userServiceProvider.serverConfig.getFullUrl('group/'+this.group.id+'/attachment/'+message.attachment)|secureImage| async">
               </mdb-card-body>
               <mdb-card-footer
                 class="mr-2 p-0 border-0 bg-transparent  other-member-message-header">
@@ -214,9 +221,10 @@
             <div
               *ngIf="message.shouldShowAuthorsPhoto"
               class="profile-photo message-photo ">
-              <img [src]="userServiceProvider.serverConfig.getFullUrl('users/'+message.author.id+'/avatar.jpg') | secureImage | async"
-                   alt="avatar"
-                   class="avatar rounded-circle mr-1 ml-0 mb-0">
+              <img
+                [src]="userServiceProvider.serverConfig.getFullUrl('users/'+message.author.id+'/avatar.jpg') | secureImage | async"
+                alt="avatar"
+                class="avatar rounded-circle mr-1 ml-0 mb-0">
 
             </div>
 
@@ -230,8 +238,15 @@
                 class="p-0 border-0 bg-transparent text-muted small other-member-message-header ml-2">
 
                 {{message.author.username}} </mdb-card-header>
-              <mdb-card-body class="pl-3 p-1 other-member-message-text small" [innerHTML]="getInnerHtml(message.value)">
+              <mdb-card-body *ngIf="!message.attachment" class="pl-3 p-1 other-member-message-text small" [innerHTML]="getInnerHtml(message.value)">
 
+              </mdb-card-body>
+              <mdb-card-body *ngIf="message.attachment" class="pl-3 p-2 small">
+                <img width="20px" [src]="getAttachmentIcon(message.attachment)" class="mr-1" *ngIf="!isAttachmentImage(message.attachment)"><a
+                (click)="downloadAttachment(message)">{{message.value}}</a>
+
+                <img class="rounded img-fluid mw-100" *ngIf="isAttachmentImage(message.attachment)"
+                     [src]="userServiceProvider.serverConfig.getFullUrl('group/'+this.group.id+'/attachment/'+message.attachment)|secureImage| async">
               </mdb-card-body>
               <mdb-card-footer
                 class="ml-2 p-0 border-0 bg-transparent  other-member-message-header">
@@ -352,8 +367,9 @@
       </a>
       <a>
 
-        <input #uploadFile type="file" style="display:none"  (change)="uploadFileComponent.handleFileInput($event.target.files)" multiple>
-        <mdb-icon fas icon="paperclip" (click)="uploadFile.click()"  class="mr-2  chat-icon"></mdb-icon>
+        <input #uploadFile type="file" style="display:none"
+               (change)="uploadFileComponent.handleFileInput($event.target.files,userServiceProvider.serverConfig.getFullUrl('group/'+group.name+'/chat/attachment'))">
+        <mdb-icon fas icon="paperclip" (click)="uploadFile.click()" class="mr-2  chat-icon"></mdb-icon>
 
       </a>
       <a>
@@ -371,4 +387,4 @@
 </mdb-card>
 
 
-<app-upload-file #uploadFileComponent></app-upload-file>
+<app-upload-file #uploadFileComponent (onDone)="resendMessage($event)"></app-upload-file>

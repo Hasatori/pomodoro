@@ -1,13 +1,18 @@
 import {AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {User} from '../../../../model/user';
 import {GroupMessage} from '../../../../model/group-message';
-import {Subscription} from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
 import {Reaction} from '../../../../model/reaction';
 import {isUndefined} from 'util';
 import {Group} from '../../../../model/group';
-import {HttpEventType, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {listAnimation, onCreateListAnimation} from "../../../../animations";
+import {getEnvironment} from "../../../../ServerConfig";
+import {saveAs} from 'file-saver';
+import {SecureImagePipe} from "../../../../pipes/secure-image.pipe";
+import {SafeUrl} from "@angular/platform-browser";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-chat',
@@ -17,7 +22,7 @@ import {listAnimation, onCreateListAnimation} from "../../../../animations";
 export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() group: Group;
-  messages: Array<GroupMessage> =[];
+  messages: Array<GroupMessage> = [];
   user: User;
   scrollableWindow;
   fetchingOlder: boolean = false;
@@ -57,11 +62,46 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private newGroupMessageSubscription: Subscription;
   private lastNumberOfGroupMessagesSubscription: Subscription;
   private groupMessageReactionSubscription: Subscription;
-  public  loading: boolean = false;
+  public loading: boolean = false;
   chatMutted: boolean = false;
   private progress: number = 0;
   private scrollTimer = null;
-  constructor(public userServiceProvider: UserServiceProvider) {
+  private resendGroupMessageSubscription: Subscription;
+
+  private imageExtensions: Array<string> = ['jpg', 'png', 'gif', 'svg', 'tif'];
+
+  private fileExtensions = [
+    {
+      extension: 'doc',
+      path: './../../../../assets/group/chat/attachment/word.svg'
+    },
+    {
+      extension: 'docx',
+      path: './../../../../assets/group/chat/attachment/docx.svg'
+    },
+    {
+      extension: 'xlsx',
+      path: './../../../../assets/group/chat/attachment/excel.svg'
+    },
+    {
+      extension: 'txt',
+      path: './../../../../assets/group/chat/attachment/txt.svg'
+    },
+    {
+      extension: 'pptx',
+      path: './../../../../assets/group/chat/attachment/powerpoint.svg'
+    },
+    {
+      extension: 'zip',
+      path: './../../../../assets/group/chat/attachment/zip.svg'
+    },
+    {
+      extension: 'default',
+      path: './../../../../assets/group/chat/attachment/unknown.svg'
+    },
+  ];
+
+  constructor(private http: HttpClient, public userServiceProvider: UserServiceProvider, public secureImage: SecureImagePipe) {
 
 
   }
@@ -78,7 +118,11 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setReactionsForMessage(newMessage);
       this.messages.push(newMessage);
       this.processMessagesFromBack(this.messages);
-
+    });
+    this.resendGroupMessageSubscription = this.userServiceProvider.groupService.getResendGroupMessage(this.group.name).subscribe((newMessage) => {
+      this.seenBy = '';
+      this.messages.push(newMessage);
+      this.processMessagesFromBack(this.messages);
     });
     this.groupMessageReactionSubscription = this.userServiceProvider.groupService.getReactedGroupMessage(this.group.name).subscribe((reactedMessage) => {
       let foundMessage = this.messages.find(message => {
@@ -96,7 +140,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     this.lastNumberOfGroupMessagesSubscription = this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.group.name, this.threshold, this.end).subscribe((response) => {
-      this.messages = response.sort(function(a, b) {
+      this.messages = response.sort(function (a, b) {
         return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       });
       for (let i = 0; i < this.messages.length; i++) {
@@ -116,11 +160,16 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.markAllAsReadSubscription.unsubscribe();
     this.newGroupMessageSubscription.unsubscribe();
     this.lastNumberOfGroupMessagesSubscription.unsubscribe();
-
+    this.resendGroupMessageSubscription.unsubscribe();
   }
 
   sendMessage(messageValue: string) {
     this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/chat', messageValue);
+    this.typing = false;
+  }
+
+  resendMessage(groupMessage: GroupMessage) {
+    this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/chat/resend', groupMessage);
     this.typing = false;
   }
 
@@ -129,7 +178,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.lastMessage = lastMessage;
       let filteredRelatedMessages = lastMessage.relatedGroupMessages
         .filter(message => message.readTimestamp !== null && message.user.username !== this.user.username && message.user.username !== lastMessage.author.username);
-      let lastRelatedMessageTimestamp = filteredRelatedMessages.sort(function(a, b) {
+      let lastRelatedMessageTimestamp = filteredRelatedMessages.sort(function (a, b) {
         return new Date(a.readTimestamp).getTime() - new Date(b.readTimestamp).getTime();
       })[0];
       if (filteredRelatedMessages.length > 0) {
@@ -194,10 +243,10 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.scrollTimer) {
       clearTimeout(this.scrollTimer);
     }
-    this.scrollTimer = setTimeout(()=>this.handleScroll(), 500);
+    this.scrollTimer = setTimeout(() => this.handleScroll(), 500);
   }
 
-  handleScroll(){
+  handleScroll() {
     console.log("Scrolled");
     if (this.scrollableWindow.scrollTop == 0 && !this.stopFetchingOlder) {
       this.fetchingOlder = true;
@@ -230,6 +279,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
   }
+
   processMessagesFromBack(messages: Array<GroupMessage>) {
     for (let i = messages.length - 1; i >= 0; i--) {
       let currentMessage = messages[i];
@@ -312,6 +362,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userServiceProvider.groupService.reactToGroupMessage(this.group.name, message, null);
 
   }
+
   addReactionToMessage(message: GroupMessage, reaction: string) {
     let foundReaction = message.reactions.find(r => {
       return r.name === reaction;
@@ -338,6 +389,38 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     return message;
 
+  }
+
+  downloadAttachment(groupMessage: GroupMessage) {
+    let endpoint = `${getEnvironment().backend}group/${this.group.id}/attachment/${groupMessage.attachment}/download`;
+    this.http.post(endpoint, {}, {
+      responseType: "blob",
+      headers: new HttpHeaders().append("Content-Type", "application/json")
+    }).subscribe((response) => {
+      const file = new File([response], groupMessage.attachment);
+      saveAs(response, groupMessage.value);
+    });
+  }
+
+  isAttachmentImage(attachment: string): boolean {
+    let extension = attachment.substr(attachment.lastIndexOf('.') + 1);
+    return this.imageExtensions.some(ext => {
+      return ext === extension
+    });
+  }
+
+  getAttachmentIcon(attachment: string): string {
+    let extension = attachment.substr(attachment.lastIndexOf('.') + 1);
+    let result = this.fileExtensions.find(fileExtension => {
+      return fileExtension.extension === 'default'
+    });
+    let candidate = this.fileExtensions.find((fileExtension => {
+      return fileExtension.extension === extension
+    }));
+    if (!isUndefined(candidate)) {
+      result = candidate;
+    }
+    return result.path;
   }
 
 }

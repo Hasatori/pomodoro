@@ -24,7 +24,7 @@ export class SecureImagePipe implements PipeTransform {
         .post(url, {}, {responseType: 'blob'})
         .pipe(
           map(val => {
-            let result = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(val));
+            let result = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(val));
             this.userServiceProvider.cachingService.cacheImage(url, result);
             
             return result;

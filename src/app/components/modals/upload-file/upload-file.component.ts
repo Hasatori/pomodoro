@@ -1,10 +1,9 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse} from '@angular/common/http';
 import {UserServiceProvider} from '../../../services/user-service-provider';
 import {Observable, of} from 'rxjs';
-import {environment} from '../../../../environments/environment';
-import {getEnvironment} from "../../../ServerConfig";
+
 
 
 @Component({
@@ -14,13 +13,17 @@ import {getEnvironment} from "../../../ServerConfig";
 })
 export class UploadFileComponent  {
 
+
+  @Output()onDone=new EventEmitter();
+
   public files: FileList;
+  public uploadUrl:string;
   public uploadedFileName = '';
   public progress: number = 0;
   public alreadyUploaded: number = 0;
   public done: boolean;
   public FILE_SIZE_LIMIT: number = 80000000;
-  public fileToBig: boolean = false;
+  public fileToBigOrEmpty: boolean = false;
   // @ts-ignore
   @ViewChild('frame') input: ModalDirective;
 
@@ -32,23 +35,25 @@ export class UploadFileComponent  {
     this.uploadedFileName = '';
     this.progress = 0;
     this.alreadyUploaded = 0;
-    this.fileToBig = false;
+    this.fileToBigOrEmpty = false;
   }
 
-  handleFileInput(files: FileList) {
+  handleFileInput(files: FileList,uploadUrl:string) {
     this.reset();
     this.input.show();
     this.files = files;
-    if (this.allFilesMatchRestrictions(files)) {
+    this.uploadUrl=uploadUrl;
+    if (!this.allFilesMatchSizeRestrictions(files)) {
+      this.fileToBigOrEmpty = true;
+    }else{
       this.uploadFile(this.files[0], 0);
-    } else {
-      this.fileToBig = true;
     }
   }
 
-  public allFilesMatchRestrictions(files: FileList): boolean {
+
+  public allFilesMatchSizeRestrictions(files: FileList): boolean {
     for (let i = 0; i < files.length; i++) {
-      if (files.item(i).size > this.FILE_SIZE_LIMIT) {
+      if (files.item(i).size > this.FILE_SIZE_LIMIT||files.item(i).size===0) {
         return false;
       }
     }
@@ -65,6 +70,7 @@ export class UploadFileComponent  {
           this.alreadyUploaded += 1;
           if (this.alreadyUploaded === this.files.length) {
             this.done = true;
+            this.onDone.emit(event.body);
           } else {
             this.uploadFile(this.files[index + 1], index + 1);
           }
@@ -77,7 +83,7 @@ export class UploadFileComponent  {
 
   public postFile(fileToUpload: File): Observable<HttpEvent<any>> {
     if (fileToUpload.size < this.FILE_SIZE_LIMIT) {
-      const endpoint = `${getEnvironment().backend}upload`;
+      const endpoint = this.uploadUrl;
       const data: FormData = new FormData();
       data.append('file', fileToUpload);
       const newRequest = new HttpRequest('POST', endpoint, data, {

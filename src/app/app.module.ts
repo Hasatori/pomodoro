@@ -94,6 +94,7 @@ import {SecureImagePipe} from './pipes/secure-image.pipe';
 import {UploadFileComponent} from './components/modals/upload-file/upload-file.component';
 import {ServerConfigService} from './services/server-config.service';
 import {environment} from "../environments/environment";
+import * as FileSaver from "file-saver";
 
 
 const routes: Routes = [
@@ -199,7 +200,8 @@ const routes: Routes = [
     CardsModule,
     ModalModule,
     NgxPaginationModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {
@@ -219,7 +221,8 @@ const routes: Routes = [
     MDBSpinningPreloader,
     DatePipe,
     UserFilterPipe,
-    ServerConfigService
+    ServerConfigService,
+    SecureImagePipe
   ]
   ,
   bootstrap: [AppComponent]

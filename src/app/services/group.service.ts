@@ -220,6 +220,7 @@ export class GroupService implements OnDestroy {
     this.webSocketProxyService.publish('/app/group/' + groupName + '/chat/reaction', JSON.stringify(groupMessageReaction));
   }
 
+
   public getReactedGroupMessage(groupName: string): Observable<GroupMessage> {
     return this.webSocketProxyService.watch('/group/' + groupName + '/chat/reaction').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
@@ -265,6 +266,11 @@ export class GroupService implements OnDestroy {
 
   getNewGroupMessage(groupName: string): Observable<GroupMessage> {
     return this.webSocketProxyService.watch('/group/' + groupName + '/chat').pipe(map(newMessage => {
+      return JSON.parse(newMessage.body);
+    }));
+  }
+  getResendGroupMessage(groupName: string): Observable<GroupMessage> {
+    return this.webSocketProxyService.watch('/group/' + groupName + '/chat/resend').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
     }));
   }
