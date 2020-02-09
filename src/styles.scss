@@ -1,3 +1,535 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-uikit-pro-standard/assets/scss/addons-pro/_chat-pro.scss";
 
+$navigationBarColor: #2E314C;
+$navigationBarColorTransparent: #818393;
+$navigationBarColorLight: #42455d;
+$customCardBackgroundColor: #f7f7f7;
+$basicTextColor: #DCBA89;
+$secondaryTextColor: #333333;
+$backgroundColor: #F8F8F8;
+$lightBorderColor: #dee2e6;
+$myDanger: #d9534f;
+$mySuccess: #5cb85c;
+.mainContent {
+  min-height: 100vh !important;
+  background-color: $backgroundColor !important;
+
+}
+
+.custom-card {
+  border-color: rgb(20, 20, 20, 0.2);
+  background-color: white;
+  color: $secondaryTextColor;
+  max-width: 500px;
+  margin: auto;
+}
+
+.btn-primary {
+  background-color: $navigationBarColor !important;
+}
+
+.round-social-icon {
+  padding: 10px;
+  font-size: 30px;
+  opacity: 0.9;
+}
+
+.round-social-icon:hover {
+  opacity: 1;
+  text-shadow: 1px 4px 5px rgba(0, 0, 0, 0.3);
+}
+
+.round-social-icon-disabled {
+  opacity: 0.4 !important;
+}
+
+.facebook-icon {
+  color: #4267B2 !important;
+}
+
+.github-icon {
+  color: #333333 !important;
+}
+
+.custom-button, .pagination .active .page-link {
+  opacity: 0.9;
+  background-color: $navigationBarColor !important;
+  color: $basicTextColor !important;
+}
+
+.btn:disabled {
+  opacity: 0.5 !important;
+}
+
+.custom-button:hover, .pagination .page-item:hover .page-link {
+  opacity: 1;
+  background-color: $navigationBarColor !important;
+  color: $basicTextColor !important;
+}
+
+.custom-link {
+  color: $navigationBarColor;
+  font-weight: bold;
+  text-decoration: underline;
+  opacity: 0.9;
+}
+
+.custom-link:hover {
+
+  opacity: 1;
+}
+
+.form-control:focus {
+  border-color: $navigationBarColorTransparent;
+  box-shadow: 0 0 0 0.2rem $navigationBarColorTransparent;
+}
+
+::ng-deep .md-form input:focus:not([readonly]) {
+  border-bottom: 1px solid $navigationBarColor !important;
+  box-shadow: 0 1px 0 0 $navigationBarColor;
+
+}
+
+.md-form .form-control.is-invalid {
+  border-color: #f44336;
+  box-shadow: 0 1px 0 0 #f44336;
+}
+
+.section {
+  min-height: 70vh !important;
+}
+
+.mdb-scrollspy-ex a {
+
+  font-weight: 400;
+  line-height: 1.1rem;
+  padding: 0 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  color: black;
+  text-decoration: none !important;
+}
+
+.mdb-scrollspy-ex-example {
+  height: 200px;
+}
+
+.mdb-scrollspy-ex .active {
+  font-weight: bold !important;
+  border-right: 1px solid $secondaryTextColor !important;
+
+}
+
+.floating-part {
+  padding: 0 !important;
+}
+
+.card-btn {
+  background-color: $navigationBarColor;
+  color: $basicTextColor !important;
+  text-decoration: none !important;
+}
+
+.card-btn:hover {
+  color: $basicTextColor !important;
+}
+
+@media (min-width: 1189px) {
+  .collapsed-part {
+    overflow: visible !important;
+    position: sticky;
+    top: 0;
+  }
+  .ham-but {
+    display: none;
+  }
+
+}
+
+@media (max-width: 1195px) {
+  .collapsed-part {
+
+    width: 100%;
+    border-radius: 5px;
+    background-color: $navigationBarColor;
+    -webkit-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
+    top: 0;
+    position: absolute;
+
+  }
+  .active {
+    border: 0 solid transparent !important;
+
+  }
+  .ham-but {
+    float: right;
+    color: $basicTextColor !important;
+    opacity: 0.9;
+    z-index: 4;
+  }
+  .ham-but:hover {
+    opacity: 1;
+  }
+  .collapsed-part * {
+    color: $basicTextColor !important;
+    overflow: no-content;
+  }
+  .floating-part {
+    position: sticky !important;
+    top: 0;
+
+    border-right: 0px solid transparent !important;
+    z-index: 3;
+  }
+  .mdb-scrollspy-ex .nav-item {
+    border-bottom: 1px solid $basicTextColor;
+
+  }
+}
+
+.pomodoro-img {
+  opacity: 0.8;
+}
+
+.rgba-teal-strong {
+  background-color: transparent;
+
+}
+
+::ng-deep .form-check .form-check-label::after {
+  background-color: $navigationBarColor !important;
+  border: $navigationBarColor !important;
+}
+
+::ng-deep mdb-select-dropdown .dropdown-content li > span, ::ng-deep mdb-select > label, ::ng-deep .md-form label.active {
+  color: $navigationBarColor !important;
+}
+
+::ng-deep .picker__box .picker__table .picker__day--selected {
+  color: $basicTextColor !important;
+  background-color: $navigationBarColor !important;
+}
+
+::ng-deep .picker__box .picker__table .picker__weekday {
+  color: $navigationBarColor !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .picker__box .picker__footer button {
+  opacity: 0.8 !important;
+  background-color: $navigationBarColor !important;
+  color: $basicTextColor !important;
+}
+
+::ng-deep .picker__box .picker__footer button:hover {
+  opacity: 1 !important;
+}
+
+::ng-deep .picker__box .picker__table td.picker__day div.picker__day.picker__day--today {
+  color: $basicTextColor !important;
+}
+
+.custom-primary-button {
+  background-color: $lightBorderColor !important;
+  color: $navigationBarColor !important;
+  font-weight: bold;
+}
+
+.accordion-body {
+  background-color: white !important;
+  min-height: 0px !important;
+
+}
+
+.accordion-header {
+  background-color: $navigationBarColor !important;
+
+}
+
+.accordion-body {
+  max-height: 700px !important;
+  overflow-y: auto;
+
+}
+
+.accordion-header-text {
+  color: $basicTextColor !important;
+}
+
+.customBlockquote {
+  border-left: 3px solid $navigationBarColor !important
+}
+
+.customBlockquote .h2 {
+  color: $navigationBarColor !important;
+}
+
+::ng-deep .ngx-pagination .current {
+  background-color: $navigationBarColor !important;
+  color: $basicTextColor !important;
+}
+
+::ng-deep .ngx-pagination .disabled {
+
+  color: $lightBorderColor !important;
+}
+
+.custom-danger-button {
+  background-color: $myDanger !important;
+}
+
+/*!
+ * Load Awesome v1.1.0 (http://github.danielcardoso.net/load-awesome/)
+ * Copyright 2015 Daniel Cardoso <@DanielCardoso>
+ * Licensed under MIT
+ */
+.la-ball-clip-rotate-pulse,
+.la-ball-clip-rotate-pulse > div {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.la-ball-clip-rotate-pulse {
+  display: block;
+  font-size: 0;
+  color: #fff;
+}
+
+.la-ball-clip-rotate-pulse.la-dark {
+  color: #333;
+}
+
+.la-ball-clip-rotate-pulse > div {
+  display: inline-block;
+  float: none;
+  background-color: currentColor;
+  border: 0 solid currentColor;
+}
+
+.la-ball-clip-rotate-pulse {
+  width: 32px;
+  height: 32px;
+}
+
+.la-ball-clip-rotate-pulse > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 100%;
+}
+
+.la-ball-clip-rotate-pulse > div:first-child {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border-style: solid;
+  border-width: 2px;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  -webkit-animation: ball-clip-rotate-pulse-rotate 1s cubic-bezier(.09, .57, .49, .9) infinite;
+  -moz-animation: ball-clip-rotate-pulse-rotate 1s cubic-bezier(.09, .57, .49, .9) infinite;
+  -o-animation: ball-clip-rotate-pulse-rotate 1s cubic-bezier(.09, .57, .49, .9) infinite;
+  animation: ball-clip-rotate-pulse-rotate 1s cubic-bezier(.09, .57, .49, .9) infinite;
+}
+
+.la-ball-clip-rotate-pulse > div:last-child {
+  width: 16px;
+  height: 16px;
+  -webkit-animation: ball-clip-rotate-pulse-scale 1s cubic-bezier(.09, .57, .49, .9) infinite;
+  -moz-animation: ball-clip-rotate-pulse-scale 1s cubic-bezier(.09, .57, .49, .9) infinite;
+  -o-animation: ball-clip-rotate-pulse-scale 1s cubic-bezier(.09, .57, .49, .9) infinite;
+  animation: ball-clip-rotate-pulse-scale 1s cubic-bezier(.09, .57, .49, .9) infinite;
+}
+
+.la-ball-clip-rotate-pulse.la-sm {
+  width: 16px;
+  height: 16px;
+}
+
+.la-ball-clip-rotate-pulse.la-sm > div:first-child {
+  width: 16px;
+  height: 16px;
+  border-width: 1px;
+}
+
+.la-ball-clip-rotate-pulse.la-sm > div:last-child {
+  width: 8px;
+  height: 8px;
+}
+
+.la-ball-clip-rotate-pulse.la-2x {
+  width: 64px;
+  height: 64px;
+}
+
+.la-ball-clip-rotate-pulse.la-2x > div:first-child {
+  width: 64px;
+  height: 64px;
+  border-width: 4px;
+}
+
+.la-ball-clip-rotate-pulse.la-2x > div:last-child {
+  width: 32px;
+  height: 32px;
+}
+
+.la-ball-clip-rotate-pulse.la-3x {
+  width: 96px;
+  height: 96px;
+}
+
+.la-ball-clip-rotate-pulse.la-3x > div:first-child {
+  width: 96px;
+  height: 96px;
+  border-width: 6px;
+}
+
+.la-ball-clip-rotate-pulse.la-3x > div:last-child {
+  width: 48px;
+  height: 48px;
+}
+
+/*
+ * Animations
+ */
+@-webkit-keyframes ball-clip-rotate-pulse-rotate {
+  0% {
+    -webkit-transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  50% {
+    -webkit-transform: translate(-50%, -50%) rotate(180deg);
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+  100% {
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@-moz-keyframes ball-clip-rotate-pulse-rotate {
+  0% {
+    -moz-transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  50% {
+    -moz-transform: translate(-50%, -50%) rotate(180deg);
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+  100% {
+    -moz-transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@-o-keyframes ball-clip-rotate-pulse-rotate {
+  0% {
+    -o-transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  50% {
+    -o-transform: translate(-50%, -50%) rotate(180deg);
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+  100% {
+    -o-transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes ball-clip-rotate-pulse-rotate {
+  0% {
+    -webkit-transform: translate(-50%, -50%) rotate(0deg);
+    -moz-transform: translate(-50%, -50%) rotate(0deg);
+    -o-transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  50% {
+    -webkit-transform: translate(-50%, -50%) rotate(180deg);
+    -moz-transform: translate(-50%, -50%) rotate(180deg);
+    -o-transform: translate(-50%, -50%) rotate(180deg);
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+  100% {
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+    -moz-transform: translate(-50%, -50%) rotate(360deg);
+    -o-transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@-webkit-keyframes ball-clip-rotate-pulse-scale {
+  0%,
+  100% {
+    opacity: 1;
+    -webkit-transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  30% {
+    opacity: .3;
+    -webkit-transform: translate(-50%, -50%) scale(.15);
+    transform: translate(-50%, -50%) scale(.15);
+  }
+}
+
+@-moz-keyframes ball-clip-rotate-pulse-scale {
+  0%,
+  100% {
+    opacity: 1;
+    -moz-transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  30% {
+    opacity: .3;
+    -moz-transform: translate(-50%, -50%) scale(.15);
+    transform: translate(-50%, -50%) scale(.15);
+  }
+}
+
+@-o-keyframes ball-clip-rotate-pulse-scale {
+  0%,
+  100% {
+    opacity: 1;
+    -o-transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  30% {
+    opacity: .3;
+    -o-transform: translate(-50%, -50%) scale(.15);
+    transform: translate(-50%, -50%) scale(.15);
+  }
+}
+
+@keyframes ball-clip-rotate-pulse-scale {
+  0%,
+  100% {
+    opacity: 1;
+    -webkit-transform: translate(-50%, -50%) scale(1);
+    -moz-transform: translate(-50%, -50%) scale(1);
+    -o-transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  30% {
+    opacity: .3;
+    -webkit-transform: translate(-50%, -50%) scale(.15);
+    -moz-transform: translate(-50%, -50%) scale(.15);
+    -o-transform: translate(-50%, -50%) scale(.15);
+    transform: translate(-50%, -50%) scale(.15);
+  }
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  left: 50%;
+  right: 50%;
+
+  color: $navigationBarColor;
+}
