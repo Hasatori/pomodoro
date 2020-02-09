@@ -14,6 +14,7 @@ import {SecureImagePipe} from "../../../../pipes/secure-image.pipe";
 import {SafeUrl} from "@angular/platform-browser";
 import {map} from "rxjs/operators";
 import {CachedImagePipe} from "../../../../pipes/cached-image.pipe";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
   selector: 'app-chat',
@@ -109,8 +110,10 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   lastCursorPosition: number = 0;
 
-  constructor(private http: HttpClient, public userServiceProvider: UserServiceProvider, public secureImage: SecureImagePipe, public cachedImage: CachedImagePipe) {
+  public isMobileOrTablet = false;
 
+  constructor(private http: HttpClient, public userServiceProvider: UserServiceProvider, public secureImage: SecureImagePipe, public cachedImage: CachedImagePipe, private deviceService: DeviceDetectorService) {
+    this.isMobileOrTablet = deviceService.isMobile() || deviceService.isTablet();
 
   }
 

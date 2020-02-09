@@ -48,6 +48,7 @@
     "ng-connection-service": "^1.0.4",
     "ng-uikit-pro-standard": "git+https://oauth2:mnzs4Vd13Vx5Xrm9DPtY@git.mdbootstrap.com/mdb/angular/ng-uikit-pro-standard.git",
     "ngx-countdown": "^8.0.1",
+    "ngx-device-detector": "^1.3.20",
     "ngx-logger": "^4.0.7",
     "ngx-pagination": "^5.0.0",
     "ngx-quicklink": "^0.2.0",

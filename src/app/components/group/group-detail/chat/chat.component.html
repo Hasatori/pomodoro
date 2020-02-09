@@ -99,7 +99,7 @@
 
               class="my-message rounded float-right z-depth-0 mb-1 d-flex p-1">
               <mdb-card-header class="p-0 border-0 bg-transparent text-muted small ml-2 mb-1">
-                <div class="edit-message">
+                <div [ngClass]="isMobileOrTablet?'opacity-100':'edit-message opacity-100'">
                   <mdb-icon fas icon="pen"></mdb-icon>
                   edit
                 </div>
@@ -193,7 +193,7 @@
 
                 >+ react</a>
                 <a placement="top"
-                   class="ml-2 message-reaction text-muted small"
+                   [ngClass]="isMobileOrTablet?'ml-2 text-muted small':'ml-2 message-reaction text-muted small'"
                    *ngIf="message.changes!==null && message.changes.length>0"
                    [mdbPopover]="changesTemplate" triggers="click"
                    (click)="addReactionsClicked()"
@@ -321,6 +321,7 @@
                 </ng-template>
                 <a placement="right" [mdbPopover]="clickImgTemp" triggers="click"
                    class="message-reaction text-muted small"
+                   [ngClass]="isMobileOrTablet?'text-muted small':'message-reaction text-muted small'"
                    (click)="addReactionsClicked()"
 
 

@@ -6,6 +6,7 @@
   width: 24em !important;
   height: 30em !important;
   position: fixed !important;
+  z-index: 1000!important;
 }
 .maximize {
   font-size: 0.7rem;
@@ -35,7 +36,7 @@
 position: absolute;
   right: 3%;
   top:0;
-  font-size: 1em;
+  font-size: 1.5em;
 }
 @media (max-width: 410px) {
   .chat-room{

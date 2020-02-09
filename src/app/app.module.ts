@@ -98,6 +98,7 @@ import * as FileSaver from "file-saver";
 import {EmojisPopoverComponent} from "./components/group/group-detail/chat/images-popover/emojis-popover.component";
 import { CachedImagePipe } from './pipes/cached-image.pipe';
 import {QuicklinkModule, QuicklinkStrategy} from "ngx-quicklink";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 
 
@@ -228,7 +229,8 @@ const routes: Routes = [
     UserFilterPipe,
     ServerConfigService,
     SecureImagePipe,
-    CachedImagePipe
+    CachedImagePipe,
+    DeviceDetectorService
   ]
   ,
   bootstrap: [AppComponent]
