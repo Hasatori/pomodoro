@@ -70,34 +70,39 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private imageExtensions: Array<string> = ['jpg', 'png', 'gif', 'svg', 'tif'];
 
+  private attachmentsPath: string = './../../../../assets/group/chat/attachment/';
   private fileExtensions = [
     {
       extension: 'doc',
-      path: './../../../../assets/group/chat/attachment/word.svg'
+      path: `${this.attachmentsPath}word.svg`
     },
     {
       extension: 'docx',
-      path: './../../../../assets/group/chat/attachment/docx.svg'
+      path: `${this.attachmentsPath}docx.svg`
     },
     {
       extension: 'xlsx',
-      path: './../../../../assets/group/chat/attachment/excel.svg'
+      path: `${this.attachmentsPath}excel.svg`
     },
     {
       extension: 'txt',
-      path: './../../../../assets/group/chat/attachment/txt.svg'
+      path: `${this.attachmentsPath}txt.svg`
     },
     {
       extension: 'pptx',
-      path: './../../../../assets/group/chat/attachment/powerpoint.svg'
+      path: `${this.attachmentsPath}powerpoint.svg`
     },
     {
       extension: 'zip',
-      path: './../../../../assets/group/chat/attachment/zip.svg'
+      path: `${this.attachmentsPath}zip.svg`
+    },
+    {
+      extension: 'pdf',
+      path: `${this.attachmentsPath}pdf.svg`
     },
     {
       extension: 'default',
-      path: './../../../../assets/group/chat/attachment/unknown.svg'
+      path: `${this.attachmentsPath}unknown.svg`
     },
   ];
 
