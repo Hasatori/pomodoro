@@ -102,7 +102,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     },
     {
       extension: 'default',
-      path: `${this.attachmentsPath}unknown.svg`
+      path: `${this.attachmentsPath}default.svg`
     },
   ];
 
