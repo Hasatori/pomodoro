@@ -1,0 +1,14 @@
+@import "../chat.component";
+
+.emojis-row{
+
+  max-height: 150px !important;
+  overflow-y: auto;
+}
+.emoji{
+  opacity: 0.8;
+}
+
+.emoji:hover{
+  opacity: 1;
+}

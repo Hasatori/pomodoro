@@ -245,4 +245,12 @@ textarea::placeholder {
 .chat-icon{
   color:$basicTextColor !important;
 }
-
+.message-box{
+overflow-y: auto;
+  height: 5em !important;
+}
+[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: $basicTextColor;
+  display: inline-block;
+}

@@ -1,0 +1,9 @@
+<div class="row emojis-row">
+
+  <div  *ngFor="let emoji of emojis" class="col-2 mb-1">
+    <img class="emoji" width="25px" [src]="emoji.path|cachedImage|async" (click)="emojiSelected.emit(emoji.name)">
+
+  </div>
+
+
+</div>

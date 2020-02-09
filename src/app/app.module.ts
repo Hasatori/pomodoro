@@ -95,6 +95,9 @@ import {UploadFileComponent} from './components/modals/upload-file/upload-file.c
 import {ServerConfigService} from './services/server-config.service';
 import {environment} from "../environments/environment";
 import * as FileSaver from "file-saver";
+import {EmojisPopoverComponent} from "./components/group/group-detail/chat/images-popover/emojis-popover.component";
+import { CachedImagePipe } from './pipes/cached-image.pipe';
+
 
 
 const routes: Routes = [
@@ -154,7 +157,9 @@ const routes: Routes = [
     TodoFilterPipe,
     CreateEditUserTodoComponent,
     SecureImagePipe,
-    UploadFileComponent
+    UploadFileComponent,
+    EmojisPopoverComponent,
+    CachedImagePipe
 
 
   ],
@@ -202,7 +207,6 @@ const routes: Routes = [
     NgxPaginationModule,
     BrowserAnimationsModule,
 
-
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {
     provide: HTTP_INTERCEPTORS,
@@ -222,7 +226,8 @@ const routes: Routes = [
     DatePipe,
     UserFilterPipe,
     ServerConfigService,
-    SecureImagePipe
+    SecureImagePipe,
+    CachedImagePipe
   ]
   ,
   bootstrap: [AppComponent]

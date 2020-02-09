@@ -13,6 +13,7 @@ import {saveAs} from 'file-saver';
 import {SecureImagePipe} from "../../../../pipes/secure-image.pipe";
 import {SafeUrl} from "@angular/platform-browser";
 import {map} from "rxjs/operators";
+import {CachedImagePipe} from "../../../../pipes/cached-image.pipe";
 
 @Component({
   selector: 'app-chat',
@@ -106,7 +107,9 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     },
   ];
 
-  constructor(private http: HttpClient, public userServiceProvider: UserServiceProvider, public secureImage: SecureImagePipe) {
+  lastCursorPosition: number = 0;
+
+  constructor(private http: HttpClient, public userServiceProvider: UserServiceProvider, public secureImage: SecureImagePipe, public cachedImage: CachedImagePipe) {
 
 
   }
@@ -169,6 +172,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   sendMessage(messageValue: string) {
+    console.log(`Sending message ${messageValue}`);
     this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/chat', messageValue);
     this.typing = false;
   }
@@ -392,6 +396,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       message = message.replace(new RegExp(emojiTextExpression, 'g'), `<img width="18" src="../../../../../assets/emojis/051-${emoji.name}.svg">`);
 
     }
+
     return message;
 
   }
@@ -426,6 +431,98 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       result = candidate;
     }
     return result.path;
+  }
+
+  test(emojiName: string): string {
+    return `<img width="18" src="../../../../../assets/emojis/${emojiName}">`;
+  }
+
+  setInnerHtml(message2: HTMLDivElement) {
+    for (let emoji of this.emojis) {
+      let emojiTextExpression = emoji.textExpression.replace(/(\)|\()/, '\\$1');
+      message2.innerHTML = message2.innerHTML.replace(new RegExp(emojiTextExpression, 'g'), `<img width="18" src="../../../../../assets/emojis/051-${emoji.name}.svg">`);
+    }
+
+  }
+
+  setCurrentCursorPosition(chars) {
+    if (chars >= 0) {
+      var selection = window.getSelection();
+
+      let range = this.createRange(document.getElementById("editable").parentNode, {count: chars});
+
+      if (range) {
+        range.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    }
+  };
+
+  createRange(node, chars, range?) {
+    if (!range) {
+      range = document.createRange()
+      range.selectNode(node);
+      range.setStart(node, 0);
+    }
+
+    if (chars.count === 0) {
+      range.setEnd(node, chars.count);
+    } else if (node && chars.count > 0) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (node.textContent.length < chars.count) {
+          chars.count -= node.textContent.length;
+        } else {
+          range.setEnd(node, chars.count);
+          chars.count = 0;
+        }
+      } else {
+        for (var lp = 0; lp < node.childNodes.length; lp++) {
+          range = this.createRange(node.childNodes[lp], chars, range);
+
+          if (chars.count === 0) {
+            break;
+          }
+        }
+      }
+    }
+
+    return range;
+  };
+
+
+  getCaretCharacterOffsetWithin(element) {
+    var caretOffset = 0;
+    var doc = element.ownerDocument || element.document;
+    var win = doc.defaultView || doc.parentWindow;
+    var sel;
+    if (typeof win.getSelection != "undefined") {
+      sel = win.getSelection();
+      if (sel.rangeCount > 0) {
+        var range = win.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+
+      }
+    } else if ((sel = doc.selection) && sel.type != "Control") {
+      var textRange = sel.createRange();
+      var preCaretTextRange = doc.body.createTextRange();
+      preCaretTextRange.moveToElementText(element);
+      preCaretTextRange.setEndPoint("EndToEnd", textRange);
+
+      caretOffset = preCaretTextRange.text.length;
+    }
+    return caretOffset;
+  }
+
+
+  addEmoji(message: HTMLDivElement, emoji: string) {
+    console.log(this.lastCursorPosition);
+    let image = `<img width="18" src="../../../../../assets/emojis/${emoji}">`;
+    message.innerHTML = message.innerHTML.substr(0, this.lastCursorPosition) + image + message.innerHTML.substr(this.lastCursorPosition, message.innerHTML.length);
+    this.lastCursorPosition = this.lastCursorPosition + image.length
   }
 
 }
