@@ -97,6 +97,7 @@ import {environment} from "../environments/environment";
 import * as FileSaver from "file-saver";
 import {EmojisPopoverComponent} from "./components/group/group-detail/chat/images-popover/emojis-popover.component";
 import { CachedImagePipe } from './pipes/cached-image.pipe';
+import {QuicklinkModule, QuicklinkStrategy} from "ngx-quicklink";
 
 
 
@@ -167,7 +168,8 @@ const routes: Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    RouterModule.forRoot(routes),
+    QuicklinkModule,
+    RouterModule.forRoot(routes, { preloadingStrategy: QuicklinkStrategy }),
     ReactiveFormsModule,
     HttpClientModule,
     CountdownModule,
@@ -177,7 +179,6 @@ const routes: Routes = [
     }),
     SocialLoginModule,
     MDBBootstrapModulesPro.forRoot(),
-    ToastModule.forRoot(),
     ButtonsModule,
     WavesModule,
     CardsModule,
@@ -185,20 +186,20 @@ const routes: Routes = [
     ToastModule.forRoot(),
     AutoCompleterModule,
     AutoFormatModule,
-    AnimatedCardsModule.forRoot(),
-    CardsModule.forRoot(),
+    AnimatedCardsModule,
+    CardsModule,
     DatepickerModule,
     ChartSimpleModule,
     FileInputModule,
-    CharCounterModule.forRoot(),
+    CharCounterModule,
     LightBoxModule,
     SelectModule,
     PreloadersModule,
     RangeModule,
     ScrollSpyModule,
     SidenavModule,
-    SmoothscrollModule.forRoot(),
-    TabsModule.forRoot(),
+    SmoothscrollModule,
+    TabsModule,
     ChipsModule,
     TimePickerModule,
     TableModule,
