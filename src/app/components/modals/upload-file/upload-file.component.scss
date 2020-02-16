@@ -1,6 +1,6 @@
 @import "../../../app.component";
 
-::ng-deep mdb-progress .progress,::ng-deep mdb-progress .progress .progress-bar.progress-bar-success {
+::ng-deep .upload-file-progress .progress,::ng-deep .upload-file-progress .progress .progress-bar.progress-bar-success {
   height: 40px !important;
   background-color: $navigationBarColorTransparent !important;
 }

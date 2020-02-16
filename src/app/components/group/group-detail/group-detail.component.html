@@ -1,3 +1,4 @@
+
 <h1 class="h1-responsive text-center py-3 border-bottom m-0"><strong>{{this.groupName}}</strong>
 </h1>
 
@@ -9,10 +10,13 @@
   </div>
   <app-edit-group #editGroup [group]="this.group"></app-edit-group>
 
-  <div class="mt-2 px-3 pb-1 group-menu-item " (click)="inviteUsers.show()" >
-      <i class="fas fa-plus" ></i> invite user
+  <div class="mt-2 px-3 pb-1 group-menu-item " (click)="inviteUsers.show()">
+    <i class="fas fa-plus"></i> invite user
   </div>
-    <app-invite-user #inviteUsers [users]="allUsers" [group]="group"></app-invite-user>
+  <app-invite-user #inviteUsers [users]="allUsers" [group]="group"></app-invite-user>
+  <div class="mt-2 px-3 pb-1 group-menu-item " (click)="inviteUsers.show()">
+    <mdb-icon fas icon="signal"></mdb-icon> statistics
+  </div>
 </div>
 <div class="container-fluid pt-5 pb-5 group-wrapper">
 
@@ -44,62 +48,65 @@
       </mdb-accordion>
 
 
-
     </div>
 
     <div class="col-lg-12 col-xl-6">
       <div class="row">
-        <div class="col-12 group-section">      <mdb-accordion [multiple]="true">
-          <mdb-accordion-item customClass="z-depth-1 rounded " [collapsed]="!toDoVisible">
-            <mdb-accordion-item-head
-              [indicator]="false" (click)="toDoVisible=!toDoVisible"
-              [ngClass]="toDoVisible?'accordion-header border-bottom mb-2':'accordion-header'"
-            >
-              <div class="accordion-header-text">
+        <div class="col-12 group-section">
+          <mdb-accordion [multiple]="true">
+            <mdb-accordion-item customClass="z-depth-1 rounded " [collapsed]="!toDoVisible">
+              <mdb-accordion-item-head
+                [indicator]="false" (click)="toDoVisible=!toDoVisible"
+                [ngClass]="toDoVisible?'accordion-header border-bottom mb-2':'accordion-header'"
+              >
+                <div class="accordion-header-text">
 
-                <div class="d-flex">
-                  <div class="flex-grow-1 "><h5 class="h5-responsive">To do</h5></div>
-                  <div *ngIf="!toDoVisible"><i class="fas fa-angle-up"></i></div>
-                  <div *ngIf="toDoVisible"><i class="fas fa-angle-down"></i></div>
-                </div>
-
-              </div>
-            </mdb-accordion-item-head>
-            <mdb-accordion-item-body class="accordion-body mt-2">
-
-              <div *ngIf="group && allUsers">
-                <app-to-do-list [group]="group" [users]="this.allUsers"></app-to-do-list>
-
-              </div>
-
-            </mdb-accordion-item-body>
-          </mdb-accordion-item>
-        </mdb-accordion></div>
-        <div class="col-12 group-section"><mdb-accordion [multiple]="true">
-          <mdb-accordion-item customClass="z-depth-1 rounded" [collapsed]="!changeLogVisible">
-            <mdb-accordion-item-head [indicator]="false"
-                                     [ngClass]="changeLogVisible?'accordion-header border-bottom mb-2':'accordion-header'"
-                                     (click)="changeLogVisible=!changeLogVisible">
-              <div class="accordion-header-text">
-
-                <div class="d-flex">
-                  <div class="flex-grow-1">
-                    <h5 class="h5-responsive">Change log</h5>
+                  <div class="d-flex">
+                    <div class="flex-grow-1 "><h5 class="h5-responsive">To do</h5></div>
+                    <div *ngIf="!toDoVisible"><i class="fas fa-angle-up"></i></div>
+                    <div *ngIf="toDoVisible"><i class="fas fa-angle-down"></i></div>
                   </div>
-                  <div *ngIf="!changeLogVisible"><i class="fas fa-angle-up"></i></div>
-                  <div *ngIf="changeLogVisible"><i class="fas fa-angle-down"></i></div>
+
+                </div>
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body class="accordion-body mt-2">
+
+                <div *ngIf="group && allUsers">
+                  <app-to-do-list [group]="group" [users]="this.allUsers"></app-to-do-list>
+
                 </div>
 
-              </div>
-            </mdb-accordion-item-head>
-            <mdb-accordion-item-body  class="accordion-body mt-2">
-              <div *ngIf="group">
-                <app-change-log [group]="group"></app-change-log>
-              </div>
+              </mdb-accordion-item-body>
+            </mdb-accordion-item>
+          </mdb-accordion>
+        </div>
+        <div class="col-12 group-section">
+          <mdb-accordion [multiple]="true">
+            <mdb-accordion-item customClass="z-depth-1 rounded" [collapsed]="!changeLogVisible">
+              <mdb-accordion-item-head [indicator]="false"
+                                       [ngClass]="changeLogVisible?'accordion-header border-bottom mb-2':'accordion-header'"
+                                       (click)="changeLogVisible=!changeLogVisible">
+                <div class="accordion-header-text">
 
-            </mdb-accordion-item-body>
-          </mdb-accordion-item>
-        </mdb-accordion></div>
+                  <div class="d-flex">
+                    <div class="flex-grow-1">
+                      <h5 class="h5-responsive">Change log</h5>
+                    </div>
+                    <div *ngIf="!changeLogVisible"><i class="fas fa-angle-up"></i></div>
+                    <div *ngIf="changeLogVisible"><i class="fas fa-angle-down"></i></div>
+                  </div>
+
+                </div>
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body class="accordion-body mt-2">
+                <div *ngIf="group">
+                  <app-change-log [group]="group"></app-change-log>
+                </div>
+
+              </mdb-accordion-item-body>
+            </mdb-accordion-item>
+          </mdb-accordion>
+        </div>
       </div>
 
     </div>

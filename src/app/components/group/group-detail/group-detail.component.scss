@@ -22,3 +22,12 @@
     padding-right: 5% !important;
   }
 }
+::ng-deep .group-limits-progress .progress,::ng-deep  .group-limits-progress .progress .progress-bar.progress-bar-success {
+  height: 20px !important;
+  background-color: $navigationBarColorTransparent !important;
+}
+
+::ng-deep   .group-limits-progress .progress .progress-bar.progress-bar-success{
+
+  background-color: $navigationBarColor !important;
+}
