@@ -99,7 +99,7 @@ import {EmojisPopoverComponent} from "./components/group/group-detail/chat/image
 import { CachedImagePipe } from './pipes/cached-image.pipe';
 import {QuicklinkModule, QuicklinkStrategy} from "ngx-quicklink";
 import {DeviceDetectorService} from "ngx-device-detector";
-
+import  {  ScrollingModule  }  from  '@angular/cdk/scrolling';
 
 
 const routes: Routes = [
@@ -161,7 +161,8 @@ const routes: Routes = [
     SecureImagePipe,
     UploadFileComponent,
     EmojisPopoverComponent,
-    CachedImagePipe
+    CachedImagePipe,
+
 
 
   ],
@@ -208,6 +209,7 @@ const routes: Routes = [
     ModalModule,
     NgxPaginationModule,
     BrowserAnimationsModule,
+    ScrollingModule
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {

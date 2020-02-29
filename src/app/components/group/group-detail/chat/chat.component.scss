@@ -137,7 +137,9 @@ position: absolute;
   border-left: 1px solid $navigationBarColor;
   border-right: 1px solid $navigationBarColor;
   overflow-y: scroll;
+  overflow-x: hidden !important;
   height: 80% !important;
+
   scrollbar-color: transparent transparent !important;
 
 }
@@ -255,3 +257,4 @@ overflow-y: auto;
   color: $basicTextColor;
   display: inline-block;
 }
+

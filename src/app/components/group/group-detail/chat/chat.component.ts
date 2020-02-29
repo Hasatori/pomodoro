@@ -30,6 +30,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   fetchingOlder: boolean = false;
   olderFetched: boolean = false;
   stopFetchingOlder: boolean = false;
+  addingNewMessage: boolean = false;
   private threshold = 0;
   private limit = 10;
   private end = this.threshold + this.limit;
@@ -125,12 +126,15 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
     });
     this.newGroupMessageSubscription = this.userServiceProvider.groupService.getNewGroupMessage(this.group.name).subscribe((newMessage) => {
+      this.addingNewMessage = true;
       this.seenBy = '';
       this.setReactionsForMessage(newMessage);
-      this.messages.push(newMessage);
+      this.messages=this.messages.concat(newMessage);
       this.processMessagesFromBack(this.messages);
+
     });
     this.resendGroupMessageSubscription = this.userServiceProvider.groupService.getResendGroupMessage(this.group.name).subscribe((newMessage) => {
+      this.addingNewMessage = true;
       this.seenBy = '';
       this.messages.push(newMessage);
       this.processMessagesFromBack(this.messages);
@@ -151,6 +155,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     this.lastNumberOfGroupMessagesSubscription = this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.group.name, this.threshold, this.end).subscribe((response) => {
+      this.addingNewMessage = true;
       this.messages = response.sort(function (a, b) {
         return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       });
@@ -237,13 +242,16 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       if (currentLength !== this.messagesContainerLength) {
         this.messagesContainerLength = currentLength;
 
-        if (!this.fetchingOlder && !this.olderFetched) {
+        if (!this.fetchingOlder && !this.olderFetched && this.addingNewMessage) {
           this.scrollableWindow.scrollTop = this.scrollableWindow.scrollHeight + 500;
 
         }
         if (this.olderFetched) {
           this.olderFetched = false;
-          this.scrollableWindow.scrollTop = this.scrollableWindow.scrollHeight - this.scrollableWindow.scrollHeight * 0.95;
+          this.scrollableWindow.scrollTop = this.scrollableWindow.scrollHeight - this.scrollableWindow.scrollHeight * 0.9;
+        }
+        if (this.addingNewMessage) {
+          this.addingNewMessage = false;
         }
       }
 

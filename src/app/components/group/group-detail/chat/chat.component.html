@@ -30,7 +30,6 @@
   </div>
 </div>
 
-
 <mdb-card [ngClass]="chatHidden?'chat-room small-chat wide invisible ':'chat-room small-chat wide'">
 
   <mdb-card-header class="chat-heading p-3" id="toggle" style="cursor: pointer;">
@@ -67,9 +66,9 @@
     </div>
 
   </mdb-card-header>
-  <div
+  <cdk-virtual-scroll-viewport [maxBufferPx]="50" [minBufferPx]="15" itemSize="50" (scrolledIndexChange)="scrolled()"
     [ngClass]="showReactions?'my-custom-scrollbar stop-scrolling':'my-custom-scrollbar'"
-    id="scrollable-window" (scroll)="scrolled()">
+    id="scrollable-window">
     <mdb-card-body class="p-3 pb-5">
       <div *ngIf="loading" class="d-flex flex-column">
         <div class="p-2 m-auto">
@@ -86,7 +85,7 @@
           <mdb-spinner *ngIf="fetchingOlder" spinnerColor="blue" spinnerType="small"></mdb-spinner>
 
         </div>
-        <div #messages *ngFor="let message of messages;last as isLast; let i = index;"
+        <div #messages *cdkVirtualFor="let message of messages;last as isLast; let i = index;"
              class="messages-container"
 
         >
@@ -345,7 +344,7 @@
         </div>
       </div>
     </mdb-card-body>
-  </div>
+  </cdk-virtual-scroll-viewport>
   <mdb-card-footer class="chat-footer pt-1 pb-1 px-3">
     <div  class="message-box" id="editable" [contentEditable]="message.innerHTML.length<4000"  data-placeholder="type a message..." #message (click)="lastCursorPosition=getCaretCharacterOffsetWithin(message)" (keydown)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"></div>
 

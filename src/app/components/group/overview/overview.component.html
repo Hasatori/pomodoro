@@ -71,7 +71,8 @@
             <!--Card image-->
             <div class="view overlay waves-light" mdbWavesEffect>
 
-              <mdb-card-img [src]="userServiceProvider.serverConfig.getFullUrl(group.layoutImage) | secureImage | async" ></mdb-card-img>
+              <mdb-card-img
+                [src]="userServiceProvider.serverConfig.getFullUrl(group.layoutImage) | secureImage | async"></mdb-card-img>
               <a>
                 <div class="mask "></div>
               </a>
@@ -107,11 +108,9 @@
 
               <hr>
 
-              <p class="font-small grey-dark-text mb-0">
-                This group contains <strong>8</strong> and so far <strong>1000</strong> pomodoros were done, and
-                <strong>1500</strong> messages was sent
+              <p class="font-small grey-dark-text mb-0" >
+                {{group.description}}
               </p>
-
             </mdb-card-body>
             <!--/.Card content-->
             <!-- Card footer -->
@@ -143,7 +142,8 @@
 
       </div>
       <div class=" md-form ml-3">
-      <input type="search" #searchParticipatingGroups (keyup)="searchParticipatingGroups.value" placeholder="find group">
+        <input type="search" #searchParticipatingGroups (keyup)="searchParticipatingGroups.value"
+               placeholder="find group">
       </div>
       <div class="row" @list>
         <div class="col-sm-6 col-lg-4 col-xl-3 mt-5"
@@ -155,7 +155,8 @@
 
             <!--Card image-->
             <div class="view overlay waves-light" mdbWavesEffect>
-              <mdb-card-img [src]="userServiceProvider.serverConfig.getFullUrl(group.layoutImage) | secureImage | async"></mdb-card-img>
+              <mdb-card-img
+                [src]="userServiceProvider.serverConfig.getFullUrl(group.layoutImage) | secureImage | async"></mdb-card-img>
               <a>
                 <div class="mask "></div>
               </a>
@@ -238,7 +239,9 @@
                 </div>
                 <!--Avatar-->
                 <div class="avatar mx-auto">
-                  <img [src]="userServiceProvider.serverConfig.getFullUrl('users/'+invitation.group.owner.id+'/profile.jpg') | secureImage | async" class="rounded-circle">
+                  <img
+                    [src]="userServiceProvider.serverConfig.getFullUrl('users/'+invitation.group.owner.id+'/profile.jpg') | secureImage | async"
+                    class="rounded-circle">
                   <!--    <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg" class="rounded-circle">
                    --> </div>
 

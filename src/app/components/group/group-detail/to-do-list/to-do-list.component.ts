@@ -15,19 +15,20 @@ import {listAnimation, onCreateListAnimation} from "../../../../animations";
   selector: 'app-to-do-list',
   templateUrl: './to-do-list.component.html',
   styleUrls: ['./to-do-list.component.scss'],
-  animations:[listAnimation,onCreateListAnimation]
+  animations: [listAnimation, onCreateListAnimation]
 })
 export class ToDoListComponent implements OnInit {
 
   @Input() group: Group;
   @Input() users: Array<User>;
   user: User;
-  public  todos: Array<GroupToDo> = [];
-  public  allToDos: Array<GroupToDo> = [];
+  public todos: Array<GroupToDo> = [];
+  public allToDos: Array<GroupToDo> = [];
   private deadlineTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-  public  anySelected = false;
-  public  selectedTodos: Array<GroupToDo> = [];
+  public anySelected = false;
+  public selectedTodos: Array<GroupToDo> = [];
   loading: boolean = true;
+  todoError: string = '';
 
   constructor(public userServiceProvider: UserServiceProvider) {
 
@@ -187,10 +188,15 @@ export class ToDoListComponent implements OnInit {
           toDo.selected = false;
           toDo.accordionDisabled = false;
           this.assignChildren(this.allToDos, toDo);
-        }
 
+        }
+        this.selectedTodos=[];
+        this.anySelected=false;
       }
-    );
+      , error1 => {
+        this.todoError = error1.error.groupToDo;
+
+      });
   }
 
   removeTodosAndAllChildren(allTodos: Array<GroupToDo>, todosToRemove: Array<GroupToDo>): Array<GroupToDo> {

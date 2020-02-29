@@ -68,7 +68,7 @@ export class GroupService implements OnDestroy {
 
     });
     this.getGroups().subscribe((groups) => {
-      this.groups = groups.sort(function(a, b) {
+      this.groups = groups.sort(function (a, b) {
         return new Date(b.created).getTime() - new Date(a.created).getTime();
       });
       this.userService.getUser().subscribe(user => {
@@ -134,9 +134,7 @@ export class GroupService implements OnDestroy {
   }
 
   private getAllUnreadMessagesForGroup(groupName: string): Observable<Array<GroupMessage>> {
-    return this.http.post<any>(`${getEnvironment().backend}groups/${groupName}/fetch-unread-messages`, {
-      groupName: groupName,
-    }).pipe(map(response => {
+    return this.http.get<any>(`${getEnvironment().backend}groups/${groupName}/fetch-unread-messages`).pipe(map(response => {
       return response;
     }));
   }
@@ -166,7 +164,7 @@ export class GroupService implements OnDestroy {
     if (groupUsers != null) {
       return of(groupUsers);
     } else {
-      return this.http.post<any>(`${getEnvironment().backend}groups/` + groupName, '').pipe(map(users => {
+      return this.http.get<any>(`${getEnvironment().backend}groups/${groupName}`).pipe(map(users => {
         sessionStorage.setItem(this.createParameterizedKey(this.GROUP_USERS_KEY, groupName), JSON.stringify(users));
         return users;
       }));
@@ -181,7 +179,7 @@ export class GroupService implements OnDestroy {
   }
 
   public getLastNumberOfGroupMessages(groupName: string, start: number, stop: number): Observable<Array<GroupMessage>> {
-    return this.http.post<any>(`${getEnvironment().backend}groups/${groupName}/fetch-chat-messages`, {
+    return this.http.post<any>(`${getEnvironment().backend}groups/fetch-chat-messages`, {
       groupName: groupName,
       start: start,
       stop: stop
@@ -192,7 +190,7 @@ export class GroupService implements OnDestroy {
   }
 
   public getLastNumberOfGroupChanges(groupName: string, start: number, stop: number): Observable<Array<GroupChange>> {
-    return this.http.post<any>(`${getEnvironment().backend}groups/${groupName}/fetch-changes`, {
+    return this.http.post<any>(`${getEnvironment().backend}groups/fetch-changes`, {
       groupName: groupName,
       start: start,
       stop: stop
@@ -203,13 +201,9 @@ export class GroupService implements OnDestroy {
   }
 
   public getGroupToDos(groupName: string): Observable<Array<GroupToDo>> {
-    return this.http.post<any>(`${getEnvironment().backend}groups/${groupName}/fetch-todos`, {
-      groupName: groupName
-    }).pipe(map(response => {
-
+    return this.http.get<any>(`${getEnvironment().backend}groups/${groupName}/fetch-todos`).pipe(map(response => {
       return response;
     }));
-
   }
 
   public reactToGroupMessage(groupName: string, groupMessage: GroupMessage, reaction: string) {
@@ -228,13 +222,12 @@ export class GroupService implements OnDestroy {
   }
 
   createGroup(name: string, isPublic: boolean, groupDescription: string, layoutImage: string): Observable<any> {
-    let group = new Group();
-    group.name = name;
-    group.isPublic = isPublic;
-    group.layoutImage = layoutImage;
-    group.description = groupDescription;
-    group.created=new Date(Date.now());
-    return this.http.post<any>(`${getEnvironment().backend}group/create`, group
+    return this.http.post<any>(`${getEnvironment().backend}group/create`, {
+        groupName: name,
+        isPublic: isPublic,
+        layoutImage: layoutImage,
+        description: groupDescription,
+      }
     ).pipe(map(response => {
       sessionStorage.removeItem(this.GROUPS_KEY);
       this.startSockets();
@@ -269,6 +262,7 @@ export class GroupService implements OnDestroy {
       return JSON.parse(newMessage.body);
     }));
   }
+
   getResendGroupMessage(groupName: string): Observable<GroupMessage> {
     return this.webSocketProxyService.watch('/group/' + groupName + '/chat/resend').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
@@ -365,10 +359,10 @@ export class GroupService implements OnDestroy {
   }
 
   removeGroupTodos(group: Group, todos: Array<GroupToDo>): Observable<any> {
-
-    let ids = todos.map(todo => todo.id);
-
-    return this.http.post<any>(`${getEnvironment().backend}group/remove-todo`, ids).pipe(map(response => {
+    return this.http.post<any>(`${getEnvironment().backend}group/remove-todo`, {
+      group: group,
+      toDoList: todos
+    }).pipe(map(response => {
       todos.forEach(todo => {
         this.sendChange(group.name, ChangeType.DELETE, `Todo ${todo.description} has been deleted`);
       });
@@ -377,7 +371,7 @@ export class GroupService implements OnDestroy {
   }
 
   getInvitationsForGroup(group: Group): Observable<Array<GroupInvitation>> {
-    return this.http.post<any>(`${getEnvironment().backend}group/${group.name}/invitations`, group
+    return this.http.get<any>(`${getEnvironment().backend}group/${group.name}/invitations`
     ).pipe(map(response => {
       return response;
     }));

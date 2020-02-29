@@ -148,7 +148,8 @@ export class EditGroupComponent implements OnInit {
         this.creatingInProgress = false;
         this.input.hide();
       }, error1 => {
-        this.nameError = error1.error.name;
+        console.log(error1);
+        this.nameError = error1.error.groupName;
         this.creatingInProgress = false;
       })
     }
