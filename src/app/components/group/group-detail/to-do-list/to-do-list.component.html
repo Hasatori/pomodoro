@@ -57,7 +57,7 @@
 
               >
 
-                <div class="d-flex flex-row flex-nowrap"
+                <div  class="d-flex flex-row flex-nowrap"
 
                 >
 
@@ -79,7 +79,7 @@
 
 
               </mdb-accordion-item-head>
-              <mdb-accordion-item-body>
+              <mdb-accordion-item-body *ngIf="item.visible">
                 <div class="ml-5 mb-2 d-flex flex-row justify-content-start small text-muted edit-task-button"
                      (click)="createOrUpdateToDo.show('Update todo',null,item);">
                   <div class="mr-1">
