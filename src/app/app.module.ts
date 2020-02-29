@@ -100,6 +100,7 @@ import { CachedImagePipe } from './pipes/cached-image.pipe';
 import {QuicklinkModule, QuicklinkStrategy} from "ngx-quicklink";
 import {DeviceDetectorService} from "ngx-device-detector";
 import  {  ScrollingModule  }  from  '@angular/cdk/scrolling';
+import {StatisticsComponent} from "./components/group/group-detail/statistics/statistics.component";
 
 
 const routes: Routes = [
@@ -162,7 +163,7 @@ const routes: Routes = [
     UploadFileComponent,
     EmojisPopoverComponent,
     CachedImagePipe,
-
+    StatisticsComponent
 
 
   ],
@@ -209,7 +210,8 @@ const routes: Routes = [
     ModalModule,
     NgxPaginationModule,
     BrowserAnimationsModule,
-    ScrollingModule
+    ScrollingModule,
+
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}, {
