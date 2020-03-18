@@ -15,6 +15,8 @@ import {SafeUrl} from "@angular/platform-browser";
 import {map} from "rxjs/operators";
 import {CachedImagePipe} from "../../../../pipes/cached-image.pipe";
 import {DeviceDetectorService} from "ngx-device-detector";
+import {EmojisPopoverComponent} from "./images-popover/emojis-popover.component";
+import {MdbIconComponent, PopoverDirective} from "ng-uikit-pro-standard";
 
 @Component({
   selector: 'app-chat',
@@ -179,10 +181,13 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resendGroupMessageSubscription.unsubscribe();
   }
 
-  sendMessage(messageValue: string) {
-    console.log(`Sending message ${messageValue}`);
-    this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/chat', messageValue);
-    this.typing = false;
+  sendMessage(message: HTMLDivElement) {
+    if (message.innerText.trim().length>0) {
+      console.log(`Sending message ${message.innerHTML}`);
+      this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/chat', message.innerHTML);
+      this.typing = false;
+      message.innerHTML='';
+    }
   }
 
   resendMessage(groupMessage: GroupMessage) {
@@ -533,7 +538,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(this.lastCursorPosition);
     let image = `<img width="18" src="../../../../../assets/emojis/${emoji}">`;
     message.innerHTML = message.innerHTML.substr(0, this.lastCursorPosition) + image + message.innerHTML.substr(this.lastCursorPosition, message.innerHTML.length);
-    this.lastCursorPosition = this.lastCursorPosition + image.length
+    this.lastCursorPosition = this.lastCursorPosition + image.length;
   }
 
 }

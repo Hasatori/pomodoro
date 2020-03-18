@@ -346,13 +346,13 @@
     </mdb-card-body>
   </cdk-virtual-scroll-viewport>
   <mdb-card-footer class="chat-footer pt-1 pb-1 px-3">
-    <div  class="message-box" id="editable" [contentEditable]="message.innerHTML.length<4000"  data-placeholder="type a message..." #message (click)="lastCursorPosition=getCaretCharacterOffsetWithin(message)" (keydown)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"></div>
+    <div  class="message-box" id="editable" [contentEditable]="message.innerHTML.length<4000"  data-placeholder="type a message..." #message (keydown.enter)="sendMessage(message);$event.preventDefault();" (click)="lastCursorPosition=getCaretCharacterOffsetWithin(message)" (keydown)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"></div>
 
     <div>
       <a>
-        <mdb-icon far icon="laugh" class="mr-2  chat-icon"  [mdbPopover]="smallHoverImgTemp" placement="top" triggers="click"></mdb-icon>
+        <mdb-icon #smallHoverImgTemp="bs-mdbPopover"  [mdbPopover]="emojisPopover"  far icon="laugh" class="mr-2  chat-icon"   triggers="click" ></mdb-icon>
       </a>
-      <ng-template #smallHoverImgTemp><app-emojis-popover (emojiSelected)="addEmoji(message,$event)"></app-emojis-popover></ng-template>
+      <ng-template #emojisPopover ><app-emojis-popover  (click)="smallHoverImgTemp.hide()" (emojiSelected)="addEmoji(message,$event);"></app-emojis-popover></ng-template>
 
       <a>
         <input #uploadFile type="file" style="display:none"
@@ -360,11 +360,12 @@
         <mdb-icon fas icon="paperclip" (click)="uploadFile.click()" class="mr-2  chat-icon"></mdb-icon>
 
       </a>
+
       <a>
         <mdb-icon
 
           fas icon="paper-plane" class="float-right chat-icon"
-          (click)="sendMessage(message.innerHTML);message.innerHTML=''"></mdb-icon>
+          (click)="sendMessage(message);"></mdb-icon>
 
       </a>
     </div>
