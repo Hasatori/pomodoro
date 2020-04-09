@@ -5,7 +5,7 @@ import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../model/user';
 import {Pomodoro} from '../model/pomodoro';
-import {GroupMessage} from '../model/group-message';
+import {Message} from '../model/message';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {UserService} from './user.service';
 import {GroupInvitation} from '../model/group-invitation';
@@ -133,13 +133,13 @@ export class GroupService implements OnDestroy {
     return `../../../../assets/group/layouts/teamwork-${number}.jpg`;
   }
 
-  private getAllUnreadMessagesForGroup(groupName: string): Observable<Array<GroupMessage>> {
+  private getAllUnreadMessagesForGroup(groupName: string): Observable<Array<Message>> {
     return this.http.get<any>(`${getEnvironment().backend}groups/${groupName}/fetch-unread-messages`).pipe(map(response => {
       return response;
     }));
   }
 
-  markAllFromGroupAsRead(groupName: string): Observable<GroupMessage> {
+  markAllFromGroupAsRead(groupName: string): Observable<Message> {
     this.allUnreadMessages -= this.groupUnreadMessages.get(groupName);
     this.groupUnreadMessages.set(groupName, 0);
     return this.http.post<any>(`${getEnvironment().backend}groups/${groupName}/mark-all-as-read`, {}).pipe(map(response => {
@@ -178,7 +178,7 @@ export class GroupService implements OnDestroy {
 
   }
 
-  public getLastNumberOfGroupMessages(groupName: string, start: number, stop: number): Observable<Array<GroupMessage>> {
+  public getLastNumberOfGroupMessages(groupName: string, start: number, stop: number): Observable<Array<Message>> {
     return this.http.post<any>(`${getEnvironment().backend}groups/fetch-chat-messages`, {
       groupName: groupName,
       start: start,
@@ -206,17 +206,17 @@ export class GroupService implements OnDestroy {
     }));
   }
 
-  public reactToGroupMessage(groupName: string, groupMessage: GroupMessage, reaction: string) {
+  public reactToGroupMessage(groupName: string, groupMessage: Message, reaction: string) {
     let groupMessageReaction = {
       groupMessageId: groupMessage.id,
       reaction: reaction
     };
-    this.webSocketProxyService.publish('/app/group/' + groupName + '/chat/reaction', JSON.stringify(groupMessageReaction));
+    this.webSocketProxyService.publish('/app/group/' + groupName + '/chat/emoji', JSON.stringify(groupMessageReaction));
   }
 
 
-  public getReactedGroupMessage(groupName: string): Observable<GroupMessage> {
-    return this.webSocketProxyService.watch('/group/' + groupName + '/chat/reaction').pipe(map(newMessage => {
+  public getReactedGroupMessage(groupName: string): Observable<Message> {
+    return this.webSocketProxyService.watch('/group/' + groupName + '/chat/emoji').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
     }));
   }
@@ -257,13 +257,13 @@ export class GroupService implements OnDestroy {
 
   }
 
-  getNewGroupMessage(groupName: string): Observable<GroupMessage> {
+  getNewGroupMessage(groupName: string): Observable<Message> {
     return this.webSocketProxyService.watch('/group/' + groupName + '/chat').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
     }));
   }
 
-  getResendGroupMessage(groupName: string): Observable<GroupMessage> {
+  getResendGroupMessage(groupName: string): Observable<Message> {
     return this.webSocketProxyService.watch('/group/' + groupName + '/chat/resend').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
     }));

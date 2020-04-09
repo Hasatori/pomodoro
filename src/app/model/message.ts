@@ -1,14 +1,14 @@
 import {User} from './user';
-import {UserGroupMessage} from './user-group-message';
+import {UserReaction} from './user-reaction';
 import {Reaction} from './reaction';
 import {GroupMessageChange} from './group-message-change';
 
-export class GroupMessage {
+export class Message {
   id: number;
   author: User;
   value: string;
   timestamp: Date;
-  relatedGroupMessages: Array<UserGroupMessage>;
+  relatedGroupMessages: Array<UserReaction>;
   changes: Array<GroupMessageChange>;
   currentUserReaction?: string = null;
   reactions?: Array<Reaction> = new Array<Reaction>();

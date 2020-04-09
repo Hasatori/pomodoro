@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {User} from '../../../../model/user';
-import {GroupMessage} from '../../../../model/group-message';
+import {Message} from '../../../../model/message';
 import {Observable, of, Subscription} from 'rxjs';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
 import {Reaction} from '../../../../model/reaction';
@@ -15,18 +15,18 @@ import {SafeUrl} from "@angular/platform-browser";
 import {map} from "rxjs/operators";
 import {CachedImagePipe} from "../../../../pipes/cached-image.pipe";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {EmojisPopoverComponent} from "./images-popover/emojis-popover.component";
+import {EmojisPopoverComponent} from "../../../chat/images-popover/emojis-popover.component";
 import {MdbIconComponent, PopoverDirective} from "ng-uikit-pro-standard";
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  selector: 'app-group-chat',
+  templateUrl: './group-chat.component.html',
+  styleUrls: ['./group-chat.component.scss']
 })
-export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() group: Group;
-  messages: Array<GroupMessage> = [];
+  messages: Array<Message> = [];
   user: User;
   scrollableWindow;
   fetchingOlder: boolean = false;
@@ -39,7 +39,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren('messages') messagesContainer: QueryList<any>;
   messagesContainerLength: number = 0;
   seenBy: string = '';
-  lastMessage: GroupMessage;
+  lastMessage: Message;
   private oldMessageTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   private recentMessageTimeOptions = {hour: 'numeric'};
 
@@ -190,7 +190,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  resendMessage(groupMessage: GroupMessage) {
+  resendMessage(groupMessage: Message) {
     this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/chat/resend', groupMessage);
     this.typing = false;
   }
@@ -305,7 +305,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  processMessagesFromBack(messages: Array<GroupMessage>) {
+  processMessagesFromBack(messages: Array<Message>) {
     for (let i = messages.length - 1; i >= 0; i--) {
       let currentMessage = messages[i];
       currentMessage.shouldShowAuthorsPhoto = false;
@@ -323,31 +323,31 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     messages[messages.length - 1].shouldShowAuthorsPhoto = true;
   }
 
-  shouldShowAuthorsPhotograph(currentMessage: GroupMessage, nextMessage: GroupMessage): boolean {
+  shouldShowAuthorsPhotograph(currentMessage: Message, nextMessage: Message): boolean {
     return nextMessage == null || nextMessage.author.username !== currentMessage.author.username;
 
   }
 
-  shouldShowAuthorsName(currentMessage: GroupMessage, previousMessage: GroupMessage) {
+  shouldShowAuthorsName(currentMessage: Message, previousMessage: Message) {
     return previousMessage == null || previousMessage.author.username !== currentMessage.author.username;
 
   }
 
 
-  setReactionsForMessage(message: GroupMessage) {
+  setReactionsForMessage(message: Message) {
     let reactions: Array<Reaction> = [];
     this.reactionsNames.forEach(reactionName => {
       reactions.push(this.createReaction(reactionName));
     });
     message.relatedGroupMessages.forEach(relatedMessage => {
       let reaction = reactions.find(reaction => {
-        return reaction.name === relatedMessage.reaction;
+        return reaction.name === relatedMessage.emoji;
       });
       if (!isUndefined(reaction) && reaction !== null) {
         reaction.users.push(relatedMessage.user);
       }
       if (relatedMessage.user.username === this.user.username) {
-        message.currentUserReaction = relatedMessage.reaction;
+        message.currentUserReaction = relatedMessage.emoji;
       }
     });
     message.reactions = reactions;
@@ -368,16 +368,16 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  react(message: GroupMessage, reactionName: string) {
+  react(message: Message, reactionName: string) {
     //  this.addReactionToMessage(message,reactionName);
     this.userServiceProvider.groupService.reactToGroupMessage(this.group.name, message, reactionName);
 
   }
 
-  removeReaction(message: GroupMessage, reactionName: string) {
+  removeReaction(message: Message, reactionName: string) {
     /*
         let currentUserReaction = message.reactions.find(r => {
-          return r.name === reaction && r.users.some(user => user.username == this.user.username);
+          return r.name === emoji && r.users.some(user => user.username == this.user.username);
         });
         currentUserReaction.users = currentUserReaction.users.UserFilter(user => {
           return user.username !== this.user.username;
@@ -388,7 +388,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  addReactionToMessage(message: GroupMessage, reaction: string) {
+  addReactionToMessage(message: Message, reaction: string) {
     let foundReaction = message.reactions.find(r => {
       return r.name === reaction;
     });
@@ -417,7 +417,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  downloadAttachment(groupMessage: GroupMessage) {
+  downloadAttachment(groupMessage: Message) {
     let endpoint = `${getEnvironment().backend}group/${this.group.id}/attachment/${groupMessage.attachment}/download`;
     this.http.post(endpoint, {}, {
       responseType: "blob",

@@ -44,7 +44,7 @@ import {AuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {provideConfig} from './ServerConfig';
 import {WantMoreFunctionalityComponent} from './components/modals/want-more-functionality/want-more-functionality.component';
 import {SuccessComponent} from './components/modals/success/success.component';
-import {ChatComponent} from './components/group/group-detail/chat/chat.component';
+import {GroupChatComponent} from './components/group/group-detail/group-chat/group-chat.component';
 import {LightBoxModule, CarouselModule, ModalModule, WavesModule} from 'ng-uikit-pro-standard'
 import {
   AccordionModule,
@@ -95,12 +95,14 @@ import {UploadFileComponent} from './components/modals/upload-file/upload-file.c
 import {ServerConfigService} from './services/server-config.service';
 import {environment} from "../environments/environment";
 import * as FileSaver from "file-saver";
-import {EmojisPopoverComponent} from "./components/group/group-detail/chat/images-popover/emojis-popover.component";
+import {EmojisPopoverComponent} from "./components/chat/images-popover/emojis-popover.component";
 import { CachedImagePipe } from './pipes/cached-image.pipe';
 import {QuicklinkModule, QuicklinkStrategy} from "ngx-quicklink";
 import {DeviceDetectorService} from "ngx-device-detector";
 import  {  ScrollingModule  }  from  '@angular/cdk/scrolling';
 import {StatisticsComponent} from "./components/group/group-detail/statistics/statistics.component";
+import {ChatComponent} from "./components/chat/chat.component";
+import { MessageComponent } from './components/chat/message/message.component';
 
 
 const routes: Routes = [
@@ -139,7 +141,7 @@ const routes: Routes = [
     FreeTrialComponent,
     WantMoreFunctionalityComponent,
     SuccessComponent,
-    ChatComponent,
+    GroupChatComponent,
     OverviewComponent,
     BackToTopComponent,
     SortPipe,
@@ -163,7 +165,9 @@ const routes: Routes = [
     UploadFileComponent,
     EmojisPopoverComponent,
     CachedImagePipe,
-    StatisticsComponent
+    StatisticsComponent,
+    ChatComponent,
+    MessageComponent
 
 
   ],

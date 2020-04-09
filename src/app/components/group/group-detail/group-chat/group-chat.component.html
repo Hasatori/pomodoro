@@ -124,7 +124,7 @@
                         <div class="pl-1 reactions-count"
                              *ngIf="reaction.users.length>1"> {{reaction.users.length}}</div>
                         <div class="pl-1" [mdbTooltip]="reactionTooltip"><img width="18"
-                                                                              [src]="'../../../../../assets/emojis/051-'+reaction.name+'.svg'|cachedImage|async"
+                                                                              [src]="'../../../../../assets/reactions/051-'+reaction.name+'.svg'|cachedImage|async"
 
                         ></div>
 
@@ -150,9 +150,9 @@
                     <div
 
                       mdbTooltip="{{message.currentUserReaction===reactionName?null:reactionName}}"
-                      [ngClass]="message.currentUserReaction===reactionName?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
+                      [ngClass]="message.currentUserReaction===reactionName?'p-2 emoji-emoji-selected':'p-2 emoji-emoji'"
                       *ngFor="let reactionName of reactionsNames">
-                      <img width="18" [src]="'../../../../../assets/emojis/051-'+reactionName+'.svg'|cachedImage|async"
+                      <img width="18" [src]="'../../../../../assets/reactions/051-'+reactionName+'.svg'|cachedImage|async"
 
                            (click)="react(message,reactionName)"
                       >
@@ -192,7 +192,7 @@
 
                 >+ react</a>
                 <a placement="top"
-                   [ngClass]="isMobileOrTablet?'ml-2 text-muted small':'ml-2 message-reaction text-muted small'"
+                   [ngClass]="isMobileOrTablet?'ml-2 text-muted small':'ml-2 message-emoji text-muted small'"
                    *ngIf="message.changes!==null && message.changes.length>0"
                    [mdbPopover]="changesTemplate" triggers="click"
                    (click)="addReactionsClicked()"
@@ -256,7 +256,7 @@
                         <div class="pl-1 reactions-count"
                              *ngIf="reaction.users.length>1"> {{reaction.users.length}}</div>
                         <div class="pl-1" [mdbTooltip]="reactionTooltip"><img width="18"
-                                                                              [src]="'../../../../../assets/emojis/051-'+reaction.name+'.svg'|cachedImage|async"
+                                                                              [src]="'../../../../../assets/reactions/051-'+reaction.name+'.svg'|cachedImage|async"
 
                         ></div>
 
@@ -282,10 +282,10 @@
                     <div
 
                       mdbTooltip="{{message.currentUserReaction===reactionName?null:reactionName}}"
-                      [ngClass]="message.currentUserReaction===reactionName?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
+                      [ngClass]="message.currentUserReaction===reactionName?'p-2 emoji-emoji-selected':'p-2 emoji-emoji'"
 
                       *ngFor="let reactionName of reactionsNames">
-                      <img width="18" src="{{'../../../../../assets/emojis/051-'+reactionName+'.svg'}}"
+                      <img width="18" src="{{'../../../../../assets/reactions/051-'+reactionName+'.svg'}}"
 
                            (click)="react(message,reactionName)"
                       >
@@ -320,7 +320,7 @@
                 </ng-template>
                 <a placement="right" [mdbPopover]="clickImgTemp" triggers="click"
                    class="message-reaction text-muted small"
-                   [ngClass]="isMobileOrTablet?'text-muted small':'message-reaction text-muted small'"
+                   [ngClass]="isMobileOrTablet?'text-muted small':'message-emoji text-muted small'"
                    (click)="addReactionsClicked()"
 
 

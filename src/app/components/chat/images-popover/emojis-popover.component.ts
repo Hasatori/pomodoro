@@ -10,7 +10,7 @@ export class EmojisPopoverComponent implements OnInit {
 
   @Output() emojiSelected=new EventEmitter();
 
-  private emojisPath: string = './../../../../../assets/emojis/';
+  private emojisPath: string = './../../../../../assets/reactions/';
  public emojis = [
    {path:`${this.emojisPath}051-angel.svg`,name:'051-angel.svg'},
    {path:`${this.emojisPath}051-angry-1.svg`,name:'051-angry-1.svg'},

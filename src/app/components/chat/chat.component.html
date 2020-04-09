@@ -1,0 +1,141 @@
+<div
+  *ngIf="minimized"
+  mdbBtn
+  class="pl-2 pr-2 pb-3 z-depth-1a custom-button maximize  d-flexshadow rounded flex-row"
+>
+  <div class="text-center maximize-text" *ngIf="minimized">chat</div>
+  <div class="d-flex flex-row">
+    <div class="chat-volume mr-2 align-self-center" ngSwitch="{{userServiceProvider.groupService.chatMuted}}"
+         (click)="userServiceProvider.groupService.chatMuted= !userServiceProvider.groupService.chatMuted">
+      <div class="p-0 " mdbTooltip="volume-up" *ngSwitchCase="'true'">
+        <mdb-icon fas icon="volume-mute"></mdb-icon>
+      </div>
+      <div class="p-0 " mdbTooltip="mute" *ngSwitchCase="'false'">
+        <mdb-icon fas icon="volume-up"></mdb-icon>
+      </div>
+    </div>
+    <div class="" (click)="minimized=false">
+      <div class=" text-center flex-shrink-1">
+        <mdb-icon fas icon="angle-up"></mdb-icon>
+      </div>
+    </div>
+
+  </div>
+  <div class="text-center">
+    <small *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)!==0" class="align-right ml-2">
+      <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
+      <span
+        class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
+    </small>
+  </div>
+</div>
+
+<mdb-card [ngClass]="minimized?'chat-room small-chat wide invisible ':'chat-room small-chat wide'">
+
+  <mdb-card-header class="chat-heading p-3" id="toggle" style="cursor: pointer;">
+    <div class="chat-open-settings">
+      <div class="d-flex flex-row">
+        <div class="chat-volume" ngSwitch="{{userServiceProvider.groupService.chatMuted}}"
+             (click)="userServiceProvider.groupService.chatMuted= !userServiceProvider.groupService.chatMuted">
+          <div class="p-0 " mdbTooltip="volume-up" *ngSwitchCase="'true'">
+            <mdb-icon fas icon="volume-mute"></mdb-icon>
+          </div>
+          <div class="p-0 " mdbTooltip="mute" *ngSwitchCase="'false'">
+            <mdb-icon fas icon="volume-up"></mdb-icon>
+          </div>
+        </div>
+        <div class="ml-2">
+          <small *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)!==0"
+                 class="align-right ml-2">
+            <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
+            <span
+              class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
+          </small>
+        </div>
+
+      </div>
+
+    </div>
+    <p class="name mb-0 text-center">
+      <strong>Group chat</strong></p>
+
+    <div *ngIf="!minimized && !showReactions" (click)="minimized=true" class="minimize -align-right">
+      <div class="p-0 " mdbTooltip="hide">
+        <mdb-icon fas icon="angle-down"></mdb-icon>
+      </div>
+    </div>
+
+  </mdb-card-header>
+  <cdk-virtual-scroll-viewport [maxBufferPx]="50" [minBufferPx]="15" itemSize="50" (scrolledIndexChange)="scrolled()"
+                               [ngClass]="showReactions?'my-custom-scrollbar stop-scrolling':'my-custom-scrollbar'"
+                               id="scrollable-window">
+    <mdb-card-body class="p-3 pb-5">
+      <div *ngIf="loading" class="d-flex flex-column">
+        <div class="p-2 m-auto">
+          <div class="spinner-grow text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div class="p-2 m-auto">Loading chat</div>
+
+      </div>
+
+      <div *ngIf="!loading">
+        <div class=" d-flex justify-content-center">
+          <mdb-spinner *ngIf="fetchingOlder" spinnerColor="blue" spinnerType="small"></mdb-spinner>
+        </div>
+        <div #messages *cdkVirtualFor="let message of messages;last as isLast; let i = index;"
+             class="messages-container">
+
+          <app-message
+            [message]="message"
+            [currentUser]="this.user"
+            (onReact)="this.onReact.emit()"
+            (onEditMessage)="this.onEditMessage.emit()"
+            (onSendMessage)="this.onSendMessage.emit()"
+          ></app-message>
+
+          <div class="text-muted small text-center mb-2 message-time"
+               *ngIf="isLast && seenBy!==''">
+            Seen by: {{seenBy}}
+          </div>
+        </div>
+      </div>
+    </mdb-card-body>
+  </cdk-virtual-scroll-viewport>
+  <mdb-card-footer class="chat-footer pt-1 pb-1 px-3">
+    <div class="message-box" id="editable" [contentEditable]="message.innerHTML.length<4000"
+         data-placeholder="type a message..." #message (keydown.enter)="sendMessage(message);$event.preventDefault();"
+         (click)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"
+         (keydown)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"></div>
+
+    <div>
+      <a>
+        <mdb-icon #smallHoverImgTemp="bs-mdbPopover" [mdbPopover]="emojisPopover" far icon="laugh"
+                  class="mr-2  chat-icon" triggers="click"></mdb-icon>
+      </a>
+      <ng-template #emojisPopover>
+        <app-emojis-popover (click)="smallHoverImgTemp.hide()"
+                            (emojiSelected)="addEmoji(message,$event);"></app-emojis-popover>
+      </ng-template>
+
+      <a>
+        <input #uploadFile type="file" style="display:none"
+               (change)="uploadFileComponent.handleFileInput($event.target.files,userServiceProvider.serverConfig.getFullUrl('group/'+group.name+'/chat/attachment'))">
+        <mdb-icon fas icon="paperclip" (click)="uploadFile.click()" class="mr-2  chat-icon"></mdb-icon>
+
+      </a>
+
+      <a>
+        <mdb-icon
+
+          fas icon="paper-plane" class="float-right chat-icon"
+          (click)="sendMessage(message);"></mdb-icon>
+
+      </a>
+    </div>
+  </mdb-card-footer>
+</mdb-card>
+
+
+<app-upload-file #uploadFileComponent (onDone)="resendMessage($event)"></app-upload-file>
