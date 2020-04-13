@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {User} from "../../../model/user";
-import {Message} from "../../../model/message";
+import {User} from "../../../model/user/user";
+import {Message} from "../../../model/message/message";
 import {isUndefined} from "util";
 import {UserServiceProvider} from "../../../services/user-service-provider";
-import {getEnvironment} from "../../../ServerConfig";
+import {getEnvironment} from "../../../server-config";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {saveAs} from 'file-saver';
 
@@ -19,9 +19,8 @@ export class MessageComponent implements OnInit {
   @Output() onReact = new EventEmitter();
   @Output() onEditMessage = new EventEmitter();
   @Output() onSendMessage = new EventEmitter();
-  public showReactions: boolean = false;
-  public isMobileOrTablet = false;
-  private oldMessageTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+  showReactions: boolean = false;
+  isMobileOrTablet = false;
   reactions: Array<string> =
     [
       'happy',
@@ -31,6 +30,7 @@ export class MessageComponent implements OnInit {
       'thumbs-up',
       'thumbs-down'
     ];
+  private oldMessageTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   private attachmentsPath: string = './../../../../assets/group/chat/attachment/';
   private fileExtensions = [
     {
@@ -73,7 +73,7 @@ export class MessageComponent implements OnInit {
       {name: 'sad', textExpression: ':('},
     ];
 
-  constructor(public userServiceProvider:UserServiceProvider,private http:HttpClient) {
+  constructor(public userServiceProvider: UserServiceProvider, private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -143,15 +143,19 @@ export class MessageComponent implements OnInit {
   }
 
   downloadAttachment(groupMessage: Message) {
-    let endpoint = `${getEnvironment().backend}group/${this.message.id}/attachment/${groupMessage.attachment}/download`;
-    this.http.post(endpoint, {}, {
-      responseType: "blob",
-      headers: new HttpHeaders().append("Content-Type", "application/json")
-    }).subscribe((response) => {
-      const file = new File([response], groupMessage.attachment);
-      saveAs(response, groupMessage.value);
-    });
+    groupMessage.attachments.forEach(attachment => {
+      let endpoint = `${getEnvironment().backend}group/${groupMessage.id}/attachment/${attachment.id}/download`;
+      this.http.post(endpoint, {}, {
+        responseType: "blob",
+        headers: new HttpHeaders().append("Content-Type", "application/json")
+      }).subscribe((response) => {
+        const file = new File([response], attachment.name);
+        saveAs(response, groupMessage.value);
+      });
+    })
+
   }
+
   getInnerHtml(message: string): string {
     for (let emoji of this.emojis) {
       let emojiTextExpression = emoji.textExpression.replace(/(\)|\()/, '\\$1');

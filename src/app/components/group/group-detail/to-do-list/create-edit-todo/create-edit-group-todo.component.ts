@@ -1,15 +1,13 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup} from '@angular/forms';
 import {UserServiceProvider} from '../../../../../services/user-service-provider';
-import {first, groupBy} from 'rxjs/operators';
-import {User} from '../../../../../model/user';
-import {GroupToDo} from '../../../../../model/GroupToDo';
-import {IMyDate, IMyOptions, SelectComponent} from 'ng-uikit-pro-standard';
+import {User} from '../../../../../model/user/user';
+import {IMyDate} from 'ng-uikit-pro-standard';
 import {DatePipe} from '@angular/common';
 import {ModalDirective} from 'angular-bootstrap-md';
-
-import {Group} from '../../../../../model/group';
+import {Group} from '../../../../../model/group/group';
 import {isUndefined} from 'util';
+import {GroupToDo} from "../../../../../model/to-do/group-to-do";
 
 @Component({
   selector: 'app-create-edit-group-todo',
@@ -76,9 +74,9 @@ export class CreateEditGroupTodoComponent implements OnInit, AfterViewInit {
         return assignedUser.id;
       }));
 
-      this.elegantForm.controls.statusSelect.setValue([this.statuses.find(status => status.label.toUpperCase() === groupToDo.status.toUpperCase()).value]);
+      this.elegantForm.controls.statusSelect.setValue([this.statuses.find(status => status.label.toUpperCase() === groupToDo.status).value]);
       this.selectedDate = this.datepipe.transform(new Date(this.groupToDo.deadline).getTime(), 'yyyy-MM-dd');
-      let iconPath = '../../../../../../../assets/images/user.svg';
+      let iconPath = '../../../../../../../assets/images/author.svg';
       this.users.forEach(user => {
         this.assignedMembers = [...this.assignedMembers, {
           value: user.id,
@@ -92,8 +90,8 @@ export class CreateEditGroupTodoComponent implements OnInit, AfterViewInit {
 
   onSave(description: string, status: number, deadline: IMyDate, assignedMembers: Array<number>) {
     let oldTodo=Object.assign({},this.groupToDo);
-    this.groupToDo.groupId = this.group.id;
-    this.groupToDo.authorId = this.user.id;
+    this.groupToDo.id = this.group.id;
+    this.groupToDo.id = this.user.id;
     this.groupToDo.description = description;
     this.groupToDo.status = this.statuses.find(status1 => status1.value === status).label;
     this.groupToDo.deadline = new Date(Date.parse(`${deadline.month} ${deadline.day} ${deadline.year}`));
@@ -102,7 +100,7 @@ export class CreateEditGroupTodoComponent implements OnInit, AfterViewInit {
     }));
     if (this.parents.length>0){
       this.parents.forEach(parent=>{
-        this.groupToDo.parentId=parent.id;
+        this.groupToDo.parentTask.id=parent.id;
         if (isUndefined(this.groupToDo.id)){
           this.userServiceProvider.groupService.addToDo(this.group,this.groupToDo);
         } else{

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {User} from '../../../../../model/user';
-import {Timer} from '../../../../../model/Timer';
+import {User} from '../../../../../model/user/user';
+import {Timer} from '../../../../../model/user/timer';
 import {UserServiceProvider} from '../../../../../services/user-service-provider';
 
 

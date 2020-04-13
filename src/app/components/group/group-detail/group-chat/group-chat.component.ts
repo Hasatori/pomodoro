@@ -1,22 +1,17 @@
-import {AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {User} from '../../../../model/user';
-import {Message} from '../../../../model/message';
-import {Observable, of, Subscription} from 'rxjs';
+import {AfterViewInit, Component,  Input, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {User} from '../../../../model/user/user';
+import {Message} from '../../../../model/message/message';
+import {Subscription} from 'rxjs';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
-import {Reaction} from '../../../../model/reaction';
 import {isUndefined} from 'util';
-import {Group} from '../../../../model/group';
-import {HttpClient, HttpEventType, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {listAnimation, onCreateListAnimation} from "../../../../animations";
-import {getEnvironment} from "../../../../ServerConfig";
+import {Group} from '../../../../model/group/group';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {getEnvironment} from "../../../../server-config";
 import {saveAs} from 'file-saver';
 import {SecureImagePipe} from "../../../../pipes/secure-image.pipe";
-import {SafeUrl} from "@angular/platform-browser";
-import {map} from "rxjs/operators";
 import {CachedImagePipe} from "../../../../pipes/cached-image.pipe";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {EmojisPopoverComponent} from "../../../chat/images-popover/emojis-popover.component";
-import {MdbIconComponent, PopoverDirective} from "ng-uikit-pro-standard";
+import {UserReaction} from "../../../../model/reaction/user-reaction";
 
 @Component({
   selector: 'app-group-chat',
@@ -149,22 +144,20 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setReactionsForMessage(reactedMessage);
         foundMessage.reactions = reactedMessage.reactions;
         let reaction = foundMessage.reactions.find(r => {
-          return r.users.some(user => {
-            return user.username === this.user.username;
-          });
+            return r.author.username === this.user.username;
         });
-        foundMessage.currentUserReaction = isUndefined(reaction) ? null : reaction.name;
+        foundMessage.currentUserReaction = isUndefined(reaction) ? null : reaction.emoji;
       }
     });
     this.lastNumberOfGroupMessagesSubscription = this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.group.name, this.threshold, this.end).subscribe((response) => {
       this.addingNewMessage = true;
       this.messages = response.sort(function (a, b) {
-        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+        return new Date(a.creationTimestamp).getTime() - new Date(b.creationTimestamp).getTime();
       });
       for (let i = 0; i < this.messages.length; i++) {
         let message = this.messages[i];
         this.setReactionsForMessage(message);
-        message.shouldShowAuthorsName = this.shouldShowAuthorsName(message, i - 1 !== 0 ? this.messages[i - 1] : null);
+        message.shouldShowAuthorsName = this.shouldShowAuthor(message, i - 1 !== 0 ? this.messages[i - 1] : null);
         message.shouldShowAuthorsPhoto = this.shouldShowAuthorsPhotograph(message, i < this.messages.length - 1 ? this.messages[i + 1] : null);
       }
       this.threshold += this.limit;
@@ -198,13 +191,13 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
   markAllAsReadAndProcessResponse() {
     this.markAllAsReadSubscription = this.userServiceProvider.groupService.markAllFromGroupAsRead(this.group.name).subscribe((lastMessage) => {
       this.lastMessage = lastMessage;
-      let filteredRelatedMessages = lastMessage.relatedGroupMessages
-        .filter(message => message.readTimestamp !== null && message.user.username !== this.user.username && message.user.username !== lastMessage.author.username);
-      let lastRelatedMessageTimestamp = filteredRelatedMessages.sort(function (a, b) {
+      let filteredUserReactions = lastMessage.reactions
+        .filter(userReaction => userReaction.readTimestamp !== null && userReaction.author.username !== this.user.username && userReaction.author.username !== lastMessage.author.username);
+      let lastRelatedMessageTimestamp = filteredUserReactions.sort(function (a, b) {
         return new Date(a.readTimestamp).getTime() - new Date(b.readTimestamp).getTime();
       })[0];
-      if (filteredRelatedMessages.length > 0) {
-        this.seenBy = `${filteredRelatedMessages.map(message => message.user.username)
+      if (filteredUserReactions.length > 0) {
+        this.seenBy = `${filteredUserReactions.map(message => message.author.username)
           .join(', ')} on ${new Date(lastRelatedMessageTimestamp.readTimestamp).toLocaleDateString('en-US', this.oldMessageTimeOptions)}`;
       }
 
@@ -281,12 +274,12 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
             this.messages = this.messages.concat(response);
 
             this.messages.sort(function (a, b) {
-              return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+              return new Date(a.creationTimestamp).getTime() - new Date(b.creationTimestamp).getTime();
             });
             for (let i = 0; i < this.messages.length; i++) {
               let message = this.messages[i];
               this.setReactionsForMessage(message);
-              message.shouldShowAuthorsName = this.shouldShowAuthorsName(message, i < this.messages.length - 1 ? this.messages[i + 1] : null);
+      //        message.shouldShowAuthorsName = this.shouldShowAuthor.emoji(message, i < this.messages.length - 1 ? this.messages[i + 1] : null);
               message.shouldShowAuthorsPhoto = this.shouldShowAuthorsPhotograph(message, i !== 0 ? this.messages[i - 1] : null);
             }
 
@@ -312,10 +305,10 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
       if (i - 1 >= 0) {
         let previous = messages[i - 1];
         if (currentMessage.author.username === previous.author.username) {
-          currentMessage.shouldShowAuthorsName = false;
+          currentMessage.shouldShowAuthorsPhoto = false;
 
         } else {
-          currentMessage.shouldShowAuthorsName = true;
+          currentMessage.shouldShowAuthorsPhoto = true;
           break;
         }
       }
@@ -328,35 +321,34 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  shouldShowAuthorsName(currentMessage: Message, previousMessage: Message) {
+  shouldShowAuthor(currentMessage: Message, previousMessage: Message) {
     return previousMessage == null || previousMessage.author.username !== currentMessage.author.username;
 
   }
 
 
   setReactionsForMessage(message: Message) {
-    let reactions: Array<Reaction> = [];
+    let reactions: Array<UserReaction> = [];
     this.reactionsNames.forEach(reactionName => {
       reactions.push(this.createReaction(reactionName));
     });
-    message.relatedGroupMessages.forEach(relatedMessage => {
+    message.reactions.forEach(relatedMessage => {
       let reaction = reactions.find(reaction => {
-        return reaction.name === relatedMessage.emoji;
+        return reaction.emoji === relatedMessage.emoji;
       });
       if (!isUndefined(reaction) && reaction !== null) {
-        reaction.users.push(relatedMessage.user);
+       // reaction.users.push(relatedMessage.author);
       }
-      if (relatedMessage.user.username === this.user.username) {
+      if (relatedMessage.author.username === this.user.username) {
         message.currentUserReaction = relatedMessage.emoji;
       }
     });
     message.reactions = reactions;
   }
 
-  createReaction(reactionName: string): Reaction {
-    let newReaction = new Reaction();
-    newReaction.name = reactionName;
-    newReaction.users = [];
+  createReaction(reactionName: string): UserReaction {
+    let newReaction = new UserReaction();
+    newReaction.emoji = reactionName;
     return newReaction;
   }
 
@@ -377,10 +369,10 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
   removeReaction(message: Message, reactionName: string) {
     /*
         let currentUserReaction = message.reactions.find(r => {
-          return r.name === emoji && r.users.some(user => user.username == this.user.username);
+          return r.emoji === emoji && r.users.some(author => author.username == this.author.username);
         });
-        currentUserReaction.users = currentUserReaction.users.UserFilter(user => {
-          return user.username !== this.user.username;
+        currentUserReaction.users = currentUserReaction.users.UserFilter(author => {
+          return author.username !== this.author.username;
         });
     */
 
@@ -390,18 +382,18 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addReactionToMessage(message: Message, reaction: string) {
     let foundReaction = message.reactions.find(r => {
-      return r.name === reaction;
+      return r.emoji === reaction;
     });
-    let currentUserReaction = message.reactions.find(r => {
-      return r.name === reaction && r.users.some(user => user.username == this.user.username);
+/*    let currentUserReaction = message.reactions.find(r => {
+    //  return r.emoji === reaction && r.users.some(user => user.username == this.user.username);
     });
     currentUserReaction.users = currentUserReaction.users.filter(user => {
       return user.username !== this.user.username;
-    });
+    });*/
     if (isUndefined(foundReaction)) {
       foundReaction = this.createReaction(reaction);
     }
-    foundReaction.users.push(this.user);
+//    foundReaction.users.push(this.user);
     message.currentUserReaction = reaction;
     message.reactions.push(foundReaction);
   }
@@ -418,16 +410,18 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   downloadAttachment(groupMessage: Message) {
-    let endpoint = `${getEnvironment().backend}group/${this.group.id}/attachment/${groupMessage.attachment}/download`;
-    this.http.post(endpoint, {}, {
-      responseType: "blob",
-      headers: new HttpHeaders().append("Content-Type", "application/json")
-    }).subscribe((response) => {
-      const file = new File([response], groupMessage.attachment);
-      saveAs(response, groupMessage.value);
-    });
-  }
+    groupMessage.attachments.forEach(attachment=>{
+      let endpoint = `${getEnvironment().backend}group/${groupMessage.id}/attachment/${attachment.id}/download`;
+      this.http.post(endpoint, {}, {
+        responseType: "blob",
+        headers: new HttpHeaders().append("Content-Type", "application/json")
+      }).subscribe((response) => {
+        const file = new File([response], attachment.name);
+        saveAs(response, groupMessage.value);
+      });
+    })
 
+  }
   isAttachmentImage(attachment: string): boolean {
     let extension = attachment.substr(attachment.lastIndexOf('.') + 1);
     return this.imageExtensions.some(ext => {

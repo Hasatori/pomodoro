@@ -1,10 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, ViewChild} from '@angular/core';
 import {UploadFile, UploadInput, UploadOutput} from 'ng-uikit-pro-standard';
-import {image} from 'd3-fetch';
 import {ModalDirective} from 'angular-bootstrap-md';
-import {Group} from '../../../model/group';
-import {environment} from '../../../../environments/environment';
-import {getEnvironment} from "../../../ServerConfig";
+import {Group} from '../../../model/group/group';
+import {getEnvironment} from "../../../server-config";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserServiceProvider} from "../../../services/user-service-provider";
 

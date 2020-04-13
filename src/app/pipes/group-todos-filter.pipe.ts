@@ -1,8 +1,7 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {Group} from '../model/group';
-import {GroupToDo} from '../model/GroupToDo';
-import {User} from '../model/user';
+import {User} from '../model/user/user';
 import {isUndefined} from 'util';
+import {GroupToDo} from "../model/to-do/group-to-do";
 
 @Pipe({
   name: 'groupTodosFilter'

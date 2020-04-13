@@ -1,15 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
-import {Group} from '../../../../model/group';
-import {GroupToDo} from '../../../../model/GroupToDo';
-import {select} from 'd3-selection';
+import {Group} from '../../../../model/group/group';
 import {CheckboxComponent} from 'ng-uikit-pro-standard';
 import {isUndefined} from 'util';
 import {map} from 'rxjs/operators';
-import {User} from '../../../../model/user';
-import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
-import {CreateEditGroupTodoComponent} from './create-edit-todo/create-edit-group-todo.component';
+import {User} from '../../../../model/user/user';
 import {listAnimation, onCreateListAnimation} from "../../../../animations";
+import {GroupToDo} from "../../../../model/to-do/group-to-do";
+import {ToDoStatus} from "../../../../model/to-do/to-do-status";
 
 @Component({
   selector: 'app-to-do-list',
@@ -70,8 +68,8 @@ export class ToDoListComponent implements OnInit {
   }
 
   assignChildren(todos: Array<GroupToDo>, toDo: GroupToDo) {
-    toDo.children = toDo.children.concat(todos.filter(candidate => candidate.parent !== null && candidate.parent.id === toDo.id));
-    if (toDo.parent === null) {
+    toDo.children = toDo.children.concat(todos.filter(candidate => candidate.parentTask !== null && candidate.parentTask.id === toDo.id));
+    if (toDo.parentTask === null) {
 
       this.todos.push(toDo);
     }
@@ -84,15 +82,15 @@ export class ToDoListComponent implements OnInit {
   }
 
   select(item: GroupToDo) {
-    /* if (item.selected && item.parent !== null) {
+    /* if (item.selected && item.parentTask !== null) {
 
-       let todo = this.findToDoWithId(this.todos, item.parent.id);
+       let todo = this.findToDoWithId(this.todos, item.parentTask.id);
        if (todo.children.some(child => child.selected && child.id !== item.id)) {
          todo.selected = false;
        }
 
-     } else if (!item.selected && item.parent !== null) {
-       let todo = this.findToDoWithId(this.todos, item.parent.id);
+     } else if (!item.selected && item.parentTask !== null) {
+       let todo = this.findToDoWithId(this.todos, item.parentTask.id);
        if (!todo.children.some(child => !child.selected && child.id !== item.id)) {
          todo.selected = true;
        }
@@ -164,9 +162,9 @@ export class ToDoListComponent implements OnInit {
   addGroupToDo() {
     let groupToDo = new GroupToDo();
     groupToDo.id = 7;
-    groupToDo.groupId = this.group.id;
-    groupToDo.authorId = this.user.id;
-    groupToDo.status = 'TESddT';
+    groupToDo.id = this.group.id;
+    groupToDo.author.id = this.user.id;
+    groupToDo.status = ToDoStatus.IN_PROGRESS;
     groupToDo.deadline = new Date();
     groupToDo.description = 'cqest';
     this.userServiceProvider.webSocketProxyService.publish('/app/group/' + this.group.name + '/todos', JSON.stringify(groupToDo));
@@ -190,8 +188,8 @@ export class ToDoListComponent implements OnInit {
           this.assignChildren(this.allToDos, toDo);
 
         }
-        this.selectedTodos=[];
-        this.anySelected=false;
+        this.selectedTodos = [];
+        this.anySelected = false;
       }
       , error1 => {
         this.todoError = error1.error.groupToDo;

@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../../services/user.service';
 import {first} from 'rxjs/operators';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserServiceProvider} from '../../../services/user-service-provider';

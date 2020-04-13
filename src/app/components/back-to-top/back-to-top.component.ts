@@ -1,5 +1,4 @@
-import {Component, HostListener, Inject, Input, OnInit} from '@angular/core';
-import {event} from 'd3-selection';
+import {Component, HostListener, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-back-to-top',

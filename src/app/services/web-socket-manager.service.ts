@@ -4,7 +4,7 @@ import {PomodoroService} from './pomodoro.service';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {UserService} from './user.service';
 import {first} from 'rxjs/operators';
-import {webSocketConfig} from '../WebSocketConfig';
+import {webSocketConfig} from '../web-socket-config';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {NGXLogger} from 'ngx-logger';
 import {AuthService} from './auth.service';

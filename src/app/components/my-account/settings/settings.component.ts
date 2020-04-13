@@ -1,7 +1,5 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {PomodoroService} from '../../../services/pomodoro.service';
-import {UserService} from '../../../services/user.service';
-import {Settings} from '../../../model/settings';
+import { Component} from '@angular/core';
+import {Settings} from '../../../model/user/settings';
 import {first} from 'rxjs/operators';
 import {UserServiceProvider} from '../../../services/user-service-provider';
 
@@ -45,8 +43,8 @@ export class SettingsComponent {
 
     this.resetValues();
     let updatedSettings = new Settings();
-    updatedSettings.pauseTime = Number(pauseTime) * 60;
-    updatedSettings.workTime = Number(workTime) * 60;
+    updatedSettings.pauseDurationInSeconds = Number(pauseTime) * 60;
+    updatedSettings.workDurationInSeconds = Number(workTime) * 60;
     updatedSettings.phaseChangedSound = soundOnPhaseChange;
     updatedSettings.workSound = soundOnWork;
     updatedSettings.pauseSound = soundOnPause;

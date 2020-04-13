@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {GroupService} from '../../services/group.service';
 import {first} from 'rxjs/operators';
-import {Group} from '../../model/group';
+import {Group} from '../../model/group/group';
 import {ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Router} from '@angular/router';
+import {Attachment} from "../../model/attachment/attachment";
 
 @Component({
   selector: 'app-group',
@@ -12,6 +13,5 @@ import {ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Router} from '@angular/ro
 export class GroupComponent {
 
 constructor(public  router:Router){
-
 }
 }

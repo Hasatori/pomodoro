@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {first} from 'rxjs/operators';
-import {webSocketConfig} from '../WebSocketConfig';
+import {webSocketConfig} from '../web-socket-config';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {UserService} from './user.service';
 import {NGXLogger, NgxLoggerLevel} from 'ngx-logger';

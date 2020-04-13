@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Group} from '../model/group';
-import {GroupInvitation} from '../model/group-invitation';
+import {Group} from '../model/group/group';
+import {GroupInvitation} from '../model/group/group-invitation';
 
 @Pipe({
   name: 'invitationFilter'

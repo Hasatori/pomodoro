@@ -1,11 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {UserService} from '../../../services/user.service';
-import {User} from '../../../model/user';
+import {User} from '../../../model/user/user';
 import {first} from 'rxjs/operators';
-import {nocollapseHack} from '@angular/compiler-cli/src/transformers/nocollapse_hack';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SuccessComponent} from '../../modals/success/success.component';
-import {AuthService} from '../../../services/auth.service';
 import {UserServiceProvider} from '../../../services/user-service-provider';
 
 @Component({

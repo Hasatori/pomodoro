@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Output, ViewChild} from '@angular/core';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse} from '@angular/common/http';
 import {UserServiceProvider} from '../../../services/user-service-provider';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 
 
 

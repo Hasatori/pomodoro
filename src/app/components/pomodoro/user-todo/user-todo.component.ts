@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {UserServiceProvider} from '../../../services/user-service-provider';
-import {UserTodo} from '../../../model/user-todo';
 import {isUndefined} from 'util';
 import {CheckboxComponent} from 'ng-uikit-pro-standard';
 import {map} from 'rxjs/operators';
-import {User} from '../../../model/user';
-import {select} from 'd3-selection';
+import {User} from '../../../model/user/user';
 import {listAnimation, onCreateListAnimation} from "../../../animations";
+import {UserToDo} from "../../../model/to-do/user-to-do";
 
 @Component({
   selector: 'app-user-todo',
@@ -16,12 +15,12 @@ animations:[listAnimation,onCreateListAnimation]
 })
 export class UserTodoComponent implements OnInit {
 
-  public userTodos: Array<UserTodo> = [];
-  public allToDos: Array<UserTodo> = [];
+  public userTodos: Array<UserToDo> = [];
+  public allToDos: Array<UserToDo> = [];
   public loading: boolean = false;
   public deadlineTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   public anySelected = false;
-  public selectedTodos: Array<UserTodo> = [];
+  public selectedTodos: Array<UserToDo> = [];
   public user: User;
 
   constructor(public userServiceProvider: UserServiceProvider) {
@@ -43,7 +42,7 @@ export class UserTodoComponent implements OnInit {
       this.userServiceProvider.userService.getUser().subscribe(user => {
         this.user = user;
         this.loading = false;
-        this.userServiceProvider.webSocketProxyService.watch('/user/' + user.username + '/todos').pipe(map(userToDo => {
+        this.userServiceProvider.webSocketProxyService.watch('/author/' + user.username + '/todos').pipe(map(userToDo => {
           return JSON.parse(userToDo.body);
         })).subscribe(toDo => {
           this.allToDos = this.allToDos.filter(candidate => candidate.id !== toDo.id);
@@ -61,24 +60,24 @@ export class UserTodoComponent implements OnInit {
 
   }
 
-  assignChildren(allTodos: Array<UserTodo>, toDo: UserTodo) {
-    toDo.children = toDo.children.concat(allTodos.filter(candidate => candidate.parent !== null && candidate.parent.id === toDo.id));
-    if (toDo.parent === null) {
+  assignChildren(allTodos: Array<UserToDo>, toDo: UserToDo) {
+    toDo.children = toDo.children.concat(allTodos.filter(candidate => candidate.parentTask !== null && candidate.parentTask.id=== toDo.id));
+    if (toDo.parentTask === null) {
 
       this.userTodos.push(toDo);
     }
   }
 
-  getDeadlineFormat(todo: UserTodo): string {
+  getDeadlineFormat(todo: UserToDo): string {
     return new Date(todo.deadline).toLocaleDateString('en-US', this.deadlineTimeOptions);
   }
 
-  todoOverdue(todo: UserTodo): boolean {
+  todoOverdue(todo: UserToDo): boolean {
     let todoDeadlineMillis = new Date(todo.deadline).getTime();
     return Date.now() > todoDeadlineMillis;
   }
 
-  select(item: UserTodo) {
+  select(item: UserToDo) {
     item.selected = !item.selected;
     if (item.selected) {
       this.selectedTodos.push(item);
@@ -90,7 +89,7 @@ export class UserTodoComponent implements OnInit {
     this.anySelected = this.isAnySelected(this.userTodos);
   }
 
-  isAnySelected(todos: Array<UserTodo>): boolean {
+  isAnySelected(todos: Array<UserToDo>): boolean {
     for (let todo of todos) {
       if (todo.selected) {
         return true;
@@ -111,7 +110,7 @@ export class UserTodoComponent implements OnInit {
     this.anySelected = checkbox.checked;
   }
 
-  fillSelect(item: UserTodo, state: boolean) {
+  fillSelect(item: UserToDo, state: boolean) {
     item.selected = state;
     if (item.selected) {
       this.selectedTodos.push(item);
@@ -126,13 +125,13 @@ export class UserTodoComponent implements OnInit {
 
   }
 
-  showOrHideToDo(toDo: UserTodo, popupShown: boolean) {
+  showOrHideToDo(toDo: UserToDo, popupShown: boolean) {
     if (!popupShown) {
       toDo.visible = !toDo.visible;
     }
   }
 
-  removeTodosAndAllChildren(allTodos: Array<UserTodo>, todosToRemove: Array<UserTodo>): Array<UserTodo> {
+  removeTodosAndAllChildren(allTodos: Array<UserToDo>, todosToRemove: Array<UserToDo>): Array<UserToDo> {
     allTodos = allTodos.filter(candidate => !todosToRemove.some(todo => todo.id === candidate.id));
     todosToRemove.forEach(todoToRemove => {
       if (todoToRemove.children !== null) {

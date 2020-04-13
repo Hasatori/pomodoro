@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {first} from 'rxjs/operators';
-import {AuthService} from '../../../services/auth.service';
-import {UserService} from '../../../services/user.service';
-import {Pomodoro} from '../../../model/pomodoro';
+import {Pomodoro} from '../../../model/user/pomodoro';
 import {UserServiceProvider} from '../../../services/user-service-provider';
 
 @Component({

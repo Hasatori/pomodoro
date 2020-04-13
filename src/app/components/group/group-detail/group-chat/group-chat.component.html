@@ -208,7 +208,7 @@
           <div class="text-muted small text-center mb-3 message-time"
 
                *ngIf="message.shouldShowAuthorsName && this.user.username!==message.author.username">
-            {{getMessageTimestampRelevance(message.timestamp)}}
+            {{getMessageTimestampRelevance(message.creationTimestamp)}}
           </div>
           <div *ngIf="this.user.username!==message.author.username"
                [ngClass]="message.shouldShowAuthorsName?'pl-2 d-flex justify-content-start mb-2 other-member-message':'pl-2 d-flex justify-content-start mb-1  other-member-message'"

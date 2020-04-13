@@ -1,14 +1,13 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {map} from 'rxjs/operators';
-import {User} from '../../../../model/user';
-import {UserFilterPipe} from '../../../../pipes/UserFilter.pipe';
+import {User} from '../../../../model/user/user';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
-import {Group} from '../../../../model/group';
+import {Group} from '../../../../model/group/group';
 import {ModalDirective} from 'angular-bootstrap-md';
-import {environment} from '../../../../../environments/environment';
-import {getEnvironment} from "../../../../ServerConfig";
+import {getEnvironment} from "../../../../server-config";
+import {UserFilterPipe} from "../../../../pipes/user-filter.pipe";
 
 @Component({
   selector: 'app-invite-user',

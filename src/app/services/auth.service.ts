@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 
 import {stringify} from 'querystring';
 import {environment} from '../../environments/environment';
-import {getEnvironment} from "../ServerConfig";
+import {getEnvironment} from "../server-config";
 
 
 @Injectable({
@@ -55,7 +55,7 @@ export class AuthService {
 
   private serverLoginResponseCame(response: any) {
     if (response) {
-      // store user details and jwt token in local storage to keep user logged in between page refreshes
+      // store author details and jwt token in local storage to keep author logged in between page refreshes
 
       sessionStorage.setItem(this.ACCESS_TOKEN_KEY, response.jwttoken);
       this.accessToken = sessionStorage.getItem(this.ACCESS_TOKEN_KEY);

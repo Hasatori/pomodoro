@@ -1,6 +1,6 @@
 import {Component, HostListener} from '@angular/core';
 import {AuthService} from './services/auth.service';
-import {Pomodoro} from './model/pomodoro';
+import {Pomodoro} from './model/user/pomodoro';
 import {PomodoroService} from './services/pomodoro.service';
 import {WebSocketProxyService} from './services/web-socket-proxy.service';
 import {GroupService} from './services/group.service';

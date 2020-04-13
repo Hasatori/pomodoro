@@ -8,14 +8,14 @@
     <label for="workTime">Work time in minutes</label>
     <div class="list-group list-group-horizontal">
       <li  class="list-group-item border-0"><select #workTimeSelect class="browser-default custom-select" select id="workTime">
-        <option *ngFor="let number of [5,10,15,20,25,30,35,40,45,50,55,60]" [selected]="number==currentSettings.workTime/60"  value="{{number}}" >{{number}}</option>
+        <option *ngFor="let number of [5,10,15,20,25,30,35,40,45,50,55,60]" [selected]="number==currentSettings.workDurationInSeconds/60" value="{{number}}" >{{number}}</option>
       </select></li>
     </div>
     <br>
     <label for="pauseTime">Pause time in minutes</label>
     <div class="list-group list-group-horizontal">
       <li class="list-group-item border-0"><select #pauseTimeSelect class="browser-default custom-select" id="pauseTime">
-        <option *ngFor="let number of [5,10,15,20,25,30,35,40,45,50,55,60]"  [selected]="number==currentSettings.pauseTime/60" value="{{number}}" >{{number}}</option>
+        <option *ngFor="let number of [5,10,15,20,25,30,35,40,45,50,55,60]" [selected]="number==currentSettings.pauseDurationInSeconds/60" value="{{number}}" >{{number}}</option>
       </select></li>
     </div>
     <br>

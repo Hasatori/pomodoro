@@ -1,19 +1,19 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
-import {Group} from '../model/group';
+import {Group} from '../model/group/group';
 import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {User} from '../model/user';
-import {Pomodoro} from '../model/pomodoro';
-import {Message} from '../model/message';
+import {User} from '../model/user/user';
+import {Pomodoro} from '../model/user/pomodoro';
+import {Message} from '../model/message/message';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {UserService} from './user.service';
-import {GroupInvitation} from '../model/group-invitation';
+import {GroupInvitation} from '../model/group/group-invitation';
 import {isUndefined} from 'util';
-import {ChangeType, GroupChange} from '../model/group-change';
-import {GroupToDo} from '../model/GroupToDo';
-import {environment} from '../../environments/environment';
-import {getEnvironment} from "../ServerConfig";
+import {GroupChange} from '../model/change/group-change';
+import {getEnvironment} from "../server-config";
+import {GroupToDo} from "../model/to-do/group-to-do";
+import {ChangeType} from "../model/change/change-type";
 
 @Injectable({
   providedIn: 'root'
@@ -69,7 +69,7 @@ export class GroupService implements OnDestroy {
     });
     this.getGroups().subscribe((groups) => {
       this.groups = groups.sort(function (a, b) {
-        return new Date(b.created).getTime() - new Date(a.created).getTime();
+        return new Date(b.creationTimestamp).getTime() - new Date(a.creationTimestamp).getTime();
       });
       this.userService.getUser().subscribe(user => {
         this.user = user;
@@ -242,7 +242,6 @@ export class GroupService implements OnDestroy {
 
   private sendChange(groupName: string, changeType: ChangeType, changeDescription: string) {
     let change = new GroupChange();
-    change.changeDescription = changeDescription;
     change.changeType = changeType;
     this.webSocketProxyService.publish('/app/group/' + groupName + '/change', JSON.stringify(change));
   }

@@ -1,19 +1,19 @@
 import {Injectable, OnInit} from '@angular/core';
 import {UserService} from './user.service';
-import {User} from '../model/user';
-import {Pomodoro} from '../model/pomodoro';
+import {User} from '../model/user/user';
+import {Pomodoro} from '../model/user/pomodoro';
 import {first, map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
-import {Timer} from '../model/Timer';
+import {Timer} from '../model/user/timer';
 import {AuthService} from './auth.service';
-import {Group} from '../model/group';
+import {Group} from '../model/group/group';
 import {NGXLogger} from 'ngx-logger';
 import {tree} from 'd3-hierarchy';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {environment} from '../../environments/environment';
-import {getEnvironment} from "../ServerConfig";
+import {getEnvironment} from "../server-config";
 @Injectable({
   providedIn: 'root'
 })

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Timer} from '../model/Timer';
+import {Timer} from '../model/user/timer';
 import {NGXLogger} from 'ngx-logger';
-import {Pomodoro} from '../model/pomodoro';
+import {Pomodoro} from '../model/user/pomodoro';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +19,8 @@ export class FreeTrialService {
   public startPomodoro() {
     this.pomodoro = new Pomodoro();
     this.pomodoro.creationTimestamp = new Date();
-    this.pomodoro.workTime = this.DEFAULT_WORK_TIME;
-    this.pomodoro.breakTime = this.DEFAULT_BREAK_TIME;
+    this.pomodoro.workDurationInSeconds = this.DEFAULT_WORK_TIME;
+    this.pomodoro.pauseDurationInSeconds = this.DEFAULT_BREAK_TIME;
     this.timer.start(this.pomodoro);
   }
 }

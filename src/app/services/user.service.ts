@@ -1,19 +1,14 @@
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {User} from '../model/user';
+import {User} from '../model/user/user';
 import {Observable, of} from 'rxjs';
-import {Pomodoro} from '../model/pomodoro';
-import {Settings} from '../model/settings';
-import {GroupInvitation} from '../model/group-invitation';
-
-import {UserTodo} from '../model/user-todo';
-import {GroupToDo} from '../model/GroupToDo';
-import {Group} from '../model/group';
-import {ChangeType} from '../model/group-change';
+import {Pomodoro} from '../model/user/pomodoro';
+import {Settings} from '../model/user/settings';
 import {WebSocketProxyService} from './web-socket-proxy.service';
-import {environment} from '../../environments/environment';
-import {getEnvironment} from "../ServerConfig";
+import {getEnvironment} from "../server-config";
+import {UserToDo} from "../model/to-do/user-to-do";
+import {GroupToDo} from "../model/to-do/group-to-do";
 @Injectable({
   providedIn: 'root'
 })
@@ -78,8 +73,8 @@ export class UserService {
     }
   }
 
-  userTodos(): Observable<Array<UserTodo>> {
-    let todos: Array<UserTodo> = JSON.parse(window.sessionStorage.getItem(this.USER_TODOS_KEY));
+  userTodos(): Observable<Array<UserToDo>> {
+    let todos: Array<UserToDo> = JSON.parse(window.sessionStorage.getItem(this.USER_TODOS_KEY));
     if (todos != null) {
       return of(todos);
     } else {
@@ -111,7 +106,7 @@ export class UserService {
 
   }
 
-  removeTodos(todos: Array<UserTodo>): Observable<any> {
+  removeTodos(todos: Array<UserToDo>): Observable<any> {
     let ids = todos.map(todo => todo.id);
     return this.http.post<any>(`${getEnvironment().backend}remove-todo`, ids).pipe(map(response => {
       if (response.success!==null){
@@ -121,16 +116,16 @@ export class UserService {
     }));
   }
 
-  updateTodo(updatedTodo: UserTodo) {
+  updateTodo(updatedTodo: UserToDo) {
     this.getUser().subscribe(user => {
-      this.webSocketProxyService.publish('/app/user/' + user.username + '/todos', JSON.stringify(updatedTodo));
+      this.webSocketProxyService.publish('/app/author/' + user.username + '/todos', JSON.stringify(updatedTodo));
       window.sessionStorage.removeItem(this.USER_TODOS_KEY);
     });
   }
 
-  addToDo(newTodo: UserTodo) {
+  addToDo(newTodo: UserToDo) {
     this.getUser().subscribe(user => {
-      this.webSocketProxyService.publish('/app/user/' + user.username + '/todos', JSON.stringify(newTodo));
+      this.webSocketProxyService.publish('/app/author/' + user.username + '/todos', JSON.stringify(newTodo));
       window.sessionStorage.removeItem(this.USER_TODOS_KEY);
     });
   }

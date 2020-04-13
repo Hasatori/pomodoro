@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Message} from "../../model/message";
+import {Message} from "../../model/message/message";
+import {UserServiceProvider} from "../../services/user-service-provider";
 
 @Component({
   selector: 'app-chat',
@@ -17,7 +18,7 @@ export class ChatComponent implements OnInit {
 
   loading:boolean;
 
-  constructor() {
+  constructor(public userServiceProvider:UserServiceProvider) {
   }
 
   ngOnInit() {

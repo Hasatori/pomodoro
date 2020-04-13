@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {Modal} from '../modal';
 

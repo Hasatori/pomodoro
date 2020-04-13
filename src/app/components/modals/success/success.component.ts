@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import {Modal} from '../modal';
 import {ModalDirective} from 'angular-bootstrap-md';
-import {Observable, Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-success',

@@ -1,13 +1,13 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {User} from '../../../../model/user';
-import {Timer} from '../../../../model/Timer';
+import {User} from '../../../../model/user/user';
+import {Timer} from '../../../../model/user/timer';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
-import {Group} from '../../../../model/group';
-import {OnPhaseChanged} from '../../../../model/OnPhaseChanged';
+import {Group} from '../../../../model/group/group';
 import {Subscription} from 'rxjs';
 import {NGXLogger} from 'ngx-logger';
 import {CheckboxComponent} from 'ng-uikit-pro-standard';
 import {listAnimation, onCreateListAnimation} from "../../../../animations";
+import {OnPhaseChanged} from "../../../../model/user/on-phase-changed";
 
 
 @Component({

@@ -4,7 +4,6 @@ import {PomodoroHistoryComponent} from './pomodoro-history/pomodoro-history.comp
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {AuthGuard} from '../../guards/auth-guard.service';
 import {SettingsComponent} from './settings/settings.component';
-import {OverviewComponent} from "../group/overview/overview.component";
 
 export const myAccountRoutes: Routes = [
   {path:'',component: PersonalInformationComponent, canActivate: [AuthGuard]},

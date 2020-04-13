@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Group} from '../../../model/group';
-import {first, map} from 'rxjs/operators';
-import {User} from '../../../model/user';
+import {Group} from '../../../model/group/group';
+import {first} from 'rxjs/operators';
+import {User} from '../../../model/user/user';
 
 import {HttpClient} from '@angular/common/http';
 

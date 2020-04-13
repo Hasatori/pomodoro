@@ -19,7 +19,7 @@
       <div class="mdb-scrollspy-ex">
         <ul mdbScrollSpy="scrollspy4" class="nav d-flex flex-column p-3">
           <li class="nav-item py-2"><a mdbScrollSpyLink="your-groups" class="nav-link"
-                                       [routerLink]="['/group#your-groups']">Your
+                                       [routerLink]="['/group#your-memberOfGroups']">Your
             groups
             <small *ngIf="    userServiceProvider.groupService.ownedGroupsUnreadMessages!==0" class="align-right ml-2">
               <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
@@ -28,7 +28,7 @@
             </small>
           </a></li>
           <li class="nav-item py-2"><a mdbScrollSpyLink="groups-your-are-member-of" class="nav-link"
-                                       [routerLink]="['/group#groups-your-are-member-of']">Groups
+                                       [routerLink]="['/group#memberOfGroups-your-are-member-of']">Groups
             you are member of
             <small *ngIf="    userServiceProvider.groupService.notOwnedGroupsUnreadMessages!==0"
                    class="align-right ml-2">
@@ -118,7 +118,7 @@
               <ul class="list-group list-group-horizontal">
                 <li class="list-inline-item">
                   <mdb-icon far icon="clock" class="pr-1"></mdb-icon>
-                  {{datePipe.transform(this.group.created, 'dd-MM-yyyy')}}
+                  {{datePipe.transform(this.group.creationTimestamp, 'dd-MM-yyyy')}}
                 </li>
               </ul>
             </mdb-card-footer>
@@ -203,7 +203,7 @@
               <ul class="list-group list-group-horizontal">
                 <li class="list-inline-item">
                   <mdb-icon far icon="clock" class="pr-1"></mdb-icon>
-                  {{datePipe.transform(this.group.created, 'dd-MM-yyyy')}}
+                  {{datePipe.transform(this.group.creationTimestamp, 'dd-MM-yyyy')}}
                 </li>
               </ul>
             </mdb-card-footer>

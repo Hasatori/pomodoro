@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../../../model/user';
+import {User} from '../../../model/user/user';
 import {UserServiceProvider} from '../../../services/user-service-provider';
-import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
 import {DatePipe} from '@angular/common';
-import {environment} from '../../../../environments/environment';
 import {listAnimation, onCreateListAnimation} from "../../../animations";
 @Component({
   selector: 'overview',

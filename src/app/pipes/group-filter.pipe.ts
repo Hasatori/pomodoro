@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {User} from '../model/user';
-import {Group} from '../model/group';
+import {User} from '../model/user/user';
+import {Group} from '../model/group/group';
 
 @Pipe({
   name: 'groupFilter'

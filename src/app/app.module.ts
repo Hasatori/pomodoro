@@ -3,8 +3,6 @@ import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppComponent} from './app.component';
-
-import {MDBBootstrapModule, MdbBtnDirective} from 'angular-bootstrap-md';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from './components/login/login.component';
@@ -26,26 +24,23 @@ import {myAccountRoutes} from './components/my-account/my-account.module';
 import {PomodoroComponent} from './components/pomodoro/pomodoro.component';
 import {CountdownModule} from 'ngx-countdown';
 import {
-  InjectableRxStompConfig,
   RxStompService,
-  rxStompServiceFactory,
   StompConfig,
-  StompService
 } from '@stomp/ng2-stompjs';
-import {webSocketConfig} from './WebSocketConfig';
+import {webSocketConfig} from './web-socket-config';
 import {GroupComponent} from './components/group/group.component';
 import {GroupDetailComponent} from './components/group/group-detail/group-detail.component';
 import {groupDetailRoutes} from './components/group/group.module';
 import {AuthService} from './services/auth.service';
 import {PomodoroIsRunningComponent} from './components/modals/pomodoro-is-running/pomodoro-is-running.component';
-import {LoggerModule, NGXLogger, NgxLoggerLevel} from 'ngx-logger';
+import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
 import {FreeTrialComponent} from './components/free-trial/free-trial.component';
 import {AuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
-import {provideConfig} from './ServerConfig';
+import {provideConfig} from './server-config';
 import {WantMoreFunctionalityComponent} from './components/modals/want-more-functionality/want-more-functionality.component';
 import {SuccessComponent} from './components/modals/success/success.component';
 import {GroupChatComponent} from './components/group/group-detail/group-chat/group-chat.component';
-import {LightBoxModule, CarouselModule, ModalModule, WavesModule} from 'ng-uikit-pro-standard'
+import {LightBoxModule, ModalModule, WavesModule} from 'ng-uikit-pro-standard'
 import {
   AccordionModule,
   AnimatedCardsModule,
@@ -55,7 +50,6 @@ import {
   ChartSimpleModule, ChipsModule,
   DatepickerModule,
   FileInputModule,
-  MDBBootstrapModulePro,
   MDBBootstrapModulesPro,
   MDBSpinningPreloader,
   PreloadersModule,
@@ -82,7 +76,6 @@ import {DatePipe} from '@angular/common';
 import {EditGroupComponent} from './components/group/edit-group/edit-group.component';
 import {AreYouSureComponent} from './components/modals/are-you-sure/are-you-sure.component';
 import {InviteUserComponent} from './components/group/group-detail/invite-user/invite-user.component';
-import {UserFilterPipe} from './pipes/UserFilter.pipe';
 import {UserTodoComponent} from './components/pomodoro/user-todo/user-todo.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {GroupFilterPipe} from './pipes/group-filter.pipe';
@@ -94,7 +87,6 @@ import {SecureImagePipe} from './pipes/secure-image.pipe';
 import {UploadFileComponent} from './components/modals/upload-file/upload-file.component';
 import {ServerConfigService} from './services/server-config.service';
 import {environment} from "../environments/environment";
-import * as FileSaver from "file-saver";
 import {EmojisPopoverComponent} from "./components/chat/images-popover/emojis-popover.component";
 import { CachedImagePipe } from './pipes/cached-image.pipe';
 import {QuicklinkModule, QuicklinkStrategy} from "ngx-quicklink";
@@ -103,6 +95,7 @@ import  {  ScrollingModule  }  from  '@angular/cdk/scrolling';
 import {StatisticsComponent} from "./components/group/group-detail/statistics/statistics.component";
 import {ChatComponent} from "./components/chat/chat.component";
 import { MessageComponent } from './components/chat/message/message.component';
+import {UserFilterPipe} from "./pipes/user-filter.pipe";
 
 
 const routes: Routes = [
@@ -167,7 +160,8 @@ const routes: Routes = [
     CachedImagePipe,
     StatisticsComponent,
     ChatComponent,
-    MessageComponent
+    MessageComponent,
+    UserFilterPipe
 
 
   ],

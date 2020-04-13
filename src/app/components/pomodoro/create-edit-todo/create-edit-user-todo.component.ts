@@ -1,15 +1,13 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {GroupToDo} from '../../../model/GroupToDo';
-import {Group} from '../../../model/group';
-import {User} from '../../../model/user';
+import {User} from '../../../model/user/user';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {UserServiceProvider} from '../../../services/user-service-provider';
 import {DatePipe} from '@angular/common';
 import {isUndefined} from 'util';
 import {IMyDate} from 'ng-uikit-pro-standard';
-import {UserTodo} from '../../../model/user-todo';
-
+import {UserToDo} from "../../../model/to-do/user-to-do";
+import {GroupToDo} from "../../../model/to-do/group-to-do";
 @Component({
   selector: 'app-create-edit-user-todo',
   templateUrl: './create-edit-user-todo.component.html',
@@ -17,8 +15,8 @@ import {UserTodo} from '../../../model/user-todo';
 })
 export class CreateEditUserTodoComponent implements OnInit {
   @Input() title: string = '';
-  groupToDo: UserTodo = null;
-  parents: Array<UserTodo> = [];
+  groupToDo: UserToDo = null;
+  parents: Array<UserToDo> = [];
   @Input() user: User;
   // @ts-ignore
   @ViewChild('basicModal') input: ModalDirective;
@@ -60,27 +58,27 @@ export class CreateEditUserTodoComponent implements OnInit {
 
   }
 
-  show(title: string, parents?: Array<UserTodo>, userToDo?: UserTodo) {
+  show(title: string, parents?: Array<UserToDo>, userToDo?: UserToDo) {
     this.groupToDo = new GroupToDo();
     this.parents = parents === null || isUndefined(parents) ? [] : parents;
     this.assignedMembers = [];
     this.title = title;
     if (!isUndefined(userToDo)) {
       this.groupToDo = userToDo;
-      this.elegantForm.controls.statusSelect.setValue([this.statuses.find(status => status.label.toUpperCase() === userToDo.status.toUpperCase()).value]);
+      this.elegantForm.controls.statusSelect.setValue([this.statuses.find(status => status.label.toUpperCase() === userToDo.status).value]);
       this.selectedDate = this.datepipe.transform(new Date(this.groupToDo.deadline).getTime(), 'yyyy-MM-dd');
     }
     this.input.show();
   }
 
   onSave(description: string, status: number, deadline: IMyDate) {
-    this.groupToDo.authorId = this.user.id;
+    this.groupToDo.author.id = this.user.id;
     this.groupToDo.description = description;
     this.groupToDo.status = this.statuses.find(status1 => status1.value === status).label;
     this.groupToDo.deadline = new Date(Date.parse(`${deadline.month} ${deadline.day} ${deadline.year}`));
     if (this.parents.length > 0) {
-      this.parents.forEach(parent => {
-        this.groupToDo.parentId = parent.id;
+      this.parents.forEach(parentTask => {
+        this.groupToDo.parentTask.id = parentTask.id;
         if (isUndefined(this.groupToDo.id)) {
           this.userServiceProvider.userService.addToDo(this.groupToDo);
         } else {

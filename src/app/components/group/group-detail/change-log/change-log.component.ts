@@ -1,9 +1,8 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
-import {GroupChange} from '../../../../model/group-change';
-import {Group} from '../../../../model/group';
+import {GroupChange} from '../../../../model/change/group-change';
+import {Group} from '../../../../model/group/group';
 import {Subscription} from 'rxjs';
-import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
 import {DatePipe} from '@angular/common';
 import {listAnimation, onCreateListAnimation} from "../../../../animations";
 
@@ -30,7 +29,7 @@ export class ChangeLogComponent implements OnInit, OnDestroy, AfterViewInit {
   headElements: Array<HeadElement> = [
     {
       id: 0,
-      value: 'Change timestamp',
+      value: 'Change creationTimestamp',
       sortBy: 'changeTimestamp',
       sortedAsc: false
     },

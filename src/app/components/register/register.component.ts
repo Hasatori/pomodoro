@@ -2,16 +2,11 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 
 import {first, map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {error} from 'util';
-import {User} from '../../model/user';
-import {stringify} from 'querystring';
+import {User} from '../../model/user/user';
 import {SuccessComponent} from '../modals/success/success.component';
-import {ModalDirective} from 'angular-bootstrap-md';
 import {Router} from '@angular/router';
-import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {environment} from '../../../environments/environment';
-import {getEnvironment} from "../../ServerConfig";
+import {getEnvironment} from "../../server-config";
 
 @Component({
   selector: 'app-register',
