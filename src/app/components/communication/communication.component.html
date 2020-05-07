@@ -1,0 +1,19 @@
+<button type="button" mdbBtn color="primary" class="sticky-button p-0 m-0" (click)="chatsShown=!chatsShown">Chat</button>
+<div *ngIf="messages && currentUser"
+     [class.flex-column]="true"
+     [class.chat-wrapper-closed]="!chatsShown"
+     [class.chat-wrapper-open]="chatsShown"
+>
+  <div class="flex-grow-1 -align-right">close all</div>
+  <div class="d-flex flex-row-reverse" @list>
+    <div class="d-flex mx-1" *ngFor="let chat of chats" @items>
+      <app-chat
+        [chatName]="chat"
+        [messages]="messages"
+        [user]="currentUser"
+        (onLoadOlder)="loadOlder()"
+        (onRemove)="removeFromChat(chat)"
+      ></app-chat>
+    </div>
+  </div>
+</div>

@@ -5,5 +5,6 @@ export class UserReaction {
   author: User;
   message: Message;
   readTimestamp: Date;
-  emoji: string;
+  emoji: Emoji;
+
 }

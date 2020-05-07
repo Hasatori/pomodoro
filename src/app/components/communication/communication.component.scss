@@ -1,0 +1,23 @@
+@import "../../app.component.scss";
+.sticky-button {
+  position: fixed;
+  bottom:24.5rem;
+  right:0%;
+  z-index: 105;
+  transform: rotate(270deg);
+  transform-origin: right bottom;
+  width: 24rem;
+  height: 1rem;
+}
+ .chat-wrapper-open{
+  right: 1%;
+ }
+.chat-wrapper-closed{
+
+  right: -100rem;
+}
+.chat-wrapper-closed,.chat-wrapper-open{
+  position: fixed;
+  bottom: 1%;
+  transition: 1s;
+}

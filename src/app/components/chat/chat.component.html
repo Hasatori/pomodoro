@@ -1,12 +1,13 @@
+
 <div
   *ngIf="minimized"
   mdbBtn
-  class="pl-2 pr-2 pb-3 z-depth-1a custom-button maximize  d-flexshadow rounded flex-row"
+  class="pl-2 pr-2 pb-3 z-depth-1a custom-button maximize  d-flex shadow rounded flex-row"
 >
   <div class="text-center maximize-text" *ngIf="minimized">chat</div>
   <div class="d-flex flex-row">
-    <div class="chat-volume mr-2 align-self-center" ngSwitch="{{userServiceProvider.groupService.chatMuted}}"
-         (click)="userServiceProvider.groupService.chatMuted= !userServiceProvider.groupService.chatMuted">
+    <div class="chat-volume mr-2 align-self-center" ngSwitch="{{chatMuted}}"
+         (click)="chatMuted= !chatMuted">
       <div class="p-0 " mdbTooltip="volume-up" *ngSwitchCase="'true'">
         <mdb-icon fas icon="volume-mute"></mdb-icon>
       </div>
@@ -22,21 +23,21 @@
 
   </div>
   <div class="text-center">
-    <small *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)!==0" class="align-right ml-2">
+    <small *ngIf="numberOfUnreadMessages!==0" class="align-right ml-2">
       <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
       <span
-        class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
+        class="badge badge-danger text-right animated wobble">{{numberOfUnreadMessages}}</span>
     </small>
   </div>
 </div>
 
-<mdb-card [ngClass]="minimized?'chat-room small-chat wide invisible ':'chat-room small-chat wide'">
+<mdb-card [ngClass]="minimized?'chat-room small-chat wide invisible rounded':'chat-room small-chat wide rounded'">
 
   <mdb-card-header class="chat-heading p-3" id="toggle" style="cursor: pointer;">
     <div class="chat-open-settings">
       <div class="d-flex flex-row">
-        <div class="chat-volume" ngSwitch="{{userServiceProvider.groupService.chatMuted}}"
-             (click)="userServiceProvider.groupService.chatMuted= !userServiceProvider.groupService.chatMuted">
+        <div class="chat-volume" ngSwitch="{{chatMuted}}"
+             (click)="chatMuted= !chatMuted">
           <div class="p-0 " mdbTooltip="volume-up" *ngSwitchCase="'true'">
             <mdb-icon fas icon="volume-mute"></mdb-icon>
           </div>
@@ -45,11 +46,11 @@
           </div>
         </div>
         <div class="ml-2">
-          <small *ngIf=" userServiceProvider.groupService.groupUnreadMessages.get(group.name)!==0"
+          <small *ngIf="numberOfUnreadMessages!==0"
                  class="align-right ml-2">
             <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
             <span
-              class="badge badge-danger text-right animated wobble">{{    userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
+              class="badge badge-danger text-right animated wobble">{{numberOfUnreadMessages}}</span>
           </small>
         </div>
 
@@ -57,17 +58,19 @@
 
     </div>
     <p class="name mb-0 text-center">
-      <strong>Group chat</strong></p>
+      <strong>{{chatName}}</strong></p>
 
-    <div *ngIf="!minimized && !showReactions" (click)="minimized=true" class="minimize -align-right">
-      <div class="p-0 " mdbTooltip="hide">
-        <mdb-icon fas icon="angle-down"></mdb-icon>
+    <div *ngIf="!minimized && !showReactions" (click)="onRemove.emit()" class="minimize -align-right">
+      <div class="p-0 " mdbTooltip="remove">
+        <mdb-icon fas icon="times"></mdb-icon>
       </div>
     </div>
 
   </mdb-card-header>
-  <cdk-virtual-scroll-viewport [maxBufferPx]="50" [minBufferPx]="15" itemSize="50" (scrolledIndexChange)="scrolled()"
-                               [ngClass]="showReactions?'my-custom-scrollbar stop-scrolling':'my-custom-scrollbar'"
+  <cdk-virtual-scroll-viewport  itemSize="150" maxBufferPx="100" minBufferPx="50" (scrolledIndexChange)="scrolled($event)"
+
+                               [ngClass]="stopScrolling?'my-custom-scrollbar stop-scrolling':'my-custom-scrollbar'"
+
                                id="scrollable-window">
     <mdb-card-body class="p-3 pb-5">
       <div *ngIf="loading" class="d-flex flex-column">
@@ -84,20 +87,21 @@
         <div class=" d-flex justify-content-center">
           <mdb-spinner *ngIf="fetchingOlder" spinnerColor="blue" spinnerType="small"></mdb-spinner>
         </div>
-        <div #messages *cdkVirtualFor="let message of messages;last as isLast; let i = index;"
+        <div #messages *cdkVirtualFor="let message of messages| sort:'creationTimestamp':true;last as isLast; let i = index;"
              class="messages-container">
 
           <app-message
             [message]="message"
+            [previousMessage]="getMessage(i-1)"
+            [nextMessage]="getMessage(i+1)"
             [currentUser]="this.user"
-            (onReact)="this.onReact.emit()"
-            (onEditMessage)="this.onEditMessage.emit()"
-            (onSendMessage)="this.onSendMessage.emit()"
+            (onEditMessage)="this.onEditMessage.emit(message)"
+            (scrollingDecision)="addScrollingDecision($event)"
           ></app-message>
 
           <div class="text-muted small text-center mb-2 message-time"
                *ngIf="isLast && seenBy!==''">
-            Seen by: {{seenBy}}
+            Seen by: test
           </div>
         </div>
       </div>
@@ -105,7 +109,7 @@
   </cdk-virtual-scroll-viewport>
   <mdb-card-footer class="chat-footer pt-1 pb-1 px-3">
     <div class="message-box" id="editable" [contentEditable]="message.innerHTML.length<4000"
-         data-placeholder="type a message..." #message (keydown.enter)="sendMessage(message);$event.preventDefault();"
+         data-placeholder="type a message..." #message (keydown.enter)="onSendMessage.emit(message);$event.preventDefault();"
          (click)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"
          (keydown)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"></div>
 
@@ -115,13 +119,13 @@
                   class="mr-2  chat-icon" triggers="click"></mdb-icon>
       </a>
       <ng-template #emojisPopover>
-        <app-emojis-popover (click)="smallHoverImgTemp.hide()"
+        <app-emojis-popover  (click)="smallHoverImgTemp.hide()"
                             (emojiSelected)="addEmoji(message,$event);"></app-emojis-popover>
       </ng-template>
 
       <a>
         <input #uploadFile type="file" style="display:none"
-               (change)="uploadFileComponent.handleFileInput($event.target.files,userServiceProvider.serverConfig.getFullUrl('group/'+group.name+'/chat/attachment'))">
+               (change)="uploadFileComponent.handleFileInput($event.target.files,userServiceProvider.serverConfig.getFullUrl('group/'+message.id+'/chat/attachment'))">
         <mdb-icon fas icon="paperclip" (click)="uploadFile.click()" class="mr-2  chat-icon"></mdb-icon>
 
       </a>
@@ -130,7 +134,7 @@
         <mdb-icon
 
           fas icon="paper-plane" class="float-right chat-icon"
-          (click)="sendMessage(message);"></mdb-icon>
+          (click)="onSendMessage.emit(message);this.scrollToBottom()"></mdb-icon>
 
       </a>
     </div>
@@ -138,4 +142,4 @@
 </mdb-card>
 
 
-<app-upload-file #uploadFileComponent (onDone)="resendMessage($event)"></app-upload-file>
+<app-upload-file #uploadFileComponent (onDone)="onSendMessage.emit()"></app-upload-file>

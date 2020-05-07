@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChildren
+} from '@angular/core';
 import {User} from "../../../model/user/user";
 import {Message} from "../../../model/message/message";
 import {isUndefined} from "util";
@@ -6,31 +16,37 @@ import {UserServiceProvider} from "../../../services/user-service-provider";
 import {getEnvironment} from "../../../server-config";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {saveAs} from 'file-saver';
+import {TooltipDirective} from "ng-uikit-pro-standard";
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss']
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnInit, OnChanges {
 
   @Input() currentUser: User;
   @Input() message: Message;
-  @Output() onReact = new EventEmitter();
+  @Input() previousMessage: Message;
+  @Input() nextMessage: Message;
+
   @Output() onEditMessage = new EventEmitter();
-  @Output() onSendMessage = new EventEmitter();
+  @Output() scrollingDecision = new EventEmitter();
+
   showReactions: boolean = false;
-  isMobileOrTablet = false;
-  reactions: Array<string> =
-    [
-      'happy',
-      'sad',
-      'angry',
-      'crying',
-      'thumbs-up',
-      'thumbs-down'
-    ];
-  private oldMessageTimeOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+
+
+  positiveScrollingDecisions = [];
+  scrollingAlreadyDisable: boolean = false;
+  emojisEnum = [
+    Emoji.HAPPY,
+    Emoji.SAD,
+    Emoji.ANGRY,
+    Emoji.CRYING,
+    Emoji.THUMBS_UP,
+    Emoji.THUMBS_DOWN
+  ];
+  private oldMessageTimeOptions = {weekday: 'short', hour:'2-digit',minute:'2-digit'};
   private attachmentsPath: string = './../../../../assets/group/chat/attachment/';
   private fileExtensions = [
     {
@@ -72,11 +88,64 @@ export class MessageComponent implements OnInit {
       {name: 'happy', textExpression: ':)'},
       {name: 'sad', textExpression: ':('},
     ];
+  imagesWithHeading = [
+    {
+      img: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(63).jpg",
+      thumb: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(63).jpg",
+      description: "Image 1"
+    },
+    {
+      img: "https://mdbootstrap.com/img/Mockups/Lightbox/Original/img%20(66).jpg",
+      thumb: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(66).jpg",
+      description: "Image 2"
+    },
+    {
+      img: "https://mdbootstrap.com/img/Mockups/Lightbox/Original/img%20(65).jpg",
+      thumb: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(65).jpg",
+      description: "Image 3"
+    },
+    {
+      img: "https://mdbootstrap.com/img/Mockups/Lightbox/Original/img%20(67).jpg",
+      thumb: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg",
+      description: "Image 4"
+    },
+    {
+      img: "https://mdbootstrap.com/img/Mockups/Lightbox/Original/img%20(68).jpg",
+      thumb: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(68).jpg",
+      description: "Image 5"
+    },
+    {
+      img: "https://mdbootstrap.com/img/Mockups/Lightbox/Original/img%20(64).jpg",
+      thumb: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(64).jpg",
+      description: "Image 6"
+    },
+    {
+      img: "https://mdbootstrap.com/img/Mockups/Lightbox/Original/img%20(69).jpg",
+      thumb: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(69).jpg",
+      description: "Image 7"
+    },
+    {
+      img: "https://mdbootstrap.com/img/Mockups/Lightbox/Original/img%20(59).jpg",
+      thumb: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(59).jpg",
+      description: "Image 8"
+    },
+    {
+      img: "https://mdbootstrap.com/img/Mockups/Lightbox/Original/img%20(70).jpg",
+      thumb: "https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(70).jpg",
+      description: "Image 9"
+    }
+  ];
 
-  constructor(public userServiceProvider: UserServiceProvider, private http: HttpClient) {
+  constructor(private http: HttpClient) {
+
   }
 
   ngOnInit() {
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.message.currentUserReaction=this.message.reactions.filter(userReaction=>userReaction.author.username===this.currentUser.username)[0];
   }
 
   private getResult(value: number, unit: string): string {
@@ -121,8 +190,8 @@ export class MessageComponent implements OnInit {
     this.onReact.emit(emoji);
   }
 
-  getAttachmentIcon(attachment: string): string {
-    let extension = attachment.substr(attachment.lastIndexOf('.') + 1);
+  getAttachmentIcon(extension: string): string {
+    console.log(extension);
     let result = this.fileExtensions.find(fileExtension => {
       return fileExtension.extension === 'default'
     });
@@ -167,6 +236,59 @@ export class MessageComponent implements OnInit {
 
   }
 
+  shouldShowAuthorsPhotograph(currentMessage: Message, nextMessage: Message): boolean {
+    return nextMessage == null || nextMessage.author.username !== currentMessage.author.username;
+
+  }
+
+  shouldShowAuthor(currentMessage: Message, previousMessage: Message) {
+    return previousMessage == null || previousMessage.author.username !== currentMessage.author.username;
+
+  }
+
+  emitScrollingDecision(scrollingDecision: boolean) {
+    if (scrollingDecision) {
+      this.positiveScrollingDecisions.push(true);
+    } else {
+      this.positiveScrollingDecisions.splice(-1, 1);
+    }
+    let disable = this.positiveScrollingDecisions.length > 0;
+    if (!this.scrollingAlreadyDisable) {
+      this.scrollingDecision.emit(disable);
+      this.scrollingAlreadyDisable = true;
+    } else if (!disable) {
+      this.scrollingDecision.emit(disable);
+      this.scrollingAlreadyDisable = false;
+    }
+  }
+
+  isPreviousMessageTooOld(): boolean {
+    if (this.previousMessage === null) {
+      return true;
+    } else {
+      return (this.message.creationTimestamp.getTime() - this.previousMessage.creationTimestamp.getTime()) > 21600000
+    }
+  }
+
+  getOldMessageTime(): string {
+    return this.message.creationTimestamp.toLocaleDateString('en-US', this.oldMessageTimeOptions)
+  }
+
+  react(emoji:Emoji){
+    let currentEmoji=this.message.currentUserReaction.emoji;
+    let groupedReactions=this.message.emojisGroupedReactions.get(currentEmoji);
+    this.message.emojisGroupedReactions.set(currentEmoji,groupedReactions.filter(userReaction=>userReaction.author.username!==this.message.currentUserReaction.author.username));
+    this.message.reactions.find(userReaction=>userReaction.author.username===this.currentUser.username).emoji=emoji;
+    this.message.currentUserReaction.emoji=emoji;
+     groupedReactions=this.message.emojisGroupedReactions.get(emoji);
+    if(isUndefined(groupedReactions)){
+      groupedReactions=[];
+      this.message.emojisGroupedReactions.set(emoji,groupedReactions);
+    }
+    groupedReactions.push(this.message.currentUserReaction);
+
+    this.onEditMessage.emit(this.message);
+  }
 }
 
 

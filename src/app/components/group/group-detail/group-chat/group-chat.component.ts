@@ -348,7 +348,7 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   createReaction(reactionName: string): UserReaction {
     let newReaction = new UserReaction();
-    newReaction.emoji = reactionName;
+    newReaction.emoji = Emoji.CRYING;
     return newReaction;
   }
 
@@ -394,7 +394,7 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
       foundReaction = this.createReaction(reaction);
     }
 //    foundReaction.users.push(this.user);
-    message.currentUserReaction = reaction;
+//    message.currentUserReaction = reaction;
     message.reactions.push(foundReaction);
   }
 

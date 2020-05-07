@@ -11,8 +11,10 @@ export class Message {
   answeredMessage:Message;
   changes: Array<MessageChange>;
   reactions: Array<UserReaction>;
+  emojisGroupedReactions?:Map<Emoji,UserReaction[]>;
   attachments:Array<MessageAttachment>;
-  currentUserReaction?: string = null;
+  currentUserReaction?: UserReaction = null;
   shouldShowAuthorsName?: boolean;
   shouldShowAuthorsPhoto?: boolean;
+  isCurrentUserAuthor?:boolean;
 }

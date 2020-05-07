@@ -96,6 +96,8 @@ import {StatisticsComponent} from "./components/group/group-detail/statistics/st
 import {ChatComponent} from "./components/chat/chat.component";
 import { MessageComponent } from './components/chat/message/message.component';
 import {UserFilterPipe} from "./pipes/user-filter.pipe";
+import { AttachmentFilterPipe } from './pipes/attachment-filter.pipe';
+import { CommunicationComponent } from './components/communication/communication.component';
 
 
 const routes: Routes = [
@@ -161,7 +163,9 @@ const routes: Routes = [
     StatisticsComponent,
     ChatComponent,
     MessageComponent,
-    UserFilterPipe
+    UserFilterPipe,
+    AttachmentFilterPipe,
+    CommunicationComponent
 
 
   ],

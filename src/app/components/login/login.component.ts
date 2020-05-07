@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {first} from 'rxjs/operators';
+import {count, first} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {AuthService as FacebookAuth, FacebookLoginProvider} from 'angularx-social-login';
 import {UserServiceProvider} from '../../services/user-service-provider';
@@ -8,7 +8,8 @@ import {UserServiceProvider} from '../../services/user-service-provider';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+
 })
 export class LoginComponent implements OnInit {
   elegantForm: FormGroup;
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   elegantFormPasswordEx: AbstractControl;
   elegantFormUsernameEx: AbstractControl;
   submitted: boolean = false;
+
 
   constructor(public fb: FormBuilder, private router: Router, private facebookAuth: FacebookAuth, public userServiceProvider: UserServiceProvider) {
     this.elegantForm = fb.group({
@@ -33,7 +35,7 @@ export class LoginComponent implements OnInit {
   }
 
   signIn(username: string, password: string) {
-    this.submitted=true;
+    this.submitted = true;
     this.elegantFormPasswordEx.markAsTouched();
     this.elegantFormUsernameEx.markAsTouched();
     if (this.elegantForm.valid) {
