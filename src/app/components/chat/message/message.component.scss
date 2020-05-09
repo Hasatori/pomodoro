@@ -1,5 +1,8 @@
 @import "../chat.component.scss";
 
+.my-message-text,.other-member-message-text{
+  font-size: 0.7em;
+}
 .message {
   margin-top: 1rem;
 }

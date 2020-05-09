@@ -47,7 +47,7 @@
         <li *ngFor="let item of list "
             class="d-flex flex-nowrap" @items>
           <mdb-accordion [multiple]="false">
-            <mdb-accordion-item [collapsed]="!item.visible"
+            <mdb-accordion-item [collapsed]="true"
                                 class="accordion-item border-bottom"
             >
 
@@ -96,10 +96,10 @@
                     </div>
 
                     <div class="text-muted mr-2">Status:</div>
-                    <div class="mr-2" ngSwitch="{{item.status.toUpperCase()}}">
-                      <mdb-badge info="true" *ngSwitchCase="'IN PROGRESS'">{{item.status}}</mdb-badge>
-                      <mdb-badge warning="true" *ngSwitchCase="'NOT STARTED'">{{item.status}}</mdb-badge>
-                      <mdb-badge success="true" *ngSwitchCase="'DONE'">{{item.status}}</mdb-badge>
+                    <div class="mr-2" ngSwitch="{{item.status}}">
+                      <mdb-badge info="true" *ngSwitchCase="IN_PROGRESS">{{item.status}}</mdb-badge>
+                      <mdb-badge warning="true" *ngSwitchCase="NOT_STARTED">{{item.status}}</mdb-badge>
+                      <mdb-badge success="true" *ngSwitchCase="DONE">{{item.status}}</mdb-badge>
                     </div>
                     <div *ngIf="todoOverdue(item)===true">
                       <mdb-badge danger="true">Overdue</mdb-badge>

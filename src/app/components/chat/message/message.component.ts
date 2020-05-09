@@ -185,10 +185,6 @@ export class MessageComponent implements OnInit, OnChanges {
     }
   }
 
-  react(emoji: string) {
-    this.message.currentUserReaction = emoji;
-    this.onReact.emit(emoji);
-  }
 
   getAttachmentIcon(extension: string): string {
     console.log(extension);

@@ -29,6 +29,7 @@ export class ChatComponent implements OnInit,OnChanges {
   @Input() numberOfUnreadMessages: number = 0;
   @Input() user: User;
   @Input() chatMuted: boolean;
+  @Input()closeable:boolean;
   @Output() onLoadOlder = new EventEmitter();
   @Output() onEditMessage = new EventEmitter<Message>();
   @Output() onSendMessage = new EventEmitter<string>();

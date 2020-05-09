@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {User} from '../../../../model/user/user';
 import {Timer} from '../../../../model/user/timer';
 import {UserServiceProvider} from '../../../../services/user-service-provider';
@@ -8,6 +8,7 @@ import {NGXLogger} from 'ngx-logger';
 import {CheckboxComponent} from 'ng-uikit-pro-standard';
 import {listAnimation, onCreateListAnimation} from "../../../../animations";
 import {OnPhaseChanged} from "../../../../model/user/on-phase-changed";
+import {EventEmitter} from "selenium-webdriver";
 
 
 @Component({
@@ -22,6 +23,8 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
   @Input() user: User;
   @Input() isOwner: boolean;
   @Input() allUsers: Array<User>;
+
+  @Output()openChat:EventEmitter=new EventEmitter();
 
   public  workSelected: boolean = true;
   public  pauseSelected: boolean = true;

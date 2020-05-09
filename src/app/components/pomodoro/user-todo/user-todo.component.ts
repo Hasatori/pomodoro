@@ -32,12 +32,18 @@ export class UserTodoComponent implements OnInit {
     this.loading = true;
     this.userServiceProvider.userService.userTodos().subscribe(userTodos => {
       this.allToDos = userTodos;
+      userTodos.filter(toDo=>toDo.parentTask ===null).forEach(toDo=>{
+
+      });
       for (let toDo of userTodos) {
         toDo.children = [];
-        toDo.visible = true;
+        toDo.visible = false;
         toDo.selected = false;
         toDo.accordionDisabled = false;
-        this.assignChildren(userTodos, toDo);
+        if (toDo.parentTask === null) {
+
+          this.userTodos.push(toDo);
+        }
       }
       this.userServiceProvider.userService.getUser().subscribe(user => {
         this.user = user;
@@ -49,9 +55,9 @@ export class UserTodoComponent implements OnInit {
           this.allToDos.push(toDo);
           this.userTodos = [];
           for (let toDo of this.allToDos) {
-            toDo.children = [];
             this.assignChildren(this.allToDos, toDo);
           }
+          toDo.children = [];
         });
       });
 
@@ -62,10 +68,7 @@ export class UserTodoComponent implements OnInit {
 
   assignChildren(allTodos: Array<UserToDo>, toDo: UserToDo) {
     toDo.children = toDo.children.concat(allTodos.filter(candidate => candidate.parentTask !== null && candidate.parentTask.id=== toDo.id));
-    if (toDo.parentTask === null) {
 
-      this.userTodos.push(toDo);
-    }
   }
 
   getDeadlineFormat(todo: UserToDo): string {
@@ -127,6 +130,9 @@ export class UserTodoComponent implements OnInit {
 
   showOrHideToDo(toDo: UserToDo, popupShown: boolean) {
     if (!popupShown) {
+      if (toDo.children.length===0){
+        this.assignChildren(this.allToDos, toDo);
+      }
       toDo.visible = !toDo.visible;
     }
   }

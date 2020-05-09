@@ -146,7 +146,7 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
         let reaction = foundMessage.reactions.find(r => {
             return r.author.username === this.user.username;
         });
-        foundMessage.currentUserReaction = isUndefined(reaction) ? null : reaction.emoji;
+    //    foundMessage.currentUserReaction = isUndefined(reaction) ? null : reaction.emoji;
       }
     });
     this.lastNumberOfGroupMessagesSubscription = this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.group.name, this.threshold, this.end).subscribe((response) => {
@@ -279,7 +279,7 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
             for (let i = 0; i < this.messages.length; i++) {
               let message = this.messages[i];
               this.setReactionsForMessage(message);
-      //        message.shouldShowAuthorsName = this.shouldShowAuthor.emoji(message, i < this.messages.length - 1 ? this.messages[i + 1] : null);
+      //        message.shouldShowAuthorsName = this.shouldShowAuthor.emoji(message, i < this.groupMessages.length - 1 ? this.groupMessages[i + 1] : null);
               message.shouldShowAuthorsPhoto = this.shouldShowAuthorsPhotograph(message, i !== 0 ? this.messages[i - 1] : null);
             }
 
@@ -340,7 +340,7 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
        // reaction.users.push(relatedMessage.author);
       }
       if (relatedMessage.author.username === this.user.username) {
-        message.currentUserReaction = relatedMessage.emoji;
+
       }
     });
     message.reactions = reactions;

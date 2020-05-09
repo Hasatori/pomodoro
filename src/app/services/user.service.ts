@@ -9,6 +9,10 @@ import {WebSocketProxyService} from './web-socket-proxy.service';
 import {getEnvironment} from "../server-config";
 import {UserToDo} from "../model/to-do/user-to-do";
 import {GroupToDo} from "../model/to-do/group-to-do";
+import {Message} from "../model/message/message";
+import {DirectMessage} from "../model/message/direct-message";
+import {AuthService} from "./auth.service";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,8 +23,51 @@ export class UserService {
   private USER_TODOS_KEY: string = 'userTodos';
   private USER_GROUP_TODOS_KEY: string = 'userGroupTodos';
 
-  constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService) {
+  public allUnreadMessages: number = 0;
+  public userUnreadMessages: Map<string, number> = new Map<string, number>();
+
+  constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService,private authenticationService:AuthService) {
   }
+
+  startSockets() {
+    this.getUser().subscribe(user=>{
+      this.getAllMyDirectUnreadMessages(user).subscribe(unreadDirectMessages=>{
+        this.allUnreadMessages+=unreadDirectMessages.length;
+        unreadDirectMessages.forEach((uND)=>{
+          this.userUnreadMessages.set(uND.author.username, this.userUnreadMessages.get(uND.author.username) + 1);
+        });
+      });
+      this.getDirectMessage(user).subscribe((uND)=>{
+        this.allUnreadMessages++;
+        this.userUnreadMessages.set(uND.author.username, this.userUnreadMessages.get(uND.author.username) + 1);
+      })
+    });
+  }
+
+  getDirectMessage(user: User): Observable<DirectMessage> {
+    return this.webSocketProxyService.watch('/user/' + this.authenticationService.currentAccessTokenValue + '/chat').pipe(map(newMessage => {
+      return JSON.parse(newMessage.body);
+    }));
+  }
+
+  public getLastNumberOfDirectMessages(user: User, start: number, stop: number): Observable<Array<Message>> {
+    return this.http.post<any>(`${getEnvironment().backend}user/fetch-chat-messages`, {
+      username: user.username,
+      start: start,
+      stop: stop
+    }).pipe(map(response => {
+      return response;
+
+    }));
+
+  }
+
+  private getAllMyDirectUnreadMessages(user: User): Observable<Array<DirectMessage>> {
+    return this.http.get<any>(`${getEnvironment().backend}user/${user.username}/fetch-unread-messages`).pipe(map(response => {
+      return response;
+    }));
+  }
+
 
   getUser(): Observable<User> {
     let user: User = JSON.parse(window.sessionStorage.getItem(this.USER_KEY));
@@ -109,7 +156,7 @@ export class UserService {
   removeTodos(todos: Array<UserToDo>): Observable<any> {
     let ids = todos.map(todo => todo.id);
     return this.http.post<any>(`${getEnvironment().backend}remove-todo`, ids).pipe(map(response => {
-      if (response.success!==null){
+      if (response.success !== null) {
         window.sessionStorage.removeItem(this.USER_TODOS_KEY);
       }
       return response;

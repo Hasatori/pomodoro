@@ -1,0 +1,30 @@
+@import "../../../../app.component";
+@import "../../../chat/chat.component";
+.sticky-button {
+
+  z-index: 105;
+  width: 24rem;
+  background-color:  $basicTextColor;
+  color: $navigationBarColor;
+
+
+}
+.sticky-button:hover{
+  cursor: pointer;
+
+}
+
+ .chat-wrapper-open{
+bottom: 0;
+ }
+.chat-wrapper-closed{
+  bottom: -$chatRoomHeight;
+
+}
+.chat-wrapper-closed,.chat-wrapper-open{
+  position: fixed;
+  right: 0;
+  transition: 1s;
+
+}
+

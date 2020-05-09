@@ -30,6 +30,7 @@ initAllSockets(){
       this.webSocketService.activate();
       this.pomodoroService.init();
       this.groupService.startSockets();
+      this.userService.startSockets();
     }
   )
 }

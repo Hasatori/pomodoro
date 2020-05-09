@@ -1,6 +1,6 @@
 @import "../../app.component.scss";
 $chatRoomWidth:15rem;
-
+$chatRoomHeight:24em;
 .accordion-wrapper{
   height: 30em !important;
 
@@ -9,11 +9,11 @@ $chatRoomWidth:15rem;
 .chat-room{
   position: relative !important;
   width:$chatRoomWidth !important;
-  height: 24em !important;
+  height:$chatRoomHeight !important;
 
 }
 .maximize {
-  font-size: 0.7rem;
+
   position: relative !important;
 bottom:0 !important;
   background-color: $navigationBarColor !important;
@@ -39,7 +39,6 @@ bottom:0 !important;
   position: absolute;
   right: 3%;
   top:0;
-  font-size: 1.5em;
 }
 @media (max-width: 410px) {
   .chat-room{

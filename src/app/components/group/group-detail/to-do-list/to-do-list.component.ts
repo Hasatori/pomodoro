@@ -42,10 +42,13 @@ export class ToDoListComponent implements OnInit {
       this.allToDos = todos;
       for (let toDo of todos) {
         toDo.children = [];
-        toDo.visible = true;
+        toDo.visible = false;
         toDo.selected = false;
         toDo.accordionDisabled = false;
-        this.assignChildren(todos, toDo);
+        if (toDo.parentTask === null) {
+          console.log(toDo);
+          this.todos.push(toDo);
+        }
       }
       this.loading = false;
     });
@@ -69,14 +72,13 @@ export class ToDoListComponent implements OnInit {
 
   assignChildren(todos: Array<GroupToDo>, toDo: GroupToDo) {
     toDo.children = toDo.children.concat(todos.filter(candidate => candidate.parentTask !== null && candidate.parentTask.id === toDo.id));
-    if (toDo.parentTask === null) {
-
-      this.todos.push(toDo);
-    }
   }
 
   showOrHideToDo(toDo: GroupToDo, popupShown: boolean) {
     if (!popupShown) {
+      if (toDo.children.length === 0) {
+        this.assignChildren(this.allToDos, toDo);
+      }
       toDo.visible = !toDo.visible;
     }
   }
