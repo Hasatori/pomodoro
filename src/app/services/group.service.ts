@@ -180,7 +180,7 @@ export class GroupService implements OnDestroy {
 
   public getLastNumberOfGroupMessages(groupName: string, start: number, stop: number): Observable<Array<Message>> {
     return this.http.post<any>(`${getEnvironment().backend}groups/fetch-chat-messages`, {
-      groupName: groupName,
+      name: groupName,
       start: start,
       stop: stop
     }).pipe(map(response => {
@@ -191,7 +191,7 @@ export class GroupService implements OnDestroy {
 
   public getLastNumberOfGroupChanges(groupName: string, start: number, stop: number): Observable<Array<GroupChange>> {
     return this.http.post<any>(`${getEnvironment().backend}groups/fetch-changes`, {
-      groupName: groupName,
+      name: groupName,
       start: start,
       stop: stop
     }).pipe(map(response => {

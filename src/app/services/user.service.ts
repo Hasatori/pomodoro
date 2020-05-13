@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../model/user/user';
 import {Observable, of} from 'rxjs';
@@ -26,33 +26,56 @@ export class UserService {
   public allUnreadMessages: number = 0;
   public userUnreadMessages: Map<string, number> = new Map<string, number>();
 
-  constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService,private authenticationService:AuthService) {
+  constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private authenticationService: AuthService) {
   }
 
   startSockets() {
-    this.getUser().subscribe(user=>{
-      this.getAllMyDirectUnreadMessages(user).subscribe(unreadDirectMessages=>{
-        this.allUnreadMessages+=unreadDirectMessages.length;
-        unreadDirectMessages.forEach((uND)=>{
+    this.getUser().subscribe(user => {
+      this.getAllMyDirectUnreadMessages(user).subscribe(unreadDirectMessages => {
+        this.allUnreadMessages += unreadDirectMessages.length;
+        unreadDirectMessages.forEach((uND) => {
           this.userUnreadMessages.set(uND.author.username, this.userUnreadMessages.get(uND.author.username) + 1);
         });
       });
-      this.getDirectMessage(user).subscribe((uND)=>{
+      this.getDirectMessage().subscribe((uND) => {
         this.allUnreadMessages++;
         this.userUnreadMessages.set(uND.author.username, this.userUnreadMessages.get(uND.author.username) + 1);
       })
     });
   }
 
-  getDirectMessage(user: User): Observable<DirectMessage> {
+  getDirectMessageFromUser(user: User): Observable<DirectMessage> {
+    return this.getDirectMessage().pipe(map(value => {
+      let directMessage: DirectMessage = value as DirectMessage;
+      if (user.username == directMessage.author.username || user.username == directMessage.recipient.username) {
+        return directMessage;
+      }
+    }));
+  }
+
+  getResendDirectMessageFromUser(user: User): Observable<DirectMessage> {
+    return this.getResendDirectMessage().pipe(map(value => {
+      let directMessage: DirectMessage = value as DirectMessage;
+      if (user.username == directMessage.author.username || user.username == directMessage.recipient.username) {
+        return directMessage;
+      }
+    }));
+  }
+  getDirectMessage(): Observable<DirectMessage> {
     return this.webSocketProxyService.watch('/user/' + this.authenticationService.currentAccessTokenValue + '/chat').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
     }));
   }
 
-  public getLastNumberOfDirectMessages(user: User, start: number, stop: number): Observable<Array<Message>> {
-    return this.http.post<any>(`${getEnvironment().backend}user/fetch-chat-messages`, {
-      username: user.username,
+  getResendDirectMessage(): Observable<DirectMessage> {
+    return this.webSocketProxyService.watch('/user/' + this.authenticationService.currentAccessTokenValue + '/chat/resend').pipe(map(newMessage => {
+      return JSON.parse(newMessage.body);
+    }));
+  }
+
+  public getLastNumberOfDirectMessages(user: User, start: number, stop: number): Observable<Array<DirectMessage>> {
+    return this.http.post<any>(`${getEnvironment().backend}fetch-chat-messages`, {
+      name: user.username,
       start: start,
       stop: stop
     }).pipe(map(response => {
@@ -63,7 +86,7 @@ export class UserService {
   }
 
   private getAllMyDirectUnreadMessages(user: User): Observable<Array<DirectMessage>> {
-    return this.http.get<any>(`${getEnvironment().backend}user/${user.username}/fetch-unread-messages`).pipe(map(response => {
+    return this.http.get<any>(`${getEnvironment().backend}fetch-unread-messages`).pipe(map(response => {
       return response;
     }));
   }
@@ -106,6 +129,15 @@ export class UserService {
     }).pipe(map(response => {
       return response;
     }));
+  }
+
+  sendMessage(value: String, user: User) {
+    this.webSocketProxyService.publish('/app/user/' + user.username + '/chat', value);
+  }
+
+
+  editMessage(directMessage: DirectMessage,user:User) {
+    this.webSocketProxyService.publish('/app/user/' + user.username + '/chat/resend', JSON.stringify(directMessage));
   }
 
   userPomodoros(): Observable<Array<Pomodoro>> {

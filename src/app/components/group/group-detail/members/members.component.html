@@ -23,7 +23,7 @@
   </div>
   <ul  class="list-group list-group-flush" *ngIf="!loading" @list>
     <div *ngFor="let row of filteredRows|keyvalue" @items>
-      <app-user-card [user]="row.key" [timer]="row.value" [isOwner]="isOwner" (openChat)="openChant.emit(row.key)"></app-user-card>
+      <app-user-card [user]="row.key" [timer]="row.value" [isOwner]="isOwner" (openChat)="openChat.emit(row.key)"></app-user-card>
     </div>
 
   </ul>

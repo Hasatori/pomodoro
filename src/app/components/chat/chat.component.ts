@@ -15,11 +15,13 @@ import {isUndefined} from "util";
 import {User} from "../../model/user/user";
 import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {of} from "rxjs";
+import {listAnimation, onCreateListAnimation} from "../../animations";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  styleUrls: ['./chat.component.scss'],
+  animations: [listAnimation, onCreateListAnimation]
 })
 export class ChatComponent implements OnInit,OnChanges {
 
@@ -47,7 +49,7 @@ export class ChatComponent implements OnInit,OnChanges {
   @ViewChildren('messages') messagesContainer: QueryList<any>;
   @ViewChild(CdkVirtualScrollViewport, {static: false}) scrollableWindow: CdkVirtualScrollViewport;
 
-  fetchingOlder: boolean;
+  fetchingOlder: boolean=false;
   private threshold = 0;
   private limit = 10;
   private end = this.threshold + this.limit;
@@ -102,16 +104,11 @@ export class ChatComponent implements OnInit,OnChanges {
 
   scrolled(index) {
     if (this.init) {
-        if (index <= 4) {
+        if (index <= 4 && this.fetchingOlder===false) {
           this.fetchingOlder = true;
-          setTimeout(() => {
-
             this.onLoadOlder.emit();
             this.fetchingOlder = false;
             this.scrollableWindow.scrollToIndex(4);
-
-          }, 500);
-
         }
     }
   }

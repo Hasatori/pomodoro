@@ -13,8 +13,8 @@ export class Message {
   reactions: Array<UserReaction>;
   emojisGroupedReactions?:Map<Emoji,UserReaction[]>;
   attachments:Array<MessageAttachment>;
-  currentUserReaction?: UserReaction = null;
-  shouldShowAuthorsName?: boolean;
-  shouldShowAuthorsPhoto?: boolean;
-  isCurrentUserAuthor?:boolean;
+  currentUserReaction: UserReaction = null;
+  shouldShowAuthorsName: boolean=null;
+  shouldShowAuthorsPhoto: boolean=null;
+  isCurrentUserAuthor:boolean=null;
 }

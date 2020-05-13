@@ -40,7 +40,7 @@
             <div
               *ngIf="allUsers && group && user"
             >
-              <app-members [allUsers]="allUsers" [group]="group" [user]="user" [isOwner]="isOwner" (openChant)="addUserToChat($event)"></app-members>
+              <app-members [allUsers]="allUsers" [group]="group" [user]="user" [isOwner]="isOwner" (openChat)="addUserToChat($event)"></app-members>
             </div>
 
           </mdb-accordion-item-body>
@@ -112,10 +112,14 @@
     </div>
 
   </div>
-  <app-communication
-  [group]="group"
-  [users]="chatUsers"
-  ></app-communication>
+  <div *ngIf="group && chatUsers && user">
+    <app-communication
+      [group]="group"
+      [users]="chatUsers"
+      [currentUser]="user"
+    ></app-communication>
+  </div>
+
 </div>
 
 

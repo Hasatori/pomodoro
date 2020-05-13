@@ -2,8 +2,7 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 import {User} from '../../../../../model/user/user';
 import {Timer} from '../../../../../model/user/timer';
 import {UserServiceProvider} from '../../../../../services/user-service-provider';
-import {EventEmitter} from "selenium-webdriver";
-
+import { EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-user-card',
@@ -15,7 +14,7 @@ export class UserCardComponent implements OnInit {
 @Input()timer:Timer;
 @Input()isOwner:boolean;
 
-@Output()openChat:EventEmitter=new EventEmitter();
+@Output()openChat:EventEmitter<any>=new EventEmitter();
 
   constructor(public userServiceProvider:UserServiceProvider) { }
 

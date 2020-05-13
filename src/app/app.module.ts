@@ -236,7 +236,8 @@ const routes: Routes = [
     ServerConfigService,
     SecureImagePipe,
     CachedImagePipe,
-    DeviceDetectorService
+    DeviceDetectorService,
+    AuthGuard
   ]
   ,
   bootstrap: [AppComponent]

@@ -17,6 +17,7 @@ import {getEnvironment} from "../../../server-config";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {saveAs} from 'file-saver';
 import {TooltipDirective} from "ng-uikit-pro-standard";
+import {UserReaction} from "../../../model/reaction/user-reaction";
 
 @Component({
   selector: 'app-message',
@@ -46,7 +47,7 @@ export class MessageComponent implements OnInit, OnChanges {
     Emoji.THUMBS_UP,
     Emoji.THUMBS_DOWN
   ];
-  private oldMessageTimeOptions = {weekday: 'short', hour:'2-digit',minute:'2-digit'};
+  private oldMessageTimeOptions = {weekday: 'short', hour: '2-digit', minute: '2-digit'};
   private attachmentsPath: string = './../../../../assets/group/chat/attachment/';
   private fileExtensions = [
     {
@@ -145,7 +146,6 @@ export class MessageComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.message.currentUserReaction=this.message.reactions.filter(userReaction=>userReaction.author.username===this.currentUser.username)[0];
   }
 
   private getResult(value: number, unit: string): string {
@@ -262,27 +262,37 @@ export class MessageComponent implements OnInit, OnChanges {
     if (this.previousMessage === null) {
       return true;
     } else {
-      return (this.message.creationTimestamp.getTime() - this.previousMessage.creationTimestamp.getTime()) > 21600000
+      return (new Date(this.message.creationTimestamp).getTime() - new Date(this.previousMessage.creationTimestamp).getTime()) > 21600000
     }
   }
 
   getOldMessageTime(): string {
-    return this.message.creationTimestamp.toLocaleDateString('en-US', this.oldMessageTimeOptions)
+    return new Date(this.message.creationTimestamp).toLocaleDateString('en-US', this.oldMessageTimeOptions)
   }
 
-  react(emoji:Emoji){
-    let currentEmoji=this.message.currentUserReaction.emoji;
-    let groupedReactions=this.message.emojisGroupedReactions.get(currentEmoji);
-    this.message.emojisGroupedReactions.set(currentEmoji,groupedReactions.filter(userReaction=>userReaction.author.username!==this.message.currentUserReaction.author.username));
-    this.message.reactions.find(userReaction=>userReaction.author.username===this.currentUser.username).emoji=emoji;
-    this.message.currentUserReaction.emoji=emoji;
-     groupedReactions=this.message.emojisGroupedReactions.get(emoji);
-    if(isUndefined(groupedReactions)){
-      groupedReactions=[];
-      this.message.emojisGroupedReactions.set(emoji,groupedReactions);
+  react(emoji: Emoji) {
+    if (this.message.currentUserReaction == null) {
+      let reaction: UserReaction = new UserReaction();
+      reaction.author = this.currentUser;
+      reaction.emoji = emoji;
+      reaction.message = this.message;
+      reaction.readTimestamp = null;
+      this.message.reactions=[reaction];
+      this.message.emojisGroupedReactions.set(emoji, [reaction]);
+      this.message.currentUserReaction = reaction;
+    } else {
+      let currentEmoji = this.message.currentUserReaction.emoji;
+      let groupedReactions = this.message.emojisGroupedReactions.get(currentEmoji);
+      this.message.emojisGroupedReactions.set(currentEmoji, groupedReactions.filter(userReaction => userReaction.author.username !== this.message.currentUserReaction.author.username));
+      this.message.reactions.find(userReaction => userReaction.author.username === this.currentUser.username).emoji = emoji;
+      this.message.currentUserReaction.emoji = emoji;
+      groupedReactions = this.message.emojisGroupedReactions.get(emoji);
+      if (isUndefined(groupedReactions)) {
+        groupedReactions = [];
+        this.message.emojisGroupedReactions.set(emoji, groupedReactions);
+      }
+      groupedReactions.push(this.message.currentUserReaction);
     }
-    groupedReactions.push(this.message.currentUserReaction);
-
     this.onEditMessage.emit(this.message);
   }
 }

@@ -10,7 +10,7 @@
     <div class="other-message-margin" *ngIf="!message.isCurrentUserAuthor"></div>
     <div *ngIf="message.isCurrentUserAuthor" class="my-message-margin"></div>
     <div
-      *ngIf="message.attachments.length!==0"
+      *ngIf="message.attachments!=null && message.attachments.length!==0"
       [ngClass]="message.isCurrentUserAuthor?'align-self-center p-2 position-relative attachment':'align-self-center p-2 position-relative attachment'"
     >
 
@@ -57,8 +57,8 @@
           <div
             class="d-flex flex-row reaction-emojis-container">
             <div
-              mdbTooltip="{{message.currentUserReaction.emoji===emoji?null:emoji}}"
-              [ngClass]="message.currentUserReaction.emoji===emoji?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
+              mdbTooltip="{{message.currentUserReaction!=null && message.currentUserReaction.emoji===emoji?null:emoji}}"
+              [ngClass]="message.currentUserReaction!=null && message.currentUserReaction.emoji===emoji?'p-2 reaction-emoji-selected':'p-2 reaction-emoji'"
               (click)="react(emoji)"
               *ngFor="let emoji of emojisEnum">
               <img
@@ -66,7 +66,7 @@
 
                 [src]="'../../../../assets/emojis/051-'+emoji.toString()+'.svg'">
               <small
-                *ngIf="message.currentUserReaction.emoji===emoji"
+                *ngIf="message.currentUserReaction!=null &&message.currentUserReaction.emoji===emoji"
                 class="remove-reaction text-center">
                 x
               </small>

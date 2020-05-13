@@ -8,8 +8,7 @@ import {NGXLogger} from 'ngx-logger';
 import {CheckboxComponent} from 'ng-uikit-pro-standard';
 import {listAnimation, onCreateListAnimation} from "../../../../animations";
 import {OnPhaseChanged} from "../../../../model/user/on-phase-changed";
-import {EventEmitter} from "selenium-webdriver";
-
+import {EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-members',
@@ -24,7 +23,7 @@ export class MembersComponent implements OnInit, OnDestroy, OnPhaseChanged {
   @Input() isOwner: boolean;
   @Input() allUsers: Array<User>;
 
-  @Output()openChat:EventEmitter=new EventEmitter();
+  @Output()openChat:EventEmitter<any>=new EventEmitter();
 
   public  workSelected: boolean = true;
   public  pauseSelected: boolean = true;

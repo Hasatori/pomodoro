@@ -20,7 +20,7 @@ export class GroupDetailComponent {
   public group: Group;
   public groupName: string;
   public allUsers: Array<User>;
-  public chatUsers:Array<User>;
+  public chatUsers:Array<User>=[];
   public user: User;
   membersVisible: boolean = true;
   toDoVisible: boolean =true;
@@ -47,6 +47,7 @@ export class GroupDetailComponent {
   }
 
   addUserToChat($event: User) {
+    console.log($event);
     this.chatUsers.push($event);
   }
 }

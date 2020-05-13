@@ -60,7 +60,7 @@
     <p class="name mb-0 text-center">
       <strong>{{chatName}}</strong></p>
 
-    <div *ngIf="!minimized && !showReactions" (click)="onRemove.emit()" class="minimize -align-right">
+    <div *ngIf="!minimized && !showReactions && closeable" (click)="onRemove.emit()" class="minimize -align-right">
       <div class="p-0 " mdbTooltip="remove">
         <mdb-icon fas icon="times"></mdb-icon>
       </div>
@@ -134,7 +134,7 @@
         <mdb-icon
 
           fas icon="paper-plane" class="float-right chat-icon"
-          (click)="onSendMessage.emit(message);this.scrollToBottom()"></mdb-icon>
+          (click)="onSendMessage.emit(message.innerText);this.scrollToBottom()"></mdb-icon>
 
       </a>
     </div>
