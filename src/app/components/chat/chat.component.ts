@@ -16,6 +16,7 @@ import {User} from "../../model/user/user";
 import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {of} from "rxjs";
 import {listAnimation, onCreateListAnimation} from "../../animations";
+import {Observable} from "rxjs/internal/Observable";
 
 @Component({
   selector: 'app-chat',
@@ -23,22 +24,24 @@ import {listAnimation, onCreateListAnimation} from "../../animations";
   styleUrls: ['./chat.component.scss'],
   animations: [listAnimation, onCreateListAnimation]
 })
-export class ChatComponent implements OnInit,OnChanges {
+export class ChatComponent implements OnInit, OnChanges {
 
-  @Input() chatName:string;
+  @Input() chatName: string;
   @Input() messages: Array<Message>;
   @Input() minimized: boolean;
   @Input() numberOfUnreadMessages: number = 0;
   @Input() user: User;
+  @Input() typingUsers: Array<User>;
   @Input() chatMuted: boolean;
-  @Input()closeable:boolean;
+  @Input() closeable: boolean;
   @Output() onLoadOlder = new EventEmitter();
   @Output() onEditMessage = new EventEmitter<Message>();
   @Output() onSendMessage = new EventEmitter<string>();
   @Output() onRemove = new EventEmitter();
+  @Output() isUserTyping = new EventEmitter();
 
   loading: boolean;
-  init:boolean=false;
+  init: boolean = false;
   showReactions: boolean;
   stopScrolling: boolean = false;
   seenBy: string;
@@ -49,7 +52,7 @@ export class ChatComponent implements OnInit,OnChanges {
   @ViewChildren('messages') messagesContainer: QueryList<any>;
   @ViewChild(CdkVirtualScrollViewport, {static: false}) scrollableWindow: CdkVirtualScrollViewport;
 
-  fetchingOlder: boolean=false;
+  fetchingOlder: boolean = false;
   private threshold = 0;
   private limit = 10;
   private end = this.threshold + this.limit;
@@ -104,12 +107,12 @@ export class ChatComponent implements OnInit,OnChanges {
 
   scrolled(index) {
     if (this.init) {
-        if (index <= 4 && this.fetchingOlder===false) {
-          this.fetchingOlder = true;
-            this.onLoadOlder.emit();
-            this.fetchingOlder = false;
-            this.scrollableWindow.scrollToIndex(4);
-        }
+      if (index <= 4 && this.fetchingOlder === false) {
+        this.fetchingOlder = true;
+        this.onLoadOlder.emit();
+        this.fetchingOlder = false;
+        this.scrollableWindow.scrollToIndex(4);
+      }
     }
   }
 
@@ -132,13 +135,13 @@ export class ChatComponent implements OnInit,OnChanges {
   }
 
 
-  scrollToBottom():Promise<boolean> {
+  scrollToBottom(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      let end=1;
-      for (let i=0;i<=end;i++){
+      let end = 1;
+      for (let i = 0; i <= end; i++) {
         setTimeout(() => {
           this.scrollableWindow.scrollToIndex(this.scrollableWindow.getDataLength());
-          if (i==end){
+          if (i == end) {
             resolve();
           }
         }, 100);
@@ -148,9 +151,21 @@ export class ChatComponent implements OnInit,OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.messages.firstChange){
-      this.scrollToBottom().then(()=>{  this.init=true;});
+    if (changes.messages.firstChange) {
+      this.scrollToBottom().then(() => {
+        this.init = true;
+      });
     }
+  }
+
+  resolveIsUserTyping(value: string) {
+    console.log(value);
+    let isUserTyping = false;
+    if (value.length> 1) {
+      isUserTyping = true;
+    }
+    console.log(isUserTyping);
+    this.isUserTyping.emit(isUserTyping);
   }
 
 }

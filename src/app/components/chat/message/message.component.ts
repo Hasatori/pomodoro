@@ -275,7 +275,7 @@ export class MessageComponent implements OnInit, OnChanges {
       let reaction: UserReaction = new UserReaction();
       reaction.author = this.currentUser;
       reaction.emoji = emoji;
-      reaction.message = this.message;
+      reaction.messageId = this.message.id;
       reaction.readTimestamp = null;
       this.message.reactions=[reaction];
       this.message.emojisGroupedReactions.set(emoji, [reaction]);

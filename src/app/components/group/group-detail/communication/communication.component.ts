@@ -24,7 +24,7 @@ import {HttpClient} from "@angular/common/http";
 import {DirectMessage} from "../../../../model/message/direct-message";
 import {Chat} from "../../../../model/message/chat";
 import {isUndefined} from "util";
-import {DirectMessageChat} from "../../../../model/message/direct-message-chat";
+import {IsUserTyping} from "../../../../model/message/is-user-typing";
 
 @Component({
   selector: 'app-communication',
@@ -130,6 +130,7 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
       threshold: this.threshold,
       closeable: true,
       messages: [],
+      typingUsers: []=[],
       loadOlder: () => {
         this.fetchOlderDirectMessages(user, chat);
       },
@@ -137,9 +138,11 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
         this.userServiceProvider.userService.sendMessage(value, user);
       },
       editMessage: (message => {
-        let directMessage=message as DirectMessage;
+        let directMessage = message as DirectMessage;
         this.userServiceProvider.userService.editMessage(directMessage, user);
-
+      }),
+      reportIfCurrentUserIsTyping: (isTyping => {
+        this.userServiceProvider.userService.reportTypingToUser(isTyping, user)
       })
     } as Chat;
 
@@ -150,9 +153,15 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
       console.log(directMessage);
     }));
     this.subscriptions.push(this.userServiceProvider.userService.getResendDirectMessageFromUser(user).subscribe(directMessage => {
-      console.log(directMessage);
       chat.messages = chat.messages.filter(message => message.id !== directMessage.id);
       chat.messages = chat.messages.concat(this.modifyNewMessages([directMessage]));
+    }));
+    this.subscriptions.push(this.userServiceProvider.userService.getIsUserTyping(user).subscribe(isUserTyping => {
+      if (isUserTyping) {
+        chat.typingUsers=[user];
+      } else {
+          chat.typingUsers.splice(0, 1);
+      }
     }));
   }
 

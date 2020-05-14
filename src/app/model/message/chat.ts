@@ -1,4 +1,6 @@
 import {Message} from "./message";
+import {User} from "../user/user";
+import {Observable} from "rxjs/internal/Observable";
 
 export interface Chat {
   name: string;
@@ -7,10 +9,13 @@ export interface Chat {
   end: number;
   messages: Array<Message>;
   closeable: boolean;
+  typingUsers: Array<User>;
 
   loadOlder(): void;
 
-  sendMessage(value:String): void;
+  sendMessage(value: String): void;
 
-  editMessage(message:Message):void;
+  editMessage(message: Message): void;
+
+  reportIfCurrentUserIsTyping(isTyping: boolean): void
 }

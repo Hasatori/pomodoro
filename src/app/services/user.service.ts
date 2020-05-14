@@ -12,6 +12,7 @@ import {GroupToDo} from "../model/to-do/group-to-do";
 import {Message} from "../model/message/message";
 import {DirectMessage} from "../model/message/direct-message";
 import {AuthService} from "./auth.service";
+import {IsUserTyping} from "../model/message/is-user-typing";
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,17 @@ export class UserService {
       }
     }));
   }
+
+  getIsUserTyping(user: User): Observable<boolean> {
+    return this.getAllTypingUsers().pipe(map(value => {
+      console.log(value);
+      let isUserTyping: IsUserTyping = value as IsUserTyping;
+      if (user.username == isUserTyping.user.username) {
+        return isUserTyping.isTyping;
+      }
+    }));
+  }
+
   getDirectMessage(): Observable<DirectMessage> {
     return this.webSocketProxyService.watch('/user/' + this.authenticationService.currentAccessTokenValue + '/chat').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
@@ -70,6 +82,12 @@ export class UserService {
   getResendDirectMessage(): Observable<DirectMessage> {
     return this.webSocketProxyService.watch('/user/' + this.authenticationService.currentAccessTokenValue + '/chat/resend').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
+    }));
+  }
+
+  getAllTypingUsers(): Observable<IsUserTyping> {
+    return this.webSocketProxyService.watch('/user/' + this.authenticationService.currentAccessTokenValue + '/chat/typing').pipe(map(isUserTyping => {
+      return JSON.parse(isUserTyping.body);
     }));
   }
 
@@ -136,8 +154,13 @@ export class UserService {
   }
 
 
-  editMessage(directMessage: DirectMessage,user:User) {
-    this.webSocketProxyService.publish('/app/user/' + user.username + '/chat/resend', JSON.stringify(directMessage));
+  editMessage(directMessage: DirectMessage, user: User) {
+    this.webSocketProxyService.publish('/app/user/' + user.username + '/chat/react', JSON.stringify(directMessage.currentUserReaction));
+  }
+
+  reportTypingToUser(amITyping: boolean, userToReport: User) {
+    console.log(amITyping);
+    this.webSocketProxyService.publish('/app/user/' + userToReport.username + '/chat/typing',JSON.stringify(amITyping));
   }
 
   userPomodoros(): Observable<Array<Pomodoro>> {
