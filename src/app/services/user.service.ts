@@ -13,6 +13,8 @@ import {Message} from "../model/message/message";
 import {DirectMessage} from "../model/message/direct-message";
 import {AuthService} from "./auth.service";
 import {IsUserTyping} from "../model/message/is-user-typing";
+import {MessageAnswer} from "../model/message/message-answer";
+import {isUndefined} from "util";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +27,7 @@ export class UserService {
   private USER_GROUP_TODOS_KEY: string = 'userGroupTodos';
 
   public allUnreadMessages: number = 0;
-  public userUnreadMessages: Map<string, number> = new Map<string, number>();
+  private userUnreadMessages: Map<string, number> = new Map<string, number>();
 
   constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private authenticationService: AuthService) {
   }
@@ -34,15 +36,33 @@ export class UserService {
     this.getUser().subscribe(user => {
       this.getAllMyDirectUnreadMessages(user).subscribe(unreadDirectMessages => {
         this.allUnreadMessages += unreadDirectMessages.length;
+        console.log(unreadDirectMessages);
         unreadDirectMessages.forEach((uND) => {
-          this.userUnreadMessages.set(uND.author.username, this.userUnreadMessages.get(uND.author.username) + 1);
+          if (!isUndefined(this.userUnreadMessages.get(uND.author.username))) {
+            this.userUnreadMessages.set(uND.author.username, this.userUnreadMessages.get(uND.author.username) + 1);
+          } else {
+            this.userUnreadMessages.set(uND.author.username, 1);
+          }
+
         });
       });
       this.getDirectMessage().subscribe((uND) => {
         this.allUnreadMessages++;
-        this.userUnreadMessages.set(uND.author.username, this.userUnreadMessages.get(uND.author.username) + 1);
+        if (!isUndefined(this.userUnreadMessages.get(uND.author.username))) {
+          this.userUnreadMessages.set(uND.author.username, this.userUnreadMessages.get(uND.author.username) + 1);
+        } else {
+          this.userUnreadMessages.set(uND.author.username, 1);
+        }
       })
     });
+  }
+
+  getNumberOfUnreadMessagesOfUsers(user: User) {
+
+    if (!isUndefined(this.userUnreadMessages.get(user.username))) {
+      return this.userUnreadMessages.get(user.username);
+    }
+    return 0;
   }
 
   getDirectMessageFromUser(user: User): Observable<DirectMessage> {
@@ -158,9 +178,13 @@ export class UserService {
     this.webSocketProxyService.publish('/app/user/' + user.username + '/chat/react', JSON.stringify(directMessage.currentUserReaction));
   }
 
+  answerMessage(answerMessage: MessageAnswer, user: User) {
+    this.webSocketProxyService.publish('/app/user/' + user.username + '/answer', JSON.stringify(answerMessage));
+  }
+
   reportTypingToUser(amITyping: boolean, userToReport: User) {
     console.log(amITyping);
-    this.webSocketProxyService.publish('/app/user/' + userToReport.username + '/chat/typing',JSON.stringify(amITyping));
+    this.webSocketProxyService.publish('/app/user/' + userToReport.username + '/chat/typing', JSON.stringify(amITyping));
   }
 
   userPomodoros(): Observable<Array<Pomodoro>> {
@@ -229,6 +253,13 @@ export class UserService {
     this.getUser().subscribe(user => {
       this.webSocketProxyService.publish('/app/author/' + user.username + '/todos', JSON.stringify(newTodo));
       window.sessionStorage.removeItem(this.USER_TODOS_KEY);
+    });
+  }
+
+  markAllMessagesFromUserAsRead(user: User): void {
+    this.http.post<any>(`${getEnvironment().backend}mark-all-as-read/${user.username}`, {}).pipe().subscribe((message) => {
+      this.allUnreadMessages -= this.userUnreadMessages.get(user.username);
+      this.userUnreadMessages.set(user.username, 0);
     });
   }
 }

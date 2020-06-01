@@ -22,32 +22,49 @@
   background-color: $navigationBarColor !important;
   color: $basicTextColor !important;
 }
-.customTimer{
+
+.customTimer {
   font-size: 1.3em;
 }
-.user-actions-icon{
+
+.user-actions-icon {
 
   cursor: pointer;
   opacity: 0.8;
 }
-.user-actions-icon:hover{
+
+.user-actions-icon:hover {
   opacity: 1;
 }
-.dropdown .dropdown-menu .custom-item:hover{
+
+.dropdown .dropdown-menu .custom-item:hover {
   background-color: $navigationBarColor;
   color: $basicTextColor !important;
 }
-.dropdown .dropdown-menu .danger-item{
+
+.dropdown .dropdown-menu .danger-item {
   color: $myDanger !important;
 }
 
-.dropdown .dropdown-menu .danger-item:hover{
+.dropdown .dropdown-menu .danger-item:hover {
   background-color: $myDanger;
   color: $backgroundColor !important;
 }
-.mask:hover,.card-header{
+
+.mask:hover, .card-header {
   cursor: initial !important;
 }
-.you{
+
+.you {
   background-color: $backgroundColor;
+}
+
+.unread-messages {
+
+  background-color: $myDanger;
+  color: $backgroundColor;
+  position: absolute;
+  display: inline;
+  bottom: 85%;
+  left: 85%;
 }

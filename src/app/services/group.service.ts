@@ -14,6 +14,11 @@ import {GroupChange} from '../model/change/group-change';
 import {getEnvironment} from "../server-config";
 import {GroupToDo} from "../model/to-do/group-to-do";
 import {ChangeType} from "../model/change/change-type";
+import {AuthService} from "./auth.service";
+import {GroupMessage} from "../model/message/group-message";
+import {DirectMessage} from "../model/message/direct-message";
+import {IsUserTyping} from "../model/message/is-user-typing";
+import {MessageAnswer} from "../model/message/message-answer";
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +48,7 @@ export class GroupService implements OnDestroy {
 
   public chatMuted: boolean = false;
 
-  constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService) {
+  constructor(private http: HttpClient, private webSocketProxyService: WebSocketProxyService, private userService: UserService, private authenticationService: AuthService) {
   }
 
   private reset() {
@@ -106,7 +111,7 @@ export class GroupService implements OnDestroy {
           }
 
         });
-        this.getNewGroupMessage(group.name).subscribe(message => {
+        this.getNewGroupMessage().subscribe(message => {
           if (message.author.username !== this.user.username) {
             if (!this.chatMuted) {
               this.audio.play();
@@ -178,7 +183,7 @@ export class GroupService implements OnDestroy {
 
   }
 
-  public getLastNumberOfGroupMessages(groupName: string, start: number, stop: number): Observable<Array<Message>> {
+  public getLastNumberOfGroupMessages(groupName: string, start: number, stop: number): Observable<Array<GroupMessage>> {
     return this.http.post<any>(`${getEnvironment().backend}groups/fetch-chat-messages`, {
       name: groupName,
       start: start,
@@ -187,6 +192,53 @@ export class GroupService implements OnDestroy {
       return response;
     }));
 
+  }
+
+  getGroupMessageFromGroup(group: Group): Observable<GroupMessage> {
+    return this.getDirectMessage().pipe(map(value => {
+      let groupMessage: GroupMessage = value as GroupMessage;
+      if (groupMessage.group.name === group.name) {
+        return groupMessage;
+      }
+    }));
+  }
+
+  getResendGroupMessageFromGroup(group: Group): Observable<GroupMessage> {
+    return this.getResendDirectMessage().pipe(map(value => {
+      let groupMessage: GroupMessage = value as GroupMessage;
+      if (groupMessage.group.name === group.name) {
+        return groupMessage;
+      }
+    }));
+  }
+
+  getIsUserTyping(user: User): Observable<boolean> {
+    return this.getAllTypingUsers().pipe(map(value => {
+      console.log(value);
+      let isUserTyping: IsUserTyping = value as IsUserTyping;
+      if (user.username == isUserTyping.user.username) {
+        return isUserTyping.isTyping;
+      }
+    }));
+  }
+
+
+  getDirectMessage(): Observable<GroupMessage> {
+    return this.webSocketProxyService.watch('/group/' + this.authenticationService.currentAccessTokenValue + '/chat').pipe(map(newMessage => {
+      return JSON.parse(newMessage.body);
+    }));
+  }
+
+  getResendDirectMessage(): Observable<GroupMessage> {
+    return this.webSocketProxyService.watch('/group/' + this.authenticationService.currentAccessTokenValue + '/chat/resend').pipe(map(newMessage => {
+      return JSON.parse(newMessage.body);
+    }));
+  }
+
+  getAllTypingUsers(): Observable<IsUserTyping> {
+    return this.webSocketProxyService.watch('/group/' + this.authenticationService.currentAccessTokenValue + '/chat/typing').pipe(map(isUserTyping => {
+      return JSON.parse(isUserTyping.body);
+    }));
   }
 
   public getLastNumberOfGroupChanges(groupName: string, start: number, stop: number): Observable<Array<GroupChange>> {
@@ -256,8 +308,8 @@ export class GroupService implements OnDestroy {
 
   }
 
-  getNewGroupMessage(groupName: string): Observable<Message> {
-    return this.webSocketProxyService.watch('/group/' + groupName + '/chat').pipe(map(newMessage => {
+  getNewGroupMessage(): Observable<Message> {
+    return this.webSocketProxyService.watch('/group/' + this.authenticationService.currentAccessTokenValue + '/chat').pipe(map(newMessage => {
       return JSON.parse(newMessage.body);
     }));
   }
@@ -388,8 +440,23 @@ export class GroupService implements OnDestroy {
 
   }
 
+  sendMessage(value: String, group: Group) {
+    this.webSocketProxyService.publish('/app/group/' + group.name + '/chat', value);
+  }
+
+
+  editMessage(groupMessage: GroupMessage, group: Group) {
+    this.webSocketProxyService.publish('/app/group/' + group.name + '/chat/react', JSON.stringify(groupMessage.currentUserReaction));
+  }
+  answerMessage(answerMessage:MessageAnswer,group: Group) {
+    this.webSocketProxyService.publish('/app/group/' + group.name + '/answer', JSON.stringify(answerMessage));
+  }
+
   ngOnDestroy(): void {
   }
 
+  reportTypingToUser(amITyping: boolean, group: Group) {
+    this.webSocketProxyService.publish('/app/group/' + group.name + '/chat/typing', JSON.stringify(amITyping));
+  }
 
 }

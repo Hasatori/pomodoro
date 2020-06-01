@@ -119,10 +119,10 @@
                 class="mr-2 p-0 border-0 bg-transparent  other-member-message-header">
                 <div class="d-flex flex-row m-0">
                   <div *ngFor="let reaction of message.reactions">
-                    <div class="pl-1" *ngIf="reaction.users.length>0">
+                    <div class="pl-1" *ngIf="reaction.chatUsers.length>0">
                       <div class="d-flex reactions-message">
                         <div class="pl-1 reactions-count"
-                             *ngIf="reaction.users.length>1"> {{reaction.users.length}}</div>
+                             *ngIf="reaction.chatUsers.length>1"> {{reaction.chatUsers.length}}</div>
                         <div class="pl-1" [mdbTooltip]="reactionTooltip"><img width="18"
                                                                               [src]="'../../../../../assets/reactions/051-'+reaction.name+'.svg'|cachedImage|async"
 
@@ -131,7 +131,7 @@
                       </div>
                       <ng-template #reactionTooltip class="mb-2">
                         <ul class="list-unstyled ">
-                          <li class="list-item" *ngFor="let user of reaction.users">{{user.username}}</li>
+                          <li class="list-item" *ngFor="let user of reaction.chatUsers">{{user.username}}</li>
                         </ul>
                       </ng-template>
 
@@ -251,10 +251,10 @@
                 class="ml-2 p-0 border-0 bg-transparent  other-member-message-header">
                 <div class="d-flex flex-row m-0">
                   <div *ngFor="let reaction of message.reactions">
-                    <div class="pl-1" *ngIf="reaction.users.length>0">
+                    <div class="pl-1" *ngIf="reaction.chatUsers.length>0">
                       <div class="d-flex reactions-message">
                         <div class="pl-1 reactions-count"
-                             *ngIf="reaction.users.length>1"> {{reaction.users.length}}</div>
+                             *ngIf="reaction.chatUsers.length>1"> {{reaction.chatUsers.length}}</div>
                         <div class="pl-1" [mdbTooltip]="reactionTooltip"><img width="18"
                                                                               [src]="'../../../../../assets/reactions/051-'+reaction.name+'.svg'|cachedImage|async"
 
@@ -263,7 +263,7 @@
                       </div>
                       <ng-template #reactionTooltip class="mb-2">
                         <ul class="list-unstyled ">
-                          <li class="list-item" *ngFor="let user of reaction.users">{{user.username}}</li>
+                          <li class="list-item" *ngFor="let user of reaction.chatUsers">{{user.username}}</li>
                         </ul>
                       </ng-template>
 

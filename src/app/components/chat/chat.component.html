@@ -95,7 +95,9 @@
             [nextMessage]="getMessage(i+1)"
             [currentUser]="this.user"
             (onEditMessage)="this.onEditMessage.emit(message)"
+            (onAnswerMessage)="this.answeringMessage=$event"
             (scrollingDecision)="addScrollingDecision($event)"
+
           ></app-message>
 
           <div class="text-muted small text-center mb-2 message-time"
@@ -127,15 +129,20 @@
 
   </cdk-virtual-scroll-viewport>
 
-  <mdb-card-footer class="chat-footer pt-1 pb-1 px-3">
-    <div class="message-box" id="editable" [contentEditable]="message.innerHTML.length<4000"
+  <mdb-card-footer class="chat-footer pt-1 pb-1 px-0">
+    <div *ngIf="answeringMessage" class="answering-message d-flex flex-column mx-1 px-1">
+      <div>Answer for <strong>{{answeringMessage.author.username}}</strong></div>
+      <div class="answering-message-value">{{answeringMessage.value}}</div>
+      <div (click)="this.answeringMessage=null" class="answering-message-close"><mdb-icon fas icon="times"></mdb-icon></div>
+    </div>
+    <div class="message-box px-2 m-2" id="editable" [contentEditable]="message.innerHTML.length<4000"
          data-placeholder="type a message..." #message
-         (keydown.enter)="onSendMessage.emit(message);$event.preventDefault();"
+         (keydown.enter)="sendMessage(message.innerText);$event.preventDefault();"
          (click)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"
          (keydown)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"
          (keyup)="resolveIsUserTyping(message.innerText)"></div>
 
-    <div>
+    <div class="m-2">
       <a>
         <mdb-icon #smallHoverImgTemp="bs-mdbPopover" [mdbPopover]="emojisPopover" far icon="laugh"
                   class="mr-2  chat-icon" triggers="click"></mdb-icon>
@@ -156,7 +163,7 @@
         <mdb-icon
 
           fas icon="paper-plane" class="float-right chat-icon"
-          (click)="onSendMessage.emit(message.innerText);this.scrollToBottom()"></mdb-icon>
+          (click)="sendMessage(message.innerText);this.scrollToBottom()"></mdb-icon>
 
       </a>
     </div>

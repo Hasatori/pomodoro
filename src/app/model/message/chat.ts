@@ -1,6 +1,7 @@
 import {Message} from "./message";
 import {User} from "../user/user";
 import {Observable} from "rxjs/internal/Observable";
+import {MessageAnswer} from "./message-answer";
 
 export interface Chat {
   name: string;
@@ -16,6 +17,8 @@ export interface Chat {
   sendMessage(value: String): void;
 
   editMessage(message: Message): void;
+
+  answerMessage(answerMessage: MessageAnswer): void;
 
   reportIfCurrentUserIsTyping(isTyping: boolean): void
 }

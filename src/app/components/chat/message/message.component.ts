@@ -33,7 +33,7 @@ export class MessageComponent implements OnInit, OnChanges {
 
   @Output() onEditMessage = new EventEmitter();
   @Output() scrollingDecision = new EventEmitter();
-
+  @Output() onAnswerMessage = new EventEmitter<Message>();
   showReactions: boolean = false;
 
 
@@ -271,13 +271,14 @@ export class MessageComponent implements OnInit, OnChanges {
   }
 
   react(emoji: Emoji) {
+    console.log(emoji);
     if (this.message.currentUserReaction == null) {
       let reaction: UserReaction = new UserReaction();
       reaction.author = this.currentUser;
       reaction.emoji = emoji;
       reaction.messageId = this.message.id;
       reaction.readTimestamp = null;
-      this.message.reactions=[reaction];
+      this.message.reactions = [reaction];
       this.message.emojisGroupedReactions.set(emoji, [reaction]);
       this.message.currentUserReaction = reaction;
     } else {
@@ -294,6 +295,18 @@ export class MessageComponent implements OnInit, OnChanges {
       groupedReactions.push(this.message.currentUserReaction);
     }
     this.onEditMessage.emit(this.message);
+  }
+
+  getRepliedMessageHeader(): string {
+    if (this.message.author.username === this.currentUser.username) {
+      return "You replied"
+    } else if (this.message.repliedMessage.author.username === this.currentUser.username) {
+      return `${this.message.author.username} replied you`
+    } else if (this.message.repliedMessage.author.username === this.message.author.username) {
+      return `${this.message.author.username} replied message`
+    } else {
+      return `${this.message.author.username} replied ${this.message.repliedMessage.author.username}`
+    }
   }
 }
 

@@ -27,6 +27,7 @@
           (onLoadOlder)="chat.loadOlder()"
           (onSendMessage)="chat.sendMessage($event)"
           (onEditMessage)="chat.editMessage($event)"
+          (onAnswerMessage)="chat.answerMessage($event)"
           (isUserTyping)="chat.reportIfCurrentUserIsTyping($event)"
 
         ></app-chat>

@@ -35,7 +35,7 @@ import {IsUserTyping} from "../../../../model/message/is-user-typing";
 export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
 
   @Input() group: Group;
-  @Input() users: Array<User>;
+  @Input() chatUsers: Array<User>;
   @Input() currentUser: User;
   subscriptions: Array<Subscription> = [];
 
@@ -72,19 +72,50 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
       threshold: this.threshold,
       closeable: false,
       messages: [],
+      typingUsers: [] = [],
       loadOlder: () => {
         this.fetchOlderGroupMessages(chat);
-      }
+      },
+      sendMessage: (value) => {
+        this.userServiceProvider.groupService.sendMessage(value, this.group);
+      },
+      editMessage: (message => {
+        let groupMessage = message as GroupMessage;
+        this.userServiceProvider.groupService.editMessage(groupMessage, this.group);
+      }),
+      answerMessage: (answerMessage => {
+        this.userServiceProvider.groupService.answerMessage(answerMessage, this.group);
+      }),
+      reportIfCurrentUserIsTyping: (isTyping => {
+        this.userServiceProvider.groupService.reportTypingToUser(isTyping, this.group)
+      })
     } as Chat;
 
     this.chats.push(chat);
     this.fetchOlderGroupMessages(chat);
-    this.subscriptions.push(this.userServiceProvider.groupService.getNewGroupMessage(this.group.name).subscribe(directMessage => {
-      chat.messages.push(directMessage);
+    this.subscriptions.push(this.userServiceProvider.groupService.getGroupMessageFromGroup(this.group).subscribe(groupMessage => {
+      chat.messages = chat.messages.concat(this.modifyNewMessages([groupMessage]));
+    }));
+    this.subscriptions.push(this.userServiceProvider.groupService.getResendGroupMessageFromGroup(this.group).subscribe(directMessage => {
+      console.log(directMessage);
+      chat.messages = chat.messages.filter(message => message.id !== directMessage.id);
+      chat.messages = chat.messages.concat(this.modifyNewMessages([directMessage]));
     }));
 
+    this.group.users.forEach(user => {
 
-    this.users.forEach(user => {
+      this.subscriptions.push(this.userServiceProvider.groupService.getIsUserTyping(user).subscribe(isUserTyping => {
+
+        if (isUserTyping) {
+          chat.typingUsers = chat.typingUsers.concat([user]);
+        } else {
+          chat.typingUsers = chat.typingUsers.filter(typingUser => typingUser.username !== user.username);
+        }
+      }));
+    });
+
+
+    this.chatUsers.forEach(user => {
       this.addUserToChats(user);
     });
 
@@ -97,7 +128,7 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   ngDoCheck() {
-    let change: IterableChanges<User> = this.differ.diff(this.users);
+    let change: IterableChanges<User> = this.differ.diff(this.chatUsers);
     if (change !== null) {
       change.forEachAddedItem(record => {
         let user = record.item;
@@ -108,7 +139,8 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
 
   fetchOlderGroupMessages(chat: Chat) {
     this.userServiceProvider.groupService.getLastNumberOfGroupMessages(this.group.name, chat.threshold, chat.end).subscribe(messages => {
-      chat.messages = chat.messages.concat(messages);
+
+      chat.messages = chat.messages.concat(this.modifyNewMessages(messages));
       chat.threshold += chat.limit;
       chat.end += chat.limit;
     });
@@ -130,7 +162,7 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
       threshold: this.threshold,
       closeable: true,
       messages: [],
-      typingUsers: []=[],
+      typingUsers: [] = [],
       loadOlder: () => {
         this.fetchOlderDirectMessages(user, chat);
       },
@@ -141,6 +173,9 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
         let directMessage = message as DirectMessage;
         this.userServiceProvider.userService.editMessage(directMessage, user);
       }),
+      answerMessage: (answerMessage => {
+        this.userServiceProvider.userService.answerMessage(answerMessage, user);
+      }),
       reportIfCurrentUserIsTyping: (isTyping => {
         this.userServiceProvider.userService.reportTypingToUser(isTyping, user)
       })
@@ -150,7 +185,6 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
     this.fetchOlderDirectMessages(user, chat);
     this.subscriptions.push(this.userServiceProvider.userService.getDirectMessageFromUser(user).subscribe(directMessage => {
       chat.messages = chat.messages.concat(this.modifyNewMessages([directMessage]));
-      console.log(directMessage);
     }));
     this.subscriptions.push(this.userServiceProvider.userService.getResendDirectMessageFromUser(user).subscribe(directMessage => {
       chat.messages = chat.messages.filter(message => message.id !== directMessage.id);
@@ -158,9 +192,9 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
     }));
     this.subscriptions.push(this.userServiceProvider.userService.getIsUserTyping(user).subscribe(isUserTyping => {
       if (isUserTyping) {
-        chat.typingUsers=[user];
+        chat.typingUsers = [user];
       } else {
-          chat.typingUsers.splice(0, 1);
+        chat.typingUsers.splice(0, 1);
       }
     }));
   }
@@ -177,6 +211,7 @@ export class CommunicationComponent implements OnInit, OnDestroy, DoCheck {
   private modifyNewMessages(newMessages: Array<Message>): Array<Message> {
     let modifiedMessages: Array<Message> = [];
     newMessages.forEach(message => {
+      message.isCurrentUserAuthor = message.author.username === this.currentUser.username;
       if (message.reactions != null) {
         message.emojisGroupedReactions = this.groupReactionsByEmojis(message.reactions);
         let currentUserReactionCandidate = message.reactions.find(reaction => reaction.author.username === this.currentUser.username);

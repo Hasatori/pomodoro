@@ -17,6 +17,7 @@ import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {of} from "rxjs";
 import {listAnimation, onCreateListAnimation} from "../../animations";
 import {Observable} from "rxjs/internal/Observable";
+import {MessageAnswer} from "../../model/message/message-answer";
 
 @Component({
   selector: 'app-chat',
@@ -37,8 +38,11 @@ export class ChatComponent implements OnInit, OnChanges {
   @Output() onLoadOlder = new EventEmitter();
   @Output() onEditMessage = new EventEmitter<Message>();
   @Output() onSendMessage = new EventEmitter<string>();
+  @Output() onAnswerMessage = new EventEmitter<MessageAnswer>();
   @Output() onRemove = new EventEmitter();
   @Output() isUserTyping = new EventEmitter();
+
+  answeringMessage: Message = null;
 
   loading: boolean;
   init: boolean = false;
@@ -161,13 +165,24 @@ export class ChatComponent implements OnInit, OnChanges {
   resolveIsUserTyping(value: string) {
     console.log(value);
     let isUserTyping = false;
-    if (value.length> 1) {
+    if (value.length > 1) {
       isUserTyping = true;
     }
     console.log(isUserTyping);
     this.isUserTyping.emit(isUserTyping);
   }
 
+  sendMessage(value: string) {
+    if (this.answeringMessage != null) {
+      let messageAnswer = new MessageAnswer();
+      messageAnswer.answeredMessage = this.answeringMessage;
+      messageAnswer.answerValue = value;
+      this.onAnswerMessage.emit(messageAnswer);
+    } else {
+      this.onSendMessage.emit(value);
+    }
+
+  }
 }
 
 

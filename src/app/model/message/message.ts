@@ -8,7 +8,7 @@ export class Message {
   value: string;
   creationTimestamp: Date;
   author: User;
-  answeredMessage:Message;
+  repliedMessage:Message;
   changes: Array<MessageChange>;
   reactions: Array<UserReaction>;
   emojisGroupedReactions?:Map<Emoji,UserReaction[]>;

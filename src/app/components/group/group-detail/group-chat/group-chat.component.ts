@@ -122,7 +122,7 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.user = user;
 
     });
-    this.newGroupMessageSubscription = this.userServiceProvider.groupService.getNewGroupMessage(this.group.name).subscribe((newMessage) => {
+    this.newGroupMessageSubscription = this.userServiceProvider.groupService.getNewGroupMessage().subscribe((newMessage) => {
       this.addingNewMessage = true;
       this.seenBy = '';
       this.setReactionsForMessage(newMessage);
@@ -337,7 +337,7 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
         return reaction.emoji === relatedMessage.emoji;
       });
       if (!isUndefined(reaction) && reaction !== null) {
-       // reaction.users.push(relatedMessage.author);
+       // reaction.chatUsers.push(relatedMessage.author);
       }
       if (relatedMessage.author.username === this.user.username) {
 
@@ -369,9 +369,9 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
   removeReaction(message: Message, reactionName: string) {
     /*
         let currentUserReaction = message.reactions.find(r => {
-          return r.emoji === emoji && r.users.some(author => author.username == this.author.username);
+          return r.emoji === emoji && r.chatUsers.some(author => author.username == this.author.username);
         });
-        currentUserReaction.users = currentUserReaction.users.UserFilter(author => {
+        currentUserReaction.chatUsers = currentUserReaction.chatUsers.UserFilter(author => {
           return author.username !== this.author.username;
         });
     */
@@ -385,15 +385,15 @@ export class GroupChatComponent implements OnInit, AfterViewInit, OnDestroy {
       return r.emoji === reaction;
     });
 /*    let currentUserReaction = message.reactions.find(r => {
-    //  return r.emoji === reaction && r.users.some(user => user.username == this.user.username);
+    //  return r.emoji === reaction && r.chatUsers.some(user => user.username == this.user.username);
     });
-    currentUserReaction.users = currentUserReaction.users.filter(user => {
+    currentUserReaction.chatUsers = currentUserReaction.chatUsers.filter(user => {
       return user.username !== this.user.username;
     });*/
     if (isUndefined(foundReaction)) {
       foundReaction = this.createReaction(reaction);
     }
-//    foundReaction.users.push(this.user);
+//    foundReaction.chatUsers.push(this.user);
 //    message.currentUserReaction = reaction;
     message.reactions.push(foundReaction);
   }

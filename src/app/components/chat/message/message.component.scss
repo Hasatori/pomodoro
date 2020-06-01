@@ -1,8 +1,9 @@
 @import "../chat.component.scss";
 
-.my-message-text,.other-member-message-text{
+.my-message-text, .other-member-message-text {
   font-size: 0.7em;
 }
+
 .message {
   margin-top: 1rem;
 }
@@ -12,47 +13,54 @@
   color: $navigationBarColor !important;
 
 }
-.my-message-text::after{
+
+.my-message-text::after {
   width: 0;
   height: 0;
-  content:"";
+  content: "";
   border-style: solid;
   border-width: 20px 0 0 20px;
   border-color: transparent transparent transparent $navigationBarColor;
-  position:absolute;
-  bottom:-1px;
-  right:-8px;
+  position: absolute;
+  bottom: -1px;
+  right: -8px;
   z-index: -1;
 }
-.other-member-message-text::before{
+
+.other-member-message-text::before {
   width: 0;
   height: 0;
-  content:"";
+  content: "";
   border-style: solid;
   border-width: 0 0 20px 20px;
   border-color: transparent transparent $basicTextColor;
-  position:absolute;
-  bottom:0;
-  left:-8px;
+  position: absolute;
+  bottom: 0;
+  left: -8px;
   z-index: -1;
 }
+
 .my-message-text {
   border-radius: 20px 20px 2px 20px;
 
 }
-.other-member-message-text{
+
+.other-member-message-text {
   border-radius: 20px 20px 20px 2px;
 }
+
 .my-message-text {
   color: $basicTextColor !important;
   background-color: $navigationBarColor;
   border: 1px solid $secondaryTextColor;
 }
-.my-message-text, .other-member-message-text,.attachment {
-  max-width: calc((#{$chatRoomWidth}/100*50)) !important;
+
+.my-message-text, .other-member-message-text, .attachment {
+  max-width: calc((#{$chatRoomWidth} / 100 * 50)) !important;
   overflow-wrap: break-word;
 }
-.my-message-margin{
+
+.my-message-margin {
   width: 5%;
 }
 
@@ -68,35 +76,72 @@
   opacity: 1;
   cursor: pointer;
 }
-.reaction-wrapper,.my-message-reaction-wrapper,.other-message-reaction-wrapper{
+
+.reaction-wrapper, .my-message-reaction-wrapper, .other-message-reaction-wrapper {
   top: 100% !important;
 
   z-index: 100 !important;
 
 }
 
-.my-message-reaction-wrapper{
+.my-message-reaction-wrapper {
   right: 0;
 }
-.other-message-reaction-wrapper{
+
+.other-message-reaction-wrapper {
   left: 0;
 }
-.reaction-count{
-  color:$secondaryTextColor !important;
-}
-.message-reactions-wrapper{
+
+.my-message-text:hover .my-message-actions-wrapper, .other-member-message-text:hover .other-member-message-actions-wrapper {
   opacity: 0.8;
 }
-.message-reactions-wrapper:hover{
+
+.my-message-actions-wrapper, .other-member-message-actions-wrapper {
+  top: 25%;
+  opacity: 0;
+}
+
+.my-message-actions-wrapper:hover, .other-member-message-actions-wrapper:hover {
   cursor: pointer;
   opacity: 1;
 }
+
+.other-member-message-actions-wrapper {
+  left: 110%;
+}
+
+.my-message-actions-wrapper {
+  right: 110%;
+}
+
+.reaction-count {
+  color: $secondaryTextColor !important;
+}
+
+.message-reactions-wrapper {
+  opacity: 0.8;
+}
+
+.message-reactions-wrapper:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
 .reaction-emoji-selected {
   opacity: 1;
   background-color: $backgroundColor;
   border-radius: 10px;
 
 }
+
 .reaction-emoji {
   opacity: 0.8;
+}
+
+.replied-message-text {
+  border-left: 1px solid $backgroundColor;
+  color:$backgroundColor;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
 }
