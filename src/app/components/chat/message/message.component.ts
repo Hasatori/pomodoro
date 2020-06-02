@@ -299,7 +299,7 @@ export class MessageComponent implements OnInit, OnChanges {
 
   getRepliedMessageHeader(): string {
     if (this.message.author.username === this.currentUser.username) {
-      return "You replied"
+      return "You replied to your message"
     } else if (this.message.repliedMessage.author.username === this.currentUser.username) {
       return `${this.message.author.username} replied you`
     } else if (this.message.repliedMessage.author.username === this.message.author.username) {

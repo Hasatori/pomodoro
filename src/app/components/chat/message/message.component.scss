@@ -1,9 +1,11 @@
 @import "../chat.component.scss";
 
 .my-message-text, .other-member-message-text {
-  font-size: 0.7em;
+  font-size: 0.9em;
 }
-
+.message-header{
+  color: $navigationBarColor  !important;
+}
 .message {
   margin-top: 1rem;
 }
@@ -61,11 +63,11 @@
 }
 
 .my-message-margin {
-  width: 5%;
+  width: 7%;
 }
 
 .other-message-margin {
-  width: 13%;
+  width: 15%;
 }
 
 .reaction {

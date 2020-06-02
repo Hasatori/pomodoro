@@ -1,14 +1,15 @@
 <div class="d-flex flex-column my-5">
   <div class="d-flex text-muted small align-self-center mb-2"
-       *ngIf="isPreviousMessageTooOld()">{{getOldMessageTime()}}</div>
-  <div class="d-flex my-0 py-0" *ngIf="!message.isCurrentUserAuthor && message.repliedMessage===null">
+       *ngIf="isPreviousMessageTooOld()"><span class="mr-1"><mdb-icon far icon="clock"></mdb-icon></span>{{getOldMessageTime()}}</div>
+  <div class="d-flex my-0 py-0 message-header" *ngIf="!message.isCurrentUserAuthor && message.repliedMessage===null">
     <div class="other-message-margin"></div>
-
     <div class="text-muted small">{{message.author.username}}</div>
   </div>
-  <div class="d-flex my-0 py-0" *ngIf="message.repliedMessage!=null">
-    <div class="other-message-margin"></div>
+  <div  [ngClass]="message.isCurrentUserAuthor?'d-flex flex-row-reverse message my-0 py-0':'d-flex justify-content-start message my-0 py-0'" *ngIf="message.repliedMessage!=null">
+    <div *ngIf="!message.isCurrentUserAuthor" class="other-message-margin"></div>
+    <div *ngIf="message.isCurrentUserAuthor" class="my-message-margin"></div>
     <div class="text-muted small">{{getRepliedMessageHeader()}}</div>
+
   </div>
   <div
     [ngClass]="message.isCurrentUserAuthor?'d-flex flex-row-reverse message my-0 py-0':'d-flex justify-content-start message my-0 py-0'">
