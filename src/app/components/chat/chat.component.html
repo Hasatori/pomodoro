@@ -137,7 +137,7 @@
     </div>
     <div class="message-box px-2 m-2" id="editable" [contentEditable]="message.innerHTML.length<4000"
          data-placeholder="type a message..." #message
-         (keydown.enter)="sendMessage(message.innerText);$event.preventDefault();"
+         (keydown.enter)="sendMessage(message.innerText);$event.preventDefault();message.innerHTML=''"
          (click)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"
          (keydown)="lastCursorPosition=getCaretCharacterOffsetWithin(message)"
          (keyup)="resolveIsUserTyping(message.innerText)"></div>
@@ -163,7 +163,7 @@
         <mdb-icon
 
           fas icon="paper-plane" class="float-right chat-icon"
-          (click)="sendMessage(message.innerText);this.scrollToBottom()"></mdb-icon>
+          (click)="sendMessage(message.innerText);this.scrollToBottom();message.innerHTML=''"></mdb-icon>
 
       </a>
     </div>

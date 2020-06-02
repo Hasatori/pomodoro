@@ -178,6 +178,7 @@ export class ChatComponent implements OnInit, OnChanges {
       messageAnswer.answeredMessage = this.answeringMessage;
       messageAnswer.answerValue = value;
       this.onAnswerMessage.emit(messageAnswer);
+      this.answeringMessage=null;
     } else {
       this.onSendMessage.emit(value);
     }
