@@ -5,7 +5,7 @@
 >
   <div class="d-flex flex-column">
     <div class="d-flex align-self-end my-0">
-      <div class="sticky-button py-1 my-0 text-center" (click)="chatsShown=!chatsShown">
+      <div class="sticky-button py-1 my-0 text-center mx-1 shadow rounded" (click)="chatsShown=!chatsShown">
         <mdb-icon *ngIf="!chatsShown" fas icon="angle-up"></mdb-icon>
         <mdb-icon *ngIf="chatsShown" fas icon="angle-down"></mdb-icon>
         <span class="ml-1" *ngIf="!chatsShown">Show</span><span class="ml-1" *ngIf="chatsShown">Hide</span> chats

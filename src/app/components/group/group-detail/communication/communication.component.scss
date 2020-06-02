@@ -1,9 +1,8 @@
 @import "../../../../app.component";
 @import "../../../chat/chat.component";
 .sticky-button {
-
   z-index: 105;
-  width: 24rem;
+  width: $chatRoomWidth;
   background-color:  $basicTextColor;
   color: $navigationBarColor;
 
