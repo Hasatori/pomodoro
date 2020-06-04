@@ -9,10 +9,10 @@
         <mdb-icon *ngIf="!chatsShown" fas icon="angle-up"></mdb-icon>
         <mdb-icon *ngIf="chatsShown" fas icon="angle-down"></mdb-icon>
         <span class="ml-1" *ngIf="!chatsShown">Show</span><span class="ml-1" *ngIf="chatsShown">Hide</span> chats
-        <small class="align-right ml-2">
+        <small class="align-right ml-2" *ngIf="(userServiceProvider.userService.allUnreadMessages+userServiceProvider.groupService.groupUnreadMessages.get(group.name))>0">
           <mdb-icon far icon="comments" class="pr-1 animated wobble"></mdb-icon>
           <span
-            class="badge badge-danger text-right animated wobble">5</span>
+            class="badge badge-danger text-right animated wobble" >{{userServiceProvider.userService.allUnreadMessages+userServiceProvider.groupService.groupUnreadMessages.get(group.name)}}</span>
         </small>
       </div>
     </div>

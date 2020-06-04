@@ -155,27 +155,7 @@ export class MessageComponent implements OnInit, OnChanges {
     return `${Math.floor(value)} ${unit} ago`;
   }
 
-  getMessageTimestampRelevance(messageTimestamp: Date): string {
-    let currentDate = new Date();
-    // @ts-ignore
-    let DateDiff = require('date-diff');
-    let diff = new DateDiff(currentDate, new Date(messageTimestamp));
-    let result = this.getResult(diff.seconds(), 'second');
-    if (diff.seconds() < 5) {
-      result = 'now';
-    }
-    if (diff.seconds() >= 60) {
-      result = this.getResult(diff.minutes(), 'minute');
-    }
-    if (diff.minutes() >= 60) {
 
-      result = new Date(currentDate.getMilliseconds() - diff.seconds() * 1000).toLocaleTimeString('en-US');
-    }
-    if (diff.hours() >= 24) {
-      result = new Date(messageTimestamp).toLocaleDateString('en-US', this.oldMessageTimeOptions);
-    }
-    return result;
-  }
 
   addReactionsClicked() {
     if (this.showReactions) {

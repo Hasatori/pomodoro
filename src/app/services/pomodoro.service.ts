@@ -10,7 +10,6 @@ import {Timer} from '../model/user/timer';
 import {AuthService} from './auth.service';
 import {Group} from '../model/group/group';
 import {NGXLogger} from 'ngx-logger';
-import {tree} from 'd3-hierarchy';
 import {WebSocketProxyService} from './web-socket-proxy.service';
 import {environment} from '../../environments/environment';
 import {getEnvironment} from "../server-config";

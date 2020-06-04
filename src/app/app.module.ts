@@ -39,7 +39,6 @@ import {AuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {provideConfig} from './server-config';
 import {WantMoreFunctionalityComponent} from './components/modals/want-more-functionality/want-more-functionality.component';
 import {SuccessComponent} from './components/modals/success/success.component';
-import {GroupChatComponent} from './components/group/group-detail/group-chat/group-chat.component';
 import {LightBoxModule, ModalModule, WavesModule} from 'ng-uikit-pro-standard'
 import {
   AccordionModule,
@@ -136,7 +135,6 @@ const routes: Routes = [
     FreeTrialComponent,
     WantMoreFunctionalityComponent,
     SuccessComponent,
-    GroupChatComponent,
     OverviewComponent,
     BackToTopComponent,
     SortPipe,
